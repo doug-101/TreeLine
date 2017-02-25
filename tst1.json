@@ -1,0 +1,29 @@
+{
+   "formats": [],
+   "nodes": [
+      {
+         "children": [
+            "701d5d19f91011e6b54d3417ebd53aeb"
+         ],
+         "data": {
+            "Name": "First Node"
+         },
+         "format": "TestFormat",
+         "uid": "701d5d18f91011e6995d3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Second Node"
+         },
+         "format": "TestFormat",
+         "uid": "701d5d19f91011e6b54d3417ebd53aeb"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "701d5d18f91011e6995d3417ebd53aeb"
+      ]
+   }
+}

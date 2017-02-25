@@ -1,0 +1,7 @@
+syntax: glob
+*.pyc
+*~
+*.swp
+
+syntax: regexp
+.*\#.*\#$
