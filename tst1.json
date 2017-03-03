@@ -1,5 +1,19 @@
 {
-   "formats": [],
+   "formats": [
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "DEFAULT",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      }
+   ],
    "nodes": [
       {
          "children": [
@@ -8,7 +22,7 @@
          "data": {
             "Name": "First Node"
          },
-         "format": "TestFormat",
+         "format": "DEFAULT",
          "uid": "701d5d18f91011e6995d3417ebd53aeb"
       },
       {
@@ -16,7 +30,7 @@
          "data": {
             "Name": "Second Node"
          },
-         "format": "TestFormat",
+         "format": "DEFAULT",
          "uid": "701d5d19f91011e6b54d3417ebd53aeb"
       }
    ],

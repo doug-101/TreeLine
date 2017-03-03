@@ -15,35 +15,51 @@
 import json
 import operator
 import treenode
+import treeformats
+try:
+    from __main__ import __version__
+except ImportError:
+    __version__ = ''
+
+_defaultRootTitle = _('Main')
 
 
 class TreeStructure:
     """Class to store all tree data.
     """
-    def __init__(self):
-        """Initialize a TreeStructure.
+    def __init__(self, fileObj=None, addDefaults=False):
+        """Retrive a TreeLine file to create a tree structure.
+
+        If no file object is given, create an empty or a default new structure.
+        Arguments:
+            fileObj -- a file-like object
+            addDefaults - if true, adds default new structure
         """
         self.nodeDict = {}
         self.topNodes = []
-        self.treeFormats = None
-
-    def loadFile(self, fileObj):
-        """Retrive a TreeLine file.
-
-        Arguments:
-            fileObj -- a file-like object
-        """
-        fileData = json.load(fileObj)
-        for nodeInfo in fileData['nodes']:
-            node = treenode.TreeNode(nodeInfo['format'], nodeInfo)
+        if fileObj:
+            fileData = json.load(fileObj)
+            self.treeFormats = treeformats.TreeFormats(fileData['formats'])
+            for nodeInfo in fileData['nodes']:
+                formatRef = self.treeFormats[nodeInfo['format']]
+                node = treenode.TreeNode(formatRef, nodeInfo)
+                self.nodeDict[node.uId] = node
+            for node in self.nodeDict.values():
+                node.assignRefs(self.nodeDict)
+            for uid in fileData['properties']['topnodes']:
+                node = self.nodeDict[uid]
+                self.topNodes.append(node)
+                node.generateSpots(None)
+        elif addDefaults:
+            self.treeFormats = treeformats.TreeFormats(setDefault=True)
+            node = treenode.TreeNode(self.treeFormats[treeformats.
+                                                      defaultTypeName])
+            node.setTitle(_defaultRootTitle)
             self.nodeDict[node.uId] = node
-        for node in self.nodeDict.values():
-            node.assignRefs(self.nodeDict)
-            # print(node.data['Name'])
-        for uid in fileData['properties']['topnodes']:
-            node = self.nodeDict[uid]
             self.topNodes.append(node)
             node.generateSpots(None)
+        else:
+            self.treeFormats = treeformats.TreeFormats()
 
     def storeFile(self, fileObj):
         """Save a TreeLine file.
@@ -51,11 +67,11 @@ class TreeStructure:
         Arguments:
             fileObj -- a file-like object
         """
-        formats = []
+        formats = self.treeFormats.storeFormats()
         nodeList = sorted([node.fileData() for node in self.nodeDict.values()],
                           key=operator.itemgetter('uid'))
         topNodeIds = [node.uId for node in self.topNodes]
-        properties = {'tlversion': '2.9.0', 'topnodes': topNodeIds}
+        properties = {'tlversion': __version__, 'topnodes': topNodeIds}
         fileData = {'formats': formats, 'nodes': nodeList,
                     'properties': properties}
         json.dump(fileData, fileObj, indent=3, sort_keys=True)

@@ -22,14 +22,14 @@ class TreeNode:
     Stores a data dict, lists of children and a format name string.
     Provides methods to get info on the structure and the data.
     """
-    def __init__(self, formatName, fileData=None):
+    def __init__(self, formatRef, fileData=None):
         """Initialize a tree node.
 
         Arguments:
-            formatName -- a string name for this node's format info
+            formatRef -- a ref to this node's format info
             fileData -- a dict with uid, data, child refs & parent refs
         """
-        self.formatName = formatName
+        self.formatRef = formatRef
         if not fileData:
             fileData = {}
         self.uId = fileData.get('uid', uuid.uuid1().hex)
@@ -39,7 +39,7 @@ class TreeNode:
         self.spotRefs = set()
 
     def assignRefs(self, nodeDict):
-        """Add actual refs to parent and child nodes.
+        """Add actual refs to child nodes.
 
         Arguments:
             nodeDict -- all nodes stored by uid
@@ -70,6 +70,29 @@ class TreeNode:
         """Return the file data dict for this node.
         """
         children = [node.uId for node in self.childList]
-        fileData = {'format': self.formatName, 'uid': self.uId,
+        fileData = {'format': self.formatRef.name, 'uid': self.uId,
                     'data': self.data, 'children': children}
         return fileData
+
+    def title(self):
+        """Return the title string for this node.
+        """
+        return self.formatRef.formatTitle(self)
+
+    def setTitle(self, title):
+        """Change this node's data based on a new title string.
+
+        Return True if successfully changed.
+        """
+        if title == self.title():
+            return False
+        return self.formatRef.extractTitleData(title, self.data)
+
+    def output(self, plainText=False, keepBlanks=False):
+        """Return a list of formatted text output lines.
+
+        Arguments:
+            plainText -- if True, remove HTML markup from fields and formats
+            keepBlanks -- if True, keep lines with empty fields
+        """
+        return self.formatRef.formatOutput(self, plainText, keepBlanks)
