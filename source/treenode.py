@@ -66,6 +66,23 @@ class TreeNode:
         return {spot.parentSpot.nodeRef if spot.parentSpot else None
                 for spot in self.spotRefs}
 
+    def numChildren(self):
+        """Return number of children.
+        """
+        return len(self.childList)
+
+    def matchedSpot(self, parentSpot):
+        """Return the spot for this node that matches a parent spot.
+
+        Return None if not found.
+        Arguments:
+            parentSpot -- the parent to match
+        """
+        for spot in self.spotRefs:
+            if spot.parentSpot is parentSpot:
+                return spot
+        return None
+
     def fileData(self):
         """Return the file data dict for this node.
         """

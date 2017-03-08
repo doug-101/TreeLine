@@ -28,7 +28,7 @@ import os.path
 import argparse
 import locale
 import builtins
-# from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication
 
 
 def markNoTranslate(text, comment=''):
@@ -47,21 +47,12 @@ builtins.N_ = markNoTranslate
 if __name__ == '__main__':
     """Main event loop for TreeLine
     """
-    # app = QApplication(sys.argv)
+    app = QApplication(sys.argv)
     parser = argparse.ArgumentParser()
     parser.add_argument('fileList', nargs='*', metavar='filename',
                         help='input filename(s) to load')
     args = parser.parse_args()
 
-    # import treemaincontrol
-    # treeMainControl = treemaincontrol.TreeMainControl(args.fileList)
-    # app.exec_()
-
-    import treestructure
-    with open('../tst1.json', 'r') as f:
-        ts = treestructure.TreeStructure(f)
-    with open('../tst2.json', 'w', newline='\n') as f:
-        ts.storeFile(f)
-    ts = treestructure.TreeStructure(addDefaults=True)
-    with open('../tst3.json', 'w') as f:
-        ts.storeFile(f)
+    import treemaincontrol
+    treeMainControl = treemaincontrol.TreeMainControl(args.fileList)
+    app.exec_()

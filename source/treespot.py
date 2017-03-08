@@ -27,3 +27,21 @@ class TreeSpot:
         """
         self.nodeRef = nodeRef
         self.parentSpot = parentSpot
+
+    def index(self, modelRef):
+        """Returns the index of this spot in the tree model.
+
+        Arguments:
+            modelRef -- a ref to the tree model
+        """
+        return modelRef.createIndex(self.row(), 0, self)
+
+    def row(self, modelRef):
+        """Return the rank of this spot in its parent's child list.
+
+        Arguments:
+            modelRef -- a ref to the tree model
+        """
+        if self.parentSpot:
+            return self.parentSpot.nodeRef.childList.index(self.nodeRef)
+        return modelRef.treeStructure.topNodes.index(self.nodeRef)
