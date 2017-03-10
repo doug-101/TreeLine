@@ -13,6 +13,7 @@
 #******************************************************************************
 
 from PyQt5.QtCore import (QAbstractItemModel, QModelIndex, Qt)
+import globalref
 
 
 class TreeModel(QAbstractItemModel):
@@ -87,7 +88,9 @@ class TreeModel(QAbstractItemModel):
         node = index.internalPointer().nodeRef
         if role in (Qt.DisplayRole, Qt.EditRole):
             return node.title()
-        # TODO handle role == Qt.DecorationRole for icons
+        if (role == Qt.DecorationRole and
+            globalref.genOptions.getValue('ShowTreeIcons')):
+            return globalref.treeIcons.getIcon(node.formatRef.iconName, True)
         return None
 
     def setData(self, index, value, role=Qt.EditRole):

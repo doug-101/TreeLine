@@ -40,6 +40,8 @@ class TreeWindow(QMainWindow):
         self.setAcceptDrops(True)
         self.setStatusBar(QStatusBar())
         self.setCaption()
+        self.setupActions()
+        self.setupMenus()
 
         self.treeView = treeview.TreeView(model, self.allActions)
         self.setCentralWidget(self.treeView)
@@ -63,6 +65,36 @@ class TreeWindow(QMainWindow):
         else:
             caption = '- TreeLine'
         self.setWindowTitle(caption)
+
+    def setupActions(self):
+        """Add the actions for contols at the window level.
+
+        These actions only affect an individual window,
+        they're independent in multiple windows of the same file.
+        """
+        winActions = {}
+
+        for name, action in winActions.items():
+            icon = globalref.toolIcons.getIcon(name.lower())
+            if icon:
+                action.setIcon(icon)
+            key = globalref.keyboardOptions.getValue(name)
+            if not key.isEmpty():
+                action.setShortcut(key)
+        self.allActions.update(winActions)
+
+    def setupMenus(self):
+        """Add menu items for actions.
+        """
+        self.fileMenu = self.menuBar().addMenu(_('&File'))
+        self.fileMenu.addAction(self.allActions['FileNew'])
+        self.fileMenu.addAction(self.allActions['FileOpen'])
+        self.fileMenu.addSeparator()
+        self.fileMenu.addAction(self.allActions['FileSave'])
+        self.fileMenu.addAction(self.allActions['FileSaveAs'])
+        self.fileMenu.addSeparator()
+        self.recentFileSep = self.fileMenu.addSeparator()
+        self.fileMenu.addAction(self.allActions['FileQuit'])
 
     def changeEvent(self, event):
         """Detect an activation of the main window and emit a signal.

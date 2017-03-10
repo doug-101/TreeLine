@@ -12,11 +12,16 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
+import sys
 import pathlib
+import os.path
 from PyQt5.QtCore import QObject, Qt
-from PyQt5.QtWidgets import (QAction, QApplication, QMessageBox)
+from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMessageBox)
 import globalref
 import treelocalcontrol
+import options
+import optiondefaults
+import icondict
 try:
     from __main__ import __version__, __author__
 except ImportError:
@@ -48,11 +53,81 @@ class TreeMainControl(QObject):
         self.activeControl = None
         globalref.mainControl = self
         self.allActions = {}
+        mainVersion = '.'.join(__version__.split('.')[:2])
+        globalref.genOptions = options.Options('general', 'TreeLine',
+                                               mainVersion, 'bellz')
+        optiondefaults.setGenOptionDefaults(globalref.genOptions)
+        globalref.miscOptions  = options.Options('misc')
+        optiondefaults.setMiscOptionDefaults(globalref.miscOptions)
+        globalref.histOptions = options.Options('history')
+        optiondefaults.setHistOptionDefaults(globalref.histOptions)
+        globalref.toolbarOptions = options.Options('toolbar')
+        optiondefaults.setToolbarOptionDefaults(globalref.toolbarOptions)
+        globalref.keyboardOptions = options.Options('keyboard')
+        optiondefaults.setKeyboardOptionDefaults(globalref.keyboardOptions)
+        try:
+            globalref.genOptions.readFile()
+            globalref.miscOptions.readFile()
+            globalref.histOptions.readFile()
+            globalref.toolbarOptions.readFile()
+            globalref.keyboardOptions.readFile()
+        except IOError:
+            QMessageBox.warning(None, 'TreeLine',
+                                _('Error - could not write config file to {}').
+                                format(options.Options.basePath))
+        iconPathList = self.findResourcePaths('icons', iconPath)
+        globalref.toolIcons = icondict.IconDict([str(path / 'toolbar')
+                                                 for path in iconPathList],
+                                                ['', '32x32', '16x16'])
+        globalref.toolIcons.loadAllIcons()
+        windowIcon = globalref.toolIcons.getIcon('treelogo')
+        if windowIcon:
+            QApplication.setWindowIcon(windowIcon)
+        globalref.treeIcons = icondict.IconDict([str(path) for path in
+                                                 iconPathList], ['', 'tree'])
+        self.setupActions()
         if filePaths:
             for path in filePaths:
                 self.openFile(path)
         else:
             self.createLocalControl()
+
+    def findResourcePaths(self, resourceName, preferredPath=''):
+        """Return list of potential non-empty pathlib objects for the resource.
+
+        List includes preferred, module and user option paths.
+        Arguments:
+            resourceName -- the typical name of the resource directory
+            preferredPath -- add this as the second path if given
+        """
+        modPath = pathlib.Path(sys.path[0]).resolve()
+        basePath = pathlib.Path(options.Options.basePath)
+        pathList = [basePath / resourceName, modPath / '..' / resourceName,
+                    modPath / resourceName]
+        if preferredPath:
+            pathList.insert(1, pathlib.Path(preferredPath))
+        return [path.resolve() for path in pathList if path.is_dir() and
+                list(path.iterdir())]
+
+    def defaultFilePath(self, dirOnly=False):
+        """Return a reasonable default file path.
+
+        Used for open, save-as, import and export.
+        Arguments:
+            dirOnly -- if True, do not include basename of file
+        """
+        filePath = ''
+        if  self.activeControl:
+            filePath = self.activeControl.filePath
+        if not filePath:
+            # filePath = self.recentFiles.firstDir()
+            # if not filePath:
+             filePath = os.path.expanduser('~')
+             if filePath == '~':
+                 filePath = ''
+        if dirOnly:
+            filePath = os.path.dirname(filePath)
+        return filePath
 
     def openFile(self, filePath, checkModified=False, importOnFail=True):
         """Open the file given by path if not already open.
@@ -79,6 +154,11 @@ class TreeMainControl(QObject):
                 QApplication.restoreOverrideCursor()
                 QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
                                     _('Error - could not read file {0}').
+                                    format(str(path)))
+            except (ValueError, KeyError, TypeError):
+                QApplication.restoreOverrideCursor()
+                QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
+                                    _('Error - invalid TreeLine file {0}').
                                     format(str(path)))
             if not self.localControls:
                 self.createLocalControl()
@@ -118,12 +198,73 @@ class TreeMainControl(QObject):
         """
         self.localControls.remove(localControl)
 
-    def currentTreeView(self):
-        """Return the current left-hand tree view.
-        """
-        return self.activeControl.currentTreeView()
-
     def currentStatusBar(self):
         """Return the status bar from the current main window.
         """
         return self.activeControl.activeWindow.statusBar()
+
+    def setupActions(self):
+        """Add the actions for contols at the global level.
+        """
+        fileNewAct = QAction(_('&New...'), self, toolTip=_('New File'),
+                             statusTip=_('Start a new file'))
+        fileNewAct.triggered.connect(self.fileNew)
+        self.allActions['FileNew'] = fileNewAct
+
+        fileOpenAct = QAction(_('&Open...'), self, toolTip=_('Open File'),
+                              statusTip=_('Open a file from disk'))
+        fileOpenAct.triggered.connect(self.fileOpen)
+        self.allActions['FileOpen'] = fileOpenAct
+
+        fileQuitAct = QAction(_('&Quit'), self,
+                              statusTip=_('Exit the application'))
+        fileQuitAct.triggered.connect(self.fileQuit)
+        self.allActions['FileQuit'] = fileQuitAct
+
+        for name, action in self.allActions.items():
+            icon = globalref.toolIcons.getIcon(name.lower())
+            if icon:
+                action.setIcon(icon)
+            key = globalref.keyboardOptions.getValue(name)
+            if not key.isEmpty():
+                action.setShortcut(key)
+
+    def fileNew(self):
+        """Start a new blank file.
+        """
+        if (globalref.genOptions.getValue('OpenNewWindow') or
+            self.activeControl.checkSaveChanges()):
+            searchPaths = self.findResourcePaths('templates', templatePath)
+            if searchPaths:
+                dialog = miscdialogs.TemplateFileDialog(_('New File'),
+                                                        _('&Select Template'),
+                                                        searchPaths)
+                if dialog.exec_() == QDialog.Accepted:
+                    self.createLocalControl(dialog.selectedPath())
+                    self.activeControl.filePath = ''
+                    self.activeControl.updateWindowCaptions()
+            else:
+                self.createLocalControl()
+
+    def fileOpen(self):
+        """Prompt for a filename and open it.
+        """
+        if (globalref.genOptions.getValue('OpenNewWindow') or
+            self.activeControl.checkSaveChanges()):
+            filters = ';;'.join((globalref.fileFilters['trl'],
+                                 globalref.fileFilters['trlgz'],
+                                 globalref.fileFilters['trlenc'],
+                                 globalref.fileFilters['all']))
+            fileName, selectFilter = QFileDialog.getOpenFileName(QApplication.
+                                                    activeWindow(),
+                                                    _('TreeLine - Open File'),
+                                                    self.defaultFilePath(True),
+                                                    filters)
+            if fileName:
+                self.openFile(fileName)
+
+    def fileQuit(self):
+        """Close all windows to exit the applications.
+        """
+        for control in self.localControls[:]:
+            control.closeWindows()
