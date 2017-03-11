@@ -4,7 +4,7 @@
 # treemaincontrol.py, provides a class for global tree commands
 #
 # TreeLine, an information storage program
-# Copyright (C) 2015, Douglas W. Bell
+# Copyright (C) 2017, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,7 +14,6 @@
 
 import sys
 import pathlib
-import os.path
 from PyQt5.QtCore import QObject, Qt
 from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMessageBox)
 import globalref
@@ -41,11 +40,11 @@ class TreeMainControl(QObject):
 
     Provides methods for all controls and stores local control objects.
     """
-    def __init__(self, filePaths, parent=None):
+    def __init__(self, pathObjects, parent=None):
         """Initialize the main tree controls
 
         Arguments:
-            filePaths -- a list of files to open
+            pathObjects -- a list of file objects to open
             parent -- the parent QObject if given
         """
         super().__init__(parent)
@@ -76,19 +75,19 @@ class TreeMainControl(QObject):
                                 _('Error - could not write config file to {}').
                                 format(options.Options.basePath))
         iconPathList = self.findResourcePaths('icons', iconPath)
-        globalref.toolIcons = icondict.IconDict([str(path / 'toolbar')
-                                                 for path in iconPathList],
+        globalref.toolIcons = icondict.IconDict([path / 'toolbar' for path
+                                                 in iconPathList],
                                                 ['', '32x32', '16x16'])
         globalref.toolIcons.loadAllIcons()
         windowIcon = globalref.toolIcons.getIcon('treelogo')
         if windowIcon:
             QApplication.setWindowIcon(windowIcon)
-        globalref.treeIcons = icondict.IconDict([str(path) for path in
-                                                 iconPathList], ['', 'tree'])
+        globalref.treeIcons = icondict.IconDict(iconPathList, ['', 'tree'])
+        icon = globalref.treeIcons.getIcon('default')
         self.setupActions()
-        if filePaths:
-            for path in filePaths:
-                self.openFile(path)
+        if pathObjects:
+            for pathObj in pathObjects:
+                self.openFile(pathObj.resolve())
         else:
             self.createLocalControl()
 
@@ -109,38 +108,35 @@ class TreeMainControl(QObject):
         return [path.resolve() for path in pathList if path.is_dir() and
                 list(path.iterdir())]
 
-    def defaultFilePath(self, dirOnly=False):
-        """Return a reasonable default file path.
+    def defaultPathObj(self, dirOnly=False):
+        """Return a reasonable default file path object.
 
         Used for open, save-as, import and export.
         Arguments:
             dirOnly -- if True, do not include basename of file
         """
-        filePath = ''
+        pathObj = None
         if  self.activeControl:
-            filePath = self.activeControl.filePath
-        if not filePath:
-            # filePath = self.recentFiles.firstDir()
-            # if not filePath:
-             filePath = os.path.expanduser('~')
-             if filePath == '~':
-                 filePath = ''
+            pathObj = self.activeControl.filePathObj
+        if not pathObj:
+            # pathObj = self.recentFiles.firstDir()
+            # if not pathObj:
+            pathObj = pathlib.Path.home()
         if dirOnly:
-            filePath = os.path.dirname(filePath)
-        return filePath
+            pathObj = pathObj.parent
+        return pathObj
 
-    def openFile(self, filePath, checkModified=False, importOnFail=True):
+    def openFile(self, pathObj, checkModified=False, importOnFail=True):
         """Open the file given by path if not already open.
 
         If already open in a different window, focus and raise the window.
         Arguments:
-            filePath -- the name of the file path to read
+            pathObj -- the name of the file path to read
             checkModified -- if True, prompt user about current modified file
             importOnFail -- if True, prompts for import on non-TreeLine files
         """
-        path = pathlib.Path(filePath).resolve()
         match = [control for control in self.localControls if
-                 path == pathlib.Path(control.filePath)]
+                 pathObj == control.filePathObj]
         if match and self.activeControl not in match:
             control = match[0]
             control.activeWindow.activateAndRaise()
@@ -148,31 +144,31 @@ class TreeMainControl(QObject):
         else:
             try:
                 QApplication.setOverrideCursor(Qt.WaitCursor)
-                self.createLocalControl(str(path))
+                self.createLocalControl(pathObj)
                 QApplication.restoreOverrideCursor()
             except IOError:
                 QApplication.restoreOverrideCursor()
                 QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
                                     _('Error - could not read file {0}').
-                                    format(str(path)))
+                                    format(str(pathObj)))
             except (ValueError, KeyError, TypeError):
                 QApplication.restoreOverrideCursor()
                 QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
                                     _('Error - invalid TreeLine file {0}').
-                                    format(str(path)))
+                                    format(str(pathObj)))
             if not self.localControls:
                 self.createLocalControl()
 
-    def createLocalControl(self, path='', treeStruct=None):
+    def createLocalControl(self, pathObj=None, treeStruct=None):
         """Create a new local control object and add it to the list.
 
         Use an imported structure if given or open the file if path is given.
         Arguments:
-            path -- the path for the control to open
+            pathObj -- the path object for the control to open
             treeStruct -- the imported structure to use
         """
-        localControl = treelocalcontrol.TreeLocalControl(self.allActions, path,
-                                                         treeStruct)
+        localControl = treelocalcontrol.TreeLocalControl(self.allActions,
+                                                         pathObj, treeStruct)
         localControl.controlActivated.connect(self.updateLocalControlRef)
         localControl.controlClosed.connect(self.removeLocalControlRef)
         self.localControls.append(localControl)
@@ -255,13 +251,13 @@ class TreeMainControl(QObject):
                                  globalref.fileFilters['trlgz'],
                                  globalref.fileFilters['trlenc'],
                                  globalref.fileFilters['all']))
-            fileName, selectFilter = QFileDialog.getOpenFileName(QApplication.
-                                                    activeWindow(),
-                                                    _('TreeLine - Open File'),
-                                                    self.defaultFilePath(True),
-                                                    filters)
+            fileName, selFilter = QFileDialog.getOpenFileName(QApplication.
+                                                activeWindow(),
+                                                _('TreeLine - Open File'),
+                                                str(self.defaultPathObj(True)),
+                                                filters)
             if fileName:
-                self.openFile(fileName)
+                self.openFile(pathlib.Path(fileName))
 
     def fileQuit(self):
         """Close all windows to exit the applications.

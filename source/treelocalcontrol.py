@@ -12,7 +12,7 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-import os.path
+import pathlib
 from PyQt5.QtCore import QObject, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QFileDialog,
                              QMessageBox)
@@ -29,28 +29,28 @@ class TreeLocalControl(QObject):
     """
     controlActivated = pyqtSignal(QObject)
     controlClosed = pyqtSignal(QObject)
-    def __init__(self, allActions, filePath='', treeStruct=None, parent=None):
+    def __init__(self, allActions, fileObj=None, treeStruct=None, parent=None):
         """Initialize the local tree controls.
 
         Use an imported structure if given or open the file if path is given.
         Always creates a new window.
         Arguments:
             allActions -- a dict containing the upper level actions
-            filePath -- the file path or file object to open, if given
+            fileObj -- the path object or file object to open, if given
             treeStruct -- an imported tree structure file, if given
             parent -- a parent object if given
         """
         super().__init__(parent)
         self.allActions = allActions.copy()
         self.setupActions()
-        self.filePath = (filePath.name if hasattr(filePath, 'read') else
-                         filePath)
+        self.filePathObj = (pathlib.Path(fileObj.name) if
+                            hasattr(fileObj, 'read') else fileObj)
         if treeStruct:
             self.structure = treeStruct
-        elif filePath and hasattr(filePath, 'read'):
-            self.structure = treestructure.TreeStructure(filePath)
-        elif filePath:
-            with open(filePath, 'r') as f:
+        elif fileObj and hasattr(fileObj, 'read'):
+            self.structure = treestructure.TreeStructure(fileObj)
+        elif fileObj:
+            with fileObj.open('r', encoding='utf-8') as f:
                 self.structure = treestructure.TreeStructure(f)
         else:
             self.structure = treestructure.TreeStructure(addDefaults=True)
@@ -70,13 +70,13 @@ class TreeLocalControl(QObject):
             window = globalref.mainControl.activeControl.activeWindow
             window.treeView.setModel(self.model)
             window.treeView.scheduleDelayedItemsLayout() # tmp update command
-            window.setCaption(self.filePath)
+            window.setCaption(self.filePathObj)
 
     def updateWindowCaptions(self):
         """Update the caption for all windows.
         """
         for window in self.windowList:
-            window.setCaption(self.filePath)
+            window.setCaption(self.filePathObj)
 
     def setModified(self, modified=True):
         """Set the modified flag on this file and update commands available.
@@ -123,8 +123,8 @@ class TreeLocalControl(QObject):
         """
         if not self.modified or len(self.windowList) > 1:
             return True
-        promptText = (_('Save changes to {}?').format(self.filePath) if
-                      self.filePath else _('Save changes?'))
+        promptText = (_('Save changes to {}?').format(str(self.filePathObj))
+                      if self.filePathObj else _('Save changes?'))
         ans = QMessageBox.information(self.activeWindow, 'TreeLine',
                                       promptText,
                                       QMessageBox.Save | QMessageBox.Discard |
@@ -174,21 +174,21 @@ class TreeLocalControl(QObject):
         Arguments:
             backupFile -- if True, write auto-save backup file instead
         """
-        if not self.filePath or self.imported:
+        if not self.filePathObj or self.imported:
             self.fileSaveAs()
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        saveFilePath = self.filePath
+        savePathObj = self.filePathObj
         if backupFile:
-            saveFilePath += '~'
+            savePathObj = pathlib.Path(str(savePathObj) + '~')
         try:
-            with open(saveFilePath, 'w') as f:
+            with savePathObj.open('w', encoding='utf-8') as f:
                 self.structure.storeFile(f)
         except IOError:
             QApplication.restoreOverrideCursor()
             QMessageBox.warning(self.activeWindow, 'TreeLine',
                                 _('Error - could not write to {}').
-                                format(saveFilePath))
+                                format(str(savePathObj)))
         else:
             QApplication.restoreOverrideCursor()
             if not backupFile:
@@ -200,7 +200,7 @@ class TreeLocalControl(QObject):
     def fileSaveAs(self):
         """Prompt for a new file name and save the file.
         """
-        oldFilePath = self.filePath
+        oldPathObj = self.filePathObj
         oldModifiedFlag = self.modified
         oldImportFlag = self.imported
         self.modified = True
@@ -209,21 +209,22 @@ class TreeLocalControl(QObject):
                              globalref.fileFilters['trlgz'],
                              globalref.fileFilters['trlenc']))
         initFilter = globalref.fileFilters['trl']
-        defaultFilePath = globalref.mainControl.defaultFilePath()
-        defaultFilePath = os.path.splitext(defaultFilePath)[0] + '.trl'
-        self.filePath, selectFilter = (QFileDialog.
-                                       getSaveFileName(self.activeWindow,
-                                                       _('TreeLine - Save As'),
-                                                       defaultFilePath,
-                                                       filters, initFilter))
-        if self.filePath:
-            if not os.path.splitext(self.filePath)[1]:
-                self.filePath += '.trl'
+        defaultPathObj = globalref.mainControl.defaultPathObj()
+        defaultPathObj = defaultPathObj.with_suffix('.trl')
+        newPath, selectFilter = (QFileDialog.
+                                 getSaveFileName(self.activeWindow,
+                                                 _('TreeLine - Save As'),
+                                                 str(defaultPathObj),
+                                                 filters, initFilter))
+        if newPath:
+            self.filePathObj = pathlib.Path(newPath)
+            if not self.filePathObj.suffix:
+                self.filePathObj.with_suffix('.trl')
             self.fileSave()
             if not self.modified:
                 self.updateWindowCaptions()
                 return
-        self.filePath = oldFilePath
+        self.filePathObj = oldPathObj
         self.modified = oldModifiedFlag
         self.imported = oldImportFlag
 
@@ -237,7 +238,7 @@ class TreeLocalControl(QObject):
         window.winActivated.connect(self.setActiveWin)
         window.winClosing.connect(self.checkWindowClose)
         self.windowList.append(window)
-        window.setCaption(self.filePath)
+        window.setCaption(self.filePathObj)
         # window.restoreWindowGeom(offset)
         self.activeWindow = window
         window.show()

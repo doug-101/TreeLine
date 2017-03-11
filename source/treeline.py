@@ -24,7 +24,7 @@ translationPath = 'translations'
 
 
 import sys
-import os.path
+import pathlib
 import argparse
 import locale
 import builtins
@@ -52,7 +52,8 @@ if __name__ == '__main__':
     parser.add_argument('fileList', nargs='*', metavar='filename',
                         help='input filename(s) to load')
     args = parser.parse_args()
+    pathObjects = [pathlib.Path(path) for path in args.fileList]
 
     import treemaincontrol
-    treeMainControl = treemaincontrol.TreeMainControl(args.fileList)
+    treeMainControl = treemaincontrol.TreeMainControl(pathObjects)
     app.exec_()

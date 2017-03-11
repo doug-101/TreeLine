@@ -3,7 +3,7 @@
 #******************************************************************************
 # icondict.py, provides a class to load and store icons
 #
-# Copyright (C) 2015, Douglas W. Bell
+# Copyright (C) 2017, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -11,7 +11,6 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-import os.path
 from PyQt5.QtGui import QIcon, QPixmap
 
 _iconExtension = ('.png', '.bmp', '.ico', '.gif')
@@ -21,39 +20,39 @@ noneName = 'NoIcon'
 class IconDict(dict):
     """Loads and stores icons by name.
     """
-    def __init__(self, potentialPaths, subPaths=None):
+    def __init__(self, pathObjList, subPaths=None):
         """Set icon paths and initialize variables.
 
         The first potential path that has icons is used.
         Arguments:
-            potentialPaths -- a list of path names to check for icons
+            pathObjList -- a list of path objects to check for icons
             subPaths -- a list of optional subpaths under the base paths
         """
         super().__init__()
-        self.pathList = []
+        self.pathObjList = []
         self.subPaths = ['']
-        self.addIconPath(potentialPaths, subPaths)
+        self.addIconPath(pathObjList, subPaths)
         self.allLoaded = False
         self[noneName] = None
 
-    def addIconPath(self, potentialPaths, subPaths=None):
+    def addIconPath(self, pathObjList, subPaths=None):
         """Add an icon path and set the subPaths if given.
 
         Arguments:
-            potentialPaths -- a list of path names to check for icons
+            pathObjList -- a list of path objects to check for icons
             subPaths -- a list of optional subpaths under the base paths
         """
         if subPaths:
             self.subPaths = subPaths
-        for path in potentialPaths:
+        for mainPath in pathObjList:
             for subPath in self.subPaths:
+                dirPath = mainPath / subPath
                 try:
-                    for name in os.listdir(os.path.join(path, subPath)):
-                        pixmap = QPixmap(os.path.join(path, subPath,
-                                               name))
+                    for fullPath in dirPath.iterdir():
+                        pixmap = QPixmap(str(fullPath))
                         if not pixmap.isNull():
-                            if path not in self.pathList:
-                                self.pathList.append(path)
+                            if mainPath not in self.pathObjList:
+                                self.pathObjList.append(mainPath)
                             break
                 except OSError:
                     pass
@@ -83,12 +82,11 @@ class IconDict(dict):
             name -- the name of the icon to load
         """
         icon = QIcon()
-        for path in self.pathList:
+        for path in self.pathObjList:
             for ext in _iconExtension:
                 fileName = name + ext
                 for subPath in self.subPaths:
-                    pixmap = QPixmap(os.path.join(path, subPath,
-                                                        fileName))
+                    pixmap = QPixmap(str(path.joinpath(subPath, fileName)))
                     if not pixmap.isNull():
                         icon.addPixmap(pixmap)
                 if not icon.isNull():
@@ -110,19 +108,15 @@ class IconDict(dict):
         """
         self.clear()
         self[noneName] = None
-        for path in self.pathList:
+        for mainPath in self.pathObjList:
             for subPath in self.subPaths:
+                dirPath = mainPath / subPath
                 try:
-                    for name in os.listdir(os.path.join(path, subPath)):
-                        pixmap = QPixmap(os.path.join(path, subPath,
-                                                            name))
+                    for fullPath in dirPath.iterdir():
+                        pixmap = QPixmap(str(fullPath))
                         if not pixmap.isNull():
-                            name = os.path.splitext(name)[0]
-                            try:
-                                icon = self[name]
-                            except KeyError:
-                                icon = QIcon()
-                                self[name] = icon
+                            name = fullPath.stem
+                            icon = self.setdefault(name, QIcon())
                             icon.addPixmap(pixmap)
                 except OSError:
                     pass

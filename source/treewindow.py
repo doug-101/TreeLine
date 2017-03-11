@@ -12,7 +12,6 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-import pathlib
 from PyQt5.QtCore import QEvent, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QStatusBar)
 import treeview
@@ -52,16 +51,15 @@ class TreeWindow(QMainWindow):
         self.activateWindow()
         self.raise_()
 
-    def setCaption(self, filePath=''):
+    def setCaption(self, pathObj=None):
         """Change the window caption title based on the file name and path.
 
         Arguments:
-            filePath - the full path to the current file
+            pathObj - a path object for the current file
         """
-        if filePath:
-            path = pathlib.Path(filePath)
-            caption = '{0} [{1}] - TreeLine'.format(str(path.name),
-                                                    str(path.parent))
+        if pathObj:
+            caption = '{0} [{1}] - TreeLine'.format(str(pathObj.name),
+                                                    str(pathObj.parent))
         else:
             caption = '- TreeLine'
         self.setWindowTitle(caption)
