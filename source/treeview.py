@@ -14,6 +14,8 @@
 
 from PyQt5.QtCore import QPoint
 from PyQt5.QtWidgets import (QAbstractItemView, QHeaderView, QTreeView)
+import treeselection
+import globalref
 
 
 class TreeView(QTreeView):
@@ -30,10 +32,35 @@ class TreeView(QTreeView):
             parent -- the parent main window
         """
         super().__init__(parent)
-        self.setModel(model)
+        self.resetModel(model)
         self.allActions = allActions
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.header().setStretchLastSection(False)
         self.setHeaderHidden(True)
         self.setUniformRowHeights(True)
+        self.updateTreeGenOptions()
+
+    def resetModel(self, model):
+        """Change the model assigned to this view.
+
+        Also assigns a new selection model.
+        Arguments:
+            model -- the new model to assign
+        """
+        self.setModel(model)
+        self.setSelectionModel(treeselection.TreeSelection(model, self))
+        self.scheduleDelayedItemsLayout()
+
+    def updateTreeGenOptions(self):
+        """Set the tree to match the current general options.
+        """
+        if globalref.genOptions.getValue('ClickRename'):
+            self.setEditTriggers(QAbstractItemView.SelectedClicked)
+        else:
+            self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        # dragAvail = globalref.genOptions.getValue('DragTree')
+        # self.setDragEnabled(dragAvail)
+        # self.setAcceptDrops(dragAvail)
+        self.setIndentation(globalref.genOptions.getValue('IndentOffset') *
+                            self.fontInfo().pixelSize())

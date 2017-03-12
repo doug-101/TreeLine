@@ -106,7 +106,10 @@ class TreeModel(QAbstractItemModel):
             return super().setData(index, value, role)
         node = index.internalPointer().nodeRef
         # TODO handle undo, etc.
-        return node.setTitle(value)
+        if node.setTitle(value):
+            self.dataChanged.emit(index, index)
+            return True
+        return False
 
     def flags(self, index):
         """Return the flags for the node at the given index.

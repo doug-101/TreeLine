@@ -68,8 +68,7 @@ class TreeLocalControl(QObject):
             self.windowNew()
         else:
             window = globalref.mainControl.activeControl.activeWindow
-            window.treeView.setModel(self.model)
-            window.treeView.scheduleDelayedItemsLayout() # tmp update command
+            window.treeView.resetModel(self.model)
             window.setCaption(self.filePathObj)
 
     def updateWindowCaptions(self):
