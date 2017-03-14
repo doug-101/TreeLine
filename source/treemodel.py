@@ -40,7 +40,7 @@ class TreeModel(QAbstractItemModel):
         """
         try:
             if not parentIndex.isValid():
-                topSpot = self.treeStructure.topNodes[row].matchedSpot(None)
+                topSpot = self.treeStructure.childList[row].matchedSpot(None)
                 return self.createIndex(row, column, topSpot)
             parentSpot = parentIndex.internalPointer()
             node = parentSpot.nodeRef.childList[row]
@@ -71,7 +71,7 @@ class TreeModel(QAbstractItemModel):
             return parentSpot.nodeRef.numChildren()
         except AttributeError:
             # top level if no parentIndex
-            return len(self.treeStructure.topNodes)
+            return len(self.treeStructure.childList)
 
     def columnCount(self, parentIndex):
         """The number of columns -- always 1 for now.

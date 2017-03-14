@@ -87,6 +87,11 @@ class TreeLocalControl(QObject):
             self.modified = modified
             self.allActions['FileSave'].setEnabled(modified)
 
+    def currentSelectionModel(self):
+        """Return the current tree's selection model.
+        """
+        return self.activeWindow.treeView.selectionModel()
+
     def setActiveWin(self, window):
         """When a window is activated, stores it and emits a signal.
 

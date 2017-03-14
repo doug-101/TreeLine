@@ -58,6 +58,16 @@ class TreeNode:
         for child in self.childList:
             child.generateSpots(spot)
 
+    def updateChildSpots(self):
+        """Create new spot references for descendants of this node.
+        """
+        for child in self.childList:
+            child.spotRefs.clear()
+            for parentSpot in self.spotRefs:
+                childSpot = treespot.TreeSpot(child, parentSpot)
+                child.spotRefs.add(childSpot)
+            child.updateChildSpots()
+
     def parents(self):
         """Return a set of parent nodes for this node.
 

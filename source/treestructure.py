@@ -36,7 +36,7 @@ class TreeStructure:
             addDefaults - if true, adds default new structure
         """
         self.nodeDict = {}
-        self.topNodes = []
+        self.childList = []  # top-level nodes
         if fileObj:
             fileData = json.load(fileObj)
             self.treeFormats = treeformats.TreeFormats(fileData['formats'])
@@ -48,7 +48,7 @@ class TreeStructure:
                 node.assignRefs(self.nodeDict)
             for uid in fileData['properties']['topnodes']:
                 node = self.nodeDict[uid]
-                self.topNodes.append(node)
+                self.childList.append(node)
                 node.generateSpots(None)
         elif addDefaults:
             self.treeFormats = treeformats.TreeFormats(setDefault=True)
@@ -56,7 +56,7 @@ class TreeStructure:
                                                       defaultTypeName])
             node.setTitle(_defaultRootTitle)
             self.nodeDict[node.uId] = node
-            self.topNodes.append(node)
+            self.childList.append(node)
             node.generateSpots(None)
         else:
             self.treeFormats = treeformats.TreeFormats()
@@ -70,8 +70,27 @@ class TreeStructure:
         formats = self.treeFormats.storeFormats()
         nodeList = sorted([node.fileData() for node in self.nodeDict.values()],
                           key=operator.itemgetter('uid'))
-        topNodeIds = [node.uId for node in self.topNodes]
+        topNodeIds = [node.uId for node in self.childList]
         properties = {'tlversion': __version__, 'topnodes': topNodeIds}
         fileData = {'formats': formats, 'nodes': nodeList,
                     'properties': properties}
         json.dump(fileData, fileObj, indent=3, sort_keys=True)
+
+    def addNodeDictRef(self, node):
+        """Add the given node to the node dictionary.
+
+        Arguments:
+            node -- the node to add
+        """
+        self.nodeDict[node.uId] = node
+
+    def removeNodeDictRef(self, node):
+        """Remove the given node from the node dictionary.
+
+        Arguments:
+            node -- the node to remove
+        """
+        try:
+            del self.nodeDict[node.uId]
+        except KeyError:
+            pass

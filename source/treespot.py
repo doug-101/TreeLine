@@ -44,7 +44,7 @@ class TreeSpot:
         """
         if self.parentSpot:
             return self.parentSpot.nodeRef.childList.index(self.nodeRef)
-        return modelRef.treeStructure.topNodes.index(self.nodeRef)
+        return modelRef.treeStructure.childList.index(self.nodeRef)
 
     def sortKey(self, modelRef):
         """Return a tuple of parent row postitions for sorting in tree order.
