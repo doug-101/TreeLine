@@ -19,6 +19,7 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QFileDialog,
 import treestructure
 import treemodel
 import treewindow
+import undo
 import globalref
 
 
@@ -62,6 +63,14 @@ class TreeLocalControl(QObject):
         self.encrypted = False
         self.windowList = []
         self.activeWindow = None
+        self.structure.undoList = undo.UndoRedoList(self.
+                                                    allActions['EditUndo'],
+                                                    self)
+        self.structure.redoList = undo.UndoRedoList(self.
+                                                    allActions['EditRedo'],
+                                                    self)
+        self.structure.undoList.altListRef = self.structure.redoList
+        self.structure.redoList.altListRef = self.structure.undoList
         if not globalref.mainControl.activeControl:
             self.windowNew(0)
         elif globalref.genOptions.getValue('OpenNewWindow'):
@@ -70,6 +79,60 @@ class TreeLocalControl(QObject):
             window = globalref.mainControl.activeControl.activeWindow
             window.treeView.resetModel(self.model)
             window.setCaption(self.filePathObj)
+
+    def updateTreeNode(self, node, setModified=True):
+        """Update the full tree in all windows.
+
+        Also update right views in secondary windows.
+        Arguments:
+            node -- the node to be updated
+            setModified -- if True, set the modified flag for this file
+        """
+        for window in self.windowList:
+            window.updateTreeNode(node)
+        if setModified:
+            self.setModified()
+
+    def updateTree(self, setModified=True):
+        """Update the full tree in all windows.
+
+        Also update right views in secondary windows.
+        Arguments:
+            setModified -- if True, set the modified flag for this file
+        """
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        for window in self.windowList:
+            window.updateTree()
+            if window != self.activeWindow:
+                window.updateRightViews()
+        if setModified:
+            self.setModified()
+        QApplication.restoreOverrideCursor()
+
+    def updateRightViews(self, setModified=False):
+        """Update the right-hand views in all windows.
+
+        Arguments:
+            setModified -- if True, set the modified flag for this file
+        """
+        for window in self.windowList:
+            window.updateRightViews()
+        if setModified:
+            self.setModified()
+
+    def updateAll(self, setModified=True):
+        """Update the full tree and right-hand views in all windows.
+
+        Arguments:
+            setModified -- if True, set the modified flag for this file
+        """
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        for window in self.windowList:
+            window.updateTree()
+            window.updateRightViews()
+        if setModified:
+            self.setModified()
+        QApplication.restoreOverrideCursor()
 
     def updateWindowCaptions(self):
         """Update the caption for all windows.
@@ -163,6 +226,17 @@ class TreeLocalControl(QObject):
         fileSaveAsAct.triggered.connect(self.fileSaveAs)
         localActions['FileSaveAs'] = fileSaveAsAct
 
+
+        editUndoAct = QAction(_('&Undo'), self,
+                              statusTip=_('Undo the previous action'))
+        editUndoAct.triggered.connect(self.editUndo)
+        localActions['EditUndo'] = editUndoAct
+
+        editRedoAct = QAction(_('&Redo'), self,
+                              statusTip=_('Redo the previous undo'))
+        editRedoAct.triggered.connect(self.editRedo)
+        localActions['EditRedo'] = editRedoAct
+
         for name, action in localActions.items():
             icon = globalref.toolIcons.getIcon(name.lower())
             if icon:
@@ -231,6 +305,18 @@ class TreeLocalControl(QObject):
         self.filePathObj = oldPathObj
         self.modified = oldModifiedFlag
         self.imported = oldImportFlag
+
+    def editUndo(self):
+        """Undo the previous action and update the views.
+        """
+        self.structure.undoList.undo()
+        self.updateAll(False)
+
+    def editRedo(self):
+        """Redo the previous undo and update the views.
+        """
+        self.structure.redoList.undo()
+        self.updateAll(False)
 
     def windowNew(self, offset=30):
         """Open a new window for this file.

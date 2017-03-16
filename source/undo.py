@@ -171,7 +171,7 @@ class ChildListUndo(UndoBase):
             for oldNode in node.childList:
                 oldParents = oldNode.parents()
                 if (oldNode not in childList and node in oldParents and
-                    len(oldParents) = 1):
+                    len(oldParents) == 1):
                     self.treeStructRef.removeNodeDictRef(oldNode)
             node.childList = childList
             for child in childList:

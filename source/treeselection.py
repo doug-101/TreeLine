@@ -69,7 +69,8 @@ class TreeSelection(QItemSelectionModel):
         self.clear()
         if spotList:
             for spot in spotList:
-                self.select(spot.index(), QItemSelectionModel.Select)
-            self.setCurrentIndex(spotList[0].index(),
+                self.select(spot.index(self.modelRef),
+                            QItemSelectionModel.Select)
+            self.setCurrentIndex(spotList[0].index(self.modelRef),
                                  QItemSelectionModel.Current)
         self.blockSignals(False)

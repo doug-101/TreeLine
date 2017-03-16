@@ -34,7 +34,7 @@ class TreeSpot:
         Arguments:
             modelRef -- a ref to the tree model
         """
-        return modelRef.createIndex(self.row(), 0, self)
+        return modelRef.createIndex(self.row(modelRef), 0, self)
 
     def row(self, modelRef):
         """Return the rank of this spot in its parent's child list.

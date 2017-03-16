@@ -37,6 +37,8 @@ class TreeStructure:
         """
         self.nodeDict = {}
         self.childList = []  # top-level nodes
+        self.undoList = None
+        self.redoList = None
         if fileObj:
             fileData = json.load(fileObj)
             self.treeFormats = treeformats.TreeFormats(fileData['formats'])

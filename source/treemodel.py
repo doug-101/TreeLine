@@ -13,6 +13,7 @@
 #******************************************************************************
 
 from PyQt5.QtCore import (QAbstractItemModel, QModelIndex, Qt)
+import undo
 import globalref
 
 
@@ -105,10 +106,11 @@ class TreeModel(QAbstractItemModel):
         if role != Qt.EditRole:
             return super().setData(index, value, role)
         node = index.internalPointer().nodeRef
-        # TODO handle undo, etc.
+        dataUndo = undo.DataUndo(self.treeStructure.undoList, node)
         if node.setTitle(value):
             self.dataChanged.emit(index, index)
             return True
+        self.treeStructure.undoList.removeLastUndo(dataUndo)
         return False
 
     def flags(self, index):

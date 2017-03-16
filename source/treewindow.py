@@ -45,6 +45,26 @@ class TreeWindow(QMainWindow):
         self.treeView = treeview.TreeView(model, self.allActions)
         self.setCentralWidget(self.treeView)
 
+    def updateTreeNode(self, node):
+        """Update all spots for the given node in the tree view.
+
+        Arguments:
+            node -- the node to be updated
+        """
+        for spot in node.spotRefs:
+            self.treeView.update(spot.index(self.treeView.model()))
+        self.treeView.resizeColumnToContents(0)
+
+    def updateTree(self):
+        """Update the full tree view.
+        """
+        self.treeView.scheduleDelayedItemsLayout()
+
+    def updateRightViews(self):
+        """Update all right-hand views.
+        """
+        pass
+
     def activateAndRaise(self):
         """Activate this window and raise it to the front.
         """
@@ -93,6 +113,11 @@ class TreeWindow(QMainWindow):
         self.fileMenu.addSeparator()
         self.recentFileSep = self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.allActions['FileQuit'])
+
+        editMenu = self.menuBar().addMenu(_('&Edit'))
+        editMenu.addAction(self.allActions['EditUndo'])
+        editMenu.addAction(self.allActions['EditRedo'])
+        editMenu.addSeparator()
 
     def changeEvent(self, event):
         """Detect an activation of the main window and emit a signal.
