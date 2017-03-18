@@ -4,7 +4,7 @@
 # treeoutput.py, provides classes for output to views, html and printing
 #
 # TreeLine, an information storage program
-# Copyright (C) 2015, Douglas W. Bell
+# Copyright (C) 2017, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -32,24 +32,13 @@ class OutputItem:
             addAnchor -- if true, add an ID anchor if node is a link target
             forceAnchor -- if true, add an ID anchor in any case
         """
-        nodeFormat = node.nodeFormat()
-        if not nodeFormat.useTables:
-            self.textLines = [line + '<br />' for line in
-                              node.formatOutput(False)]
-        else:
-            self.textLines = node.formatOutput(False, True)
+        nodeFormat = node.formatRef
+        self.textLines = [line + '<br />' for line in node.output()]
         if not self.textLines:
             self.textLines = ['']
-        if (forceAnchor or (addAnchor and node.uniqueId in
-                            node.modelRef.linkRefCollect.targetIdDict)):
-            self.textLines[0] = '<a id="{0}" />{1}'.format(node.uniqueId,
-                                                           self.textLines[0])
         self.addSpace = nodeFormat.spaceBetween
-        self.siblingPrefix = nodeFormat.siblingPrefix
-        self.siblingSuffix = nodeFormat.siblingSuffix
-        if nodeFormat.useBullets and self.textLines:
-            # remove <br /> extra space for bullets
-            self.textLines[-1] = self.textLines[-1][:-6]
+        self.siblingPrefix = ''
+        self.siblingSuffix = ''
         self.level = level
         # following variables used by printdata only:
         height = 0

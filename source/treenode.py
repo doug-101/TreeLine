@@ -68,6 +68,14 @@ class TreeNode:
                 child.spotRefs.add(childSpot)
             child.updateChildSpots()
 
+    def setInitDefaultData(self, overwrite=False):
+        """Add initial default data from fields into internal data.
+
+        Arguments:
+            overwrite -- if true, replace previous data entries
+        """
+        self.formatRef.setInitDefaultData(self.data, overwrite)
+
     def parents(self):
         """Return a set of parent nodes for this node.
 
@@ -80,6 +88,16 @@ class TreeNode:
         """Return number of children.
         """
         return len(self.childList)
+
+    def descendantGen(self):
+        """Return a generator to step through all nodes in this branch.
+
+        Includes self and closed nodes.
+        """
+        yield self
+        for child in self.childList:
+            for node in child.descendantGen():
+                yield node
 
     def matchedSpot(self, parentSpot):
         """Return the spot for this node that matches a parent spot.
@@ -123,3 +141,50 @@ class TreeNode:
             keepBlanks -- if True, keep lines with empty fields
         """
         return self.formatRef.formatOutput(self, plainText, keepBlanks)
+
+    def replaceChildren(self, titleList, treeStructure):
+        """Replace child nodes with titles from a text list.
+
+        Nodes with matches in the titleList are kept, others are added or
+        deleted as required.
+        Arguments:
+            titleList -- the list of new child titles
+            treeStructure -- a ref to the tree structure
+        """
+        try:
+            newFormat = treeStructure.treeFormats[self.formatRef.childType]
+        except KeyError:
+            newFormat = (self.childList[0].formatRef if self.childList
+                         else self.formatRef)
+        matchList = []
+        remainTitles = [child.title() for child in self.childList]
+        for title in titleList:
+            try:
+                match = self.childList.pop(remainTitles.index(title))
+                matchList.append((title, match))
+                remainTitles = [child.title() for child in self.childList]
+            except ValueError:
+                matchList.append((title, None))
+        newChildList = []
+        firstMiss = True
+        for title, node in matchList:
+            if not node:
+                if (firstMiss and remainTitles and
+                    remainTitles[0].startswith(title)):
+                    # accept partial match on first miss for split tiles
+                    node = self.childList.pop(0)
+                    node.setTitle(title)
+                else:
+                    node = TreeNode(newFormat)
+                    node.setTitle(title)
+                    node.setInitDefaultData()
+                    treeStructure.addNodeDictRef(node)
+                    # self.expandInView()
+                firstMiss = False
+            newChildList.append(node)
+        for child in self.childList:
+            for oldNode in child.descendantGen():
+                if len(oldNode.parents()) <= 1:
+                    treeStructure.removeNodeDictRef(oldNode)
+        self.childList = newChildList
+        self.updateChildSpots()

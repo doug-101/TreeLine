@@ -13,8 +13,12 @@
 #******************************************************************************
 
 from PyQt5.QtCore import QEvent, Qt, pyqtSignal
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QStatusBar)
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QSplitter, QStatusBar,
+                             QTabWidget, QWidget)
 import treeview
+import outputview
+import titlelistview
+import treenode
 
 
 class TreeWindow(QMainWindow):
@@ -22,6 +26,9 @@ class TreeWindow(QMainWindow):
 
     Contains main window views and controls.
     """
+    selectChanged = pyqtSignal()
+    nodeModified = pyqtSignal(treenode.TreeNode)
+    treeModified = pyqtSignal()
     winActivated = pyqtSignal(QMainWindow)
     winClosing = pyqtSignal(QMainWindow)
     def __init__(self, model, allActions, parent=None):
@@ -42,8 +49,47 @@ class TreeWindow(QMainWindow):
         self.setupActions()
         self.setupMenus()
 
+        self.breadcrumbSplitter = QSplitter(Qt.Vertical)
+        self.setCentralWidget(self.breadcrumbSplitter)
+        self.breadcrumbView = QWidget()
+        self.breadcrumbSplitter.addWidget(self.breadcrumbView)
+
+        self.treeSplitter = QSplitter()
+        self.breadcrumbSplitter.addWidget(self.treeSplitter)
         self.treeView = treeview.TreeView(model, self.allActions)
-        self.setCentralWidget(self.treeView)
+        self.treeSplitter.addWidget(self.treeView)
+        self.treeView.selectionModel().selectionChanged.connect(self.
+                                                                selectChanged)
+        self.treeView.selectionModel().selectionChanged.connect(self.
+                                                              updateRightViews)
+
+        self.rightTabs = QTabWidget()
+        self.treeSplitter.addWidget(self.rightTabs)
+        self.rightTabs.setTabPosition(QTabWidget.South)
+        self.rightTabs.tabBar().setFocusPolicy(Qt.NoFocus)
+
+        self.outputSplitter = QSplitter(Qt.Vertical)
+        self.rightTabs.addTab(self.outputSplitter, _('Data Output'))
+        parentOutputView = outputview.OutputView(self.treeView, False)
+        self.outputSplitter.addWidget(parentOutputView)
+        childOutputView = outputview.OutputView(self.treeView, True)
+        self.outputSplitter.addWidget(childOutputView)
+
+        self.editorSplitter = QSplitter(Qt.Vertical)
+        self.rightTabs.addTab(self.editorSplitter, _('Data Edit'))
+
+        self.titleSplitter = QSplitter(Qt.Vertical)
+        self.rightTabs.addTab(self.titleSplitter, _('Title List'))
+        parentTitleView = titlelistview.TitleListView(self.treeView, False)
+        parentTitleView.nodeModified.connect(self.nodeModified)
+        parentTitleView.treeModified.connect(self.treeModified)
+        self.titleSplitter.addWidget(parentTitleView)
+        childTitleView = titlelistview.TitleListView(self.treeView, True)
+        childTitleView.nodeModified.connect(self.nodeModified)
+        childTitleView.treeModified.connect(self.treeModified)
+        self.titleSplitter.addWidget(childTitleView)
+
+        self.rightTabs.currentChanged.connect(self.updateRightViews)
 
     def updateTreeNode(self, node):
         """Update all spots for the given node in the tree view.
@@ -63,7 +109,19 @@ class TreeWindow(QMainWindow):
     def updateRightViews(self):
         """Update all right-hand views.
         """
-        pass
+        splitter = self.rightTabs.currentWidget()
+        for i in range(2):
+            splitter.widget(i).updateContents()
+
+    def resetTreeModel(self, model):
+        """Change the model assigned to the tree view.
+
+        Arguments:
+            model -- the new model to assign
+        """
+        self.treeView.resetModel(model)
+        self.treeView.selectionModel().selectionChanged.connect(self.
+                                                              updateRightViews)
 
     def activateAndRaise(self):
         """Activate this window and raise it to the front.

@@ -50,7 +50,6 @@ class TreeView(QTreeView):
         """
         self.setModel(model)
         self.setSelectionModel(treeselection.TreeSelection(model, self))
-        self.scheduleDelayedItemsLayout()
 
     def updateTreeGenOptions(self):
         """Set the tree to match the current general options.

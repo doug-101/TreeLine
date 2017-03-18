@@ -4,7 +4,7 @@
 # outputview.py, provides a class for the data output view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2015, Douglas W. Bell
+# Copyright (C) 2017, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -12,14 +12,12 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-import os.path
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPalette, QTextCursor
 from PyQt5.QtWidgets import QTextBrowser, QTextEdit
-import treenode
 import treeoutput
-import urltools
-import dataeditors
+# import urltools
+# import dataeditors
 import globalref
 
 
@@ -28,16 +26,16 @@ class OutputView(QTextBrowser):
     
     Sets view defaults and updates the content.
     """
-    def __init__(self, selectModel, isChildView=True, parent=None):
+    def __init__(self, treeView, isChildView=True, parent=None):
         """Initialize the output view.
 
         Arguments:
-            selectModel - the tree view's selection model
+            treeView - the tree view, needed for the current selection model
             isChildView -- shows selected nodes if false, child nodes if true
             parent -- the parent main window
         """
         super().__init__(parent)
-        self.selectModel = selectModel
+        self.treeView = treeView
         self.isChildView = isChildView
         self.hideChildView = not globalref.genOptions.getValue('ShowChildPane')
         self.showDescendants = globalref.genOptions.getValue('ShowDescendants')
@@ -48,7 +46,7 @@ class OutputView(QTextBrowser):
 
         Avoids update if view is not visible or has zero height or width.
         """
-        selNodes = self.selectModel.selectedNodes()
+        selNodes = self.treeView.selectionModel().selectedNodes()
         if self.isChildView and (len(selNodes) != 1 or self.hideChildView or
                                  not selNodes[0].childList):
             self.hide()
@@ -75,7 +73,7 @@ class OutputView(QTextBrowser):
             outputGroup.addBlanksBetween()
             outputGroup.addSiblingPrefixes()
         self.setHtml('\n'.join(outputGroup.getLines()))
-        self.setSearchPaths([globalref.mainControl.defaultFilePath(True)])
+        self.setSearchPaths([str(globalref.mainControl.defaultPathObj(True))])
 
     def setSource(self, url):
         """Called when a user clicks on a URL link.

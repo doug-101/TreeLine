@@ -28,16 +28,16 @@ class TitleListView(QTextEdit):
     nodeModified = pyqtSignal(treenode.TreeNode)
     treeModified = pyqtSignal()
     shortcutEntered = pyqtSignal(QKeySequence)
-    def __init__(self, selectModel, isChildView=True, parent=None):
+    def __init__(self, treeView, isChildView=True, parent=None):
         """Initialize the title list view.
 
         Arguments:
-            selectModel - the tree view's selection model
+            treeView - the tree view, needed for the current selection model
             isChildView -- shows selected nodes if false, child nodes if true
             parent -- the parent main window
         """
         super().__init__(parent)
-        self.selectModel = selectModel
+        self.treeView = treeView
         self.isChildView = isChildView
         self.hideChildView = not globalref.genOptions.getValue('ShowChildPane')
         self.setAcceptRichText(False)
@@ -51,7 +51,7 @@ class TitleListView(QTextEdit):
 
         Avoids update if view is not visible or has zero height or width.
         """
-        selNodes = self.selectModel.selectedNodes()
+        selNodes = self.treeView.selectionModel().selectedNodes()
         if self.isChildView and (len(selNodes) != 1 or self.hideChildView):
             self.hide()
         else:
@@ -72,7 +72,8 @@ class TitleListView(QTextEdit):
         """
         textList = [' '.join(text.split()) for text in self.toPlainText().
                     split('\n') if text.strip()]
-        selNodes = self.selectModel.selectedNodes()
+        selNodes = self.treeView.selectionModel().selectedNodes()
+        treeStructure = globalref.mainControl.activeControl.structure
         if self.isChildView:
             parent = selNodes[0]
             selNodes = parent.childList
@@ -81,24 +82,14 @@ class TitleListView(QTextEdit):
             changes = [(node, text) for node, text in zip(selNodes, textList)
                        if node.title() != text]
             for node, text in changes:
-                undoObj = undo.DataUndo(node.modelRef.undoList, node, True)
+                undoObj = undo.DataUndo(treeStructure.undoList, node, True)
                 if node.setTitle(text):
                     self.nodeModified.emit(node)
-                    if node.clones:  # update lines and cursor position
-                        cursor = self.textCursor()
-                        cursorPos = cursor.position()
-                        posInLine = cursor.positionInBlock()
-                        self.updateContents()
-                        cursor.setPosition(cursorPos)
-                        self.setTextCursor(cursor)
-                        cursor.setPosition(cursor.block().position() +
-                                           posInLine)
-                        self.setTextCursor(cursor)
                 else:
-                    node.modelRef.undoList.removeLastUndo(undoObj)
+                    treeStructure.undoList.removeLastUndo(undoObj)
         elif self.isChildView:
-            undo.BranchUndo(parent.modelRef.undoList, parent)
-            parent.replaceChildren(textList)
+            undo.BranchUndo(treeStructure.undoList, parent)
+            parent.replaceChildren(textList, treeStructure)
             self.treeModified.emit()
         else:
             self.updateContents()  # remove illegal changes

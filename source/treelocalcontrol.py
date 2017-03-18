@@ -77,8 +77,9 @@ class TreeLocalControl(QObject):
             self.windowNew()
         else:
             window = globalref.mainControl.activeControl.activeWindow
-            window.treeView.resetModel(self.model)
+            window.resetTreeModel(self.model)
             window.setCaption(self.filePathObj)
+            self.updateAll(False)
 
     def updateTreeNode(self, node, setModified=True):
         """Update the full tree in all windows.
@@ -133,6 +134,11 @@ class TreeLocalControl(QObject):
         if setModified:
             self.setModified()
         QApplication.restoreOverrideCursor()
+
+    def updateCommandsAvail(self):
+        """Set commands available based on node selections.
+        """
+        pass
 
     def updateWindowCaptions(self):
         """Update the caption for all windows.
@@ -325,6 +331,9 @@ class TreeLocalControl(QObject):
             offset -- location offset from previously saved position
         """
         window = treewindow.TreeWindow(self.model, self.allActions)
+        window.selectChanged.connect(self.updateCommandsAvail)
+        window.nodeModified.connect(self.updateTreeNode)
+        window.treeModified.connect(self.updateTree)
         window.winActivated.connect(self.setActiveWin)
         window.winClosing.connect(self.checkWindowClose)
         self.windowList.append(window)

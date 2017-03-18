@@ -139,7 +139,7 @@ class ChildListUndo(UndoBase):
     """Info for undo/redo of tree node child lists.
     """
     def __init__(self, listRef, nodes, skipSame=False, notRedo=True):
-        """Create the data undo class and add it to the undoStore.
+        """Create the child list undo class and add it to the undoStore.
 
         Arguments:
             listRef -- a ref to the undo/redo list this gets added to
@@ -173,6 +173,50 @@ class ChildListUndo(UndoBase):
                 if (oldNode not in childList and node in oldParents and
                     len(oldParents) == 1):
                     self.treeStructRef.removeNodeDictRef(oldNode)
+            node.childList = childList
+            for child in childList:
+                self.treeStructRef.addNodeDictRef(child)
+            node.updateChildSpots()
+
+
+class BranchUndo(UndoBase):
+    """Info for undo/redo of full tree branches.
+
+    Includes all node data and child lists.
+    """
+    def __init__(self, listRef, nodes, notRedo=True):
+        """Create the branch undo class and add it to the undoStore.
+
+        Arguments:
+            listRef -- a ref to the undo/redo list this gets added to
+            nodes -- a node or a list of nodes to save children
+            notRedo -- if True, add clones and clear redo list (after changes)
+        """
+        super().__init__(listRef.localControlRef)
+        if isinstance(nodes, treenode.TreeNode):
+            nodes = [nodes]
+        self.modelRef = listRef.localControlRef.model
+        for parent in nodes:
+            for node in parent.descendantGen():
+                self.dataList.append((node, node.data.copy(),
+                                      node.childList[:]))
+        listRef.addUndoObj(self, notRedo)
+
+    def undo(self, redoRef):
+        """Save current state to redoRef and restore saved state.
+
+        Arguments:
+            redoRef -- the redo list where the current state is saved
+        """
+        if redoRef != None:
+            BranchUndo(redoRef, [data[0] for data in self.dataList], False)
+        for node, data, childList in self.dataList:
+            for oldNode in node.childList:
+                oldParents = oldNode.parents()
+                if (oldNode not in childList and node in oldParents and
+                    len(oldParents) == 1):
+                    self.treeStructRef.removeNodeDictRef(oldNode)
+            node.data = data
             node.childList = childList
             for child in childList:
                 self.treeStructRef.addNodeDictRef(child)

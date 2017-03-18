@@ -205,7 +205,7 @@ class NodeFormat:
             data -- the data dict to modify
             overwrite -- if true, replace previous data entries
         """
-        for field in fields():
+        for field in self.fields():
             text = field.getInitDefault()
             if text and (overwrite or not data.get(field.name, '')):
                 data[field.name] = text
