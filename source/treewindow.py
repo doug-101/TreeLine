@@ -17,6 +17,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QSplitter, QStatusBar,
                              QTabWidget, QWidget)
 import treeview
 import outputview
+import dataeditview
 import titlelistview
 import treenode
 
@@ -77,6 +78,16 @@ class TreeWindow(QMainWindow):
 
         self.editorSplitter = QSplitter(Qt.Vertical)
         self.rightTabs.addTab(self.editorSplitter, _('Data Edit'))
+        parentEditView = dataeditview.DataEditView(self.treeView,
+                                                   self.allActions, False)
+        parentEditView.nodeModified.connect(self.nodeModified)
+        parentEditView.focusOtherView.connect(self.focusNextView)
+        self.editorSplitter.addWidget(parentEditView)
+        childEditView = dataeditview.DataEditView(self.treeView,
+                                                  self.allActions, True)
+        childEditView.nodeModified.connect(self.nodeModified)
+        childEditView.focusOtherView.connect(self.focusNextView)
+        self.editorSplitter.addWidget(childEditView)
 
         self.titleSplitter = QSplitter(Qt.Vertical)
         self.rightTabs.addTab(self.titleSplitter, _('Title List'))
@@ -141,6 +152,43 @@ class TreeWindow(QMainWindow):
         else:
             caption = '- TreeLine'
         self.setWindowTitle(caption)
+
+    def rightParentView(self):
+        """Return the current right-hand parent view if visible (or None).
+        """
+        view = self.rightTabs.currentWidget().widget(0)
+        if not view.isVisible() or view.height() == 0 or view.width() == 0:
+            return None
+        return view
+
+    def rightChildView(self):
+        """Return the current right-hand parent view if visible (or None).
+        """
+        view = self.rightTabs.currentWidget().widget(1)
+        if not view.isVisible() or view.height() == 0 or view.width() == 0:
+            return None
+        return view
+
+    def focusNextView(self, forward=True):
+        """Focus the next pane in the tab focus series.
+
+        Called by a signal from the data edit views.
+        Tab sequences tend to skip views without this.
+        Arguments:
+            forward -- forward in tab series if True
+        """
+        reason = (Qt.TabFocusReason if forward
+                  else Qt.BacktabFocusReason)
+        rightParent = self.rightParentView()
+        rightChild = self.rightChildView()
+        if (self.sender().isChildView == forward or
+            (forward and rightChild == None) or
+            (not forward and rightParent == None)):
+            self.treeView.setFocus(reason)
+        elif forward:
+            rightChild.setFocus(reason)
+        else:
+            rightParent.setFocus(reason)
 
     def setupActions(self):
         """Add the actions for contols at the window level.

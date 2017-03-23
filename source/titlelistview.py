@@ -90,6 +90,9 @@ class TitleListView(QTextEdit):
         elif self.isChildView:
             undo.BranchUndo(treeStructure.undoList, parent)
             parent.replaceChildren(textList, treeStructure)
+            for spot in parent.spotRefs & set(self.treeView.selectionModel().
+                                              selectedSpots()):
+                self.treeView.expandSpot(spot)
             self.treeModified.emit()
         else:
             self.updateContents()  # remove illegal changes

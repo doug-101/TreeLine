@@ -30,7 +30,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication,
                              QVBoxLayout, QWidget)
 import dataeditview
 import fieldformat
-import urltools
+# import urltools
 import globalref
 import optiondefaults
 
@@ -53,8 +53,8 @@ class PlainTextEditor(QTextEdit):
         self.setPalette(QApplication.palette())
         self.setStyleSheet('QTextEdit {border: 2px solid palette(highlight)}')
         self.setTabChangesFocus(True)
-        self.cursorPositionChanged.connect(self.updateActions)
-        self.selectionChanged.connect(self.updateActions)
+        # self.cursorPositionChanged.connect(self.updateActions)
+        # self.selectionChanged.connect(self.updateActions)
         self.allActions = parent.parent().allActions
         self.modified = False
         self.textChanged.connect(self.signalUpdate)
@@ -139,7 +139,7 @@ class PlainTextEditor(QTextEdit):
             event -- the focus event
         """
         super().focusInEvent(event)
-        self.updateActions()
+        # self.updateActions()
 
     def focusOutEvent(self, event):
         """Reset format actions on focus loss if not focusing a menu.
@@ -148,8 +148,8 @@ class PlainTextEditor(QTextEdit):
             event -- the focus event
         """
         super().focusOutEvent(event)
-        if event.reason() != Qt.PopupFocusReason:
-            self.disableActions()
+        # if event.reason() != Qt.PopupFocusReason:
+            # self.disableActions()
 
     def hideEvent(self, event):
         """Reset format actions when the editor is hidden.
@@ -157,7 +157,7 @@ class PlainTextEditor(QTextEdit):
         Arguments:
             event -- the hide event
         """
-        self.disableActions()
+        # self.disableActions()
         super().hideEvent(event)
 
 
@@ -176,17 +176,17 @@ class HtmlTextEditor(PlainTextEditor):
         super().__init__(parent)
         self.intLinkDialog = None
         self.addedIntLinkFlag = False
-        self.allActions['EditBoldFont'].triggered.connect(self.setBoldFont)
-        self.allActions['EditItalicFont'].triggered.connect(self.setItalicFont)
-        self.allActions['EditUnderlineFont'].triggered.connect(self.
-                                                              setUnderlineFont)
-        self.allActions['EditFontSize'].parent().triggered.connect(self.
-                                                                   setFontSize)
-        self.allActions['EditFontSize'].triggered.connect(self.
-                                                          showFontSizeMenu)
-        self.allActions['EditFontColor'].triggered.connect(self.setFontColor)
-        self.allActions['EditExtLink'].triggered.connect(self.setExtLink)
-        self.allActions['EditIntLink'].triggered.connect(self.setIntLink)
+        # self.allActions['EditBoldFont'].triggered.connect(self.setBoldFont)
+        # self.allActions['EditItalicFont'].triggered.connect(self.setItalicFont)
+        # self.allActions['EditUnderlineFont'].triggered.connect(self.
+                                                              # setUnderlineFont)
+        # self.allActions['EditFontSize'].parent().triggered.connect(self.
+                                                                   # setFontSize)
+        # self.allActions['EditFontSize'].triggered.connect(self.
+                                                          # showFontSizeMenu)
+        # self.allActions['EditFontColor'].triggered.connect(self.setFontColor)
+        # self.allActions['EditExtLink'].triggered.connect(self.setExtLink)
+        # self.allActions['EditIntLink'].triggered.connect(self.setIntLink)
 
     def insertTagText(self, prefix, suffix):
         """Insert given tag text and maintain the original selection.
@@ -458,9 +458,9 @@ class RichTextEditor(HtmlTextEditor):
                 else:
                     pointSize = self.font().pointSize()
                 RichTextEditor.fontPointSizes.append(pointSize)
-        self.allActions['EditClearFormat'].triggered.connect(self.
-                                                             setClearFormat)
-        self.allActions['EditPastePlain'].triggered.connect(self.pastePlain)
+        # self.allActions['EditClearFormat'].triggered.connect(self.
+                                                             # setClearFormat)
+        # self.allActions['EditPastePlain'].triggered.connect(self.pastePlain)
 
     def setContents(self, text):
         """Set the contents of the editor to text.

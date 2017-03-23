@@ -142,6 +142,21 @@ class TreeNode:
         """
         return self.formatRef.formatOutput(self, plainText, keepBlanks)
 
+    def setData(self, field, editorText):
+        """Set the data entry for the given field to editorText.
+
+        If the data does not match the format, sets to the raw text and
+        raises a ValueError.
+        Arguments:
+            field-- the field object to be set
+            editorText -- new text data from an editor
+        """
+        try:
+            self.data[field.name] = field.storedText(editorText)
+        except ValueError:
+            self.data[field.name] = editorText
+            raise ValueError
+
     def replaceChildren(self, titleList, treeStructure):
         """Replace child nodes with titles from a text list.
 

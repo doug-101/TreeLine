@@ -12,7 +12,6 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-import os.path
 from PyQt5.QtCore import QEvent, QPointF, QRectF, QSize, Qt, pyqtSignal
 from PyQt5.QtGui import (QKeySequence, QPainterPath, QPalette, QPen,
                          QSyntaxHighlighter, QTextCharFormat, QTextCursor,
@@ -22,18 +21,17 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication,
                              QTableWidgetItem)
 import treenode
 import undo
-import urltools
+# import urltools
 import dataeditors
 import globalref
 
 _minColumnWidth = 80
-defaultFont = None
 
 class DataEditCell(QTableWidgetItem):
     """Class override for data edit view cells.
     Used for the cells with editable content.
     """
-    def __init__(self, node, field, titleCellRef, typeCellRef, idCellRef=None):
+    def __init__(self, node, field, titleCellRef, typeCellRef):
         """Initialize the editable cells in the data edit view.
 
         Arguments:
@@ -41,18 +39,15 @@ class DataEditCell(QTableWidgetItem):
             field -- the field object referenced by this cell
             titleCellRef -- the title cell to update based on data changes
             typeCellRef -- the format type cell to update based on type changes
-            idCellRef -- the unique ID cell to update based on data changes
         """
         super().__init__()
         self.node = node
         self.field = field
         self.titleCellRef = titleCellRef
         self.typeCellRef = typeCellRef
-        self.idCellRef = idCellRef
         self.errorFlag = False
         # store doc to speed up delegate sizeHint and paint calls
         self.doc = QTextDocument()
-        self.doc.setDefaultFont(defaultFont)
         self.doc.setDocumentMargin(6)
         self.updateText()
 
@@ -105,7 +100,7 @@ class DataEditDelegate(QStyledItemDelegate):
             doc.setTextWidth(styleOption.rect.width())
             painter.translate(styleOption.rect.topLeft())
             paintRect = QRectF(0, 0, styleOption.rect.width(),
-                                      styleOption.rect.height())
+                               styleOption.rect.height())
             painter.setClipRect(paintRect)
             painter.fillRect(paintRect, QApplication.palette().base())
             painter.setPen(QPen(QApplication.palette().text(), 1))
@@ -116,8 +111,7 @@ class DataEditDelegate(QStyledItemDelegate):
                 path.lineTo(0, 10)
                 path.lineTo(10, 0)
                 path.closeSubpath()
-                painter.fillPath(path,
-                                 QApplication.palette().highlight())
+                painter.fillPath(path, QApplication.palette().highlight())
             painter.restore()
         else:
             super().paint(painter, styleOption, modelIndex)
@@ -140,7 +134,7 @@ class DataEditDelegate(QStyledItemDelegate):
                 size.setHeight(maxHeight)
             if cell.field.numLines > 1:
                 minDoc = QTextDocument('\n' * (cell.field.numLines - 1))
-                minDoc.setDefaultFont(defaultFont)
+                minDoc.setDefaultFont(cell.doc.defaultFont())
                 minHeight = (minDoc.documentLayout().documentSize().toSize().
                              height())
                 if minHeight > size.height():
@@ -158,7 +152,7 @@ class DataEditDelegate(QStyledItemDelegate):
         """
         cell = self.parent().item(modelIndex.row(), modelIndex.column())
         if isinstance(cell, DataEditCell):
-            editor = cell.field.editorClass(parent)
+            editor = getattr(dataeditors, cell.field.editorClassName)(parent)
             editor.setFont(cell.doc.defaultFont())
             if hasattr(editor, 'fieldRef'):
                 editor.fieldRef = cell.field
@@ -166,14 +160,14 @@ class DataEditDelegate(QStyledItemDelegate):
                 editor.nodeRef = cell.node
             if cell.errorFlag:
                 editor.setErrorFlag()
-            self.parent().setFocusProxy(editor)
+            # self.parent().setFocusProxy(editor)
             editor.contentsChanged.connect(self.commitData)
             if hasattr(editor, 'inLinkSelectMode'):
                 editor.inLinkSelectMode.connect(self.parent().inLinkSelectMode)
             if hasattr(editor, 'setLinkFromNode'):
                 self.parent().internalLinkSelected.connect(editor.
                                                            setLinkFromNode)
-            # viewport filter required to catch mouse events for undo limits
+            # viewport filter required to catch editor events
             try:
                 editor.viewport().installEventFilter(self)
             except AttributeError:
@@ -182,6 +176,7 @@ class DataEditDelegate(QStyledItemDelegate):
                 except AttributeError:
                     pass
             self.lastEditor = editor
+            editor.setFocus()
             return editor
         return super().createEditor(parent, styleOption, modelIndex)
 
@@ -227,7 +222,8 @@ class DataEditDelegate(QStyledItemDelegate):
                 numLines = newText.count('\n')
                 skipUndoAvail = numLines == self.prevNumLines
                 self.prevNumLines = numLines
-                undo.DataUndo(cell.node.modelRef.undoList, cell.node,
+                treeStructure = globalref.mainControl.activeControl.structure
+                undo.DataUndo(treeStructure.undoList, cell.node,
                               skipUndoAvail, cell.field.name)
                 try:
                     cell.node.setData(cell.field, newText)
@@ -235,15 +231,13 @@ class DataEditDelegate(QStyledItemDelegate):
                     editor.setErrorFlag()
                 self.parent().nodeModified.emit(cell.node)
                 cell.titleCellRef.setText(cell.node.title())
-                cell.typeCellRef.setText(cell.node.formatName)
-                linkRefCollect = cell.node.modelRef.linkRefCollect
-                if (hasattr(editor, 'addedIntLinkFlag') and
-                    (editor.addedIntLinkFlag or
-                     linkRefCollect.linkCount(cell.node, cell.field.name))):
-                    linkRefCollect.searchForLinks(cell.node, cell.field.name)
-                    editor.addedIntLinkFlag = False
-                if cell.idCellRef:
-                    cell.idCellRef.setText(cell.node.uniqueId)
+                cell.typeCellRef.setText(cell.node.formatRef.name)
+                # linkRefCollect = cell.node.modelRef.linkRefCollect
+                # if (hasattr(editor, 'addedIntLinkFlag') and
+                    # (editor.addedIntLinkFlag or
+                     # linkRefCollect.linkCount(cell.node, cell.field.name))):
+                    # linkRefCollect.searchForLinks(cell.node, cell.field.name)
+                    # editor.addedIntLinkFlag = False
                 editor.modified = False
         else:
             super().setModelData(editor, styleOption, modelIndex)
@@ -288,13 +282,9 @@ class DataEditDelegate(QStyledItemDelegate):
                 view.currentRow() == view.rowCount() - 1):
                 view.focusOtherView.emit(True)
                 return True
-            if event.key() == Qt.Key_Backtab:
-                startRow = 1
-                if globalref.genOptions.getValue('ShowUniqueID'):
-                    startRow = 2
-                if view.currentRow() == startRow:
-                    view.focusOtherView.emit(False)
-                    return True
+            if (event.key() == Qt.Key_Backtab and view.currentRow() == 1):
+                view.focusOtherView.emit(False)
+                return True
             if (event.modifiers() == Qt.ControlModifier and
                 Qt.Key_A <= event.key() <= Qt.Key_Z):
                 key = QKeySequence(event.modifiers() | event.key())
@@ -327,18 +317,18 @@ class DataEditView(QTableWidget):
     internalLinkSelected = pyqtSignal(treenode.TreeNode)
     focusOtherView = pyqtSignal(bool)
     shortcutEntered = pyqtSignal(QKeySequence)
-    def __init__(self, selectModel, allActions, isChildView=True,
+    def __init__(self, treeView, allActions, isChildView=True,
                  parent=None):
         """Initialize the data edit view default view settings.
 
         Arguments:
-            selectModel - the tree view's selection model
+            treeView - the tree view, needed for the current selection model
             allActions -- a dict containing actions for the editor context menu
             isChildView -- shows selected nodes if false, child nodes if true
             parent -- the parent main window
         """
         super().__init__(0, 2, parent)
-        self.selectModel = selectModel
+        self.treeView = treeView
         self.allActions = allActions
         self.isChildView = isChildView
         self.hideChildView = not globalref.genOptions.getValue('ShowChildPane')
@@ -351,7 +341,6 @@ class DataEditView(QTableWidget):
         self.setItemDelegate(DataEditDelegate(self))
         self.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.setShowGrid(False)
-        self.setTabKeyNavigation(False)
         pal = self.palette()
         pal.setBrush(QPalette.Base,
                      QApplication.palette().window())
@@ -365,7 +354,7 @@ class DataEditView(QTableWidget):
 
         Avoids update if view is not visible or has zero height or width.
         """
-        selNodes = self.selectModel.selectedNodes()
+        selNodes = self.treeView.selectionModel().selectedNodes()
         if self.isChildView and (len(selNodes) != 1 or self.hideChildView or
                                  not selNodes[0].childList):
             self.hide()
@@ -395,22 +384,12 @@ class DataEditView(QTableWidget):
             node -- the node to add
             startRow -- the row offset
         """
-        formatName = node.formatName
-        if node.clones:
-            formatName += ' *{0}*'.format(_('c', 'abbreviation for cloned'))
+        formatName = node.formatRef.name
         typeCell = self.createInactiveCell(formatName)
         self.setItem(startRow, 0, typeCell)
         titleCell = self.createInactiveCell(node.title())
         self.setItem(startRow, 1, titleCell)
-        idCell = None
-        if globalref.genOptions.getValue('ShowUniqueID'):
-            startRow += 1
-            self.setItem(startRow, 0, self.createInactiveCell(_('Unique ID'),
-                                                       Qt.AlignRight |
-                                                       Qt.AlignVCenter))
-            idCell = self.createInactiveCell(node.uniqueId)
-            self.setItem(startRow, 1, idCell)
-        fields = node.nodeFormat().fields()
+        fields = node.formatRef.fields()
         if not globalref.genOptions.getValue('EditNumbering'):
             fields = [field for field in fields
                       if field.typeName != 'Numbering']
@@ -421,8 +400,8 @@ class DataEditView(QTableWidget):
             self.setItem(row, 0, self.createInactiveCell(field.name,
                                                        Qt.AlignRight |
                                                        Qt.AlignVCenter))
-            self.setItem(row, 1, DataEditCell(node, field, titleCell, typeCell,
-                                              idCell))
+            self.setItem(row, 1, DataEditCell(node, field, titleCell,
+                                              typeCell))
         self.setItem(row + 1, 0, self.createInactiveCell(''))
         self.setItem(row + 1, 1, self.createInactiveCell(''))
         return row
@@ -432,7 +411,7 @@ class DataEditView(QTableWidget):
         """
         if not self.isVisible() or self.height() == 0 or self.width() == 0:
             return
-        selNodes = self.selectModel.selectedNodes()
+        selNodes = self.treeView.selectionModel().selectedNodes()
         if self.isChildView:
             selNodes = selNodes[0].childList
         rowNum = -2
@@ -492,15 +471,6 @@ class DataEditView(QTableWidget):
         if newCell:
             self.openPersistentEditor(newCell)
 
-    def setFont(self, font):
-        """Override to avoid setting fonts of inactive cells.
-
-        Arguments:
-            font -- the font to set
-        """
-        global defaultFont
-        defaultFont = font
-
     def highlightSearch(self, wordList=None, regExpList=None):
         """Highlight any found search terms.
 
@@ -515,7 +485,7 @@ class DataEditView(QTableWidget):
         charFormat = QTextCharFormat()
         charFormat.setBackground(backColor)
         charFormat.setForeground(foreColor)
-        node = self.selectModel.selectedNodes()[0]
+        node = self.treeView.selectionModel().selectedNodes()[0]
         if wordList is None:
             wordList = []
         if regExpList is None:
@@ -581,19 +551,14 @@ class DataEditView(QTableWidget):
                 cell = self.item(row, 1)
                 if hasattr(cell, 'doc'):
                     self.setCurrentItem(cell)
-                    self.setFocus()
-                    event.accept()
-                    return
+                    break
         elif event.reason() == Qt.BacktabFocusReason:
             for row in range(self.rowCount() - 1, -1, -1):
                 cell = self.item(row, 1)
                 if hasattr(cell, 'doc'):
                     self.setCurrentItem(cell)
-                    self.setFocus()
-                    event.accept()
-                    return
-        else:
-            super().focusInEvent(event)
+                    break
+        super().focusInEvent(event)
 
     def resizeEvent(self, event):
         """Update view if was collaped by splitter.
@@ -621,7 +586,7 @@ class DataEditView(QTableWidget):
         """
         cell = self.itemAt(event.pos())
         if (isinstance(cell, DataEditCell) and
-            cell.field.editorClass.dragLinkEnabled):
+            getattr(dataeditors, cell.field.editorClassName).dragLinkEnabled):
             event.accept()
         else:
             event.ignore()
@@ -662,7 +627,8 @@ class DataEditView(QTableWidget):
                     address = cursor.charFormat().anchorHref()
                     if address:
                         if address.startswith('#'):
-                            self.selectModel.selectNodeById(address[1:])
+                            (self.treeView.selectionModel().
+                             selectNodeById(address[1:]))
                         else:     # check for relative path
                             if urltools.isRelative(address):
                                 defaultPath = (globalref.mainControl.

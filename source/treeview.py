@@ -63,3 +63,13 @@ class TreeView(QTreeView):
         # self.setAcceptDrops(dragAvail)
         self.setIndentation(globalref.genOptions.getValue('IndentOffset') *
                             self.fontInfo().pixelSize())
+
+    def expandSpot(self, spot):
+        """Expand a spot in this view.
+        """
+        self.expand(spot.index(self.model()))
+
+    def collapseSpot(self, spot):
+        """Collapse a spot in this view.
+        """
+        self.collapse(spot.index(self.model()))

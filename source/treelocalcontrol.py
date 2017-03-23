@@ -266,7 +266,7 @@ class TreeLocalControl(QObject):
         if backupFile:
             savePathObj = pathlib.Path(str(savePathObj) + '~')
         try:
-            with savePathObj.open('w', encoding='utf-8') as f:
+            with savePathObj.open('w', encoding='utf-8', newline='\n') as f:
                 self.structure.storeFile(f)
         except IOError:
             QApplication.restoreOverrideCursor()
