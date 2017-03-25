@@ -76,10 +76,33 @@ class TreeLocalControl(QObject):
         elif globalref.genOptions.getValue('OpenNewWindow'):
             self.windowNew()
         else:
-            window = globalref.mainControl.activeControl.activeWindow
+            oldControl = globalref.mainControl.activeControl
+            window = oldControl.activeWindow
+            oldControl.controlClosed.emit(oldControl)
             window.resetTreeModel(self.model)
+            self.setWindowSignals(window, True)
+            self.windowList.append(window)
             window.setCaption(self.filePathObj)
-            self.updateAll(False)
+            self.activeWindow = window
+
+    def setWindowSignals(self, window, removeOld=False):
+        """Setup signals between the window and this controller.
+
+        Arguments:
+            window -- the window to link
+            removeOld -- if True, remove old signals
+        """
+        if removeOld:
+            window.selectChanged.disconnect()
+            window.nodeModified.disconnect()
+            window.treeModified.disconnect()
+            window.winActivated.disconnect()
+            window.winClosing.disconnect()
+        window.selectChanged.connect(self.updateCommandsAvail)
+        window.nodeModified.connect(self.updateTreeNode)
+        window.treeModified.connect(self.updateTree)
+        window.winActivated.connect(self.setActiveWin)
+        window.winClosing.connect(self.checkWindowClose)
 
     def updateTreeNode(self, node, setModified=True):
         """Update the full tree in all windows.
@@ -331,11 +354,7 @@ class TreeLocalControl(QObject):
             offset -- location offset from previously saved position
         """
         window = treewindow.TreeWindow(self.model, self.allActions)
-        window.selectChanged.connect(self.updateCommandsAvail)
-        window.nodeModified.connect(self.updateTreeNode)
-        window.treeModified.connect(self.updateTree)
-        window.winActivated.connect(self.setActiveWin)
-        window.winClosing.connect(self.checkWindowClose)
+        self.setWindowSignals(window)
         self.windowList.append(window)
         window.setCaption(self.filePathObj)
         # window.restoreWindowGeom(offset)

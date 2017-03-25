@@ -194,7 +194,6 @@ class TreeNode:
                     node.setTitle(title)
                     node.setInitDefaultData()
                     treeStructure.addNodeDictRef(node)
-                    # self.expandInView()
                 firstMiss = False
             newChildList.append(node)
         for child in self.childList:

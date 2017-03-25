@@ -52,10 +52,17 @@ class TitleListView(QTextEdit):
         Avoids update if view is not visible or has zero height or width.
         """
         selNodes = self.treeView.selectionModel().selectedNodes()
-        if self.isChildView and (len(selNodes) != 1 or self.hideChildView):
+        if self.isChildView:
+            if len(selNodes) > 1 or self.hideChildView:
+                self.hide()
+                return
+            if not selNodes:
+                # use top node childList from tree structure
+                selNodes = [globalref.mainControl.activeControl.structure]
+        elif not selNodes:
             self.hide()
-        else:
-            self.show()
+            return
+        self.show()
         if not self.isVisible() or self.height() == 0 or self.width() == 0:
             return
         if self.isChildView:
@@ -75,7 +82,7 @@ class TitleListView(QTextEdit):
         selNodes = self.treeView.selectionModel().selectedNodes()
         treeStructure = globalref.mainControl.activeControl.structure
         if self.isChildView:
-            parent = selNodes[0]
+            parent = selNodes[0] if selNodes else treeStructure
             selNodes = parent.childList
         if len(selNodes) == len(textList):
             # collect changes first to skip false clone changes
@@ -87,7 +94,7 @@ class TitleListView(QTextEdit):
                     self.nodeModified.emit(node)
                 else:
                     treeStructure.undoList.removeLastUndo(undoObj)
-        elif self.isChildView:
+        elif self.isChildView and (textList or parent != treeStructure):
             undo.BranchUndo(treeStructure.undoList, parent)
             parent.replaceChildren(textList, treeStructure)
             for spot in parent.spotRefs & set(self.treeView.selectionModel().

@@ -355,11 +355,18 @@ class DataEditView(QTableWidget):
         Avoids update if view is not visible or has zero height or width.
         """
         selNodes = self.treeView.selectionModel().selectedNodes()
-        if self.isChildView and (len(selNodes) != 1 or self.hideChildView or
-                                 not selNodes[0].childList):
+        if self.isChildView:
+            if (len(selNodes) > 1 or self.hideChildView or
+                (selNodes and not selNodes[0].childList)):
+                self.hide()
+                return
+            if not selNodes:
+                # use top node childList from tree structure
+                selNodes = [globalref.mainControl.activeControl.structure]
+        elif not selNodes:
             self.hide()
-        else:
-            self.show()
+            return
+        self.show()
         if not self.isVisible() or self.height() == 0 or self.width() == 0:
             return
         if self.isChildView:

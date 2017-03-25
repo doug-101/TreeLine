@@ -111,7 +111,7 @@ class DataUndo(UndoBase):
             notRedo -- if True, clear redo list (after changes)
         """
         super().__init__(listRef.localControlRef)
-        if isinstance(nodes, treenode.TreeNode):
+        if not isinstance(nodes, list):
             nodes = [nodes]
         if (skipSame and listRef and isinstance(listRef[-1], DataUndo) and
             len(listRef[-1].dataList) == 1 and len(nodes) == 1 and
@@ -148,7 +148,7 @@ class ChildListUndo(UndoBase):
             notRedo -- if True, clear redo list (after changes)
         """
         super().__init__(listRef.localControlRef)
-        if isinstance(nodes, treenode.TreeNode):
+        if not isinstance(nodes, list):
             nodes = [nodes]
         if (skipSame and listRef and isinstance(listRef[-1], ChildListUndo)
             and len(listRef[-1].dataList) == 1 and len(nodes) == 1 and
@@ -193,7 +193,7 @@ class BranchUndo(UndoBase):
             notRedo -- if True, add clones and clear redo list (after changes)
         """
         super().__init__(listRef.localControlRef)
-        if isinstance(nodes, treenode.TreeNode):
+        if not isinstance(nodes, list):
             nodes = [nodes]
         self.modelRef = listRef.localControlRef.model
         for parent in nodes:
@@ -213,6 +213,8 @@ class BranchUndo(UndoBase):
         for node, data, childList in self.dataList:
             for oldNode in node.childList:
                 oldParents = oldNode.parents()
+                if oldParents == [None]:  # top level node only
+                    oldParents = [self.treeStructRef]
                 if (oldNode not in childList and node in oldParents and
                     len(oldParents) == 1):
                     self.treeStructRef.removeNodeDictRef(oldNode)

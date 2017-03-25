@@ -173,6 +173,7 @@ class TreeMainControl(QObject):
         localControl.controlClosed.connect(self.removeLocalControlRef)
         self.localControls.append(localControl)
         self.updateLocalControlRef(localControl)
+        localControl.updateRightViews()
 
     def updateLocalControlRef(self, localControl):
         """Set the given local control as active.

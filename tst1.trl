@@ -53,18 +53,47 @@
          "uid": "701d5d18f91011e6995d3417ebd53aeb"
       },
       {
-         "children": [],
+         "children": [
+            "b0ddace40fc011e7ae1a3417ebd53aeb"
+         ],
          "data": {
             "Name": "Second Node"
          },
          "format": "DEFAULT",
          "uid": "701d5d19f91011e6b54d3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Grandchild"
+         },
+         "format": "DEFAULT",
+         "uid": "b0ddace40fc011e7ae1a3417ebd53aeb"
+      },
+      {
+         "children": [
+            "be2adcb8108711e7b96b3417ebd53aeb"
+         ],
+         "data": {
+            "Name": "Next Branch"
+         },
+         "format": "DEFAULT",
+         "uid": "b832a776108711e7b9643417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Here"
+         },
+         "format": "DEFAULT",
+         "uid": "be2adcb8108711e7b96b3417ebd53aeb"
       }
    ],
    "properties": {
       "tlversion": "2.9.0",
       "topnodes": [
-         "701d5d18f91011e6995d3417ebd53aeb"
+         "701d5d18f91011e6995d3417ebd53aeb",
+         "b832a776108711e7b9643417ebd53aeb"
       ]
    }
 }

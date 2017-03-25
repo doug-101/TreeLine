@@ -37,6 +37,8 @@ class TreeStructure:
         """
         self.nodeDict = {}
         self.childList = []  # top-level nodes
+        self.data = {}  # empty placeholder for duck-typing as the "top node"
+        self.spotRefs = set()  # empty placeholder for duck-typing
         self.undoList = None
         self.redoList = None
         if fileObj:
@@ -96,3 +98,61 @@ class TreeStructure:
             del self.nodeDict[node.uId]
         except KeyError:
             pass
+
+    def descendantGen(self):
+        """Return a generator to step through all nodes in this branch.
+
+        Includes structure "node" and closed nodes.
+        """
+        yield self
+        for child in self.childList:
+            for node in child.descendantGen():
+                yield node
+
+    def updateChildSpots(self):
+        """Create new spot references for descendants of this structure.
+        """
+        for child in self.childList:
+            child.updateChildSpots()
+
+    def replaceChildren(self, titleList, treeStructure):
+        """Replace child nodes with titles from a text list.
+
+        Nodes with matches in the titleList are kept, others are added or
+        deleted as required.
+        Arguments:
+            titleList -- the list of new child titles
+            treeStructure -- a ref to the tree structure
+        """
+        newFormat = self.childList[0].formatRef
+        matchList = []
+        remainTitles = [child.title() for child in self.childList]
+        for title in titleList:
+            try:
+                match = self.childList.pop(remainTitles.index(title))
+                matchList.append((title, match))
+                remainTitles = [child.title() for child in self.childList]
+            except ValueError:
+                matchList.append((title, None))
+        newChildList = []
+        firstMiss = True
+        for title, node in matchList:
+            if not node:
+                if (firstMiss and remainTitles and
+                    remainTitles[0].startswith(title)):
+                    # accept partial match on first miss for split tiles
+                    node = self.childList.pop(0)
+                    node.setTitle(title)
+                else:
+                    node = treenode.TreeNode(newFormat)
+                    node.setTitle(title)
+                    node.setInitDefaultData()
+                    treeStructure.addNodeDictRef(node)
+                    node.generateSpots(None)
+                firstMiss = False
+            newChildList.append(node)
+        for child in self.childList:
+            for oldNode in child.descendantGen():
+                if len(oldNode.parents()) <= 1:
+                    treeStructure.removeNodeDictRef(oldNode)
+        self.childList = newChildList
