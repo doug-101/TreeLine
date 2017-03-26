@@ -58,15 +58,39 @@ class TreeNode:
         for child in self.childList:
             child.generateSpots(spot)
 
-    def updateChildSpots(self):
-        """Create new spot references for descendants of this node.
+    def addSpotRef(self, parentNode):
+        """Add a spot ref here to the given parent if not already there.
+
+        If changed, propogate to descendant nodes.
+        Arguments:
+            parentNode -- the parent to ref in the new spot
         """
-        for child in self.childList:
-            child.spotRefs.clear()
-            for parentSpot in self.spotRefs:
-                childSpot = treespot.TreeSpot(child, parentSpot)
-                child.spotRefs.add(childSpot)
-            child.updateChildSpots()
+        changed = False
+        origParentSpots = {spot.parentSpot for spot in self.spotRefs}
+        if parentNode:
+            for parentSpot in parentNode.spotRefs:
+                if parentSpot not in origParentSpots:
+                    self.spotRefs.add(treespot.TreeSpot(self, parentSpot))
+                    changed = True
+        elif None not in origParentSpots:
+            self.spotRefs.add(treespot.TreeSpot(self, None))
+            changed = True
+        if changed:
+            for child in self.childList:
+                child.addSpotRef(self)
+
+    def removeInvalidSpotRefs(self):
+        """Verify existing spot refs and remove any that aren't valid.
+
+        If changed, propogate to descendant nodes.
+        """
+        goodSpotRefs = {spot for spot in self.spotRefs if self in
+                        spot.parentSpot.nodeRef.childList}
+        changed = len(self.spotRefs) != len(goodSpotRefs)
+        self.spotRefs = goodSpotRefs
+        if changed:
+            for child in self.childList:
+                child.removeInvalidSpotRefs()
 
     def setInitDefaultData(self, overwrite=False):
         """Add initial default data from fields into internal data.
@@ -193,6 +217,7 @@ class TreeNode:
                     node = TreeNode(newFormat)
                     node.setTitle(title)
                     node.setInitDefaultData()
+                    node.addSpotRef(self)
                     treeStructure.addNodeDictRef(node)
                 firstMiss = False
             newChildList.append(node)
@@ -200,5 +225,6 @@ class TreeNode:
             for oldNode in child.descendantGen():
                 if len(oldNode.parents()) <= 1:
                     treeStructure.removeNodeDictRef(oldNode)
+                else:
+                    oldNode.removeInvalidSpotRefs()
         self.childList = newChildList
-        self.updateChildSpots()

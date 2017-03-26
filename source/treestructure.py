@@ -109,12 +109,6 @@ class TreeStructure:
             for node in child.descendantGen():
                 yield node
 
-    def updateChildSpots(self):
-        """Create new spot references for descendants of this structure.
-        """
-        for child in self.childList:
-            child.updateChildSpots()
-
     def replaceChildren(self, titleList, treeStructure):
         """Replace child nodes with titles from a text list.
 
@@ -147,6 +141,7 @@ class TreeStructure:
                     node = treenode.TreeNode(newFormat)
                     node.setTitle(title)
                     node.setInitDefaultData()
+                    node.addSpotRef(None)
                     treeStructure.addNodeDictRef(node)
                     node.generateSpots(None)
                 firstMiss = False
@@ -155,4 +150,6 @@ class TreeStructure:
             for oldNode in child.descendantGen():
                 if len(oldNode.parents()) <= 1:
                     treeStructure.removeNodeDictRef(oldNode)
+                else:
+                    oldNode.removeInvalidSpotRefs()
         self.childList = newChildList

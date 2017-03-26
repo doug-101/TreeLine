@@ -172,11 +172,58 @@ class ChildListUndo(UndoBase):
                 oldParents = oldNode.parents()
                 if (oldNode not in childList and node in oldParents and
                     len(oldParents) == 1):
+                    oldNode.removeInvalidSpotRefs()
                     self.treeStructRef.removeNodeDictRef(oldNode)
             node.childList = childList
             for child in childList:
+                child.addSpotRef(node)
                 self.treeStructRef.addNodeDictRef(child)
-            node.updateChildSpots()
+
+
+class ChildDataUndo(UndoBase):
+    """Info for undo/redo of tree node child data and lists.
+    """
+    def __init__(self, listRef, nodes, notRedo=True):
+        """Create the child data undo class and add it to the undoStore.
+
+        Arguments:
+            listRef -- a ref to the undo/redo list this gets added to
+            nodes -- a parent node or a list of parents to save children
+            notRedo -- if True, clear redo list (after changes)
+        """
+        super().__init__(listRef.localControlRef)
+        if not isinstance(nodes, list):
+            nodes = [nodes]
+        for parent in nodes:
+            self.dataList.append((parent, parent.data.copy(),
+                                  parent.childList[:]))
+            for node in parent.childList:
+                self.dataList.append((node, node.data.copy(),
+                                      node.childList[:]))
+        listRef.addUndoObj(self, notRedo)
+
+    def undo(self, redoRef):
+        """Save current state to redoRef and restore saved state.
+
+        Arguments:
+            redoRef -- the redo list where the current state is saved
+        """
+        if redoRef != None:
+            ChildDataUndo(redoRef, [data[0] for data in self.dataList], False)
+        for node, data, childList in self.dataList:
+            for oldNode in node.childList:
+                oldParents = oldNode.parents()
+                if oldParents == [None]:  # top level node only
+                    oldParents = [self.treeStructRef]
+                if (oldNode not in childList and node in oldParents and
+                    len(oldParents) == 1):
+                    oldNode.removeInvalidSpotRefs()
+                    self.treeStructRef.removeNodeDictRef(oldNode)
+            node.data = data
+            node.childList = childList
+            for child in childList:
+                child.addSpotRef(node)
+                self.treeStructRef.addNodeDictRef(child)
 
 
 class BranchUndo(UndoBase):
@@ -217,9 +264,10 @@ class BranchUndo(UndoBase):
                     oldParents = [self.treeStructRef]
                 if (oldNode not in childList and node in oldParents and
                     len(oldParents) == 1):
+                    oldNode.removeInvalidSpotRefs()
                     self.treeStructRef.removeNodeDictRef(oldNode)
             node.data = data
             node.childList = childList
             for child in childList:
+                child.addSpotRef(node)
                 self.treeStructRef.addNodeDictRef(child)
-            node.updateChildSpots()

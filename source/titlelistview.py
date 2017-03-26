@@ -95,7 +95,7 @@ class TitleListView(QTextEdit):
                 else:
                     treeStructure.undoList.removeLastUndo(undoObj)
         elif self.isChildView and (textList or parent != treeStructure):
-            undo.BranchUndo(treeStructure.undoList, parent)
+            undo.ChildDataUndo(treeStructure.undoList, parent)
             parent.replaceChildren(textList, treeStructure)
             for spot in parent.spotRefs & set(self.treeView.selectionModel().
                                               selectedSpots()):
