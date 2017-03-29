@@ -15,7 +15,8 @@
 import sys
 import pathlib
 from PyQt5.QtCore import QObject, Qt
-from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMessageBox)
+from PyQt5.QtWidgets import (QAction, QApplication, QDialog, QFileDialog,
+                             QMessageBox)
 import globalref
 import treelocalcontrol
 import options
@@ -218,18 +219,23 @@ class TreeMainControl(QObject):
         fileQuitAct.triggered.connect(self.fileQuit)
         self.allActions['FileQuit'] = fileQuitAct
 
+        toolsGenOptionsAct = QAction(_('&General Options...'), self,
+                             statusTip=_('Set user preferences for all files'))
+        toolsGenOptionsAct.triggered.connect(self.toolsGenOptions)
+        self.allActions['ToolsGenOptions'] = toolsGenOptionsAct
+
         for name, action in self.allActions.items():
             icon = globalref.toolIcons.getIcon(name.lower())
             if icon:
                 action.setIcon(icon)
-            key = globalref.keyboardOptions.getValue(name)
+            key = globalref.keyboardOptions[name]
             if not key.isEmpty():
                 action.setShortcut(key)
 
     def fileNew(self):
         """Start a new blank file.
         """
-        if (globalref.genOptions.getValue('OpenNewWindow') or
+        if (globalref.genOptions['OpenNewWindow'] or
             self.activeControl.checkSaveChanges()):
             searchPaths = self.findResourcePaths('templates', templatePath)
             if searchPaths:
@@ -246,7 +252,7 @@ class TreeMainControl(QObject):
     def fileOpen(self):
         """Prompt for a filename and open it.
         """
-        if (globalref.genOptions.getValue('OpenNewWindow') or
+        if (globalref.genOptions['OpenNewWindow'] or
             self.activeControl.checkSaveChanges()):
             filters = ';;'.join((globalref.fileFilters['trl'],
                                  globalref.fileFilters['trlgz'],
@@ -265,3 +271,17 @@ class TreeMainControl(QObject):
         """
         for control in self.localControls[:]:
             control.closeWindows()
+
+    def toolsGenOptions(self):
+        """Set general user preferences for all files.
+        """
+        dialog = options.OptionDialog(globalref.genOptions,
+                                      QApplication.activeWindow())
+        dialog.setWindowTitle(_('General Options'))
+        if (dialog.exec_() == QDialog.Accepted and
+            globalref.genOptions.modified):
+            globalref.genOptions.writeFile()
+            for control in self.localControls:
+                for window in control.windowList:
+                    window.treeView.updateTreeGenOptions()
+                control.updateAll(False)

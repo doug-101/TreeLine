@@ -39,7 +39,7 @@ class TitleListView(QTextEdit):
         super().__init__(parent)
         self.treeView = treeView
         self.isChildView = isChildView
-        self.hideChildView = not globalref.genOptions.getValue('ShowChildPane')
+        self.hideChildView = not globalref.genOptions['InitShowChildPane']
         self.setAcceptRichText(False)
         self.setLineWrapMode(QTextEdit.NoWrap)
         self.setTabChangesFocus(True)

@@ -14,7 +14,9 @@
 from collections import OrderedDict
 import sys
 import re
+import pathlib
 import os.path
+import json
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import (QButtonGroup, QCheckBox, QComboBox, QDialog,
@@ -78,36 +80,23 @@ class StringOptionItem:
             raise ValueError
         return False
 
-    def valueString(self):
-        """Return a string representation of the value.
+    def storedValue(self):
+        """Return the value to be stored in the JSON file.
         """
-        return str(self.value)
+        return self.value
 
-    def outputLine(self, padding=20):
-        """Return an output line for writing to a config file.
-
-        Arguments:
-            padding -- the width to reserve for the name key
-        """
-        return '{0:{1}}{2}\n'.format(self.name, padding, self.valueString())
-
-    def addDialogControl(self, rowLayout, currentGroupBox):
+    def addDialogControl(self, groupBox):
         """Add the labels and controls to a dialog box for this option item.
 
-        Uses the current group box if the category matches, otherwise
-        starts a new one.  Returns the current group box.
         Arguments:
-            rowLayout -- the vertical box layout holding the group boxes
-            currentGroupBox -- the currently used group box
+            groupBox -- the current group box
         """
-        groupBox = self.getGroupBox(rowLayout, currentGroupBox)
         gridLayout = groupBox.layout()
         row = gridLayout.rowCount()
         label = QLabel(self.description, groupBox)
         gridLayout.addWidget(label, row, 0)
         self.dialogControl = QLineEdit(self.value, groupBox)
         gridLayout.addWidget(self.dialogControl, row, 1)
-        return groupBox
 
     def updateFromDialog(self):
         """Set the value of this item from the dialog contents.
@@ -115,22 +104,6 @@ class StringOptionItem:
         Return True if successfully set.
         """
         return self.setValue(self.dialogControl.text())
-
-    def getGroupBox(self, rowLayout, currentGroupBox):
-        """Return the group box for use with this option item category.
-
-        Group box is same if category matches, creates one otherwise.
-        Arguments:
-            rowLayout -- the vertical box layout holding the group boxes
-            currentGroupBox -- the currently used group box
-        """
-        if currentGroupBox and currentGroupBox.title() == self.category:
-            return currentGroupBox
-        newGroupBox = QGroupBox(self.category,
-                                      rowLayout.parentWidget())
-        rowLayout.addWidget(newGroupBox)
-        QGridLayout(newGroupBox)
-        return newGroupBox
 
 
 class IntOptionItem(StringOptionItem):
@@ -183,16 +156,12 @@ class IntOptionItem(StringOptionItem):
             return True
         return False
 
-    def addDialogControl(self, rowLayout, currentGroupBox):
+    def addDialogControl(self, groupBox):
         """Add the labels and controls to a dialog box for this option item.
 
-        Uses the current group box if the category matches, otherwise
-        starts a new one.  Returns the current group box.
         Arguments:
-            rowLayout -- the vertical box layout holding the group boxes
-            currentGroupBox -- the currently used group box
+            groupBox -- the current group box
         """
-        groupBox = self.getGroupBox(rowLayout, currentGroupBox)
         gridLayout = groupBox.layout()
         row = gridLayout.rowCount()
         label = QLabel(self.description, groupBox)
@@ -204,7 +173,6 @@ class IntOptionItem(StringOptionItem):
         if self.maximum != None:
             self.dialogControl.setMaximum(self.maximum)
         gridLayout.addWidget(self.dialogControl, row, 1)
-        return groupBox
 
     def updateFromDialog(self):
         """Set the value of this item from the dialog contents.
@@ -264,16 +232,12 @@ class FloatOptionItem(StringOptionItem):
             return True
         return False
 
-    def addDialogControl(self, rowLayout, currentGroupBox):
+    def addDialogControl(self, groupBox):
         """Add the labels and controls to a dialog box for this option item.
 
-        Uses the current group box if the category matches, otherwise
-        starts a new one.  Returns the current group box.
         Arguments:
-            rowLayout -- the vertical box layout holding the group boxes
-            currentGroupBox -- the currently used group box
+            groupBox -- the current group box
         """
-        groupBox = self.getGroupBox(rowLayout, currentGroupBox)
         gridLayout = groupBox.layout()
         row = gridLayout.rowCount()
         label = QLabel(self.description, groupBox)
@@ -285,7 +249,6 @@ class FloatOptionItem(StringOptionItem):
         if self.maximum != None:
             self.dialogControl.setMaximum(self.maximum)
         gridLayout.addWidget(self.dialogControl, row, 1)
-        return groupBox
 
     def updateFromDialog(self):
         """Set the value of this item from the dialog contents.
@@ -340,27 +303,17 @@ class BoolOptionItem(StringOptionItem):
             raise ValueError
         return False
 
-    def valueString(self):
-        """Return a string representation of the value.
-        """
-        return 'yes' if self.value else 'no'
-
-    def addDialogControl(self, rowLayout, currentGroupBox):
+    def addDialogControl(self, groupBox):
         """Add the labels and controls to a dialog box for this option item.
 
-        Uses the current group box if the category matches, otherwise
-        starts a new one.  Returns the current group box.
         Arguments:
-            rowLayout -- the vertical box layout holding the group boxes
-            currentGroupBox -- the currently used group box
+            groupBox -- the current group box
         """
-        groupBox = self.getGroupBox(rowLayout, currentGroupBox)
         gridLayout = groupBox.layout()
         row = gridLayout.rowCount()
         self.dialogControl = QCheckBox(self.description, groupBox)
         self.dialogControl.setChecked(self.value)
         gridLayout.addWidget(self.dialogControl, row, 0, 1, 2)
-        return groupBox
 
     def updateFromDialog(self):
         """Set the value of this item from the dialog contents.
@@ -411,16 +364,12 @@ class ListOptionItem(StringOptionItem):
             raise ValueError
         return False
 
-    def addDialogControl(self, rowLayout, currentGroupBox):
+    def addDialogControl(self, groupBox):
         """Add the labels and controls to a dialog box for this option item.
 
-        Uses the current group box if the category matches, otherwise
-        starts a new one.  Returns the current group box.
         Arguments:
-            rowLayout -- the vertical box layout holding the group boxes
-            currentGroupBox -- the currently used group box
+            groupBox -- the current group box
         """
-        groupBox = self.getGroupBox(rowLayout, currentGroupBox)
         gridLayout = groupBox.layout()
         row = gridLayout.rowCount()
         label = QLabel(self.description, groupBox)
@@ -429,7 +378,6 @@ class ListOptionItem(StringOptionItem):
         self.dialogControl.addItems(self.choices)
         self.dialogControl.setCurrentIndex(self.choices.index(self.value))
         gridLayout.addWidget(self.dialogControl, row, 1)
-        return groupBox
 
     def updateFromDialog(self):
         """Set the value of this item from the dialog contents.
@@ -479,15 +427,12 @@ class ChoiceOptionItem(StringOptionItem):
             raise ValueError
         return False
 
-    def addDialogControl(self, rowLayout, currentGroupBox):
+    def addDialogControl(self, groupBox):
         """Add the labels and controls to a dialog box for this option item.
 
-        Always starts a new group box, returns None (group not reused).
         Arguments:
-            rowLayout -- the vertical box layout holding the group boxes
-            currentGroupBox -- the currently used group box
+            groupBox -- the current group box
         """
-        groupBox = QGroupBox(self.category, rowLayout.parentWidget())
         rowLayout.addWidget(groupBox)
         QGridLayout(groupBox)
         gridLayout = groupBox.layout()
@@ -498,7 +443,6 @@ class ChoiceOptionItem(StringOptionItem):
             self.dialogControl.addButton(button)
             gridLayout.addWidget(button, row, 0, 1, 2)
             row += 1
-        return None
 
     def updateFromDialog(self):
         """Set the value of this item from the dialog contents.
@@ -549,35 +493,16 @@ class KeyOptionItem(StringOptionItem):
             return True
         return False
 
-    def valueString(self):
-        """Return a string representation of the value.
+    def storedValue(self):
+        """Return the value to be stored in the JSON file.
         """
         return self.value.toString()
-
-    def addDialogControl(self, rowLayout, currentGroupBox):
-        """Add the labels and controls to a dialog box for this option item.
-
-        Not implemented yet (needed here?).
-        Returns the current group box.
-        Arguments:
-            rowLayout -- the vertical box layout holding the group boxes
-            currentGroupBox -- the currently used group box
-        """
-        return currentGroupBox
-
-    def updateFromDialog(self):
-        """Set the value of this item from the dialog contents.
-
-        Not implemented yet (needed here?).
-        Return True if successfully set.
-        """
-        return False
 
 
 class Options(OrderedDict):
     """Class to store and control the config options for a program.
     """
-    basePath = ''
+    basePath = None
     def __init__(self, fileName='', progName='', version='', coDirName=''):
         """Initialize and set the path to the config file.
 
@@ -591,30 +516,28 @@ class Options(OrderedDict):
         """
         super().__init__()
         self.modified = False
-        self.path = ''
+        self.path = pathlib.Path()
 
         if not fileName:
             return    # no storage without fileName (temporary options only)
         appDirName = '{0}-{1}'.format(progName.lower(), version)
-        if sys.platform.startswith('win'):    # Windows
-            fileNameSuffix = '.ini'
-            if not Options.basePath:
-                userPath = os.path.join(os.environ.get('APPDATA', ''),
-                                        coDirName, appDirName)
-        else:    # Linux, etc.
-            fileNameSuffix = 'rc'
-            if not Options.basePath:
-                userPath = os.path.join(os.environ.get('HOME', ''),
-                                        '.' + appDirName)
+        fileNameSuffix = '.ini' if sys.platform.startswith('win') else 'rc'
+
         if not Options.basePath:
-            if os.path.exists(userPath):
+            if sys.platform.startswith('win'):    # Windows
+                userPath = (pathlib.Path(os.environ.get('APPDATA', '')) /
+                            coDirName / appDirName)
+            else:    # Linux, etc.
+                userPath = (pathlib.Path(os.path.expanduser('~')) /
+                            ('.' + appDirName))
+            if userPath.is_dir():
                 Options.basePath = userPath
             else:
-                modPath = os.path.dirname(os.path.abspath(sys.path[0]))
-                modConfigPath = os.path.join(modPath, 'config')
-                if os.path.exists(modConfigPath):
+                modPath = pathlib.Path(sys.path[0]).resolve()
+                modConfigPath = modPath / 'config'
+                if modConfigPath.is_dir():
                     Options.basePath = modConfigPath
-                elif os.access(modPath, os.W_OK):
+                elif os.access(str(modPath), os.W_OK):
                     dialog = miscdialogs.RadioChoiceDialog(progName,
                               _('Choose configuration file location'),
                               [(_('User\'s home directory (recommended)'), 0),
@@ -626,33 +549,26 @@ class Options(OrderedDict):
                 if not Options.basePath:
                     Options.basePath = userPath
             try:
-                if not os.path.exists(Options.basePath):
-                    os.makedirs(Options.basePath)
-                iconPath = os.path.join(Options.basePath, 'icons')
-                if not os.path.exists(iconPath):
-                    os.makedirs(iconPath)
-                templatePath = os.path.join(Options.basePath, 'templates')
-                if not os.path.exists(templatePath):
-                    os.makedirs(templatePath)
-                pluginPath = os.path.join(Options.basePath, 'plugins')
-                if not os.path.exists(pluginPath):
-                    os.makedirs(pluginPath)
+                if not Options.basePath.is_dir():
+                    Options.basePath.mkdir(parents=True)
+                iconPath = Options.basePath / 'icons'
+                if not iconPath.is_dir():
+                    iconPath.mkdir()
+                templatePath = Options.basePath / 'templates'
+                if not templatePath.is_dir():
+                    templatePath.mkdir()
             except OSError:
-                Options.basePath = ''
+                Options.basePath = None
         if Options.basePath:
-            self.path = os.path.join(Options.basePath,
-                                     fileName + fileNameSuffix)
+            self.path = Options.basePath / (fileName + fileNameSuffix)
 
-    def getValue(self, name, defaultValue=False):
-        """Return a value from the given option key.
+    def __getitem__(self, name):
+        """Return the value of an option when called as options[name].
 
         Arguments:
             name -- the string key for the option
-            defaultValue -- if True, return the default value, not current one
         """
-        if not defaultValue:
-            return self[name].value
-        return self[name].defaultValue
+        return self.get(name).value
 
     def getDefaultValue(self, name):
         """Return the initially set default value from the given option key.
@@ -660,7 +576,7 @@ class Options(OrderedDict):
         Arguments:
             name -- the string key for the option
         """
-        return self[name].defaultValue
+        return self.get(name).defaultValue
 
     def changeValue(self, name, value):
         """Set a new value for the given option key.
@@ -670,7 +586,7 @@ class Options(OrderedDict):
             name -- the string key for the option
             value -- a value or a string defining the value
         """
-        if self[name].setValue(value):
+        if self.get(name).setValue(value):
             self.modified = True
             return True
         return False
@@ -695,25 +611,14 @@ class Options(OrderedDict):
         Only updates existing config items.
         """
         try:
-            with open(self.path, 'r', encoding='utf-8') as f:
-                lastCategory = ''
-                for line in f:
-                    line = line.strip()
-                    if line and not line.startswith('#'):
-                        try:
-                            name, value = line.split(None, 1)
-                        except ValueError:
-                            name = line
-                            value = ''
-                        try:
-                            self[name].setValue(value)
-                            lastCategory = self[name].category
-                        except KeyError:
-                            # create a blank default entry if none exists
-                            StringOptionItem(self, name, '', True, False,
-                                             lastCategory)
-                            self[name].setValue(value)
-        except IOError:
+            with self.path.open('r', encoding='utf-8') as f:
+                data = json.load(f)
+                for key, value in data.items():
+                    try:
+                        self.get(key).setValue(value)
+                    except AttributeError:
+                        pass
+        except (IOError, ValueError):
             self.writeFile()
 
     def writeFile(self):
@@ -721,14 +626,10 @@ class Options(OrderedDict):
 
         Raises IOError on failure.
         """
-        with open(self.path, 'w', encoding='utf-8') as f:
-            padding = max(len(option.name) for option in self.values()) + 2
-            prevCategory = ''
-            for option in self.values():
-                if option.category and option.category != prevCategory:
-                    f.write('\n# {}:\n'.format(option.category))
-                    prevCategory = option.category
-                f.write(option.outputLine(padding))
+        with self.path.open('w', encoding='utf-8') as f:
+            data = OrderedDict([(key, obj.storedValue()) for (key, obj) in
+                                self.items()])
+            json.dump(data, f, indent=0)
         self.modified = False
 
 
@@ -751,7 +652,11 @@ class OptionDialog(QDialog):
             if option.columnNum > columnLayout.count() - 1:
                 rowLayout = QVBoxLayout()
                 columnLayout.addLayout(rowLayout)
-            groupBox = option.addDialogControl(rowLayout, groupBox)
+            if not groupBox or groupBox.title() != option.category:
+                groupBox = QGroupBox(option.category)
+                rowLayout.addWidget(groupBox)
+                QGridLayout(groupBox)
+            option.addDialogControl(groupBox)
 
         ctrlLayout = QHBoxLayout()
         topLayout.addLayout(ctrlLayout)

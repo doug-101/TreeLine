@@ -29,10 +29,10 @@ def setGenOptionDefaults(generalOptions):
     BoolOptionItem(generalOptions, 'AutoFileOpen', False,
                    _('Startup Condition'),
                    _('Automatically open last file used'))
-    BoolOptionItem(generalOptions, 'ShowChildPane', True,
+    BoolOptionItem(generalOptions, 'InitShowChildPane', True,
                    _('Startup Condition'),
                    _('Show child pane in right hand view'))
-    BoolOptionItem(generalOptions, 'ShowDescendants', False,
+    BoolOptionItem(generalOptions, 'InitShowDescendants', False,
                    _('Startup Condition'),
                    _('Show descendants in output view'))
     BoolOptionItem(generalOptions, 'SaveTreeStates', True,
@@ -52,9 +52,6 @@ def setGenOptionDefaults(generalOptions):
                    _('Tree drag && drop available'))
     BoolOptionItem(generalOptions, 'ShowTreeIcons', True,
                    _('Features Available'), _('Show icons in the tree view'))
-    BoolOptionItem(generalOptions, 'ShowUniqueID', False,
-                   _('Features Available'),
-                   _('Show node unique IDs in the Data Edit view'))
     BoolOptionItem(generalOptions, 'ShowMath', True, _('Features Available'),
                    _('Show math fields in the Data Edit view'))
     BoolOptionItem(generalOptions, 'EditNumbering', False,

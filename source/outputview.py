@@ -37,8 +37,8 @@ class OutputView(QTextBrowser):
         super().__init__(parent)
         self.treeView = treeView
         self.isChildView = isChildView
-        self.hideChildView = not globalref.genOptions.getValue('ShowChildPane')
-        self.showDescendants = globalref.genOptions.getValue('ShowDescendants')
+        self.hideChildView = not globalref.genOptions['InitShowChildPane']
+        self.showDescendants = globalref.genOptions['InitShowDescendants']
         self.setFocusPolicy(Qt.NoFocus)
 
     def updateContents(self):

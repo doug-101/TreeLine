@@ -54,14 +54,14 @@ class TreeView(QTreeView):
     def updateTreeGenOptions(self):
         """Set the tree to match the current general options.
         """
-        if globalref.genOptions.getValue('ClickRename'):
+        if globalref.genOptions['ClickRename']:
             self.setEditTriggers(QAbstractItemView.SelectedClicked)
         else:
             self.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        # dragAvail = globalref.genOptions.getValue('DragTree')
+        # dragAvail = globalref.genOptions['DragTree']
         # self.setDragEnabled(dragAvail)
         # self.setAcceptDrops(dragAvail)
-        self.setIndentation(globalref.genOptions.getValue('IndentOffset') *
+        self.setIndentation(globalref.genOptions['IndentOffset'] *
                             self.fontInfo().pixelSize())
 
     def expandSpot(self, spot):

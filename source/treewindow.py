@@ -202,7 +202,7 @@ class TreeWindow(QMainWindow):
             icon = globalref.toolIcons.getIcon(name.lower())
             if icon:
                 action.setIcon(icon)
-            key = globalref.keyboardOptions.getValue(name)
+            key = globalref.keyboardOptions.getValue[name]
             if not key.isEmpty():
                 action.setShortcut(key)
         self.allActions.update(winActions)
@@ -224,6 +224,9 @@ class TreeWindow(QMainWindow):
         editMenu.addAction(self.allActions['EditUndo'])
         editMenu.addAction(self.allActions['EditRedo'])
         editMenu.addSeparator()
+
+        toolsMenu = self.menuBar().addMenu(_('&Tools'))
+        toolsMenu.addAction(self.allActions['ToolsGenOptions'])
 
     def changeEvent(self, event):
         """Detect an activation of the main window and emit a signal.

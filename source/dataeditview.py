@@ -331,7 +331,7 @@ class DataEditView(QTableWidget):
         self.treeView = treeView
         self.allActions = allActions
         self.isChildView = isChildView
-        self.hideChildView = not globalref.genOptions.getValue('ShowChildPane')
+        self.hideChildView = not globalref.genOptions['InitShowChildPane']
         self.setAcceptDrops(True)
         self.horizontalHeader().hide()
         self.verticalHeader().hide()
@@ -397,10 +397,10 @@ class DataEditView(QTableWidget):
         titleCell = self.createInactiveCell(node.title())
         self.setItem(startRow, 1, titleCell)
         fields = node.formatRef.fields()
-        if not globalref.genOptions.getValue('EditNumbering'):
+        if not globalref.genOptions['EditNumbering']:
             fields = [field for field in fields
                       if field.typeName != 'Numbering']
-        if not globalref.genOptions.getValue('ShowMath'):
+        if not globalref.genOptions['ShowMath']:
             fields = [field for field in fields
                       if field.typeName != 'Math']
         for row, field in enumerate(fields, startRow + 1):
@@ -434,14 +434,11 @@ class DataEditView(QTableWidget):
             startRow -- the row offset
         """
         self.item(startRow, 1).setText(node.title())
-        if globalref.genOptions.getValue('ShowUniqueID'):
-            startRow += 1
-            self.item(startRow, 1).setText(node.uniqueId)
         fields = node.nodeFormat().fields()
-        if not globalref.genOptions.getValue('EditNumbering'):
+        if not globalref.genOptions['EditNumbering']:
             fields = [field for field in fields
                       if field.typeName != 'Numbering']
-        if not globalref.genOptions.getValue('ShowMath'):
+        if not globalref.genOptions['ShowMath']:
             fields = [field for field in fields
                       if field.typeName != 'Math']
         for row, field in enumerate(fields, startRow + 1):
@@ -530,8 +527,6 @@ class DataEditView(QTableWidget):
         charFormat.setBackground(backColor)
         charFormat.setForeground(foreColor)
         cellNum += 1    # skip title line
-        if globalref.genOptions.getValue('ShowUniqueID'):
-            cellNum += 1
         cell = self.item(cellNum, 1)
         highlighter = MatchHighlighter(cell.doc, charFormat, searchText,
                                        regExpObj, skipMatches)

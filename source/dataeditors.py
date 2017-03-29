@@ -1229,7 +1229,7 @@ class DateEditor(ComboEditor):
         """
         super().__init__(parent)
         self.calendar = None
-        self.editorFormat = globalref.genOptions.getValue('EditDateFormat')
+        self.editorFormat = globalref.genOptions['EditDateFormat']
         self.nowAction = QAction(_('Today\'s &Date'), self)
         self.nowAction.triggered.connect(self.setNow)
         self.lineEdit().extraMenuActions = [self.nowAction]
@@ -1258,8 +1258,8 @@ class DateEditor(ComboEditor):
         if not self.calendar:
             self.calendar = QCalendarWidget(self)
             self.calendar.setWindowFlags(Qt.Popup)
-            weekStart = optiondefaults.daysOfWeek.index(globalref.genOptions.
-                                                        getValue('WeekStart'))
+            weekStart = optiondefaults.daysOfWeek.index(globalref.
+                                                      genOptions['WeekStart'])
             self.calendar.setFirstDayOfWeek(weekStart + 1)
             self.calendar.setVerticalHeaderFormat(QCalendarWidget.
                                                   NoVerticalHeader)
@@ -1317,7 +1317,7 @@ class TimeEditor(ComboEditor):
     def setNow(self):
         """Set to today's date.
         """
-        editorFormat = globalref.genOptions.getValue('EditTimeFormat')
+        editorFormat = globalref.genOptions['EditTimeFormat']
         self.setEditText(QTime.currentTime().toString(editorFormat))
 
 
@@ -1333,10 +1333,10 @@ class DateTimeEditor(DateEditor):
             parent -- the parent, if given
         """
         super().__init__(parent)
-        self.editorFormat = '{0} {1}'.format(globalref.genOptions.
-                                             getValue('EditDateFormat'),
-                                             globalref.genOptions.
-                                             getValue('EditTimeFormat'))
+        self.editorFormat = '{0} {1}'.format(globalref.
+                                             genOptions['EditDateFormat'],
+                                             globalref.
+                                             genOptions['EditTimeFormat'])
         self.nowAction.setText(_('Set to &Now'))
 
     def editorDate(self):

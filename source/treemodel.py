@@ -90,7 +90,7 @@ class TreeModel(QAbstractItemModel):
         if role in (Qt.DisplayRole, Qt.EditRole):
             return node.title()
         if (role == Qt.DecorationRole and
-            globalref.genOptions.getValue('ShowTreeIcons')):
+            globalref.genOptions['ShowTreeIcons']):
             return globalref.treeIcons.getIcon(node.formatRef.iconName, True)
         return None
 

@@ -73,7 +73,7 @@ class TreeLocalControl(QObject):
         self.structure.redoList.altListRef = self.structure.undoList
         if not globalref.mainControl.activeControl:
             self.windowNew(0)
-        elif globalref.genOptions.getValue('OpenNewWindow'):
+        elif globalref.genOptions['OpenNewWindow']:
             self.windowNew()
         else:
             oldControl = globalref.mainControl.activeControl
@@ -270,7 +270,7 @@ class TreeLocalControl(QObject):
             icon = globalref.toolIcons.getIcon(name.lower())
             if icon:
                 action.setIcon(icon)
-            key = globalref.keyboardOptions.getValue(name)
+            key = globalref.keyboardOptions[name]
             if not key.isEmpty():
                 action.setShortcut(key)
         self.allActions.update(localActions)

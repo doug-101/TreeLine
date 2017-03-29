@@ -32,7 +32,7 @@ class UndoRedoList(list):
         self.action = action
         self.action.setEnabled(False)
         self.localControlRef = localControlRef
-        self.levels = globalref.genOptions.getValue('UndoLevels')
+        self.levels = globalref.genOptions['UndoLevels']
         self.altListRef = None   # holds a ref to redo or undo list
 
     def addUndoObj(self, undoObject, clearRedo=True):
