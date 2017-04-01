@@ -46,6 +46,16 @@ class TreeSpot:
             return self.parentSpot.nodeRef.childList.index(self.nodeRef)
         return modelRef.treeStructure.childList.index(self.nodeRef)
 
+    def spotChain(self):
+        """Return a list of parent spots.
+        """
+        chain = []
+        spot = self
+        while spot:
+            chain.insert(0, spot)
+            spot = spot.parentSpot
+        return chain
+
     def sortKey(self, modelRef):
         """Return a tuple of parent row postitions for sorting in tree order.
 

@@ -16,6 +16,7 @@ from PyQt5.QtCore import QEvent, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QSplitter, QStatusBar,
                              QTabWidget, QWidget)
 import treeview
+import breadcrumbview
 import outputview
 import dataeditview
 import titlelistview
@@ -50,14 +51,14 @@ class TreeWindow(QMainWindow):
         self.setupActions()
         self.setupMenus()
 
+        self.treeView = treeview.TreeView(model, self.allActions)
         self.breadcrumbSplitter = QSplitter(Qt.Vertical)
         self.setCentralWidget(self.breadcrumbSplitter)
-        self.breadcrumbView = QWidget()
+        self.breadcrumbView = breadcrumbview.BreadcrumbView(self.treeView)
         self.breadcrumbSplitter.addWidget(self.breadcrumbView)
 
         self.treeSplitter = QSplitter()
         self.breadcrumbSplitter.addWidget(self.treeSplitter)
-        self.treeView = treeview.TreeView(model, self.allActions)
         self.treeSplitter.addWidget(self.treeView)
         self.treeView.selectionModel().selectionChanged.connect(self.
                                                                 selectChanged)
@@ -118,8 +119,9 @@ class TreeWindow(QMainWindow):
         self.treeView.scheduleDelayedItemsLayout()
 
     def updateRightViews(self):
-        """Update all right-hand views.
+        """Update all right-hand views and breadcrumb view.
         """
+        self.breadcrumbView.updateContents()
         splitter = self.rightTabs.currentWidget()
         for i in range(2):
             splitter.widget(i).updateContents()
