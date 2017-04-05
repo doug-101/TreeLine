@@ -13,12 +13,15 @@
 #******************************************************************************
 
 import operator
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTextBrowser
+from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtGui import QPainter, QPalette
+from PyQt5.QtWidgets import (QAbstractItemView, QApplication,
+                             QStyledItemDelegate, QTableWidget,
+                             QTableWidgetItem)
 import globalref
 
 
-class CrumbItem:
+class CrumbItem(QTableWidgetItem):
     """Class to store breadcrumb item spot refs and positions.
     """
     def __init__(self, spotRef):
@@ -27,27 +30,41 @@ class CrumbItem:
         Arguments:
             spotRef -- ref to the associated spot item
         """
+        super().__init__(spotRef.nodeRef.title())
         self.spot = spotRef
-        self.spotIndex = 0  # index number of this spot in its node
-        self.rowSpan = 1  # number of rows to span for same upsteam spot
-        self.lastSpot = False  # True for last spot in the chain
         self.selectedSpot = False
+        self.setTextAlignment(Qt.AlignCenter)
+        self.setForeground(QApplication.palette().brush(QPalette.Link))
 
-    def tableText(self):
-        """Return the html needed for the table entry.
+
+class BorderDelegate(QStyledItemDelegate):
+    """Class override to show borders between rows.
+    """
+    def __init__(self, parent=None):
+        """Initialize the delegate class.
+
+        Arguments:
+            parent -- the parent view
         """
-        if self.rowSpan == 0:
-            return ''
-        text = ('<td rowspan="{0}" align="center" valign="middle">{1}</td>'.
-                format(self.rowSpan, self.spot.nodeRef.title()))
-        if not self.lastSpot:
-            # add arrow
-            text += ('<td rowspan="{0}" align="center" valign="middle">'
-                     '&#x25ba;</td>'.format(self.rowSpan))
-        return text
+        super().__init__(parent)
+
+    def paint(self, painter, styleOption, modelIndex):
+        """Paint the cells with borders between rows.
+        """
+        super().paint(painter, styleOption, modelIndex)
+        cell = self.parent().item(modelIndex.row(), modelIndex.column())
+        if modelIndex.row() > 0 and cell:
+            upperCell = None
+            row = modelIndex.row()
+            while not upperCell and row > 0:
+                row -= 1
+                upperCell = self.parent().item(row, modelIndex.column())
+            if cell.text() and upperCell and upperCell.text():
+                painter.drawLine(styleOption.rect.topLeft(),
+                                 styleOption.rect.topRight())
 
 
-class BreadcrumbView(QTextBrowser):
+class BreadcrumbView(QTableWidget):
     """Class override for the breadcrumb view.
 
     Sets view defaults and updates the content.
@@ -61,78 +78,92 @@ class BreadcrumbView(QTextBrowser):
         """
         super().__init__(parent)
         self.treeView = treeView
+        self.borderItems = []
         self.setFocusPolicy(Qt.NoFocus)
+        self.horizontalHeader().hide()
+        self.verticalHeader().hide()
+        self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.setSelectionMode(QAbstractItemView.NoSelection)
+        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.setItemDelegate(BorderDelegate(self))
+        self.setShowGrid(False)
+        self.setMouseTracking(True)
+        self.itemClicked.connect(self.changeSelection)
 
     def updateContents(self):
         """Reload the view's content if the view is shown.
 
         Avoids update if view is not visible or has zero height or width.
         """
+        self.clear()
+        self.clearSpans()
         selModel = self.treeView.selectionModel()
         selNodes = selModel.selectedNodes()
         if len(selNodes) != 1:
-            self.clear()
             return
+        selSpot = selModel.selectedSpots()[0]
         spotList = sorted(list(selNodes[0].spotRefs),
                           key=operator.methodcaller('sortKey',
                                                     selModel.modelRef))
         chainList = [[CrumbItem(chainSpot) for chainSpot in spot.spotChain()]
                      for spot in spotList]
+        self.setRowCount(len(chainList))
         for row in range(len(chainList)):
+            self.setColumnCount(len(chainList[row]) * 2 - 1)
             for col in range(len(chainList[row])):
                 item = chainList[row][col]
-                if (row and col < len(chainList[row - 1]) and
-                    item.spot is chainList[row - 1][col].spot):
-                    item.rowSpan = 0
-                else:
-                    while (row + item.rowSpan < len(chainList) and
-                           col < len(chainList[row + item.rowSpan]) and
-                           item.spot is
-                           chainList[row + item.rowSpan][col].spot):
-                        item.rowSpan += 1
-                if col == len(chainList[row]) - 1:
-                    item.lastSpot = True
-        htmlList = ['<html><body><table border="1" cellpadding="5"'
-                    'cellspacing="0">']
-        for chain in chainList:
-            htmlList.append('<tr>')
-            for item in chain:
-                htmlList.append(item.tableText())
-            htmlList.append('</tr>')
-        htmlList.append('</table></body></html>')
-        self.setHtml(''.join(htmlList))
+                if (row == 0 or col >= len(chainList[row - 1]) or
+                    item.spot is not chainList[row - 1][col].spot):
+                    rowSpan = 1
+                    while (row + rowSpan < len(chainList) and
+                           col < len(chainList[row + rowSpan]) and
+                           item.spot is chainList[row + rowSpan][col].spot):
+                        rowSpan += 1
+                    if col < len(chainList[row]) - 1:
+                        arrowItem = QTableWidgetItem('\u25ba')
+                        arrowItem.setTextAlignment(Qt.AlignCenter)
+                        self.setItem(row, col * 2 + 1, arrowItem)
+                        if rowSpan > 1:
+                            self.setSpan(row, col * 2 + 1, rowSpan, 1)
+                    self.setItem(row, col * 2, item)
+                    if rowSpan > 1:
+                        self.setSpan(row, col * 2, rowSpan, 1)
+                    if item.spot is selSpot:
+                        item.selectedSpot = True
+                        item.setForeground(QApplication.palette().
+                                           brush(QPalette.WindowText))
+        self.resizeColumnsToContents()
 
-    def setSource(self, url):
-        """Called when a user clicks on a URL link.
+    def changeSelection(self, item):
+        """Change the current selection to given item bassed on a mouse click.
 
-        Selects an internal link or opens an external browser.
         Arguments:
-            url -- the QUrl that is clicked
+            item -- the breadcrumb item that was clicked
         """
-        name = url.toString()
-        if name.startswith('#'):
-            if not self.selectModel.selectNodeById(name[1:]):
-                super().setSource(url)
+        selModel = self.treeView.selectionModel()
+        if hasattr(item, 'spot') and not item.selectedSpot:
+            selModel.selectSpots([item.spot])
+            self.setCursor(Qt.ArrowCursor)
+
+    def minimumSizeHint(self):
+        """Set a short minimum size fint to allow the display of one row.
+        """
+        return QSize(super().minimumSizeHint().width(),
+                     self.fontInfo().pixelSize() * 3)
+
+    def mouseMoveEvent(self, event):
+        """Change the mouse pointer if over a clickable item.
+
+        Arguments:
+            event -- the mouse move event
+        """
+        item = self.itemAt(event.localPos().toPoint())
+        if item and hasattr(item, 'spot') and not item.selectedSpot:
+            self.setCursor(Qt.PointingHandCursor)
         else:
-            if urltools.isRelative(name):    # check for relative path
-                defaultPath = globalref.mainControl.defaultFilePath(True)
-                name = urltools.toAbsolute(name, defaultPath)
-            dataeditors.openExtUrl(name)
-
-    def hasSelectedText(self):
-        """Return True if text is selected.
-        """
-        return self.textCursor().hasSelection()
-
-    def contextMenuEvent(self, event):
-        """Add a popup menu for select all and copy actions.
-
-        Arguments:
-            event -- the menu event
-        """
-        menu = self.createStandardContextMenu()
-        menu.removeAction(menu.actions()[1]) #remove copy link location
-        menu.exec_(event.globalPos())
+            self.setCursor(Qt.ArrowCursor)
+        super().mouseMoveEvent(event)
 
     def resizeEvent(self, event):
         """Update view if was collaped by splitter.

@@ -372,7 +372,6 @@ class DataEditView(QTableWidget):
         if self.isChildView:
             selNodes = selNodes[0].childList
         self.clear()
-        self.clearSpans()
         if selNodes:
             self.hide() # 2nd update very slow if shown during update
             self.setRowCount(100000)
