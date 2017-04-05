@@ -227,6 +227,9 @@ class TreeWindow(QMainWindow):
         editMenu.addAction(self.allActions['EditRedo'])
         editMenu.addSeparator()
 
+        dataMenu = self.menuBar().addMenu(_('&Data'))
+        dataMenu.addAction(self.allActions['DataConfigType'])
+
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
 

@@ -22,6 +22,7 @@ import treelocalcontrol
 import options
 import optiondefaults
 import icondict
+import configdialog
 try:
     from __main__ import __version__, __author__
 except ImportError:
@@ -51,6 +52,7 @@ class TreeMainControl(QObject):
         super().__init__(parent)
         self.localControls = []
         self.activeControl = None
+        self.configDialog = None
         globalref.mainControl = self
         self.allActions = {}
         mainVersion = '.'.join(__version__.split('.')[:2])
@@ -186,6 +188,10 @@ class TreeMainControl(QObject):
         """
         if localControl != self.activeControl:
             self.activeControl = localControl
+            if self.configDialog and self.configDialog.isVisible():
+                self.configDialog.setRefs(self.activeControl.model,
+                                          self.activeControl.
+                                          currentSelectionModel())
 
     def removeLocalControlRef(self, localControl):
         """Remove ref to local control based on a closing signal.
@@ -218,6 +224,12 @@ class TreeMainControl(QObject):
                               statusTip=_('Exit the application'))
         fileQuitAct.triggered.connect(self.fileQuit)
         self.allActions['FileQuit'] = fileQuitAct
+
+        dataConfigAct = QAction(_('&Configure Data Types...'), self,
+                       statusTip=_('Modify data types, fields & output lines'),
+                       checkable=True)
+        dataConfigAct.triggered.connect(self.dataConfigDialog)
+        self.allActions['DataConfigType'] = dataConfigAct
 
         toolsGenOptionsAct = QAction(_('&General Options...'), self,
                              statusTip=_('Set user preferences for all files'))
@@ -271,6 +283,24 @@ class TreeMainControl(QObject):
         """
         for control in self.localControls[:]:
             control.closeWindows()
+
+    def dataConfigDialog(self, show):
+        """Show or hide the non-modal data config dialog.
+
+        Arguments:
+            show -- true if dialog should be shown, false to hide it
+        """
+        if show:
+            if not self.configDialog:
+                self.configDialog = configdialog.ConfigDialog()
+                dataConfigAct = self.allActions['DataConfigType']
+                self.configDialog.dialogShown.connect(dataConfigAct.setChecked)
+            self.configDialog.setRefs(self.activeControl.model,
+                                      self.activeControl.
+                                      currentSelectionModel(), True)
+            self.configDialog.show()
+        else:
+            self.configDialog.close()
 
     def toolsGenOptions(self):
         """Set general user preferences for all files.
