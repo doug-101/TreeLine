@@ -14,6 +14,7 @@
 
 import json
 import operator
+import copy
 import treenode
 import treeformats
 try:
@@ -41,6 +42,7 @@ class TreeStructure:
         self.spotRefs = set()  # empty placeholder for duck-typing
         self.undoList = None
         self.redoList = None
+        self.configDialogFormats = None
         if fileObj:
             fileData = json.load(fileObj)
             self.treeFormats = treeformats.TreeFormats(fileData['formats'])
@@ -153,3 +155,33 @@ class TreeStructure:
                 else:
                     oldNode.removeInvalidSpotRefs()
         self.childList = newChildList
+
+    def getConfigDialogFormats(self, forceReset=False):
+        """Return duplicate formats for use in the config dialog.
+
+        Arguments:
+            forceReset -- if True, sets duplicate formats back to original
+        """
+        if not self.configDialogFormats or forceReset:
+            self.configDialogFormats = copy.deepcopy(self.treeFormats)
+        return self.configDialogFormats
+
+    def applyConfigDialogFormats(self, addUndo=True):
+        """Replace the formats with the duplicates and signal for view update.
+
+        Also updates all nodes for changed type and field names.
+        """
+        if addUndo:
+            pass
+        self.treeFormats.copySettings(self.configDialogFormats)
+        if self.configDialogFormats.fieldRenameDict:
+            for node in self.nodeDict.values():
+                fieldRenameDict = (self.configDialogFormats.fieldRenameDict.
+                                   get(node.formatRef.name, {}))
+                tmpDataDict = {}
+                for oldName, newName in fieldRenameDict.items():
+                    if oldName in node.data:
+                        tmpDataDict[newName] = node.data[oldName]
+                        del node.data[oldName]
+                node.data.update(tmpDataDict)
+            self.configDialogFormats.fieldRenameDict = {}

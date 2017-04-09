@@ -13,6 +13,7 @@
 #******************************************************************************
 
 import operator
+import copy
 import nodeformat
 
 
@@ -32,6 +33,10 @@ class TreeFormats(dict):
             setDefault - if true, initializes with a default format
         """
         super().__init__()
+        # new names for types renamed in the config dialog (orig names as keys)
+        self.typeRenameDict = {}
+        # nested dict for fields renamed, keys are type name then orig field
+        self.fieldRenameDict = {}
         if formatList:
             for formatData in formatList:
                 name = formatData['formatname']
@@ -46,6 +51,30 @@ class TreeFormats(dict):
         return sorted([nodeFormat.storeFormat() for nodeFormat in
                        self.values()],
                       key=operator.itemgetter('formatname'))
+
+    def copySettings(self, sourceFormats):
+        """Copy all settings from other type formats to these formats.
+
+        Copy any new formats and delete any missing formats.
+        Arguments:
+            sourceFormats -- the type formats to copy
+        """
+        if sourceFormats.typeRenameDict:
+            for oldName, newName in sourceFormats.typeRenameDict.items():
+                self[oldName].name = newName
+            formats = list(self.values())
+            self.clear()
+            for nodeFormat in formats:
+                self[nodeFormat.name] = nodeFormat
+            sourceFormats.typeRenameDict = {}
+        for name in list(self.keys()):
+            if name in sourceFormats:
+                self[name].copySettings(sourceFormats[name])
+            else:
+                del self[name]
+        for name in sourceFormats.keys():
+            if name not in self:
+                self[name] = copy.deepcopy(sourceFormats[name])
 
     def typeNames(self):
         """Return a sorted list of type names.

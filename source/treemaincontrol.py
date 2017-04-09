@@ -189,9 +189,7 @@ class TreeMainControl(QObject):
         if localControl != self.activeControl:
             self.activeControl = localControl
             if self.configDialog and self.configDialog.isVisible():
-                self.configDialog.setRefs(self.activeControl.model,
-                                          self.activeControl.
-                                          currentSelectionModel())
+                self.configDialog.setRefs(self.activeControl)
 
     def removeLocalControlRef(self, localControl):
         """Remove ref to local control based on a closing signal.
@@ -295,9 +293,7 @@ class TreeMainControl(QObject):
                 self.configDialog = configdialog.ConfigDialog()
                 dataConfigAct = self.allActions['DataConfigType']
                 self.configDialog.dialogShown.connect(dataConfigAct.setChecked)
-            self.configDialog.setRefs(self.activeControl.model,
-                                      self.activeControl.
-                                      currentSelectionModel(), True)
+            self.configDialog.setRefs(self.activeControl, True)
             self.configDialog.show()
         else:
             self.configDialog.close()

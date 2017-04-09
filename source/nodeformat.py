@@ -14,6 +14,7 @@
 
 import re
 import collections
+import xml.sax.saxutils
 import fieldformat
 
 
@@ -37,6 +38,19 @@ class NodeFormat:
             addDefaultField -- if true, adds a default initial field
         """
         self.name = name
+        self.readFormat(formatData)
+        if addDefaultField:
+            self.addFieldIfNew(_defaultFieldName)
+            self.titleLine = ['{{*{0}*}}'.format(_defaultFieldName)]
+            self.outputLines = [['{{*{0}*}}'.format(_defaultFieldName)]]
+        self.updateLineParsing()
+
+    def readFormat(self, formatData=None):
+        """Read JSON format data into this format.
+
+        Arguments:
+            formatData -- JSON dict for this format (None for default settings)
+        """
         self.fieldDict = collections.OrderedDict()
         if formatData:
             for fieldData in formatData['fields']:
@@ -48,13 +62,10 @@ class NodeFormat:
         self.outputLines = [formatData.get('outputlines', [])]
         self.spaceBetween = formatData.get('spacebetween', True)
         self.formatHtml = formatData.get('formathtml', False)
+        self.useBullets = formatData.get('bullets', False)
+        self.useTables = formatData.get('tables', False)
         self.childType = formatData.get('childtype', '')
         self.iconName = formatData.get('icon', '')
-        if addDefaultField:
-            self.addFieldIfNew(_defaultFieldName)
-            self.titleLine = ['{{*{0}*}}'.format(_defaultFieldName)]
-            self.outputLines = [['{{*{0}*}}'.format(_defaultFieldName)]]
-        self.updateLineParsing()
 
     def storeFormat(self):
         """Return JSON format data for this format.
@@ -68,11 +79,25 @@ class NodeFormat:
             formatData['spacebetween'] = False
         if self.formatHtml:
             formatData['formathtml'] = True
+        if self.useBullets:
+            formatData['bullets'] = True
+        if self.useTables:
+            formatData['tables'] = True
         if self.childType:
             formatData['childtype'] = self.childType
         if self.iconName:
             formatData['icon'] = self.iconName
         return formatData
+
+    def copySettings(self, sourceFormat):
+        """Copy all settings from another format to this one.
+
+        Arguments:
+            sourceFormat -- the format to copy
+        """
+        self.name = sourceFormat.name
+        self.readFormat(sourceFormat.storeFormat())
+        self.updateLineParsing()
 
     def fields(self):
         """Return list of all fields.

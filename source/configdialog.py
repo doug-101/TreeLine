@@ -38,7 +38,7 @@ class ConfigDialog(QDialog):
     Contains the tabbed pages that handle the actual settings.
     """
     dialogShown = pyqtSignal(bool)
-    modelRef = None
+    treeStruct = None
     formatsRef = None
     currentTypeName = ''
     currentFieldName = ''
@@ -53,6 +53,7 @@ class ConfigDialog(QDialog):
         self.setWindowFlags(Qt.Window)
         self.setWindowTitle(_('Configure Data Types'))
         self.prevPage = None
+        self.localControl = None
         self.selectionModel = None
 
         topLayout = QVBoxLayout(self)
@@ -92,19 +93,20 @@ class ConfigDialog(QDialog):
         ctrlLayout.addWidget(cancelButton)
         cancelButton.clicked.connect(self.resetAndClose)
 
-    def setRefs(self, modelRef, selectionModel, resetSelect=False):
+    def setRefs(self, localControl, resetSelect=False):
         """Set refs to model and formats, then update dialog data.
 
         Sets current type to current node's type if resetSelect or if invalid.
         Sets current field to first field if resetSelect or if invalid.
         Arguments:
-            modelRef - a reference to the model and formats
-            selectionModel - holds node selection for initial selections
+            localControl -- a reference to the local control
             resetSelect -- if True, forces reset of current selections
         """
-        ConfigDialog.modelRef = modelRef
-        ConfigDialog.formatsRef = modelRef.getConfigDialogFormats()
-        self.selectionModel = selectionModel
+        self.localControl = localControl
+        ConfigDialog.treeStruct = localControl.structure
+        ConfigDialog.formatsRef = (ConfigDialog.treeStruct.
+                                   getConfigDialogFormats())
+        self.selectionModel = localControl.currentSelectionModel()
         self.updateSelections(resetSelect)
         self.setModified(modified=False)
         self.prevPage = None
@@ -119,7 +121,7 @@ class ConfigDialog(QDialog):
         if forceUpdate or (ConfigDialog.currentTypeName not in
                            ConfigDialog.formatsRef):
             ConfigDialog.currentTypeName = (self.selectionModel.currentNode().
-                                            formatName)
+                                            formatRef.name)
         if forceUpdate or (ConfigDialog.currentFieldName not in
                            ConfigDialog.formatsRef[ConfigDialog.
                            currentTypeName].fieldNames()):
@@ -166,7 +168,7 @@ class ConfigDialog(QDialog):
     def reset(self):
         """Set the formats back to original settings.
         """
-        ConfigDialog.formatsRef = (ConfigDialog.modelRef.
+        ConfigDialog.formatsRef = (ConfigDialog.treeStruct.
                                    getConfigDialogFormats(True))
         self.updateSelections()
         self.setModified(modified=False)
@@ -181,18 +183,17 @@ class ConfigDialog(QDialog):
         self.tabs.currentWidget().readChanges()
         if ConfigDialog.formatsRef.configModified:
             try:
-                ConfigDialog.modelRef.applyConfigDialogFormats()
+                ConfigDialog.treeStruct.applyConfigDialogFormats()
             except matheval.CircularMathError:
                 QMessageBox.warning(self, 'TreeLine',
                        _('Error - circular reference in math field equations'))
                 return False
-            ConfigDialog.formatsRef = (ConfigDialog.modelRef.
-                                       getConfigDialogFormats())
             self.setModified(modified=False)
-            pluginInterface = globalref.mainControl.pluginInterface
-            if pluginInterface:
-                pluginInterface.execCallback(pluginInterface.
-                                             formatChangeCallbacks)
+            self.localControl.updateAll()
+            # pluginInterface = globalref.mainControl.pluginInterface
+            # if pluginInterface:
+                # pluginInterface.execCallback(pluginInterface.
+                                             # formatChangeCallbacks)
         return True
 
     def applyAndClose(self):
@@ -382,8 +383,8 @@ class TypeListPage(ConfigPage):
             for nodeType in ConfigDialog.formatsRef.values():
                 if nodeType.childType == oldName:
                     nodeType.childType = dlg.text
-                if nodeType.genericType == oldName:
-                    nodeType.genericType = dlg.text
+                # if nodeType.genericType == oldName:
+                    # nodeType.genericType = dlg.text
             ConfigDialog.currentTypeName = dlg.text
             self.updateContent()
             self.mainDialogRef.setModified()
@@ -391,7 +392,7 @@ class TypeListPage(ConfigPage):
     def deleteType(self):
         """Delete the selected type based on button signal.
         """
-        if ConfigDialog.modelRef.root.usesType(ConfigDialog.currentTypeName):
+        if ConfigDialog.treeStruct.root.usesType(ConfigDialog.currentTypeName):
             QMessageBox.warning(self, 'TreeLine',
                               _('Cannot delete data type being used by nodes'))
             return
@@ -555,29 +556,29 @@ class TypeConfigPage(ConfigPage):
         self.htmlButton.setEnabled(not currentFormat.useBullets and
                                    not currentFormat.useTables)
 
-        self.outputSepEdit.setText(currentFormat.outputSeparator)
+        # self.outputSepEdit.setText(currentFormat.outputSeparator)
 
-        self.idFieldCombo.blockSignals(True)
-        self.idFieldCombo.clear()
-        self.idFieldCombo.addItems(currentFormat.fieldNames())
-        self.idFieldCombo.setCurrentIndex(currentFormat.fieldNames().
-                                          index(currentFormat.idField.name))
-        self.idFieldCombo.blockSignals(False)
-        self.idFieldCombo.setEnabled(not currentFormat.genericType)
+        # self.idFieldCombo.blockSignals(True)
+        # self.idFieldCombo.clear()
+        # self.idFieldCombo.addItems(currentFormat.fieldNames())
+        # self.idFieldCombo.setCurrentIndex(currentFormat.fieldNames().
+                                          # index(currentFormat.idField.name))
+        # self.idFieldCombo.blockSignals(False)
+        # self.idFieldCombo.setEnabled(not currentFormat.genericType)
 
-        self.genericCombo.blockSignals(True)
-        self.genericCombo.clear()
-        self.genericCombo.addItem(_noTypeSetName)
-        typeNames = [name for name in typeNames if
-                     name != ConfigDialog.currentTypeName]
-        self.genericCombo.addItems(typeNames)
-        try:
-            generic = typeNames.index(currentFormat.genericType) + 1
-        except ValueError:
-            generic = 0
-        self.genericCombo.setCurrentIndex(generic)
-        self.genericCombo.blockSignals(False)
-        self.setConditionAvail()
+        # self.genericCombo.blockSignals(True)
+        # self.genericCombo.clear()
+        # self.genericCombo.addItem(_noTypeSetName)
+        # typeNames = [name for name in typeNames if
+                     # name != ConfigDialog.currentTypeName]
+        # self.genericCombo.addItems(typeNames)
+        # try:
+            # generic = typeNames.index(currentFormat.genericType) + 1
+        # except ValueError:
+            # generic = 0
+        # self.genericCombo.setCurrentIndex(generic)
+        # self.genericCombo.blockSignals(False)
+        # self.setConditionAvail()
 
     def changeIcon(self):
         """Show the change icon dialog based on a button press.
@@ -674,34 +675,34 @@ class TypeConfigPage(ConfigPage):
         currentFormat.childType = self.childCombo.currentText()
         if currentFormat.childType == _noTypeSetName:
             currentFormat.childType = ''
-        currentFormat.outputSeparator = self.outputSepEdit.text()
-        oldIdField = currentFormat.idField
-        prevGenericType = currentFormat.genericType
-        currentFormat.genericType = self.genericCombo.currentText()
-        if currentFormat.genericType == _noTypeSetName:
-            currentFormat.genericType = ''
-        if currentFormat.genericType != prevGenericType:
-            ConfigDialog.formatsRef.updateDerivedRefs()
-            currentFormat.updateFromGeneric(formatsRef=ConfigDialog.formatsRef)
+        # currentFormat.outputSeparator = self.outputSepEdit.text()
+        # oldIdField = currentFormat.idField
+        # prevGenericType = currentFormat.genericType
+        # currentFormat.genericType = self.genericCombo.currentText()
+        # if currentFormat.genericType == _noTypeSetName:
+            # currentFormat.genericType = ''
+        # if currentFormat.genericType != prevGenericType:
+            # ConfigDialog.formatsRef.updateDerivedRefs()
+            # currentFormat.updateFromGeneric(formatsRef=ConfigDialog.formatsRef)
         currentFormat.spaceBetween = self.blanksButton.isChecked()
         currentFormat.formatHtml = self.htmlButton.isChecked()
         useBullets = self.bulletButton.isChecked()
         useTables = self.tableButton.isChecked()
-        if (useBullets != currentFormat.useBullets or
-            useTables != currentFormat.useTables):
-            currentFormat.useBullets = useBullets
-            currentFormat.useTables = useTables
-            if useBullets:
-                currentFormat.addBullets()
-            elif useTables:
-                currentFormat.addTables()
-            else:
-                currentFormat.clearBulletsAndTables()
-        currentFormat.idField = currentFormat.fieldDict[self.idFieldCombo.
-                                                        currentText()]
-        if currentFormat.idField != oldIdField:
-            currentFormat.updateDerivedTypes()
-            ConfigDialog.formatsRef.changedIdFieldTypes.add(currentFormat)
+        # if (useBullets != currentFormat.useBullets or
+            # useTables != currentFormat.useTables):
+            # currentFormat.useBullets = useBullets
+            # currentFormat.useTables = useTables
+            # if useBullets:
+                # currentFormat.addBullets()
+            # elif useTables:
+                # currentFormat.addTables()
+            # else:
+                # currentFormat.clearBulletsAndTables()
+        # currentFormat.idField = currentFormat.fieldDict[self.idFieldCombo.
+                                                        # currentText()]
+        # if currentFormat.idField != oldIdField:
+            # currentFormat.updateDerivedTypes()
+            # ConfigDialog.formatsRef.changedIdFieldTypes.add(currentFormat)
 
 
 class FieldListPage(ConfigPage):
@@ -793,13 +794,12 @@ class FieldListPage(ConfigPage):
         self.fieldListBox.setColumnWidth(2, width // 5)
         self.fieldListBox.blockSignals(False)
         num = currentFormat.fieldNames().index(ConfigDialog.currentFieldName)
-        self.upButton.setEnabled(num > 0 and not  currentFormat.genericType)
-        self.downButton.setEnabled(num < len(currentFormat.fieldDict) - 1 and
-                                   not currentFormat.genericType)
-        self.newButton.setEnabled(not currentFormat.genericType)
-        self.renameButton.setEnabled(not currentFormat.genericType)
-        self.deleteButton.setEnabled(len(currentFormat.fieldDict) > 1 and
-                                     not currentFormat.genericType)
+        # need to disable all below buttons for generic types
+        self.upButton.setEnabled(num > 0)
+        self.downButton.setEnabled(num < len(currentFormat.fieldDict) - 1)
+        # self.newButton.setEnabled(not currentFormat.genericType)
+        # self.renameButton.setEnabled(not currentFormat.genericType)
+        self.deleteButton.setEnabled(len(currentFormat.fieldDict) > 1)
 
     def changeField(self, currentItem, prevItem):
         """Change the current format field based on a tree widget signal.
@@ -845,7 +845,7 @@ class FieldListPage(ConfigPage):
         if dlg.exec_() == QDialog.Accepted:
             currentFormat.addField(dlg.text)
             ConfigDialog.currentFieldName = dlg.text
-            currentFormat.updateDerivedTypes()
+            # currentFormat.updateDerivedTypes()
             self.updateContent()
             self.mainDialogRef.setModified()
 
@@ -861,18 +861,19 @@ class FieldListPage(ConfigPage):
         if dlg.exec_() == QDialog.Accepted:
             num = fieldList.index(oldName)
             fieldList[num] = dlg.text
-            for nodeFormat in [currentFormat] + currentFormat.derivedTypes:
+            # for nodeFormat in [currentFormat] + currentFormat.derivedTypes:
+            for nodeFormat in [currentFormat]:
                 field = nodeFormat.fieldDict[oldName]
                 field.name = dlg.text
                 nodeFormat.fieldDict[field.name] = field
                 nodeFormat.reorderFields(fieldList)
-                nodeFormat.conditional.renameFields(oldName, field.name)
-                savedConditions = {}
-                for name, text in nodeFormat.savedConditionText.items():
-                    condition = conditional.Conditional(text, nodeFormat.name)
-                    condition.renameFields(oldName, field.name)
-                    savedConditions[name] = condition.conditionStr()
-                nodeFormat.savedConditionText = savedConditions
+                # nodeFormat.conditional.renameFields(oldName, field.name)
+                # savedConditions = {}
+                # for name, text in nodeFormat.savedConditionText.items():
+                    # condition = conditional.Conditional(text, nodeFormat.name)
+                    # condition.renameFields(oldName, field.name)
+                    # savedConditions[name] = condition.conditionStr()
+                # nodeFormat.savedConditionText = savedConditions
                 renameDict = (ConfigDialog.formatsRef.fieldRenameDict.
                               setdefault(nodeFormat.name, {}))
                 # reverse rename dict - find original name (multiple renames)
@@ -1048,8 +1049,8 @@ class FieldConfigPage(ConfigPage):
         selectNum = fieldformat.fieldTypes.index(currentField.typeName)
         self.fieldTypeCombo.setCurrentIndex(selectNum)
         self.fieldTypeCombo.blockSignals(False)
-        self.fieldTypeCombo.setEnabled(not self.currentFileInfoField and
-                                       not currentFormat.genericType)
+        # also disable for generic types
+        self.fieldTypeCombo.setEnabled(not self.currentFileInfoField)
 
         self.formatBox.setEnabled(currentField.defaultFormat != '')
         if (hasattr(currentField, 'resultType') and
@@ -1072,8 +1073,9 @@ class FieldConfigPage(ConfigPage):
         self.heightCtrl.setValue(currentField.numLines)
         self.heightCtrl.blockSignals(False)
         self.heightBox.setEnabled(not self.currentFileInfoField and
-                                  issubclass(currentField.editorClass,
-                                             QTextEdit))
+                                  currentField.editorClassName in
+                                  ('RichTextEditor', 'HtmlTextEditor',
+                                   'PlainTextEditor'))
         self.htmlButton.blockSignals(True)
         self.htmlButton.setChecked(currentField.evalHtml)
         self.htmlButton.blockSignals(False)
@@ -1335,13 +1337,12 @@ class  OutputPage(ConfigPage):
 
         currentFormat = ConfigDialog.formatsRef[ConfigDialog.currentTypeName]
         self.updateFieldList()
-        lines = currentFormat.getLines()
         self.titleEdit.blockSignals(True)
-        self.titleEdit.setText(lines[0])
+        self.titleEdit.setText(currentFormat.getTitleLine())
         self.titleEdit.end(False)
         self.titleEdit.blockSignals(False)
         self.outputEdit.blockSignals(True)
-        self.outputEdit.setPlainText('\n'.join(lines[1:]))
+        self.outputEdit.setPlainText('\n'.join(currentFormat.getOutputLines()))
         cursor = self.outputEdit.textCursor()
         cursor.movePosition(QTextCursor.End)
         self.outputEdit.setTextCursor(cursor)
