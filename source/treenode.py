@@ -166,6 +166,19 @@ class TreeNode:
         """
         return self.formatRef.formatOutput(self, plainText, keepBlanks)
 
+    def changeDataType(self, formatRef):
+        """Change this node's data type to the given name.
+
+        Set init default data and update the title if blank.
+        Arguments:
+            formatRef -- the new tree format type
+        """
+        origTitle = self.title()
+        self.formatRef = formatRef
+        formatRef.setInitDefaultData(self.data)
+        if not formatRef.formatTitle(self):
+            formatRef.extractTitleData(origTitle, self.data)
+
     def setData(self, field, editorText):
         """Set the data entry for the given field to editorText.
 

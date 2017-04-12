@@ -272,6 +272,40 @@ class BranchUndo(UndoBase):
                 self.treeStructRef.addNodeDictRef(child)
 
 
+class TypeUndo(UndoBase):
+    """Info for undo/redo of tree node type name changes.
+
+    Also saves node data to cover blank node title replacement and
+    initial data settings.
+    """
+    def __init__(self, listRef, nodes, notRedo=True):
+        """Create the data undo class and add it to the undoStore.
+
+        Arguments:
+            listRef -- a ref to the undo/redo list this gets added to
+            nodes -- a node or a list of nodes to back up
+            notRedo -- if True, add clones and clear redo list (after changes)
+        """
+        super().__init__(listRef.localControlRef)
+        if not isinstance(nodes, list):
+            nodes = [nodes]
+        for node in nodes:
+            self.dataList.append((node, node.formatRef.name, node.data.copy()))
+        listRef.addUndoObj(self, notRedo)
+
+    def undo(self, redoRef):
+        """Save current state to redoRef and restore saved state.
+
+        Arguments:
+            redoRef -- the redo list where the current state is saved
+        """
+        if redoRef != None:
+            TypeUndo(redoRef, [data[0] for data in self.dataList], False)
+        for node, formatName, data in self.dataList:
+            node.formatRef = self.treeStructRef.treeFormats[formatName]
+            node.data = data
+
+
 class FormatUndo(UndoBase):
     """Info for undo/redo of tree node type format changes.
     """

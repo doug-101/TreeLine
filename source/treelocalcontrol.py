@@ -15,7 +15,7 @@
 import pathlib
 from PyQt5.QtCore import QObject, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QFileDialog,
-                             QMessageBox)
+                             QMenu, QMessageBox)
 import treestructure
 import treemodel
 import treewindow
@@ -266,6 +266,18 @@ class TreeLocalControl(QObject):
         editRedoAct.triggered.connect(self.editRedo)
         localActions['EditRedo'] = editRedoAct
 
+        title = _('&Set Node Type')
+        key = globalref.keyboardOptions['DataNodeType']
+        if not key.isEmpty():
+            title = '{0}  ({1})'.format(title, key.toString())
+        self.typeSubMenu = QMenu(title,
+                           statusTip=_('Set the node type for selected nodes'))
+        self.typeSubMenu.aboutToShow.connect(self.loadTypeSubMenu)
+        self.typeSubMenu.triggered.connect(self.dataSetType)
+        typeContextMenuAct = QAction(_('Set Node Type'), self.typeSubMenu)
+        typeContextMenuAct.triggered.connect(self.showTypeContextMenu)
+        localActions['DataNodeType'] = typeContextMenuAct
+
         for name, action in localActions.items():
             icon = globalref.toolIcons.getIcon(name.lower())
             if icon:
@@ -346,6 +358,48 @@ class TreeLocalControl(QObject):
         """
         self.structure.redoList.undo()
         self.updateAll(False)
+
+    def dataSetType(self, action):
+        """Change the type of selected nodes based on a menu selection.
+
+        Arguments:
+            action -- the menu action containing the new type name
+        """
+        newType = action.toolTip()   # gives menu name without the accelerator
+        nodes = [node for node in self.currentSelectionModel().selectedNodes()
+                 if node.formatRef.name != newType]
+        if nodes:
+            undo.TypeUndo(self.structure.undoList, nodes)
+            for node in nodes:
+                node.changeDataType(self.structure.treeFormats[newType])
+        self.updateAll()
+
+    def loadTypeSubMenu(self):
+        """Update type select submenu with type names and check marks.
+        """
+        selectTypes = {node.formatRef.name for node in
+                       self.currentSelectionModel().selectedNodes()}
+        typeNames = self.structure.treeFormats.typeNames()
+        self.typeSubMenu.clear()
+        usedShortcuts = []
+        for name in typeNames:
+            shortcutPos = 0
+            try:
+                while [shortcutPos] in usedShortcuts:
+                    shortcutPos += 1
+                usedShortcuts.append(name[shortcutPos])
+                text = '{0}&{1}'.format(name[:shortcutPos], name[shortcutPos:])
+            except IndexError:
+                text = name
+            action = self.typeSubMenu.addAction(text)
+            action.setCheckable(True)
+            if name in selectTypes:
+                action.setChecked(True)
+
+    def showTypeContextMenu(self):
+        """Show a type set menu at the current tree view item.
+        """
+        self.activeWindow.treeView.showTypeMenu(self.typeSubMenu)
 
     def windowNew(self, offset=30):
         """Open a new window for this file.

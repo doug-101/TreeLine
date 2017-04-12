@@ -228,6 +228,10 @@ class TreeWindow(QMainWindow):
         editMenu.addSeparator()
 
         dataMenu = self.menuBar().addMenu(_('&Data'))
+        # add action's parent to get the sub-menu
+        dataMenu.addMenu(self.allActions['DataNodeType'].parent())
+        # add the action to activate the shortcut key
+        self.addAction(self.allActions['DataNodeType'])
         dataMenu.addAction(self.allActions['DataConfigType'])
 
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
