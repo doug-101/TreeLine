@@ -242,7 +242,6 @@ class BranchUndo(UndoBase):
         super().__init__(listRef.localControlRef)
         if not isinstance(nodes, list):
             nodes = [nodes]
-        self.modelRef = listRef.localControlRef.model
         for parent in nodes:
             for node in parent.descendantGen():
                 self.dataList.append((node, node.data.copy(),
@@ -271,3 +270,48 @@ class BranchUndo(UndoBase):
             for child in childList:
                 child.addSpotRef(node)
                 self.treeStructRef.addNodeDictRef(child)
+
+
+class FormatUndo(UndoBase):
+    """Info for undo/redo of tree node type format changes.
+    """
+    def __init__(self, listRef, origTreeFormats, newTreeFormats,
+                 notRedo=True):
+        """Create the data undo class and add it to the undoStore.
+
+        Arguments:
+            listRef -- a ref to the undo/redo list this gets added to
+            origTreeFormats -- the format data to store
+            newTreeFormats -- the replacement format, contains rename dicts
+            notRedo -- if True, clear redo list (after changes)
+        """
+        super().__init__(listRef.localControlRef)
+        self.treeFormats = copy.deepcopy(origTreeFormats)
+        self.treeFormats.fieldRenameDict = {}
+        for typeName, fieldDict in newTreeFormats.fieldRenameDict.items():
+            self.treeFormats.fieldRenameDict[typeName] = {}
+            for oldName, newName in fieldDict.items():
+                self.treeFormats.fieldRenameDict[typeName][newName] = oldName
+        self.treeFormats.typeRenameDict = {}
+        for oldName, newName in newTreeFormats.typeRenameDict.items():
+            self.treeFormats.typeRenameDict[newName] = oldName
+            if newName in self.treeFormats.fieldRenameDict:
+                self.treeFormats.fieldRenameDict[oldName] = (self.treeFormats.
+                                                      fieldRenameDict[newName])
+                del self.treeFormats.fieldRenameDict[newName]
+        listRef.addUndoObj(self, notRedo)
+
+    def undo(self, redoRef):
+        """Save current state to redoRef and restore saved state.
+
+        Arguments:
+            redoRef -- the redo list where the current state is saved
+        """
+        if redoRef != None:
+            FormatUndo(redoRef, self.treeStructRef.treeFormats,
+                       self.treeFormats, False)
+        self.treeStructRef.configDialogFormats = self.treeFormats
+        self.treeStructRef.applyConfigDialogFormats(False)
+        dialog = globalref.mainControl.configDialog
+        if dialog and dialog.isVisible():
+            dialog.reset()

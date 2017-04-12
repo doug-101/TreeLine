@@ -47,7 +47,6 @@ class TextField:
         self.name = name
         if not formatData:
             formatData = {}
-        self.setFormat(formatData.get('format', type(self).defaultFormat))
         self.prefix = formatData.get('prefix', '')
         self.suffix = formatData.get('suffix', '')
         self.initDefault = formatData.get('init', '')
@@ -59,6 +58,7 @@ class TextField:
             self.evalHtml = formatData.get('evalhtml', self.evalHtmlDefault)
         self.useFileInfo = False
         self.showInDialog = True
+        self.setFormat(formatData.get('format', type(self).defaultFormat))
 
     def formatData(self):
         """Return a dictionary of this field's format settings.

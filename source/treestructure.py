@@ -17,6 +17,7 @@ import operator
 import copy
 import treenode
 import treeformats
+import undo
 try:
     from __main__ import __version__
 except ImportError:
@@ -172,7 +173,8 @@ class TreeStructure:
         Also updates all nodes for changed type and field names.
         """
         if addUndo:
-            pass
+            undo.FormatUndo(self.undoList, self.treeFormats,
+                            self.configDialogFormats)
         self.treeFormats.copySettings(self.configDialogFormats)
         if self.configDialogFormats.fieldRenameDict:
             for node in self.nodeDict.values():
@@ -185,3 +187,14 @@ class TreeStructure:
                         del node.data[oldName]
                 node.data.update(tmpDataDict)
             self.configDialogFormats.fieldRenameDict = {}
+
+    def usesType(self, typeName):
+        """Return true if any nodes use the give node format type.
+
+        Arguments:
+            typeName -- the format name to search for
+        """
+        for node in self.nodeDict.values():
+            if node.formatRef.name == typeName:
+                return True
+        return False

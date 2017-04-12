@@ -182,12 +182,13 @@ class ConfigDialog(QDialog):
         """
         self.tabs.currentWidget().readChanges()
         if ConfigDialog.formatsRef.configModified:
-            try:
-                ConfigDialog.treeStruct.applyConfigDialogFormats()
-            except matheval.CircularMathError:
-                QMessageBox.warning(self, 'TreeLine',
-                       _('Error - circular reference in math field equations'))
-                return False
+            ConfigDialog.treeStruct.applyConfigDialogFormats()
+            # try:
+                # ConfigDialog.treeStruct.applyConfigDialogFormats()
+            # except matheval.CircularMathError:
+                # QMessageBox.warning(self, 'TreeLine',
+                       # _('Error - circular reference in math field equations'))
+                # return False
             self.setModified(modified=False)
             self.localControl.updateAll()
             # pluginInterface = globalref.mainControl.pluginInterface
@@ -328,9 +329,7 @@ class TypeListPage(ConfigPage):
         dlg = NameEntryDialog(_('Add Type'), _('Enter new type name:'), '', '',
                               ConfigDialog.formatsRef.typeNames(), self)
         if dlg.exec_() == QDialog.Accepted:
-            newFormat = nodeformat.NodeFormat(dlg.text,
-                                              ConfigDialog.formatsRef, {},
-                                              True)
+            newFormat = nodeformat.NodeFormat(dlg.text, None, True)
             ConfigDialog.formatsRef[dlg.text] = newFormat
             ConfigDialog.currentTypeName = dlg.text
             ConfigDialog.currentFieldName = newFormat.fieldNames()[0]
@@ -342,19 +341,19 @@ class TypeListPage(ConfigPage):
         """
         currentFormat = ConfigDialog.formatsRef[ConfigDialog.currentTypeName]
         dlg = NameEntryDialog(_('Copy Type'), _('Enter new type name:'),
-                              ConfigDialog.currentTypeName,
-                              _('&Derive from original'),
+                              ConfigDialog.currentTypeName, '',
+                              # _('&Derive from original'),
                               ConfigDialog.formatsRef.typeNames(), self)
-        if currentFormat.genericType:
-            dlg.extraCheckBox.setEnabled(False)
+        # if currentFormat.genericType:
+            # dlg.extraCheckBox.setEnabled(False)
         if dlg.exec_() == QDialog.Accepted:
             newFormat = copy.deepcopy(currentFormat)
             newFormat.name = dlg.text
             ConfigDialog.formatsRef[dlg.text] = newFormat
             ConfigDialog.currentTypeName = dlg.text
-            if dlg.extraChecked:
-                newFormat.genericType = currentFormat.name
-            ConfigDialog.formatsRef.updateDerivedRefs()
+            # if dlg.extraChecked:
+                # newFormat.genericType = currentFormat.name
+            # ConfigDialog.formatsRef.updateDerivedRefs()
             self.updateContent()
             self.mainDialogRef.setModified()
 
@@ -392,18 +391,26 @@ class TypeListPage(ConfigPage):
     def deleteType(self):
         """Delete the selected type based on button signal.
         """
-        if ConfigDialog.treeStruct.root.usesType(ConfigDialog.currentTypeName):
+        # reverse the rename dict - find original name (before any rename)
+        reverseDict = {}
+        for old, new in ConfigDialog.formatsRef.typeRenameDict.items():
+            reverseDict[new] = old
+        origName = reverseDict.get(ConfigDialog.currentTypeName,
+                                   ConfigDialog.currentTypeName)
+        if ConfigDialog.treeStruct.usesType(origName):
             QMessageBox.warning(self, 'TreeLine',
                               _('Cannot delete data type being used by nodes'))
             return
         del ConfigDialog.formatsRef[ConfigDialog.currentTypeName]
+        if origName != ConfigDialog.currentTypeName:
+            del ConfigDialog.formatsRef.typeRenameDict[origName]
         for nodeType in ConfigDialog.formatsRef.values():
             if nodeType.childType == ConfigDialog.currentTypeName:
                 nodeType.childType = ''
-            if nodeType.genericType == ConfigDialog.currentTypeName:
-                nodeType.genericType = ''
-                nodeType.conditional = conditional.Conditional()
-        ConfigDialog.formatsRef.updateDerivedRefs()
+            # if nodeType.genericType == ConfigDialog.currentTypeName:
+                # nodeType.genericType = ''
+                # nodeType.conditional = conditional.Conditional()
+        # ConfigDialog.formatsRef.updateDerivedRefs()
         ConfigDialog.currentTypeName = ConfigDialog.formatsRef.typeNames()[0]
         ConfigDialog.currentFieldName = ConfigDialog.formatsRef[ConfigDialog.
                                                currentTypeName].fieldNames()[0]
@@ -459,12 +466,12 @@ class TypeConfigPage(ConfigPage):
         self.htmlButton = QCheckBox(_('Allow &HTML rich text in format'))
         optionsLayout.addWidget(self.htmlButton)
         self.htmlButton.toggled.connect(self.mainDialogRef.setModified)
-        self.bulletButton = QCheckBox(_('Add text bullet&s'))
-        optionsLayout.addWidget(self.bulletButton)
-        self.bulletButton.toggled.connect(self.changeUseBullets)
-        self.tableButton = QCheckBox(_('Use a table for field &data'))
-        optionsLayout.addWidget(self.tableButton)
-        self.tableButton.toggled.connect(self.changeUseTable)
+        # self.bulletButton = QCheckBox(_('Add text bullet&s'))
+        # optionsLayout.addWidget(self.bulletButton)
+        # self.bulletButton.toggled.connect(self.changeUseBullets)
+        # self.tableButton = QCheckBox(_('Use a table for field &data'))
+        # optionsLayout.addWidget(self.tableButton)
+        # self.tableButton.toggled.connect(self.changeUseTable)
 
         # advanced widgets
         outputSepBox = QGroupBox(_('Combination && Child List Output '
@@ -545,13 +552,13 @@ class TypeConfigPage(ConfigPage):
         self.htmlButton.setChecked(currentFormat.formatHtml)
         self.htmlButton.blockSignals(False)
 
-        self.bulletButton.blockSignals(True)
-        self.bulletButton.setChecked(currentFormat.useBullets)
-        self.bulletButton.blockSignals(False)
+        # self.bulletButton.blockSignals(True)
+        # self.bulletButton.setChecked(currentFormat.useBullets)
+        # self.bulletButton.blockSignals(False)
 
-        self.tableButton.blockSignals(True)
-        self.tableButton.setChecked(currentFormat.useTables)
-        self.tableButton.blockSignals(False)
+        # self.tableButton.blockSignals(True)
+        # self.tableButton.setChecked(currentFormat.useTables)
+        # self.tableButton.blockSignals(False)
 
         self.htmlButton.setEnabled(not currentFormat.useBullets and
                                    not currentFormat.useTables)
@@ -686,8 +693,8 @@ class TypeConfigPage(ConfigPage):
             # currentFormat.updateFromGeneric(formatsRef=ConfigDialog.formatsRef)
         currentFormat.spaceBetween = self.blanksButton.isChecked()
         currentFormat.formatHtml = self.htmlButton.isChecked()
-        useBullets = self.bulletButton.isChecked()
-        useTables = self.tableButton.isChecked()
+        # useBullets = self.bulletButton.isChecked()
+        # useTables = self.tableButton.isChecked()
         # if (useBullets != currentFormat.useBullets or
             # useTables != currentFormat.useTables):
             # currentFormat.useBullets = useBullets
@@ -819,7 +826,7 @@ class FieldListPage(ConfigPage):
         if num > 0:
             fieldList[num-1], fieldList[num] = fieldList[num], fieldList[num-1]
             currentFormat.reorderFields(fieldList)
-            currentFormat.updateDerivedTypes()
+            # currentFormat.updateDerivedTypes()
             self.updateContent()
             self.mainDialogRef.setModified()
 
@@ -832,7 +839,7 @@ class FieldListPage(ConfigPage):
         if num < len(fieldList) - 1:
             fieldList[num], fieldList[num+1] = fieldList[num+1], fieldList[num]
             currentFormat.reorderFields(fieldList)
-            currentFormat.updateDerivedTypes()
+            # currentFormat.updateDerivedTypes()
             self.updateContent()
             self.mainDialogRef.setModified()
 
@@ -891,17 +898,15 @@ class FieldListPage(ConfigPage):
         """
         currentFormat = ConfigDialog.formatsRef[ConfigDialog.currentTypeName]
         num = currentFormat.fieldNames().index(ConfigDialog.currentFieldName)
-        for nodeFormat in [currentFormat] + currentFormat.derivedTypes:
+        # for nodeFormat in [currentFormat] + currentFormat.derivedTypes:
+        for nodeFormat in [currentFormat]:
             field = nodeFormat.fieldDict[ConfigDialog.currentFieldName]
             nodeFormat.removeField(field)
             del nodeFormat.fieldDict[ConfigDialog.currentFieldName]
-            if nodeFormat.idField == field:
-                nodeFormat.idField = list(nodeFormat.fieldDict.values())[0]
-                ConfigDialog.formatsRef.changedIdFieldTypes.add(nodeFormat)
         if num > 0:
             num -= 1
         ConfigDialog.currentFieldName = currentFormat.fieldNames()[num]
-        ConfigDialog.formatsRef.updateDerivedRefs()
+        # ConfigDialog.formatsRef.updateDerivedRefs()
         self.updateContent()
         self.mainDialogRef.setModified()
 
@@ -1141,7 +1146,7 @@ class FieldConfigPage(ConfigPage):
         selectNum = self.fieldTypeCombo.currentIndex()
         fieldTypeName = fieldformat.fieldTypes[selectNum]
         currentField.changeType(fieldTypeName)
-        currentFormat.updateDerivedTypes()
+        # currentFormat.updateDerivedTypes()
         self.updateContent()
         self.mainDialogRef.setModified()
 

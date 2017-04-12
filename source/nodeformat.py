@@ -220,8 +220,8 @@ class NodeFormat:
             while field in lineData:
                 lineData.remove(field)
         self.outputLines = [line for line in self.outputLines if line]
-        if len(self.lineList) == 0:
-            self.lineList.append([''])
+        # if len(self.lineList) == 0:
+            # self.lineList.append([''])
 
     def setInitDefaultData(self, data, overwrite=False):
         """Add initial default data from fields into supplied data dict.
