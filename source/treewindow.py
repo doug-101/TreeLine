@@ -226,6 +226,11 @@ class TreeWindow(QMainWindow):
         editMenu.addAction(self.allActions['EditUndo'])
         editMenu.addAction(self.allActions['EditRedo'])
         editMenu.addSeparator()
+        editMenu.addAction(self.allActions['EditCut'])
+        editMenu.addAction(self.allActions['EditCopy'])
+        editMenu.addAction(self.allActions['EditPaste'])
+        editMenu.addAction(self.allActions['EditPastePlain'])
+        editMenu.addAction(self.allActions['EditPasteClone'])
 
         dataMenu = self.menuBar().addMenu(_('&Data'))
         # add action's parent to get the sub-menu

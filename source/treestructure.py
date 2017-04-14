@@ -12,7 +12,6 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-import json
 import operator
 import copy
 import treenode
@@ -29,12 +28,13 @@ _defaultRootTitle = _('Main')
 class TreeStructure:
     """Class to store all tree data.
     """
-    def __init__(self, fileObj=None, addDefaults=False):
-        """Retrive a TreeLine file to create a tree structure.
+    def __init__(self, fileData=None, topNodes=None, addDefaults=False):
+        """Create and store a tree structure from file data.
 
-        If no file object is given, create an empty or a default new structure.
+        If no file data is given, create an empty or a default new structure.
         Arguments:
-            fileObj -- a file-like object
+            fileData -- a dict in JSON file format of a structure
+            topNodes -- existing top-level nodes to add to a structure
             addDefaults - if true, adds default new structure
         """
         self.nodeDict = {}
@@ -44,8 +44,7 @@ class TreeStructure:
         self.undoList = None
         self.redoList = None
         self.configDialogFormats = None
-        if fileObj:
-            fileData = json.load(fileObj)
+        if fileData:
             self.treeFormats = treeformats.TreeFormats(fileData['formats'])
             for nodeInfo in fileData['nodes']:
                 formatRef = self.treeFormats[nodeInfo['format']]
@@ -57,6 +56,13 @@ class TreeStructure:
                 node = self.nodeDict[uid]
                 self.childList.append(node)
                 node.generateSpots(None)
+        elif topNodes:
+            self.childList = topNodes
+            self.treeFormats = treeformats.TreeFormats()
+            for topNode in topNodes:
+                for node in topNode.descendantGen():
+                    self.nodeDict[node.uId] = node
+                    self.treeFormats.addTypeIfMissing(node.formatRef)
         elif addDefaults:
             self.treeFormats = treeformats.TreeFormats(setDefault=True)
             node = treenode.TreeNode(self.treeFormats[treeformats.
@@ -68,11 +74,8 @@ class TreeStructure:
         else:
             self.treeFormats = treeformats.TreeFormats()
 
-    def storeFile(self, fileObj):
-        """Save a TreeLine file.
-
-        Arguments:
-            fileObj -- a file-like object
+    def fileData(self):
+        """Return a fileData dict in JSON file format.
         """
         formats = self.treeFormats.storeFormats()
         nodeList = sorted([node.fileData() for node in self.nodeDict.values()],
@@ -81,7 +84,7 @@ class TreeStructure:
         properties = {'tlversion': __version__, 'topnodes': topNodeIds}
         fileData = {'formats': formats, 'nodes': nodeList,
                     'properties': properties}
-        json.dump(fileData, fileObj, indent=3, sort_keys=True)
+        return fileData
 
     def addNodeDictRef(self, node):
         """Add the given node to the node dictionary.

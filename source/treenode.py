@@ -241,3 +241,15 @@ class TreeNode:
                 else:
                     oldNode.removeInvalidSpotRefs()
         self.childList = newChildList
+
+    def exportTitleText(self, level=0):
+        """Return a list of tabbed title lines for this node and descendants.
+
+        Arguments:
+            level -- indicates the indent level needed
+        """
+        textList = ['\t' * level + self.title()]
+        for child in self.childList:
+            textList.extend(child.exportTitleText(level + 1, openOnly))
+        return textList
+

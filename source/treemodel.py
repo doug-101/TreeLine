@@ -12,8 +12,10 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-from PyQt5.QtCore import (QAbstractItemModel, QModelIndex, Qt)
+import json
+from PyQt5.QtCore import (QAbstractItemModel, QMimeData, QModelIndex, Qt)
 import undo
+import treestructure
 import globalref
 
 
@@ -122,3 +124,63 @@ class TreeModel(QAbstractItemModel):
         return (Qt.ItemIsEnabled | Qt.ItemIsSelectable |
                 Qt.ItemIsEditable | Qt.ItemIsDragEnabled |
                 Qt.ItemIsDropEnabled)
+
+    def mimeData(self, indexList):
+        """Return a mime data object for the given node index branches.
+
+        Arguments:
+            indexList -- a list of node indexes to convert
+        """
+        nodes = [index.internalPointer().nodeRef for index in indexList]
+        TreeModel.storedDragNodes = nodes
+        TreeModel.storedDragModel = self
+        data = treestructure.TreeStructure(topNodes=nodes).fileData()
+        dataStr = json.dumps(data, indent=0, sort_keys=True)
+        mime = QMimeData()
+        mime.setData('application/json', bytes(dataStr, encoding='utf-8'))
+        return mime
+
+    def mimeTypes(self):
+        """Return a list of supported mime types for model objects.
+        """
+        return ['application/json']
+
+    def supportedDropActions(self):
+        """Return drop action enum values that are supported by this model.
+        """
+        return Qt.CopyAction | Qt.MoveAction
+
+    def dropMimeData(self, mimeData, dropAction, row, column, index):
+        """Decode mime data and add as a child node to the given index.
+
+        Return True if successful.
+        Arguments:
+            mimeData -- data for the node branch to be added
+            dropAction -- a drop type enum value
+            row -- a row number for the drop location (ignored, can be 0)
+            column -- the coumn number for the drop location (normally 0)
+            index -- the index of the parent node for the drop
+
+        """
+        parent = index.internalPointer()
+        if not parent:
+            return False
+        isMove = (dropAction == Qt.MoveAction and
+                  TreeModel.storedDragModel == self)
+        undoParents = [parent] + list(parent.cloneGen())
+        if isMove:
+            moveParents = {node.parent for node in TreeModel.storedDragNodes}
+            undoParents.extend(list(moveParents))
+        nodeList = self.nodesFromMimeData(mimeData)
+        if nodeList:
+            undo.BranchFormatUndo(self.undoList, undoParents, self.formats)
+            self.addNodesToModel(nodeList, parent, row)
+            for clone in parent.cloneGen():
+                newNodeList = [node.newBranchClone() for node in nodeList]
+                self.addNodesToModel(newNodeList, clone, row, False)
+            if isMove:
+                for node in TreeModel.storedDragNodes:
+                    node.delete()
+            self.allModified.emit()
+            return True
+        return False

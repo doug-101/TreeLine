@@ -13,6 +13,11 @@
 #******************************************************************************
 
 import collections
+import json
+from PyQt5.QtCore import QMimeData
+from PyQt5.QtGui import QClipboard
+from PyQt5.QtWidgets import (QApplication, QMessageBox)
+import treestructure
 
 
 class TreeNodeList(list):
@@ -35,3 +40,20 @@ class TreeNodeList(list):
                 for node in self:
                     tmpDict[node.uId] = node
                 self[:] = list(tmpDict.values())
+
+    def copyNodes(self):
+        """Copy these node branches to the clipboard.
+        """
+        if not self:
+            return
+        clip = QApplication.clipboard()
+        if clip.supportsSelection():
+            titleList = []
+            for node in self:
+                titleList.extend(node.exportTitleText())
+            clip.setText('\n'.join(titleList), QClipboard.Selection)
+        data = treestructure.TreeStructure(topNodes=self).fileData()
+        dataStr = json.dumps(data, indent=0, sort_keys=True)
+        mime = QMimeData()
+        mime.setData('application/json', bytes(dataStr, encoding='utf-8'))
+        clip.setMimeData(mime)

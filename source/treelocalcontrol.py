@@ -13,6 +13,7 @@
 #******************************************************************************
 
 import pathlib
+import json
 from PyQt5.QtCore import QObject, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QFileDialog,
                              QMenu, QMessageBox)
@@ -49,10 +50,10 @@ class TreeLocalControl(QObject):
         if treeStruct:
             self.structure = treeStruct
         elif fileObj and hasattr(fileObj, 'read'):
-            self.structure = treestructure.TreeStructure(fileObj)
+            self.structure = treestructure.TreeStructure(json.load(fileObj))
         elif fileObj:
             with fileObj.open('r', encoding='utf-8') as f:
-                self.structure = treestructure.TreeStructure(f)
+                self.structure = treestructure.TreeStructure(json.load(f))
         else:
             self.structure = treestructure.TreeStructure(addDefaults=True)
         self.model = treemodel.TreeModel(self.structure)
@@ -266,6 +267,31 @@ class TreeLocalControl(QObject):
         editRedoAct.triggered.connect(self.editRedo)
         localActions['EditRedo'] = editRedoAct
 
+        editCutAct = QAction(_('Cu&t'), self,
+                        statusTip=_('Cut the branch or text to the clipboard'))
+        editCutAct.triggered.connect(self.editCut)
+        localActions['EditCut'] = editCutAct
+
+        editCopyAct = QAction(_('&Copy'), self,
+                       statusTip=_('Copy the branch or text to the clipboard'))
+        editCopyAct.triggered.connect(self.editCopy)
+        localActions['EditCopy'] = editCopyAct
+
+        editPasteAct = QAction(_('&Paste'), self,
+                         statusTip=_('Paste nodes or text from the clipboard'))
+        editPasteAct.triggered.connect(self.editPaste)
+        localActions['EditPaste'] = editPasteAct
+
+        editPastePlainAct = QAction(_('P&aste Plain Text'), self,
+                    statusTip=_('Paste non-formatted text from the clipboard'))
+        editPastePlainAct.setEnabled(False)
+        localActions['EditPastePlain'] = editPastePlainAct
+
+        editPasteCloneAct = QAction(_('Paste Clone&d Node'), self,
+                  statusTip=_('Paste nodes that are linked to stay identical'))
+        editPasteCloneAct.triggered.connect(self.editPasteClone)
+        localActions['EditPasteClone'] = editPasteCloneAct
+
         title = _('&Set Node Type')
         key = globalref.keyboardOptions['DataNodeType']
         if not key.isEmpty():
@@ -300,9 +326,10 @@ class TreeLocalControl(QObject):
         savePathObj = self.filePathObj
         if backupFile:
             savePathObj = pathlib.Path(str(savePathObj) + '~')
+        fileData = self.structure.fileData()
         try:
             with savePathObj.open('w', encoding='utf-8', newline='\n') as f:
-                self.structure.storeFile(f)
+                json.dump(fileData, f, indent=3, sort_keys=True)
         except IOError:
             QApplication.restoreOverrideCursor()
             QMessageBox.warning(self.activeWindow, 'TreeLine',
@@ -358,6 +385,63 @@ class TreeLocalControl(QObject):
         """
         self.structure.redoList.undo()
         self.updateAll(False)
+
+    def editCut(self):
+        """Cut the branch or text to the clipboard.
+        """
+        widget = QApplication.focusWidget()
+        try:
+            if widget.hasSelectedText():
+                widget.cut()
+                return
+        except AttributeError:
+            pass
+        self.currentSelectionModel().selectedNodes().copyNodes()
+        self.nodeDelete()
+
+    def editCopy(self):
+        """Copy the branch or text to the clipboard.
+
+        Copy from any selection in non-focused output view, or copy from
+        any focused editor, or copy from tree.
+        """
+        widgets = [QApplication.focusWidget()]
+        splitter = self.activeWindow.rightTabs.currentWidget()
+        if splitter == self.activeWindow.outputSplitter:
+            widgets[0:0] = [splitter.widget(0), splitter.widget(1)]
+        for widget in widgets:
+            try:
+                if widget.hasSelectedText():
+                    widget.copy()
+                    return
+            except AttributeError:
+                pass
+        self.currentSelectionModel().selectedNodes().copyNodes()
+
+    def editPaste(self):
+        """Paste nodes or text from the clipboard.
+        """
+        if self.activeWindow.treeView.hasFocus():
+            if (self.currentSelectionModel().selectedNodes().
+                pasteMimeData(QApplication.clipboard().mimeData())):
+                for spot in self.currentSelectionModel().selectedSpots():
+                    self.activeWindow.treeView.expandSpot(spot)
+                self.updateAll()
+        else:
+            widget = QApplication.focusWidget()
+            try:
+                widget.paste()
+            except AttributeError:
+                pass
+
+    def editPasteClone(self):
+        """Paste nodes that are linked to stay identical.
+        """
+        if (self.currentSelectionModel().selectedNodes().
+            cloneMimeData(QApplication.clipboard().mimeData())):
+            for spot in self.currentSelectionModel().selectedSpots():
+                self.activeWindow.treeView.expandSpot(spot)
+            self.updateAll()
 
     def dataSetType(self, action):
         """Change the type of selected nodes based on a menu selection.
