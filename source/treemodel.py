@@ -13,7 +13,8 @@
 #******************************************************************************
 
 import json
-from PyQt5.QtCore import (QAbstractItemModel, QMimeData, QModelIndex, Qt)
+from PyQt5.QtCore import (QAbstractItemModel, QMimeData, QModelIndex, Qt,
+                          pyqtSignal)
 import undo
 import treestructure
 import globalref
@@ -22,6 +23,7 @@ import globalref
 class TreeModel(QAbstractItemModel):
     """Class interfacing between the tree structure and the tree view.
     """
+    allModified = pyqtSignal()
     def __init__(self, treeStructure, parent=None):
         """Initialize a TreeModel.
 
@@ -134,7 +136,8 @@ class TreeModel(QAbstractItemModel):
         nodes = [index.internalPointer().nodeRef for index in indexList]
         TreeModel.storedDragNodes = nodes
         TreeModel.storedDragModel = self
-        data = treestructure.TreeStructure(topNodes=nodes).fileData()
+        data = treestructure.TreeStructure(topNodes=nodes,
+                                           addSpots=False).fileData()
         dataStr = json.dumps(data, indent=0, sort_keys=True)
         mime = QMimeData()
         mime.setData('application/json', bytes(dataStr, encoding='utf-8'))
@@ -162,22 +165,20 @@ class TreeModel(QAbstractItemModel):
             index -- the index of the parent node for the drop
 
         """
-        parent = index.internalPointer()
+        parent = index.internalPointer().nodeRef
         if not parent:
-            return False
+            parent = self.treeStructure
         isMove = (dropAction == Qt.MoveAction and
                   TreeModel.storedDragModel == self)
-        undoParents = [parent] + list(parent.cloneGen())
+        undoParents = [parent]
         if isMove:
             moveParents = {node.parent for node in TreeModel.storedDragNodes}
             undoParents.extend(list(moveParents))
-        nodeList = self.nodesFromMimeData(mimeData)
-        if nodeList:
-            undo.BranchFormatUndo(self.undoList, undoParents, self.formats)
-            self.addNodesToModel(nodeList, parent, row)
-            for clone in parent.cloneGen():
-                newNodeList = [node.newBranchClone() for node in nodeList]
-                self.addNodesToModel(newNodeList, clone, row, False)
+        newStruct = treestructure.structFromMimeData(mimeData)
+        if newStruct:
+            # undo.BranchFormatUndo(self.treeStructure.undoList, undoParents,
+                                  # self.treeStructure.treeFormats)
+            self.treeStructure.addNodesFromStruct(newStruct, parent, row)
             if isMove:
                 for node in TreeModel.storedDragNodes:
                     node.delete()

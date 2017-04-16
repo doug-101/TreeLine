@@ -12,7 +12,7 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QPoint, Qt
 from PyQt5.QtWidgets import (QAbstractItemView, QHeaderView, QTreeView)
 import treeselection
 import globalref
@@ -38,8 +38,11 @@ class TreeView(QTreeView):
         self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.header().setStretchLastSection(False)
         self.setHeaderHidden(True)
-        self.setUniformRowHeights(True)
         self.updateTreeGenOptions()
+        self.setDragDropMode(QAbstractItemView.DragDrop)
+        self.setDefaultDropAction(Qt.MoveAction)
+        self.setDropIndicatorShown(True)
+        self.setUniformRowHeights(True)
 
     def resetModel(self, model):
         """Change the model assigned to this view.
@@ -58,9 +61,9 @@ class TreeView(QTreeView):
             self.setEditTriggers(QAbstractItemView.SelectedClicked)
         else:
             self.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        # dragAvail = globalref.genOptions['DragTree']
-        # self.setDragEnabled(dragAvail)
-        # self.setAcceptDrops(dragAvail)
+        dragAvail = globalref.genOptions['DragTree']
+        self.setDragEnabled(dragAvail)
+        self.setAcceptDrops(dragAvail)
         self.setIndentation(globalref.genOptions['IndentOffset'] *
                             self.fontInfo().pixelSize())
 
