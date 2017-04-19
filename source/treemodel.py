@@ -23,7 +23,6 @@ import globalref
 class TreeModel(QAbstractItemModel):
     """Class interfacing between the tree structure and the tree view.
     """
-    allModified = pyqtSignal()
     def __init__(self, treeStructure, parent=None):
         """Initialize a TreeModel.
 
@@ -90,7 +89,10 @@ class TreeModel(QAbstractItemModel):
             index -- the spot's model index
             role  -- the type of data requested
         """
-        node = index.internalPointer().nodeRef
+        spot = index.internalPointer()
+        if not spot:
+            return None
+        node = spot.nodeRef
         if role in (Qt.DisplayRole, Qt.EditRole):
             return node.title()
         if (role == Qt.DecorationRole and
@@ -133,8 +135,9 @@ class TreeModel(QAbstractItemModel):
         Arguments:
             indexList -- a list of node indexes to convert
         """
-        nodes = [index.internalPointer().nodeRef for index in indexList]
-        TreeModel.storedDragNodes = nodes
+        TreeModel.storedDragSpots = [index.internalPointer() for index in
+                                     indexList]
+        nodes = [spot.nodeRef for spot in TreeModel.storedDragSpots]
         TreeModel.storedDragModel = self
         data = treestructure.TreeStructure(topNodes=nodes,
                                            addSpots=False).fileData()
@@ -165,23 +168,26 @@ class TreeModel(QAbstractItemModel):
             index -- the index of the parent node for the drop
 
         """
-        parent = index.internalPointer().nodeRef
-        if not parent:
-            parent = self.treeStructure
+        parentSpot = index.internalPointer()
+        parent = parentSpot.nodeRef if parentSpot else self.treeStructure
         isMove = (dropAction == Qt.MoveAction and
                   TreeModel.storedDragModel == self)
         undoParents = [parent]
         if isMove:
-            moveParents = {node.parent for node in TreeModel.storedDragNodes}
+            moveParents = {spot.parentSpot.nodeRef if spot.parentSpot else
+                           self.treeStructure for spot in
+                           TreeModel.storedDragSpots}
             undoParents.extend(list(moveParents))
         newStruct = treestructure.structFromMimeData(mimeData)
         if newStruct:
-            # undo.BranchFormatUndo(self.treeStructure.undoList, undoParents,
-                                  # self.treeStructure.treeFormats)
-            self.treeStructure.addNodesFromStruct(newStruct, parent, row)
+            undo.ChildListFormatUndo(self.treeStructure.undoList, undoParents,
+                                     self.treeStructure.treeFormats)
             if isMove:
-                for node in TreeModel.storedDragNodes:
-                    node.delete()
-            self.allModified.emit()
+                for spot in TreeModel.storedDragSpots:
+                    self.treeStructure.deleteNodeSpot(spot)
+                newStruct.replaceClonedBranches(self.treeStructure)
+            else:
+                newStruct.replaceDuplicateIds(self.treeStructure.nodeDict)
+            self.treeStructure.addNodesFromStruct(newStruct, parent, row)
             return True
         return False

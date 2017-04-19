@@ -76,3 +76,20 @@ class TreeView(QTreeView):
         """Collapse a spot in this view.
         """
         self.collapse(spot.index(self.model()))
+
+    def dropEvent(self, event):
+        """Event handler for view drop actions.
+
+        Selects parent node at destination.
+        Arguments:
+            event -- the drop event
+        """
+        clickedSpot = self.indexAt(event.pos()).internalPointer()
+        if clickedSpot:
+            super().dropEvent(event)
+            self.expandSpot(clickedSpot)
+            self.selectionModel().selectSpots([clickedSpot])
+        else:
+            super().dropEvent(event)
+            self.selectionModel().selectSpots([])
+        self.scheduleDelayedItemsLayout()

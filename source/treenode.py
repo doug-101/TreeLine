@@ -79,18 +79,20 @@ class TreeNode:
             for child in self.childList:
                 child.addSpotRef(self)
 
-    def removeInvalidSpotRefs(self):
+    def removeInvalidSpotRefs(self, includeChildren=True):
         """Verify existing spot refs and remove any that aren't valid.
 
-        If changed, propogate to descendant nodes.
+        If changed and includeChilderen, propogate to descendant nodes.
+        Arguments:
+            includeChildren -- if True, propogate to descendant nodes
         """
         goodSpotRefs = {spot for spot in self.spotRefs if self in
                         spot.parentSpot.nodeRef.childList}
         changed = len(self.spotRefs) != len(goodSpotRefs)
         self.spotRefs = goodSpotRefs
-        if changed:
+        if includeChildren and changed:
             for child in self.childList:
-                child.removeInvalidSpotRefs()
+                child.removeInvalidSpotRefs(includeChildren)
 
     def setInitDefaultData(self, overwrite=False):
         """Add initial default data from fields into internal data.
@@ -239,8 +241,21 @@ class TreeNode:
                 if len(oldNode.parents()) <= 1:
                     treeStructure.removeNodeDictRef(oldNode)
                 else:
-                    oldNode.removeInvalidSpotRefs()
+                    oldNode.removeInvalidSpotRefs(False)
         self.childList = newChildList
+
+    def replaceClonedBranches(self, origStruct):
+        """Replace any duplicate IDs with clones from the given structure.
+
+        Recursively search for duplicates.
+        Arguments:
+            origStruct -- the tree structure with the cloned nodes
+        """
+        for i in range(len(self.childList)):
+            if self.childList[i].uId in origStruct.nodeDict:
+                self.childList[i] = origStruct.nodeDict[self.childList[i].uId]
+            else:
+                self.childList[i].replaceClonedBranches(origStruct)
 
     def exportTitleText(self, level=0):
         """Return a list of tabbed title lines for this node and descendants.

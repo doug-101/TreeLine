@@ -57,7 +57,6 @@ class TreeLocalControl(QObject):
         else:
             self.structure = treestructure.TreeStructure(addDefaults=True)
         self.model = treemodel.TreeModel(self.structure)
-        self.model.allModified.connect(self.updateAll)
 
         self.modified = False
         self.imported = False

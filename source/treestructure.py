@@ -113,6 +113,20 @@ class TreeStructure:
         except KeyError:
             pass
 
+    def deleteNodeSpot(self, spot):
+        """Remove the given spot, removing the entire node if no spots remain.
+
+        Arguments:
+            spot -- the spot to remove
+        """
+        parentNode = spot.parentSpot.nodeRef if spot.parentSpot else self
+        parentNode.childList.remove(spot.nodeRef)
+        for node in spot.nodeRef.descendantGen():
+            if len(node.parents()) <= 1:
+                self.removeNodeDictRef(node)
+            else:
+                node.removeInvalidSpotRefs(False)
+
     def descendantGen(self):
         """Return a generator to step through all nodes in this branch.
 
@@ -165,7 +179,7 @@ class TreeStructure:
                 if len(oldNode.parents()) <= 1:
                     treeStructure.removeNodeDictRef(oldNode)
                 else:
-                    oldNode.removeInvalidSpotRefs()
+                    oldNode.removeInvalidSpotRefs(False)
         self.childList = newChildList
 
     def getConfigDialogFormats(self, forceReset=False):
@@ -210,6 +224,19 @@ class TreeStructure:
                 return True
         return False
 
+    def replaceClonedBranches(self, origStruct):
+        """Replace any duplicate IDs with clones from the given structure.
+
+        Recursively search for duplicates.
+        Arguments:
+            origStruct -- the structure with the cloned nodes
+        """
+        for i in range(len(self.childList)):
+            if self.childList[i].uId in origStruct.nodeDict:
+                self.childList[i] = origStruct.nodeDict[self.childList[i].uId]
+            else:
+                self.childList[i].replaceClonedBranches(origStruct)
+
     def replaceDuplicateIds(self, duplicateDict):
         """Generate new unique IDs for any nodes found in newNodeDict.
 
@@ -230,7 +257,6 @@ class TreeStructure:
             parent -- the parent of the new nodes
             position -- the location to insert (-1 is appended)
         """
-        treeStruct.replaceDuplicateIds(self.nodeDict)
         for nodeFormat in treeStruct.treeFormats.values():
             self.treeFormats.addTypeIfMissing(nodeFormat)
         for node in treeStruct.nodeDict.values():
@@ -241,6 +267,8 @@ class TreeStructure:
                 position += 1
             else:
                 parent.childList.append(node)
+            if parent == self:
+                parent = None
             node.addSpotRef(parent)
 
 
