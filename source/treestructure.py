@@ -27,8 +27,10 @@ except ImportError:
 _defaultRootTitle = _('Main')
 
 
-class TreeStructure:
+class TreeStructure(treenode.TreeNode):
     """Class to store all tree data.
+
+    Inherits TreeNode to get childList (holds top nodes) and other methods.
     """
     def __init__(self, fileData=None, topNodes=None, addDefaults=False,
                  addSpots=True):
@@ -41,10 +43,8 @@ class TreeStructure:
             addDefaults -- if True, adds default new structure
             addSpots -- if True, adds parent spot references
         """
+        super().__init__(None)  # init TreeNode, with no formatRef
         self.nodeDict = {}
-        self.childList = []  # top-level nodes
-        self.data = {}  # empty placeholder for duck-typing as the "top node"
-        self.spotRefs = set()  # empty placeholder for duck-typing
         self.undoList = None
         self.redoList = None
         self.configDialogFormats = None
@@ -128,61 +128,6 @@ class TreeStructure:
             else:
                 node.removeInvalidSpotRefs(False)
 
-    def descendantGen(self):
-        """Return a generator to step through all nodes in this branch.
-
-        Includes structure "node" and closed nodes.
-        """
-        yield self
-        for child in self.childList:
-            for node in child.descendantGen():
-                yield node
-
-    def replaceChildren(self, titleList, treeStructure):
-        """Replace child nodes with titles from a text list.
-
-        Nodes with matches in the titleList are kept, others are added or
-        deleted as required.
-        Arguments:
-            titleList -- the list of new child titles
-            treeStructure -- a ref to the tree structure
-        """
-        newFormat = self.childList[0].formatRef
-        matchList = []
-        remainTitles = [child.title() for child in self.childList]
-        for title in titleList:
-            try:
-                match = self.childList.pop(remainTitles.index(title))
-                matchList.append((title, match))
-                remainTitles = [child.title() for child in self.childList]
-            except ValueError:
-                matchList.append((title, None))
-        newChildList = []
-        firstMiss = True
-        for title, node in matchList:
-            if not node:
-                if (firstMiss and remainTitles and
-                    remainTitles[0].startswith(title)):
-                    # accept partial match on first miss for split tiles
-                    node = self.childList.pop(0)
-                    node.setTitle(title)
-                else:
-                    node = treenode.TreeNode(newFormat)
-                    node.setTitle(title)
-                    node.setInitDefaultData()
-                    node.addSpotRef(None)
-                    treeStructure.addNodeDictRef(node)
-                    node.generateSpots(None)
-                firstMiss = False
-            newChildList.append(node)
-        for child in self.childList:
-            for oldNode in child.descendantGen():
-                if len(oldNode.parents()) <= 1:
-                    treeStructure.removeNodeDictRef(oldNode)
-                else:
-                    oldNode.removeInvalidSpotRefs(False)
-        self.childList = newChildList
-
     def getConfigDialogFormats(self, forceReset=False):
         """Return duplicate formats for use in the config dialog.
 
@@ -224,19 +169,6 @@ class TreeStructure:
             if node.formatRef.name == typeName:
                 return True
         return False
-
-    def replaceClonedBranches(self, origStruct):
-        """Replace any duplicate IDs with clones from the given structure.
-
-        Recursively search for duplicates.
-        Arguments:
-            origStruct -- the structure with the cloned nodes
-        """
-        for i in range(len(self.childList)):
-            if self.childList[i].uId in origStruct.nodeDict:
-                self.childList[i] = origStruct.nodeDict[self.childList[i].uId]
-            else:
-                self.childList[i].replaceClonedBranches(origStruct)
 
     def replaceDuplicateIds(self, duplicateDict):
         """Generate new unique IDs for any nodes found in newNodeDict.

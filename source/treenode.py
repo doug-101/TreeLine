@@ -208,7 +208,7 @@ class TreeNode:
         """
         try:
             newFormat = treeStructure.treeFormats[self.formatRef.childType]
-        except KeyError:
+        except (KeyError, AttributeError):
             newFormat = (self.childList[0].formatRef if self.childList
                          else self.formatRef)
         matchList = []
@@ -233,7 +233,8 @@ class TreeNode:
                     node = TreeNode(newFormat)
                     node.setTitle(title)
                     node.setInitDefaultData()
-                    node.addSpotRef(self)
+                    parent = self if self != treeStructure else None
+                    node.addSpotRef(parent)
                     treeStructure.addNodeDictRef(node)
                 firstMiss = False
             newChildList.append(node)
