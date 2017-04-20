@@ -23,6 +23,7 @@ import globalref
 class TreeModel(QAbstractItemModel):
     """Class interfacing between the tree structure and the tree view.
     """
+    treeModified = pyqtSignal(bool)
     def __init__(self, treeStructure, parent=None):
         """Initialize a TreeModel.
 
@@ -115,6 +116,7 @@ class TreeModel(QAbstractItemModel):
         dataUndo = undo.DataUndo(self.treeStructure.undoList, node)
         if node.setTitle(value):
             self.dataChanged.emit(index, index)
+            self.treeModified.emit(True)
             return True
         self.treeStructure.undoList.removeLastUndo(dataUndo)
         return False

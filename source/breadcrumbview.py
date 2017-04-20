@@ -110,7 +110,9 @@ class BreadcrumbView(QTableWidget):
                      for spot in spotList]
         self.setRowCount(len(chainList))
         for row in range(len(chainList)):
-            self.setColumnCount(len(chainList[row]) * 2 - 1)
+            columns = len(chainList[row]) * 2 - 1
+            if columns > self.columnCount():
+                self.setColumnCount(columns)
             for col in range(len(chainList[row])):
                 item = chainList[row][col]
                 if (row == 0 or col >= len(chainList[row - 1]) or

@@ -122,8 +122,9 @@ class TreeStructure:
         parentNode = spot.parentSpot.nodeRef if spot.parentSpot else self
         parentNode.childList.remove(spot.nodeRef)
         for node in spot.nodeRef.descendantGen():
-            if len(node.parents()) <= 1:
+            if len(node.spotRefs) <= 1:
                 self.removeNodeDictRef(node)
+                node.spotRefs = set()
             else:
                 node.removeInvalidSpotRefs(False)
 

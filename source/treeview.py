@@ -87,9 +87,11 @@ class TreeView(QTreeView):
         clickedSpot = self.indexAt(event.pos()).internalPointer()
         if clickedSpot:
             super().dropEvent(event)
+            self.selectionModel().selectSpots([clickedSpot], False)
+            self.scheduleDelayedItemsLayout()  # reqd before expand
             self.expandSpot(clickedSpot)
-            self.selectionModel().selectSpots([clickedSpot])
         else:
             super().dropEvent(event)
             self.selectionModel().selectSpots([])
-        self.scheduleDelayedItemsLayout()
+            self.scheduleDelayedItemsLayout()
+        self.model().treeModified.emit(True)

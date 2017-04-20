@@ -57,6 +57,7 @@ class TreeLocalControl(QObject):
         else:
             self.structure = treestructure.TreeStructure(addDefaults=True)
         self.model = treemodel.TreeModel(self.structure)
+        self.model.treeModified.connect(self.updateRightViews)
 
         self.modified = False
         self.imported = False

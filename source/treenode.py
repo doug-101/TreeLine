@@ -86,8 +86,9 @@ class TreeNode:
         Arguments:
             includeChildren -- if True, propogate to descendant nodes
         """
-        goodSpotRefs = {spot for spot in self.spotRefs if self in
-                        spot.parentSpot.nodeRef.childList}
+        goodSpotRefs = {spot for spot in self.spotRefs if
+                        (self in spot.parentSpot.nodeRef.childList and
+                         spot.parentSpot in spot.parentSpot.nodeRef.spotRefs)}
         changed = len(self.spotRefs) != len(goodSpotRefs)
         self.spotRefs = goodSpotRefs
         if includeChildren and changed:
