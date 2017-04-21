@@ -46,6 +46,32 @@ class TreeSpot:
             return self.parentSpot.nodeRef.childList.index(self.nodeRef)
         return modelRef.treeStructure.childList.index(self.nodeRef)
 
+    def prevSiblingSpot(self):
+        """Return the nearest previous sibling spot or None.
+        """
+        if self.parentSpot:
+            parentNode = self.parentSpot.nodeRef
+            pos = parentNode.childList.index(self.nodeRef)
+            if pos > 0:
+                node = parentNode.childList[pos - 1]
+                for spot in node.spotRefs:
+                    if spot.parentSpot == self.parentSpot:
+                        return spot
+        return None
+
+    def nextSiblingSpot(self):
+        """Return the nearest next sibling spot or None.
+        """
+        if self.parentSpot:
+            parentNode = self.parentSpot.nodeRef
+            pos = parentNode.childList.index(self.nodeRef) + 1
+            if pos < len(parentNode.childList):
+                node = parentNode.childList[pos]
+                for spot in node.spotRefs:
+                    if spot.parentSpot == self.parentSpot:
+                        return spot
+        return None
+
     def spotChain(self):
         """Return a list of parent spots.
         """
@@ -57,7 +83,7 @@ class TreeSpot:
         return chain
 
     def sortKey(self, modelRef):
-        """Return a tuple of parent row postitions for sorting in tree order.
+        """Return a tuple of parent row positions for sorting in tree order.
 
         Arguments:
             modelRef -- a ref to the tree model

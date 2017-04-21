@@ -444,6 +444,26 @@ class TreeLocalControl(QObject):
                 self.activeWindow.treeView.expandSpot(spot)
             self.updateAll()
 
+    def nodeDelete(self):
+        """Delete the selected nodes.
+        """
+        selSpots = self.currentSelectionModel().selectedSpots()
+        if not selSpots:  # TODO: skip if all root nodes selected
+            return
+        # gather next selected node in decreasing order of desirability
+        nextSel = [spot.nextSiblingSpot() for spot in selSpots]
+        nextSel.extend([spot.prevSiblingSpot() for spot in selSpots])
+        nextSel.extend([spot.parentSpot for spot in selSpots])
+        while not nextSel[0] or nextSel[0] in selSpots:
+            del nextSel[0]
+        undoParents = {spot.parentSpot.nodeRef if spot.parentSpot else
+                       self.treeStructure for spot in selSpots}
+        undo.ChildListUndo(self.structure.undoList, list(undoParents))
+        for spot in selSpots:
+            self.structure.deleteNodeSpot(spot)
+        self.currentSelectionModel().selectSpots([nextSel[0]], False)
+        self.updateAll()
+
     def dataSetType(self, action):
         """Change the type of selected nodes based on a menu selection.
 
