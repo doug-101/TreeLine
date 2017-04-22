@@ -13,6 +13,7 @@
 #******************************************************************************
 
 import uuid
+import operator
 import treespot
 
 
@@ -94,6 +95,17 @@ class TreeNode:
         if includeChildren and changed:
             for child in self.childList:
                 child.removeInvalidSpotRefs(includeChildren)
+
+    def spotByNumber(self, num, modelRef):
+        """Return the spot at the given rank in the spot sequence.
+
+        Arguments:
+            num -- the ranl number to return
+            modelRef -- a ref to the tree model
+        """
+        spotList = sorted(list(self.spotRefs),
+                          key=operator.methodcaller('sortKey', modelRef))
+        return spotList[num]
 
     def setInitDefaultData(self, overwrite=False):
         """Add initial default data from fields into internal data.
@@ -267,6 +279,6 @@ class TreeNode:
         """
         textList = ['\t' * level + self.title()]
         for child in self.childList:
-            textList.extend(child.exportTitleText(level + 1, openOnly))
+            textList.extend(child.exportTitleText(level + 1))
         return textList
 

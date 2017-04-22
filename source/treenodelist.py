@@ -52,7 +52,8 @@ class TreeNodeList(list):
             for node in self:
                 titleList.extend(node.exportTitleText())
             clip.setText('\n'.join(titleList), QClipboard.Selection)
-        data = treestructure.TreeStructure(topNodes=self).fileData()
+        data = treestructure.TreeStructure(topNodes=self,
+                                           addSpots=False).fileData()
         dataStr = json.dumps(data, indent=0, sort_keys=True)
         mime = QMimeData()
         mime.setData('application/json', bytes(dataStr, encoding='utf-8'))

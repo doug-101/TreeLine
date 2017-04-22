@@ -74,8 +74,10 @@ class UndoRedoList(list):
         """
         item = self.pop()
         item.undo(self.altListRef)
-        self.localControlRef.currentSelectionModel().\
-                             selectSpots(item.selectedSpots, False)
+        selectSpots = [node.spotByNumber(num, self.localControlRef.model) for
+                       (node, num) in item.selectedTuples]
+        self.localControlRef.currentSelectionModel().selectSpots(selectSpots,
+                                                                 False)
         self.localControlRef.setModified(item.modified)
         self.action.setEnabled(len(self) > 0)
 
@@ -93,6 +95,11 @@ class UndoBase:
         self.treeStructRef = localControlRef.structure
         self.selectedSpots = (localControlRef.currentSelectionModel().
                               selectedSpots())
+        self.selectedTuples = [(spot.nodeRef,
+                                spot.instanceNumber(localControlRef.model))
+                               for spot in
+                               localControlRef.currentSelectionModel().
+                               selectedSpots()]
         self.modified = localControlRef.modified
 
 

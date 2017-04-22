@@ -12,6 +12,8 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
+import operator
+
 
 class TreeSpot:
     """Class to store location info for tree node instances.
@@ -45,6 +47,16 @@ class TreeSpot:
         if self.parentSpot:
             return self.parentSpot.nodeRef.childList.index(self.nodeRef)
         return modelRef.treeStructure.childList.index(self.nodeRef)
+
+    def instanceNumber(self, modelRef):
+        """Return this spot's rank in the node's spot list.
+
+        Arguments:
+            modelRef -- a ref to the tree model
+        """
+        spotList = sorted(list(self.nodeRef.spotRefs),
+                          key=operator.methodcaller('sortKey', modelRef))
+        return spotList.index(self)
 
     def prevSiblingSpot(self):
         """Return the nearest previous sibling spot or None.

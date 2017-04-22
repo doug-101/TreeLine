@@ -232,6 +232,9 @@ class TreeWindow(QMainWindow):
         editMenu.addAction(self.allActions['EditPastePlain'])
         editMenu.addAction(self.allActions['EditPasteClone'])
 
+        nodeMenu = self.menuBar().addMenu(_('&Node'))
+        nodeMenu.addAction(self.allActions['NodeDelete'])
+
         dataMenu = self.menuBar().addMenu(_('&Data'))
         # add action's parent to get the sub-menu
         dataMenu.addMenu(self.allActions['DataNodeType'].parent())

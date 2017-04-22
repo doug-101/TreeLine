@@ -293,6 +293,11 @@ class TreeLocalControl(QObject):
         editPasteCloneAct.triggered.connect(self.editPasteClone)
         localActions['EditPasteClone'] = editPasteCloneAct
 
+        nodeDeleteAct = QAction(_('&Delete Node'), self,
+                                statusTip=_('Delete the selected nodes'))
+        nodeDeleteAct.triggered.connect(self.nodeDelete)
+        localActions['NodeDelete'] = nodeDeleteAct
+
         title = _('&Set Node Type')
         key = globalref.keyboardOptions['DataNodeType']
         if not key.isEmpty():
@@ -453,6 +458,7 @@ class TreeLocalControl(QObject):
         # gather next selected node in decreasing order of desirability
         nextSel = [spot.nextSiblingSpot() for spot in selSpots]
         nextSel.extend([spot.prevSiblingSpot() for spot in selSpots])
+        print(nextSel[-1].nodeRef.title())
         nextSel.extend([spot.parentSpot for spot in selSpots])
         while not nextSel[0] or nextSel[0] in selSpots:
             del nextSel[0]
