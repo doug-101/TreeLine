@@ -68,14 +68,10 @@ class TreeNode:
         """
         changed = False
         origParentSpots = {spot.parentSpot for spot in self.spotRefs}
-        if parentNode:
-            for parentSpot in parentNode.spotRefs:
-                if parentSpot not in origParentSpots:
-                    self.spotRefs.add(treespot.TreeSpot(self, parentSpot))
-                    changed = True
-        elif None not in origParentSpots:
-            self.spotRefs.add(treespot.TreeSpot(self, None))
-            changed = True
+        for parentSpot in parentNode.spotRefs:
+            if parentSpot not in origParentSpots:
+                self.spotRefs.add(treespot.TreeSpot(self, parentSpot))
+                changed = True
         if changed:
             for child in self.childList:
                 child.addSpotRef(self)
@@ -104,7 +100,7 @@ class TreeNode:
             modelRef -- a ref to the tree model
         """
         spotList = sorted(list(self.spotRefs),
-                          key=operator.methodcaller('sortKey', modelRef))
+                          key=operator.methodcaller('sortKey'))
         return spotList[num]
 
     def setInitDefaultData(self, overwrite=False):
@@ -245,8 +241,7 @@ class TreeNode:
                     node = TreeNode(newFormat)
                     node.setTitle(title)
                     node.setInitDefaultData()
-                    parent = self if self != treeStructure else None
-                    node.addSpotRef(parent)
+                    node.addSpotRef(self)
                     treeStructure.addNodeDictRef(node)
                 firstMiss = False
             newChildList.append(node)

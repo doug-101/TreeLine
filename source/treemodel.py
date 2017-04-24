@@ -45,8 +45,10 @@ class TreeModel(QAbstractItemModel):
         """
         try:
             if not parentIndex.isValid():
-                topSpot = self.treeStructure.childList[row].matchedSpot(None)
-                return self.createIndex(row, column, topSpot)
+                node = self.treeStructure.childList[row]
+                fakeSpot = list(self.treeStructure.spotRefs)[0]
+                spot = node.matchedSpot(fakeSpot)
+                return self.createIndex(row, column, spot)
             parentSpot = parentIndex.internalPointer()
             node = parentSpot.nodeRef.childList[row]
             return self.createIndex(row, column, node.matchedSpot(parentSpot))
@@ -59,11 +61,10 @@ class TreeModel(QAbstractItemModel):
         Arguments:
             index -- the child model index
         """
-        try:
-            parentSpot = index.internalPointer().parentSpot
-            return self.createIndex(parentSpot.row(self), 0, parentSpot)
-        except AttributeError:
-            return QModelIndex()
+        parentSpot = index.internalPointer().parentSpot
+        if parentSpot.parentSpot:
+            return self.createIndex(parentSpot.row(), 0, parentSpot)
+        return QModelIndex()
 
     def rowCount(self, parentIndex):
         """Returns the number of children for the spot at the given index.

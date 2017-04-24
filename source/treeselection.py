@@ -36,8 +36,7 @@ class TreeSelection(QItemSelectionModel):
         """Return a list of selected spots, sorted in tree order.
         """
         spots = [index.internalPointer() for index in self.selectedIndexes()]
-        return sorted(spots,
-                      key=operator.methodcaller('sortKey', self.modelRef))
+        return sorted(spots, key=operator.methodcaller('sortKey'))
 
     def selectedNodes(self):
         """Return a TreeNodeList of the currently selected tree nodes.

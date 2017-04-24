@@ -59,8 +59,8 @@ class TreeStructure(treenode.TreeNode):
             for uId in fileData['properties']['topnodes']:
                 node = self.nodeDict[uId]
                 self.childList.append(node)
-                if addSpots:
-                    node.generateSpots(None)
+            if addSpots:
+                self.generateSpots(None)
         elif topNodes:
             self.childList = topNodes
             self.treeFormats = treeformats.TreeFormats()
@@ -68,8 +68,8 @@ class TreeStructure(treenode.TreeNode):
                 for node in topNode.descendantGen():
                     self.nodeDict[node.uId] = node
                     self.treeFormats.addTypeIfMissing(node.formatRef)
-                if addSpots:
-                    node.generateSpots(None)
+            if addSpots:
+                self.generateSpots(None)
         elif addDefaults:
             self.treeFormats = treeformats.TreeFormats(setDefault=True)
             node = treenode.TreeNode(self.treeFormats[treeformats.
@@ -78,7 +78,7 @@ class TreeStructure(treenode.TreeNode):
             self.nodeDict[node.uId] = node
             self.childList.append(node)
             if addSpots:
-                node.generateSpots(None)
+                self.generateSpots(None)
         else:
             self.treeFormats = treeformats.TreeFormats()
 
@@ -200,8 +200,6 @@ class TreeStructure(treenode.TreeNode):
                 position += 1
             else:
                 parent.childList.append(node)
-            if parent == self:
-                parent = None
             node.addSpotRef(parent)
 
 

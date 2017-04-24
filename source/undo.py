@@ -95,8 +95,7 @@ class UndoBase:
         self.treeStructRef = localControlRef.structure
         self.selectedSpots = (localControlRef.currentSelectionModel().
                               selectedSpots())
-        self.selectedTuples = [(spot.nodeRef,
-                                spot.instanceNumber(localControlRef.model))
+        self.selectedTuples = [(spot.nodeRef, spot.instanceNumber())
                                for spot in
                                localControlRef.currentSelectionModel().
                                selectedSpots()]

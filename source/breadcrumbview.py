@@ -104,8 +104,7 @@ class BreadcrumbView(QTableWidget):
             return
         selSpot = selModel.selectedSpots()[0]
         spotList = sorted(list(selNodes[0].spotRefs),
-                          key=operator.methodcaller('sortKey',
-                                                    selModel.modelRef))
+                          key=operator.methodcaller('sortKey'))
         chainList = [[CrumbItem(chainSpot) for chainSpot in spot.spotChain()]
                      for spot in spotList]
         self.setRowCount(len(chainList))

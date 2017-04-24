@@ -458,9 +458,9 @@ class TreeLocalControl(QObject):
         # gather next selected node in decreasing order of desirability
         nextSel = [spot.nextSiblingSpot() for spot in selSpots]
         nextSel.extend([spot.prevSiblingSpot() for spot in selSpots])
-        print(nextSel[-1].nodeRef.title())
         nextSel.extend([spot.parentSpot for spot in selSpots])
-        while not nextSel[0] or nextSel[0] in selSpots:
+        while (not nextSel[0] or not nextSel[0].parentSpot or
+               nextSel[0] in selSpots):
             del nextSel[0]
         undoParents = {spot.parentSpot.nodeRef if spot.parentSpot else
                        self.treeStructure for spot in selSpots}

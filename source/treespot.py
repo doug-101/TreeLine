@@ -19,6 +19,7 @@ class TreeSpot:
     """Class to store location info for tree node instances.
 
     Used to generate breadcrumb navigation and interface with tree views.
+    A spot without a parent spot is an imaginary root spot, wihout a real node.
     """
     def __init__(self, nodeRef, parentSpot):
         """Initialize a tree spot.
@@ -36,36 +37,29 @@ class TreeSpot:
         Arguments:
             modelRef -- a ref to the tree model
         """
-        return modelRef.createIndex(self.row(modelRef), 0, self)
+        return modelRef.createIndex(self.row(), 0, self)
 
-    def row(self, modelRef):
+    def row(self):
         """Return the rank of this spot in its parent's child list.
 
-        Arguments:
-            modelRef -- a ref to the tree model
+        Should never be called from the imaginary root spot.
         """
-        if self.parentSpot:
-            return self.parentSpot.nodeRef.childList.index(self.nodeRef)
-        return modelRef.treeStructure.childList.index(self.nodeRef)
+        return self.parentSpot.nodeRef.childList.index(self.nodeRef)
 
-    def instanceNumber(self, modelRef):
+    def instanceNumber(self):
         """Return this spot's rank in the node's spot list.
-
-        Arguments:
-            modelRef -- a ref to the tree model
         """
         spotList = sorted(list(self.nodeRef.spotRefs),
-                          key=operator.methodcaller('sortKey', modelRef))
+                          key=operator.methodcaller('sortKey'))
         return spotList.index(self)
 
     def prevSiblingSpot(self):
         """Return the nearest previous sibling spot or None.
         """
         if self.parentSpot:
-            parentNode = self.parentSpot.nodeRef
-            pos = parentNode.childList.index(self.nodeRef)
+            pos = self.row()
             if pos > 0:
-                node = parentNode.childList[pos - 1]
+                node = self.parentSpot.nodeRef.childList[pos - 1]
                 for spot in node.spotRefs:
                     if spot.parentSpot == self.parentSpot:
                         return spot
@@ -75,10 +69,10 @@ class TreeSpot:
         """Return the nearest next sibling spot or None.
         """
         if self.parentSpot:
-            parentNode = self.parentSpot.nodeRef
-            pos = parentNode.childList.index(self.nodeRef) + 1
-            if pos < len(parentNode.childList):
-                node = parentNode.childList[pos]
+            childList = self.parentSpot.nodeRef.childList
+            pos = self.row() + 1
+            if pos < len(childList):
+                node = childList[pos]
                 for spot in node.spotRefs:
                     if spot.parentSpot == self.parentSpot:
                         return spot
@@ -89,20 +83,17 @@ class TreeSpot:
         """
         chain = []
         spot = self
-        while spot:
+        while spot.parentSpot:
             chain.insert(0, spot)
             spot = spot.parentSpot
         return chain
 
-    def sortKey(self, modelRef):
+    def sortKey(self):
         """Return a tuple of parent row positions for sorting in tree order.
-
-        Arguments:
-            modelRef -- a ref to the tree model
         """
         positions = []
         spot = self
-        while spot:
-            positions.insert(0, spot.row(modelRef))
+        while spot.parentSpot:
+            positions.insert(0, spot.row())
             spot = spot.parentSpot
         return tuple(positions)
