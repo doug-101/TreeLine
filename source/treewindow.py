@@ -112,11 +112,13 @@ class TreeWindow(QMainWindow):
         for spot in node.spotRefs:
             self.treeView.update(spot.index(self.treeView.model()))
         self.treeView.resizeColumnToContents(0)
+        self.breadcrumbView.updateContents()
 
     def updateTree(self):
         """Update the full tree view.
         """
         self.treeView.scheduleDelayedItemsLayout()
+        self.breadcrumbView.updateContents()
 
     def updateRightViews(self):
         """Update all right-hand views and breadcrumb view.

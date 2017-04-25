@@ -92,12 +92,11 @@ class TreeNode:
             for child in self.childList:
                 child.removeInvalidSpotRefs(includeChildren)
 
-    def spotByNumber(self, num, modelRef):
+    def spotByNumber(self, num):
         """Return the spot at the given rank in the spot sequence.
 
         Arguments:
             num -- the ranl number to return
-            modelRef -- a ref to the tree model
         """
         spotList = sorted(list(self.spotRefs),
                           key=operator.methodcaller('sortKey'))
@@ -247,7 +246,7 @@ class TreeNode:
             newChildList.append(node)
         for child in self.childList:
             for oldNode in child.descendantGen():
-                if len(oldNode.parents()) <= 1:
+                if len(oldNode.spotRefs) <= 1:
                     treeStructure.removeNodeDictRef(oldNode)
                 else:
                     oldNode.removeInvalidSpotRefs(False)

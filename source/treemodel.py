@@ -171,14 +171,12 @@ class TreeModel(QAbstractItemModel):
             index -- the index of the parent node for the drop
 
         """
-        parentSpot = index.internalPointer()
-        parent = parentSpot.nodeRef if parentSpot else self.treeStructure
+        parent = index.internalPointer().nodeRef
         isMove = (dropAction == Qt.MoveAction and
                   TreeModel.storedDragModel == self)
         undoParents = [parent]
         if isMove:
-            moveParents = {spot.parentSpot.nodeRef if spot.parentSpot else
-                           self.treeStructure for spot in
+            moveParents = {spot.parentSpot.nodeRef for spot in
                            TreeModel.storedDragSpots}
             undoParents.extend(list(moveParents))
         newStruct = treestructure.structFromMimeData(mimeData)

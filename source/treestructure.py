@@ -119,8 +119,7 @@ class TreeStructure(treenode.TreeNode):
         Arguments:
             spot -- the spot to remove
         """
-        parentNode = spot.parentSpot.nodeRef if spot.parentSpot else self
-        parentNode.childList.remove(spot.nodeRef)
+        spot.parentSpot.nodeRef.childList.remove(spot.nodeRef)
         for node in spot.nodeRef.descendantGen():
             if len(node.spotRefs) <= 1:
                 self.removeNodeDictRef(node)
