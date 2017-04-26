@@ -181,8 +181,7 @@ class ChildListUndo(UndoBase):
                     for oldNode in child.descendantGen():
                         if len(oldNode.spotRefs) <= 1:
                             self.treeStructRef.removeNodeDictRef(oldNode)
-                        else:
-                            oldNode.removeInvalidSpotRefs(False)
+                        oldNode.removeInvalidSpotRefs(False)
             for child in childList:
                 if child not in origChildList:
                     child.addSpotRef(node)
@@ -229,8 +228,7 @@ class ChildDataUndo(UndoBase):
                     for oldNode in child.descendantGen():
                         if len(oldNode.spotRefs) <= 1:
                             self.treeStructRef.removeNodeDictRef(oldNode)
-                        else:
-                            oldNode.removeInvalidSpotRefs(False)
+                        oldNode.removeInvalidSpotRefs(False)
             for child in childList:
                 if child not in origChildList:
                     child.addSpotRef(node)
@@ -277,8 +275,7 @@ class BranchUndo(UndoBase):
                     for oldNode in child.descendantGen():
                         if len(oldNode.spotRefs) <= 1:
                             self.treeStructRef.removeNodeDictRef(oldNode)
-                        else:
-                            oldNode.removeInvalidSpotRefs(False)
+                        oldNode.removeInvalidSpotRefs(False)
             for child in childList:
                 if child not in origChildList:
                     child.addSpotRef(node)
@@ -406,8 +403,7 @@ class ChildListFormatUndo(UndoBase):
                     for oldNode in child.descendantGen():
                         if len(oldNode.spotRefs) <= 1:
                             self.treeStructRef.removeNodeDictRef(oldNode)
-                        else:
-                            oldNode.removeInvalidSpotRefs(False)
+                        oldNode.removeInvalidSpotRefs(False)
             for child in childList:
                 if child not in origChildList:
                     child.addSpotRef(node)

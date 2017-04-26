@@ -65,6 +65,8 @@ class TreeLocalControl(QObject):
         self.encrypted = False
         self.windowList = []
         self.activeWindow = None
+        QApplication.clipboard().dataChanged.connect(self.updatePasteAvail)
+        self.updatePasteAvail()
         self.structure.undoList = undo.UndoRedoList(self.
                                                     allActions['EditUndo'],
                                                     self)
@@ -156,6 +158,7 @@ class TreeLocalControl(QObject):
         for window in self.windowList:
             window.updateTree()
             window.updateRightViews()
+        self.updateCommandsAvail()
         if setModified:
             self.setModified()
         QApplication.restoreOverrideCursor()
@@ -163,7 +166,24 @@ class TreeLocalControl(QObject):
     def updateCommandsAvail(self):
         """Set commands available based on node selections.
         """
-        pass
+        selSpots = self.currentSelectionModel().selectedSpots()
+        rootSpots = [spot for spot in selSpots if not
+                     spot.parentSpot.parentSpot]
+        self.allActions['NodeDelete'].setEnabled(len(selSpots) > 0 and
+                                                 len(rootSpots) <
+                                                 len(self.structure.childList))
+
+    def updatePasteAvail(self):
+        """Set paste available based on a signal.
+        """
+        mime = QApplication.clipboard().mimeData()
+        hasData = len(mime.data('application/json')) > 0
+        hasText = len(mime.data('text/plain')) > 0
+        self.allActions['EditPaste'].setEnabled(hasData or hasText)
+        self.allActions['EditPasteClone'].setEnabled(hasData)
+        # focusWidget = QApplication.focusWidget()
+        # if hasattr(focusWidget, 'pastePlain'):
+            # focusWidget.updateActions()
 
     def updateWindowCaptions(self):
         """Update the caption for all windows.
@@ -194,6 +214,7 @@ class TreeLocalControl(QObject):
         """
         self.activeWindow = window
         self.controlActivated.emit(self)
+        self.updateCommandsAvail()
 
     def checkWindowClose(self, window):
         """Check for modified files and delete ref when a window is closing.
@@ -453,7 +474,7 @@ class TreeLocalControl(QObject):
         """Delete the selected nodes.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
-        if not selSpots:  # TODO: skip if all root nodes selected
+        if not selSpots:
             return
         # gather next selected node in decreasing order of desirability
         nextSel = [spot.nextSiblingSpot() for spot in selSpots]

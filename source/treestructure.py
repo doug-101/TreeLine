@@ -113,6 +113,20 @@ class TreeStructure(treenode.TreeNode):
         except KeyError:
             pass
 
+    def replaceAllSpots(self, removeUnusedNodes=True):
+        """Remove and regenerate all spot refs for the tree.
+
+        Arguments:
+            removeUnusedNodes -- if True, delete refs to nodes without spots
+        """
+        self.spotRefs = set()
+        for node in self.nodeDict.values():
+            node.spotRefs = set()
+        self.generateSpots(None)
+        if removeUnusedNodes:
+            self.nodeDict = {uId:node for (uId, node) in self.nodeDict.items()
+                             if node.spotRefs}
+
     def deleteNodeSpot(self, spot):
         """Remove the given spot, removing the entire node if no spots remain.
 
