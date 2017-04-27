@@ -18,6 +18,7 @@ from PyQt5.QtCore import QMimeData
 from PyQt5.QtGui import QClipboard
 from PyQt5.QtWidgets import (QApplication, QMessageBox)
 import treestructure
+import undo
 
 
 class TreeNodeList(list):
@@ -58,3 +59,46 @@ class TreeNodeList(list):
         mime = QMimeData()
         mime.setData('application/json', bytes(dataStr, encoding='utf-8'))
         clip.setMimeData(mime)
+
+    def pasteNodes(self, treeStructure):
+        """Paste nodes from clipboard mime data under these parent nodes.
+
+        Return True on success.
+        Arguments:
+            treeSstructure -- the existing parent structure
+        """
+        mimeData = QApplication.clipboard().mimeData()
+        undoObj = undo.ChildListFormatUndo(treeStructure.undoList, self,
+                                           treeStructure.treeFormats)
+        for parent in self:
+            newStruct = treestructure.structFromMimeData(mimeData)
+            if not newStruct:
+                treeStructure.undoList.removeLastUndo(undoObj)
+                return False
+            newStruct.replaceDuplicateIds(treeStructure.nodeDict)
+            treeStructure.addNodesFromStruct(newStruct, parent)
+        return True
+
+    def pasteClones(self, treeStructure):
+        """Paste cloned nodes from clipboard mime data under these nodes.
+
+        Return True on success.
+        Arguments:
+            treeSstructure -- the existing parent structure
+        """
+        mimeData = QApplication.clipboard().mimeData()
+        newStruct = treestructure.structFromMimeData(mimeData)
+        if newStruct:
+            try:
+                existNodes = [treeStructure.nodeDict[node.uId] for node in
+                              newStruct.childList]
+            except KeyError:
+                return False
+            undoObj = undo.ChildListFormatUndo(treeStructure.undoList, self,
+                                               treeStructure.treeFormats)
+            for parent in self:
+                for node in existNodes:
+                    parent.childList.append(node)
+                    node.addSpotRef(parent)
+            return True
+        return False

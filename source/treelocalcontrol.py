@@ -450,7 +450,7 @@ class TreeLocalControl(QObject):
         """
         if self.activeWindow.treeView.hasFocus():
             if (self.currentSelectionModel().selectedNodes().
-                pasteMimeData(QApplication.clipboard().mimeData())):
+                pasteNodes(self.structure)):
                 for spot in self.currentSelectionModel().selectedSpots():
                     self.activeWindow.treeView.expandSpot(spot)
                 self.updateAll()
@@ -465,7 +465,7 @@ class TreeLocalControl(QObject):
         """Paste nodes that are linked to stay identical.
         """
         if (self.currentSelectionModel().selectedNodes().
-            cloneMimeData(QApplication.clipboard().mimeData())):
+            pasteClones(self.structure)):
             for spot in self.currentSelectionModel().selectedSpots():
                 self.activeWindow.treeView.expandSpot(spot)
             self.updateAll()
