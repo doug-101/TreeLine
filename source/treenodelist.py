@@ -93,7 +93,13 @@ class TreeNodeList(list):
                 existNodes = [treeStructure.nodeDict[node.uId] for node in
                               newStruct.childList]
             except KeyError:
-                return False
+                return False  # nodes copied from other file
+            for parent in self:
+                if not parent.ancestors().isdisjoint(set(existNodes)):
+                    return False  # circular ref
+                for node in existNodes:
+                    if parent in node.parents():
+                        return False  # identical siblings
             undoObj = undo.ChildListFormatUndo(treeStructure.undoList, self,
                                                treeStructure.treeFormats)
             for parent in self:

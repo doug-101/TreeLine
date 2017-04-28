@@ -113,10 +113,12 @@ class TreeNode:
     def parents(self):
         """Return a set of parent nodes for this node.
 
-        None is included for top level nodes.
+        Returns an empty set if called from the tree structure..
         """
-        return {spot.parentSpot.nodeRef if spot.parentSpot else None
-                for spot in self.spotRefs}
+        try:
+            return {spot.parentSpot.nodeRef for spot in self.spotRefs}
+        except AttributeError:
+            return set()
 
     def numChildren(self):
         """Return number of children.
@@ -144,6 +146,14 @@ class TreeNode:
             if spot.parentSpot is parentSpot:
                 return spot
         return None
+
+    def ancestors(self):
+        """Return a set of all ancestor nodes (including self).
+        """
+        spots = set()
+        for spot in self.spotRefs:
+            spots.update(spot.spotChain())
+        return {spot.nodeRef for spot in spots}
 
     def fileData(self):
         """Return the file data dict for this node.

@@ -180,8 +180,12 @@ class TreeModel(QAbstractItemModel):
                            TreeModel.storedDragSpots}
             undoParents.extend(list(moveParents))
         newStruct = treestructure.structFromMimeData(mimeData)
-        # check for valid structure and no circular clone ref:
-        if newStruct and (not isMove or not parent.uId in newStruct.nodeDict):
+        # check for valid structure and no circular clone ref and not siblings:
+        if newStruct and (not isMove or (not parent.uId in newStruct.nodeDict
+                                         and {node.uId for node in
+                                              parent.childList}.
+                                         isdisjoint({node.uId for node in
+                                                     newStruct.childList}))):
             undo.ChildListFormatUndo(self.treeStructure.undoList, undoParents,
                                      self.treeStructure.treeFormats)
             if isMove:
