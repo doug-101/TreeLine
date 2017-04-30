@@ -68,9 +68,10 @@ class TreeNodeList(list):
             treeSstructure -- the existing parent structure
         """
         mimeData = QApplication.clipboard().mimeData()
-        undoObj = undo.ChildListFormatUndo(treeStructure.undoList, self,
+        parents = self if self else [treeStructure]
+        undoObj = undo.ChildListFormatUndo(treeStructure.undoList, parents,
                                            treeStructure.treeFormats)
-        for parent in self:
+        for parent in parents:
             newStruct = treestructure.structFromMimeData(mimeData)
             if not newStruct:
                 treeStructure.undoList.removeLastUndo(undoObj)
@@ -94,15 +95,16 @@ class TreeNodeList(list):
                               newStruct.childList]
             except KeyError:
                 return False  # nodes copied from other file
-            for parent in self:
+            parents = self if self else [treeStructure]
+            for parent in parents:
                 if not parent.ancestors().isdisjoint(set(existNodes)):
                     return False  # circular ref
                 for node in existNodes:
                     if parent in node.parents():
                         return False  # identical siblings
-            undoObj = undo.ChildListFormatUndo(treeStructure.undoList, self,
+            undoObj = undo.ChildListFormatUndo(treeStructure.undoList, parents,
                                                treeStructure.treeFormats)
-            for parent in self:
+            for parent in parents:
                 for node in existNodes:
                     parent.childList.append(node)
                     node.addSpotRef(parent)

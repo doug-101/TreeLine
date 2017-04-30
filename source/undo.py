@@ -72,6 +72,8 @@ class UndoRedoList(list):
         Remove the last undo item from the list.
         Restore the previous selection and saved doc modified state.
         """
+        # clear selection to avoid crash due to invalid selection:
+        self.localControlRef.currentSelectionModel().selectSpots([], False)
         item = self.pop()
         item.undo(self.altListRef)
         selectSpots = [node.spotByNumber(num) for (node, num) in

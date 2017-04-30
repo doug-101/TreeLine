@@ -138,8 +138,11 @@ class TreeModel(QAbstractItemModel):
         Arguments:
             indexList -- a list of node indexes to convert
         """
-        TreeModel.storedDragSpots = [index.internalPointer() for index in
-                                     indexList]
+        spots = [index.internalPointer() for index in indexList]
+        # remove selections from the same branch
+        TreeModel.storedDragSpots = [spot for spot in spots if
+                                     set(spot.spotChain()[:-1]).
+                                     isdisjoint(set(spots))]
         nodes = [spot.nodeRef for spot in TreeModel.storedDragSpots]
         TreeModel.storedDragModel = self
         data = treestructure.TreeStructure(topNodes=nodes,
@@ -171,7 +174,8 @@ class TreeModel(QAbstractItemModel):
             index -- the index of the parent node for the drop
 
         """
-        parent = index.internalPointer().nodeRef
+        parent = (index.internalPointer().nodeRef if index.internalPointer()
+                  else self.treeStructure)
         isMove = (dropAction == Qt.MoveAction and
                   TreeModel.storedDragModel == self)
         undoParents = [parent]

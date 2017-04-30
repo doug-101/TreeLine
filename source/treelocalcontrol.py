@@ -423,7 +423,7 @@ class TreeLocalControl(QObject):
                 return
         except AttributeError:
             pass
-        self.currentSelectionModel().selectedNodes().copyNodes()
+        self.currentSelectionModel().selectedBranches().copyNodes()
         self.nodeDelete()
 
     def editCopy(self):
@@ -443,7 +443,7 @@ class TreeLocalControl(QObject):
                     return
             except AttributeError:
                 pass
-        self.currentSelectionModel().selectedNodes().copyNodes()
+        self.currentSelectionModel().selectedBranches().copyNodes()
 
     def editPaste(self):
         """Paste nodes or text from the clipboard.
@@ -483,8 +483,7 @@ class TreeLocalControl(QObject):
         while (not nextSel[0] or not nextSel[0].parentSpot or
                nextSel[0] in selSpots):
             del nextSel[0]
-        undoParents = {spot.parentSpot.nodeRef if spot.parentSpot else
-                       self.treeStructure for spot in selSpots}
+        undoParents = {spot.parentSpot.nodeRef for spot in selSpots}
         undo.ChildListUndo(self.structure.undoList, list(undoParents))
         for spot in selSpots:
             self.structure.deleteNodeSpot(spot)
