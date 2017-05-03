@@ -77,6 +77,11 @@ class TreeView(QTreeView):
         """
         self.collapse(spot.index(self.model()))
 
+    def endEditing(self):
+        """Stop the editing of any item being renamed.
+        """
+        self.closePersistentEditor(self.selectionModel().currentIndex())
+
     def dropEvent(self, event):
         """Event handler for view drop actions.
 

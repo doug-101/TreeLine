@@ -96,11 +96,23 @@ class TreeNode:
         """Return the spot at the given rank in the spot sequence.
 
         Arguments:
-            num -- the ranl number to return
+            num -- the rank number to return
         """
         spotList = sorted(list(self.spotRefs),
                           key=operator.methodcaller('sortKey'))
         return spotList[num]
+
+    def matchedSpot(self, parentSpot):
+        """Return the spot for this node that matches a parent spot.
+
+        Return None if not found.
+        Arguments:
+            parentSpot -- the parent to match
+        """
+        for spot in self.spotRefs:
+            if spot.parentSpot is parentSpot:
+                return spot
+        return None
 
     def setInitDefaultData(self, overwrite=False):
         """Add initial default data from fields into internal data.
@@ -134,18 +146,6 @@ class TreeNode:
         for child in self.childList:
             for node in child.descendantGen():
                 yield node
-
-    def matchedSpot(self, parentSpot):
-        """Return the spot for this node that matches a parent spot.
-
-        Return None if not found.
-        Arguments:
-            parentSpot -- the parent to match
-        """
-        for spot in self.spotRefs:
-            if spot.parentSpot is parentSpot:
-                return spot
-        return None
 
     def ancestors(self):
         """Return a set of all ancestor nodes (including self).
@@ -213,6 +213,57 @@ class TreeNode:
         except ValueError:
             self.data[field.name] = editorText
             raise ValueError
+
+    def addNewChild(self, treeStructure, posRefNode=None, insertBefore=True,
+                    newTitle=_('New')):
+        """Add a new child node with this node as the parent.
+
+        Insert the new node near the posRefNode or at the end if no ref node.
+        Return the new node.
+        Arguments:
+            treeStructure -- a ref to the tree structure
+            posRefNode -- a child reference for the new node's position
+            insertBefore -- insert before the ref node if True, after if False
+        """
+        try:
+            newFormat = treeStructure.treeFormats[self.formatRef.childType]
+        except (KeyError, AttributeError):
+            if posRefNode:
+                newFormat = posRefNode.formatRef
+            elif self.childList:
+                newFormat = self.childList[0].formatRef
+            else:
+                newFormat = self.formatRef
+        newNode = TreeNode(newFormat)
+        pos = len(self.childList)
+        if posRefNode:
+            pos = self.childList.index(posRefNode)
+            if not insertBefore:
+                pos += 1
+        self.childList.insert(pos, newNode)
+        newNode.setInitDefaultData()
+        if newTitle and not newNode.title():
+            newNode.setTitle(newTitle)
+        newNode.addSpotRef(self)
+        treeStructure.addNodeDictRef(newNode)
+        return newNode
+
+    def changeParent(self, oldParent, newParent, newPos=-1):
+        """Move this node from oldParent to newParent.
+
+        Used for indent and unindent commands.
+        Arguments:
+            oldParent -- the original parent node
+            newParent -- the new parent node
+            newPos -- the position in the new childList, -1 for append
+        """
+        oldParent.childList.remove(self)
+        if newPos >= 0:
+            newParent.childList.insert(newPos, self)
+        else:
+            newParent.childList.append(self)
+        self.removeInvalidSpotRefs()
+        self.addSpotRef(newParent)
 
     def replaceChildren(self, titleList, treeStructure):
         """Replace child nodes with titles from a text list.

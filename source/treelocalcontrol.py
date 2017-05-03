@@ -314,10 +314,60 @@ class TreeLocalControl(QObject):
         editPasteCloneAct.triggered.connect(self.editPasteClone)
         localActions['EditPasteClone'] = editPasteCloneAct
 
+        nodeRenameAct = QAction(_('&Rename'), self,
+                            statusTip=_('Rename the current tree entry title'))
+        nodeRenameAct.triggered.connect(self.nodeRename)
+        localActions['NodeRename'] = nodeRenameAct
+
+        nodeInBeforeAct = QAction(_('Insert Sibling &Before'), self,
+                            statusTip=_('Insert new sibling before selection'))
+        nodeInBeforeAct.triggered.connect(self.nodeInBefore)
+        localActions['NodeInsertBefore'] = nodeInBeforeAct
+
+        nodeInAfterAct = QAction(_('Insert Sibling &After'), self,
+                            statusTip=_('Insert new sibling after selection'))
+        nodeInAfterAct.triggered.connect(self.nodeInAfter)
+        localActions['NodeInsertAfter'] = nodeInAfterAct
+
+        nodeAddChildAct = QAction(_('Add &Child'), self,
+                               statusTip=_('Add new child to selected parent'))
+        nodeAddChildAct.triggered.connect(self.nodeAddChild)
+        localActions['NodeAddChild'] = nodeAddChildAct
+
         nodeDeleteAct = QAction(_('&Delete Node'), self,
                                 statusTip=_('Delete the selected nodes'))
         nodeDeleteAct.triggered.connect(self.nodeDelete)
         localActions['NodeDelete'] = nodeDeleteAct
+
+        nodeIndentAct = QAction(_('&Indent Node'), self,
+                                      statusTip=_('Indent the selected nodes'))
+        nodeIndentAct.triggered.connect(self.nodeIndent)
+        localActions['NodeIndent'] = nodeIndentAct
+
+        nodeUnindentAct = QAction(_('&Unindent Node'), self,
+                                    statusTip=_('Unindent the selected nodes'))
+        nodeUnindentAct.triggered.connect(self.nodeUnindent)
+        localActions['NodeUnindent'] = nodeUnindentAct
+
+        nodeMoveUpAct = QAction(_('&Move Up'), self,
+                                      statusTip=_('Move the selected nodes up'))
+        nodeMoveUpAct.triggered.connect(self.nodeMoveUp)
+        localActions['NodeMoveUp'] = nodeMoveUpAct
+
+        nodeMoveDownAct = QAction(_('M&ove Down'), self,
+                                   statusTip=_('Move the selected nodes down'))
+        nodeMoveDownAct.triggered.connect(self.nodeMoveDown)
+        localActions['NodeMoveDown'] = nodeMoveDownAct
+
+        nodeMoveFirstAct = QAction(_('Move &First'), self,
+               statusTip=_('Move the selected nodes to be the first children'))
+        nodeMoveFirstAct.triggered.connect(self.nodeMoveFirst)
+        localActions['NodeMoveFirst'] = nodeMoveFirstAct
+
+        nodeMoveLastAct = QAction(_('Move &Last'), self,
+                statusTip=_('Move the selected nodes to be the last children'))
+        nodeMoveLastAct.triggered.connect(self.nodeMoveLast)
+        localActions['NodeMoveLast'] = nodeMoveLastAct
 
         title = _('&Set Node Type')
         key = globalref.keyboardOptions['DataNodeType']
@@ -470,6 +520,76 @@ class TreeLocalControl(QObject):
                 self.activeWindow.treeView.expandSpot(spot)
             self.updateAll()
 
+    def nodeRename(self):
+        """Start the rename editor in the selected tree node.
+        """
+        self.activeWindow.treeView.endEditing()
+        self.activeWindow.treeView.edit(self.currentSelectionModel().
+                                        currentIndex())
+
+    def nodeInBefore(self):
+        """Insert new sibling before selection.
+        """
+        self.activeWindow.treeView.endEditing()
+        selSpots = self.currentSelectionModel().selectedSpots()
+        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
+                                                     for spot in selSpots])
+        newSpots = []
+        for spot in selSpots:
+            newNode = spot.parentSpot.nodeRef.addNewChild(self.structure,
+                                                          spot.nodeRef)
+            newSpots.append(newNode.matchedSpot(spot.parentSpot))
+        if globalref.genOptions['RenameNewNodes']:
+            self.currentSelectionModel().selectSpots(newSpots, False)
+            if len(newSpots) == 1:
+                self.updateAll()
+                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
+                return
+        self.updateAll()
+
+    def nodeInAfter(self):
+        """Insert new sibling after selection.
+        """
+        self.activeWindow.treeView.endEditing()
+        selSpots = self.currentSelectionModel().selectedSpots()
+        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
+                                                     for spot in selSpots])
+        newSpots = []
+        for spot in selSpots:
+            newNode = spot.parentSpot.nodeRef.addNewChild(self.structure,
+                                                          spot.nodeRef, False)
+            newSpots.append(newNode.matchedSpot(spot.parentSpot))
+        if globalref.genOptions['RenameNewNodes']:
+            self.currentSelectionModel().selectSpots(newSpots, False)
+            if len(newSpots) == 1:
+                self.updateAll()
+                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
+                return
+        self.updateAll()
+
+    def nodeAddChild(self):
+        """Add new child to selected parent.
+        """
+        self.activeWindow.treeView.endEditing()
+        selSpots = self.currentSelectionModel().selectedSpots()
+        if not selSpots:
+            selSpots = list(self.structure.spotRefs)
+        undo.ChildListUndo(self.structure.undoList, [spot.nodeRef for spot in
+                                                     selSpots])
+        newSpots = []
+        for spot in selSpots:
+            newNode = spot.nodeRef.addNewChild(self.structure)
+            newSpots.append(newNode.matchedSpot(spot))
+            if spot.parentSpot:  # can't expand root struct spot
+                self.activeWindow.treeView.expandSpot(spot)
+        if globalref.genOptions['RenameNewNodes']:
+            self.currentSelectionModel().selectSpots(newSpots, False)
+            if len(newSpots) == 1:
+                self.updateAll()
+                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
+                return
+        self.updateAll()
+
     def nodeDelete(self):
         """Delete the selected nodes.
         """
@@ -488,6 +608,119 @@ class TreeLocalControl(QObject):
         for spot in selSpots:
             self.structure.deleteNodeSpot(spot)
         self.currentSelectionModel().selectSpots([nextSel[0]], False)
+        self.updateAll()
+
+    def nodeIndent(self):
+        """Indent the selected nodes.
+
+        Makes them children of their previous siblings.
+        """
+        selSpots = self.currentSelectionModel().selectedSpots()
+        undoSpots = ([spot.parentSpot for spot in selSpots] +
+                     [spot.prevSiblingSpot() for spot in selSpots])
+        undo.ChildListUndo(self.structure.undoList, [spot.nodeRef for spot in
+                                                     undoSpots])
+        newSpots = []
+        for spot in selSpots:
+            node = spot.nodeRef
+            newParentSpot = spot.prevSiblingSpot()
+            node.changeParent(spot.parentSpot.nodeRef, newParentSpot.nodeRef)
+            newSpots.append(node.matchedSpot(newParentSpot))
+            self.activeWindow.treeView.expandSpot(newParentSpot)
+        self.currentSelectionModel().selectSpots(newSpots, False)
+        self.updateAll()
+
+    def nodeUnindent(self):
+        """Unindent the selected nodes.
+
+        Makes them their parent's next sibling.
+        """
+        selSpots = self.currentSelectionModel().selectedSpots()
+        undoSpots = [spot.parentSpot for spot in selSpots]
+        undoSpots.extend([spot.parentSpot for spot in undoSpots])
+        undo.ChildListUndo(self.structure.undoList, [spot.nodeRef for spot in
+                                                     undoSpots])
+        newSpots = []
+        for spot in reversed(selSpots):
+            node = spot.nodeRef
+            oldParentSpot = spot.parentSpot
+            newParentSpot = oldParentSpot.parentSpot
+            pos = (newParentSpot.nodeRef.childList.index(oldParentSpot.nodeRef)
+                   + 1)
+            node.changeParent(oldParentSpot.nodeRef, newParentSpot.nodeRef,
+                              pos)
+            newSpots.append(node.matchedSpot(newParentSpot))
+        self.currentSelectionModel().selectSpots(newSpots, False)
+        self.updateAll()
+
+    def nodeMoveUp(self):
+        """Move the selected nodes upward in the sibling list.
+        """
+        self.currentSelectionModel().sortSelection()
+        selNodes = self.currentSelectionModel().selectedNodes()
+        undo.ChildListUndo(self.model.undoList,
+                           [node.parent for node in selNodes])
+        for node in selNodes:
+            pos = node.parent.childList.index(node)
+            del node.parent.childList[pos]
+            node.parent.childList.insert(pos - 1, node)
+            if node.parent.clones:
+                for clone in node.cloneGen():
+                    del clone.parent.childList[pos]
+                    clone.parent.childList.insert(pos - 1, clone)
+        self.currentSelectionModel().selectNodes(selNodes, False)
+        self.updateAll()
+
+    def nodeMoveDown(self):
+        """Move the selected nodes downward in the sibling list.
+        """
+        self.currentSelectionModel().sortSelection()
+        selNodes = self.currentSelectionModel().selectedNodes()
+        undo.ChildListUndo(self.model.undoList,
+                           [node.parent for node in selNodes])
+        for node in reversed(selNodes):
+            pos = node.parent.childList.index(node)
+            del node.parent.childList[pos]
+            node.parent.childList.insert(pos + 1, node)
+            if node.parent.clones:
+                for clone in node.cloneGen():
+                    del clone.parent.childList[pos]
+                    clone.parent.childList.insert(pos + 1, clone)
+        self.currentSelectionModel().selectNodes(selNodes, False)
+        self.updateAll()
+
+    def nodeMoveFirst(self):
+        """Move the selected nodes to be the first children.
+        """
+        self.currentSelectionModel().sortSelection()
+        selNodes = self.currentSelectionModel().selectedNodes()
+        undo.ChildListUndo(self.model.undoList,
+                           [node.parent for node in selNodes])
+        for node in reversed(selNodes):
+            node.parent.childList.remove(node)
+            node.parent.childList.insert(0, node)
+            if node.parent.clones:
+                for clone in node.cloneGen():
+                    clone.parent.childList.remove(clone)
+                    clone.parent.childList.insert(0, clone)
+        self.currentSelectionModel().selectNodes(selNodes, False)
+        self.updateAll()
+
+    def nodeMoveLast(self):
+        """Move the selected nodes to be the last children.
+        """
+        self.currentSelectionModel().sortSelection()
+        selNodes = self.currentSelectionModel().selectedNodes()
+        undo.ChildListUndo(self.model.undoList,
+                           [node.parent for node in selNodes])
+        for node in selNodes:
+            node.parent.childList.remove(node)
+            node.parent.childList.append(node)
+            if node.parent.clones:
+                for clone in node.cloneGen():
+                    clone.parent.childList.remove(clone)
+                    clone.parent.childList.append(clone)
+        self.currentSelectionModel().selectNodes(selNodes, False)
         self.updateAll()
 
     def dataSetType(self, action):
