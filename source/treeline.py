@@ -26,7 +26,6 @@ translationPath = 'translations'
 import sys
 import pathlib
 import argparse
-import locale
 import builtins
 from PyQt5.QtWidgets import QApplication
 

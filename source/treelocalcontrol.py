@@ -169,9 +169,26 @@ class TreeLocalControl(QObject):
         selSpots = self.currentSelectionModel().selectedSpots()
         rootSpots = [spot for spot in selSpots if not
                      spot.parentSpot.parentSpot]
+        hasGrandParent = (len(selSpots) and len(rootSpots) == 0 and
+                          None not in [spot.parentSpot.parentSpot.parentSpot
+                                       for spot in selSpots])
+        hasPrevSibling = (len(selSpots) and None not in
+                          [spot.prevSiblingSpot() for spot in selSpots])
+        hasNextSibling = (len(selSpots) and None not in
+                          [spot.nextSiblingSpot() for spot in selSpots])
+        self.allActions['NodeRename'].setEnabled(len(selSpots) == 1)
+        self.allActions['NodeInsertBefore'].setEnabled(len(selSpots) > 0)
+        self.allActions['NodeInsertAfter'].setEnabled(len(selSpots) > 0)
         self.allActions['NodeDelete'].setEnabled(len(selSpots) > 0 and
                                                  len(rootSpots) <
                                                  len(self.structure.childList))
+        self.allActions['NodeIndent'].setEnabled(hasPrevSibling)
+        self.allActions['NodeUnindent'].setEnabled(hasGrandParent)
+        self.allActions['NodeMoveUp'].setEnabled(hasPrevSibling)
+        self.allActions['NodeMoveDown'].setEnabled(hasNextSibling)
+        self.allActions['NodeMoveFirst'].setEnabled(hasPrevSibling)
+        self.allActions['NodeMoveLast'].setEnabled(hasNextSibling)
+        self.allActions['DataNodeType'].parent().setEnabled(len(selSpots) > 0)
 
     def updatePasteAvail(self):
         """Set paste available based on a signal.
@@ -656,71 +673,55 @@ class TreeLocalControl(QObject):
     def nodeMoveUp(self):
         """Move the selected nodes upward in the sibling list.
         """
-        self.currentSelectionModel().sortSelection()
-        selNodes = self.currentSelectionModel().selectedNodes()
-        undo.ChildListUndo(self.model.undoList,
-                           [node.parent for node in selNodes])
-        for node in selNodes:
-            pos = node.parent.childList.index(node)
-            del node.parent.childList[pos]
-            node.parent.childList.insert(pos - 1, node)
-            if node.parent.clones:
-                for clone in node.cloneGen():
-                    del clone.parent.childList[pos]
-                    clone.parent.childList.insert(pos - 1, clone)
-        self.currentSelectionModel().selectNodes(selNodes, False)
+        selSpots = self.currentSelectionModel().selectedSpots()
+        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
+                                                     for spot in selSpots])
+        for spot in selSpots:
+            parent = spot.parentSpot.nodeRef
+            pos = parent.childList.index(spot.nodeRef)
+            del parent.childList[pos]
+            parent.childList.insert(pos - 1, spot.nodeRef)
+        self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
 
     def nodeMoveDown(self):
         """Move the selected nodes downward in the sibling list.
         """
-        self.currentSelectionModel().sortSelection()
-        selNodes = self.currentSelectionModel().selectedNodes()
-        undo.ChildListUndo(self.model.undoList,
-                           [node.parent for node in selNodes])
-        for node in reversed(selNodes):
-            pos = node.parent.childList.index(node)
-            del node.parent.childList[pos]
-            node.parent.childList.insert(pos + 1, node)
-            if node.parent.clones:
-                for clone in node.cloneGen():
-                    del clone.parent.childList[pos]
-                    clone.parent.childList.insert(pos + 1, clone)
-        self.currentSelectionModel().selectNodes(selNodes, False)
+        selSpots = self.currentSelectionModel().selectedSpots()
+        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
+                                                     for spot in selSpots])
+        for spot in reversed(selSpots):
+            parent = spot.parentSpot.nodeRef
+            pos = parent.childList.index(spot.nodeRef)
+            del parent.childList[pos]
+            parent.childList.insert(pos + 1, spot.nodeRef)
+        self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
 
     def nodeMoveFirst(self):
         """Move the selected nodes to be the first children.
         """
-        self.currentSelectionModel().sortSelection()
-        selNodes = self.currentSelectionModel().selectedNodes()
-        undo.ChildListUndo(self.model.undoList,
-                           [node.parent for node in selNodes])
-        for node in reversed(selNodes):
-            node.parent.childList.remove(node)
-            node.parent.childList.insert(0, node)
-            if node.parent.clones:
-                for clone in node.cloneGen():
-                    clone.parent.childList.remove(clone)
-                    clone.parent.childList.insert(0, clone)
-        self.currentSelectionModel().selectNodes(selNodes, False)
+        selSpots = self.currentSelectionModel().selectedSpots()
+        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
+                                                     for spot in selSpots])
+        for spot in reversed(selSpots):
+            parent = spot.parentSpot.nodeRef
+            parent.childList.remove(spot.nodeRef)
+            parent.childList.insert(0, spot.nodeRef)
+        self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
 
     def nodeMoveLast(self):
         """Move the selected nodes to be the last children.
         """
-        self.currentSelectionModel().sortSelection()
-        selNodes = self.currentSelectionModel().selectedNodes()
-        undo.ChildListUndo(self.model.undoList,
-                           [node.parent for node in selNodes])
-        for node in selNodes:
-            node.parent.childList.remove(node)
-            node.parent.childList.append(node)
-            if node.parent.clones:
-                for clone in node.cloneGen():
-                    clone.parent.childList.remove(clone)
-                    clone.parent.childList.append(clone)
-        self.currentSelectionModel().selectNodes(selNodes, False)
+        selSpots = self.currentSelectionModel().selectedSpots()
+        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
+                                                     for spot in selSpots])
+        for spot in selSpots:
+            parent = spot.parentSpot.nodeRef
+            parent.childList.remove(spot.nodeRef)
+            parent.childList.append(spot.nodeRef)
+        self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
 
     def dataSetType(self, action):
