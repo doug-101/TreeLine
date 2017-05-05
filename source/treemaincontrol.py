@@ -14,7 +14,9 @@
 
 import sys
 import pathlib
-from PyQt5.QtCore import QObject, Qt
+import ast
+from PyQt5.QtCore import QIODevice, QObject, Qt
+from PyQt5.QtNetwork import QLocalServer, QLocalSocket
 from PyQt5.QtWidgets import (QAction, QApplication, QDialog, QFileDialog,
                              QMessageBox)
 import globalref
@@ -55,6 +57,24 @@ class TreeMainControl(QObject):
         self.configDialog = None
         globalref.mainControl = self
         self.allActions = {}
+        try:
+            # check for existing TreeLine session
+            socket = QLocalSocket()
+            socket.connectToServer('treeline3-session',
+                                   QIODevice.WriteOnly)
+            # if found, send files to open and exit TreeLine
+            if socket.waitForConnected(1000):
+                socket.write(bytes(repr([str(path) for path in pathObjects]),
+                                   'utf-8'))
+                if socket.waitForBytesWritten(1000):
+                    socket.close()
+                    sys.exit(0)
+            # start local server to listen for attempt to start new session
+            self.serverSocket = QLocalServer()
+            self.serverSocket.listen('treeline3-session')
+            self.serverSocket.newConnection.connect(self.getSocket)
+        except AttributeError:
+            print(_('Warning:  Could not create local socket'))
         mainVersion = '.'.join(__version__.split('.')[:2])
         globalref.genOptions = options.Options('general', 'TreeLine',
                                                mainVersion, 'bellz')
@@ -90,9 +110,27 @@ class TreeMainControl(QObject):
         self.setupActions()
         if pathObjects:
             for pathObj in pathObjects:
-                self.openFile(pathObj.resolve())
+                self.openFile(pathObj.resolve(), True)
         else:
             self.createLocalControl()
+
+    def getSocket(self):
+        """Open a socket from an attempt to open a second Treeline instance.
+
+        Opens the file (or raise and focus if open) in this instance.
+        """
+        socket = self.serverSocket.nextPendingConnection()
+        if socket and socket.waitForReadyRead(1000):
+            data = str(socket.readAll(), 'utf-8')
+            try:
+                paths = ast.literal_eval(data)
+                if paths:
+                    for path in paths:
+                        self.openFile(pathlib.Path(path).resolve(), True)
+                else:
+                    self.activeControl.activeWindow.activateAndRaise()
+            except(SyntaxError, ValueError, TypeError):
+                pass
 
     def findResourcePaths(self, resourceName, preferredPath=''):
         """Return list of potential non-empty pathlib objects for the resource.
@@ -129,13 +167,13 @@ class TreeMainControl(QObject):
             pathObj = pathObj.parent
         return pathObj
 
-    def openFile(self, pathObj, checkModified=False, importOnFail=True):
+    def openFile(self, pathObj, forceNewWindow=False, importOnFail=True):
         """Open the file given by path if not already open.
 
         If already open in a different window, focus and raise the window.
         Arguments:
-            pathObj -- the name of the file path to read
-            checkModified -- if True, prompt user about current modified file
+            pathObj -- the path object to read
+            forceNewWindow -- if True, use a new window regardless of option
             importOnFail -- if True, prompts for import on non-TreeLine files
         """
         match = [control for control in self.localControls if
@@ -147,7 +185,7 @@ class TreeMainControl(QObject):
         else:
             try:
                 QApplication.setOverrideCursor(Qt.WaitCursor)
-                self.createLocalControl(pathObj)
+                self.createLocalControl(pathObj, None, forceNewWindow)
                 QApplication.restoreOverrideCursor()
             except IOError:
                 QApplication.restoreOverrideCursor()
@@ -162,16 +200,19 @@ class TreeMainControl(QObject):
             if not self.localControls:
                 self.createLocalControl()
 
-    def createLocalControl(self, pathObj=None, treeStruct=None):
+    def createLocalControl(self, pathObj=None, treeStruct=None,
+                           forceNewWindow=False):
         """Create a new local control object and add it to the list.
 
         Use an imported structure if given or open the file if path is given.
         Arguments:
             pathObj -- the path object for the control to open
             treeStruct -- the imported structure to use
+            forceNewWindow -- if True, use a new window regardless of option
         """
         localControl = treelocalcontrol.TreeLocalControl(self.allActions,
-                                                         pathObj, treeStruct)
+                                                         pathObj, treeStruct,
+                                                         forceNewWindow)
         localControl.controlActivated.connect(self.updateLocalControlRef)
         localControl.controlClosed.connect(self.removeLocalControlRef)
         self.localControls.append(localControl)
@@ -199,6 +240,12 @@ class TreeMainControl(QObject):
             localControl -- the local control that is closing
         """
         self.localControls.remove(localControl)
+        if not self.localControls:
+            if globalref.genOptions['SaveWindowGeom']:
+                localControl.windowList[0].saveWindowGeom()
+            else:
+                localControl.windowList[0].resetWindowGeom()
+            globalref.histOptions.writeFile()
 
     def currentStatusBar(self):
         """Return the status bar from the current main window.

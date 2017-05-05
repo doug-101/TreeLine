@@ -591,6 +591,16 @@ class Options(OrderedDict):
             return True
         return False
 
+    def resetToDefaults(self, keyList):
+        """Reset all options with the given keys to original default values.
+
+        Arguments:
+            keyList -- a list of option names to reset
+        """
+        for key in keyList:
+            self.get(key).setValue(self.get(key).defaultValue)
+        self.modified = True
+
     def removeValue(self, name):
         """Remove the value from the option list if possible.
 

@@ -12,7 +12,8 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-from PyQt5.QtCore import QEvent, Qt, pyqtSignal
+from PyQt5.QtCore import QEvent, QRect, Qt, pyqtSignal
+from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QSplitter, QStatusBar,
                              QTabWidget, QWidget)
 import treeview
@@ -21,6 +22,7 @@ import outputview
 import dataeditview
 import titlelistview
 import treenode
+import globalref
 
 
 class TreeWindow(QMainWindow):
@@ -260,6 +262,100 @@ class TreeWindow(QMainWindow):
 
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
+
+    def saveWindowGeom(self):
+        """Save window geometry parameters to history options.
+        """
+        globalref.histOptions.changeValue('WindowXSize', self.width())
+        globalref.histOptions.changeValue('WindowYSize', self.height())
+        globalref.histOptions.changeValue('WindowXPos', self.geometry().x())
+        globalref.histOptions.changeValue('WindowYPos', self.geometry().y())
+        try:
+            upperWidth, lowerWidth = self.breadcrumbSplitter.sizes()
+            crumbPercent = int(100 * upperWidth / (upperWidth + lowerWidth))
+            globalref.histOptions.changeValue('CrumbSplitPercent',
+                                              crumbPercent)
+
+            leftWidth, rightWidth = self.treeSplitter.sizes()
+            treePercent = int(100 * leftWidth / (leftWidth + rightWidth))
+            globalref.histOptions.changeValue('TreeSplitPercent', treePercent)
+            upperWidth, lowerWidth = self.outputSplitter.sizes()
+            outputPercent = int(100 * upperWidth / (upperWidth + lowerWidth))
+            globalref.histOptions.changeValue('OutputSplitPercent',
+                                              outputPercent)
+            upperWidth, lowerWidth = self.editorSplitter.sizes()
+            editorPercent = int(100 * upperWidth / (upperWidth + lowerWidth))
+            globalref.histOptions.changeValue('EditorSplitPercent',
+                                              editorPercent)
+            upperWidth, lowerWidth = self.titleSplitter.sizes()
+            titlePercent = int(100 * upperWidth / (upperWidth + lowerWidth))
+            globalref.histOptions.changeValue('TitleSplitPercent',
+                                              titlePercent)
+        except ZeroDivisionError:
+            pass   # skip if splitter sizes were never set
+        tabNum = self.rightTabs.currentIndex()
+        globalref.histOptions.changeValue('ActiveRightView', tabNum)
+
+    def restoreWindowGeom(self, offset=0):
+        """Restore window geometry from history options.
+
+        Arguments:
+            offset -- number of pixels to offset window, down and to right
+        """
+        rect = QRect(globalref.histOptions['WindowXPos'],
+                     globalref.histOptions['WindowYPos'],
+                     globalref.histOptions['WindowXSize'],
+                     globalref.histOptions['WindowYSize'])
+        if rect.x() == -1000 and rect.y() == -1000:
+            # let OS position window the first time
+            self.resize(rect.size())
+        else:
+            if offset:
+                rect.adjust(offset, offset, offset, offset)
+            desktop = QApplication.desktop()
+            if desktop.isVirtualDesktop():
+                # availRect = desktop.screen().rect() # buggy in windows?
+                availRect = (QGuiApplication.screens()[0].
+                             availableVirtualGeometry())
+            else:
+                availRect = desktop.availableGeometry(desktop.primaryScreen())
+            rect = rect.intersected(availRect)
+            self.setGeometry(rect)
+        crumbWidth = int(self.breadcrumbSplitter.width() / 100 *
+                         globalref.histOptions['CrumbSplitPercent'])
+        self.breadcrumbSplitter.setSizes([crumbWidth,
+                                          self.breadcrumbSplitter.width() -
+                                          crumbWidth])
+        treeWidth = int(self.treeSplitter.width() / 100 *
+                        globalref.histOptions['TreeSplitPercent'])
+        self.treeSplitter.setSizes([treeWidth,
+                                    self.treeSplitter.width() - treeWidth])
+        outHeight = int(self.outputSplitter.height() / 100.0 *
+                        globalref.histOptions['OutputSplitPercent'])
+        self.outputSplitter.setSizes([outHeight,
+                                     self.outputSplitter.height() - outHeight])
+        editHeight = int(self.editorSplitter.height() / 100.0 *
+                         globalref.histOptions['EditorSplitPercent'])
+        self.editorSplitter.setSizes([editHeight,
+                                    self.editorSplitter.height() - editHeight])
+        titleHeight = int(self.titleSplitter.height() / 100.0 *
+                          globalref.histOptions['TitleSplitPercent'])
+        self.titleSplitter.setSizes([titleHeight,
+                                    self.titleSplitter.height() - titleHeight])
+        self.rightTabs.setCurrentIndex(globalref.
+                                       histOptions['ActiveRightView'])
+
+    def resetWindowGeom(self):
+        """Set all stored window geometry values back to default settings.
+        """
+        globalref.histOptions.resetToDefaults(['WindowXPos', 'WindowYPos',
+                                               'WindowXSize', 'WindowYSize',
+                                               'CrumbSplitPercent',
+                                               'TreeSplitPercent',
+                                               'OutputSplitPercent',
+                                               'EditorSplitPercent',
+                                               'TitleSplitPercent',
+                                               'ActiveRightView'])
 
     def changeEvent(self, event):
         """Detect an activation of the main window and emit a signal.

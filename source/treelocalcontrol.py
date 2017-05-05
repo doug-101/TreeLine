@@ -31,7 +31,8 @@ class TreeLocalControl(QObject):
     """
     controlActivated = pyqtSignal(QObject)
     controlClosed = pyqtSignal(QObject)
-    def __init__(self, allActions, fileObj=None, treeStruct=None, parent=None):
+    def __init__(self, allActions, fileObj=None, treeStruct=None,
+                 forceNewWindow=False, parent=None):
         """Initialize the local tree controls.
 
         Use an imported structure if given or open the file if path is given.
@@ -40,6 +41,7 @@ class TreeLocalControl(QObject):
             allActions -- a dict containing the upper level actions
             fileObj -- the path object or file object to open, if given
             treeStruct -- an imported tree structure file, if given
+            forceNewWindow -- if True, use a new window regardless of option
             parent -- a parent object if given
         """
         super().__init__(parent)
@@ -77,7 +79,7 @@ class TreeLocalControl(QObject):
         self.structure.redoList.altListRef = self.structure.undoList
         if not globalref.mainControl.activeControl:
             self.windowNew(0)
-        elif globalref.genOptions['OpenNewWindow']:
+        elif forceNewWindow or globalref.genOptions['OpenNewWindow']:
             self.windowNew()
         else:
             oldControl = globalref.mainControl.activeControl
@@ -776,6 +778,9 @@ class TreeLocalControl(QObject):
         self.setWindowSignals(window)
         self.windowList.append(window)
         window.setCaption(self.filePathObj)
-        # window.restoreWindowGeom(offset)
+        oldControl = globalref.mainControl.activeControl
+        if oldControl:
+            oldControl.activeWindow.saveWindowGeom()
+        window.restoreWindowGeom(offset)
         self.activeWindow = window
         window.show()

@@ -96,6 +96,8 @@ def setHistOptionDefaults(historyOptions):
                   _('Window Geometry'))
     IntOptionItem(historyOptions, 'WindowYPos', -1000, -1000, 10000,
                   _('Window Geometry'))
+    IntOptionItem(historyOptions, 'CrumbSplitPercent', 10, 1, 99,
+                  _('Window Geometry'))
     IntOptionItem(historyOptions, 'TreeSplitPercent', 40, 1, 99,
                   _('Window Geometry'))
     IntOptionItem(historyOptions, 'OutputSplitPercent', 20, 1, 99,
