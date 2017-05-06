@@ -252,6 +252,15 @@ class TreeMainControl(QObject):
         """
         return self.activeControl.activeWindow.statusBar()
 
+    def windowActions(self):
+        """Return a list of window menu actions from each local control.
+        """
+        actions = []
+        for control in self.localControls:
+            actions.extend(control.windowActions(len(actions) + 1,
+                                                control == self.activeControl))
+        return actions
+
     def setupActions(self):
         """Add the actions for contols at the global level.
         """
@@ -280,6 +289,11 @@ class TreeMainControl(QObject):
                              statusTip=_('Set user preferences for all files'))
         toolsGenOptionsAct.triggered.connect(self.toolsGenOptions)
         self.allActions['ToolsGenOptions'] = toolsGenOptionsAct
+
+        helpAboutAct = QAction(_('&About TreeLine...'), self,
+                        statusTip=_('Display version info about this program'))
+        helpAboutAct.triggered.connect(self.helpAbout)
+        self.allActions['HelpAbout'] = helpAboutAct
 
         for name, action in self.allActions.items():
             icon = globalref.toolIcons.getIcon(name.lower())
@@ -358,3 +372,10 @@ class TreeMainControl(QObject):
                 for window in control.windowList:
                     window.treeView.updateTreeGenOptions()
                 control.updateAll(False)
+
+    def helpAbout(self):
+        """ Display version info about this program.
+        """
+        QMessageBox.about(QApplication.activeWindow(), 'TreeLine',
+                          _('TreeLine, Version {0}\nby {1}').
+                          format(__version__, __author__))

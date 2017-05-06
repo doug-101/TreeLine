@@ -14,8 +14,8 @@
 
 from PyQt5.QtCore import QEvent, QRect, Qt, pyqtSignal
 from PyQt5.QtGui import QGuiApplication
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QSplitter, QStatusBar,
-                             QTabWidget, QWidget)
+from PyQt5.QtWidgets import (QAction, QApplication, QMainWindow, QSplitter,
+                             QStatusBar, QTabWidget, QWidget)
 import treeview
 import breadcrumbview
 import outputview
@@ -125,10 +125,11 @@ class TreeWindow(QMainWindow):
     def updateRightViews(self):
         """Update all right-hand views and breadcrumb view.
         """
-        self.breadcrumbView.updateContents()
-        splitter = self.rightTabs.currentWidget()
-        for i in range(2):
-            splitter.widget(i).updateContents()
+        if globalref.mainControl.activeControl:
+            self.breadcrumbView.updateContents()
+            splitter = self.rightTabs.currentWidget()
+            for i in range(2):
+                splitter.widget(i).updateContents()
 
     def resetTreeModel(self, model):
         """Change the model assigned to the tree view.
@@ -204,11 +205,16 @@ class TreeWindow(QMainWindow):
         """
         winActions = {}
 
+        winCloseAct = QAction(_('&Close Window'), self,
+                                    statusTip=_('Close this window'))
+        winCloseAct.triggered.connect(self.close)
+        winActions['WinCloseWindow'] = winCloseAct
+
         for name, action in winActions.items():
             icon = globalref.toolIcons.getIcon(name.lower())
             if icon:
                 action.setIcon(icon)
-            key = globalref.keyboardOptions.getValue[name]
+            key = globalref.keyboardOptions[name]
             if not key.isEmpty():
                 action.setShortcut(key)
         self.allActions.update(winActions)
@@ -252,7 +258,6 @@ class TreeWindow(QMainWindow):
         nodeMenu.addAction(self.allActions['NodeMoveFirst'])
         nodeMenu.addAction(self.allActions['NodeMoveLast'])
 
-
         dataMenu = self.menuBar().addMenu(_('&Data'))
         # add action's parent to get the sub-menu
         dataMenu.addMenu(self.allActions['DataNodeType'].parent())
@@ -262,6 +267,24 @@ class TreeWindow(QMainWindow):
 
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
+
+        self.windowMenu = self.menuBar().addMenu(_('&Window'))
+        self.windowMenu.aboutToShow.connect(self.loadWindowMenu)
+        self.windowMenu.addAction(self.allActions['WinNewWindow'])
+        self.windowMenu.addAction(self.allActions['WinCloseWindow'])
+        self.windowMenu.addSeparator()
+
+        helpMenu = self.menuBar().addMenu(_('&Help'))
+        helpMenu.addAction(self.allActions['HelpAbout'])
+
+    def loadWindowMenu(self):
+        """Load window list items to window menu before showing.
+        """
+        for action in self.windowMenu.actions():
+            text = action.text()
+            if len(text) > 1 and text[0] == '&' and '0' <= text[1] <= '9':
+                self.windowMenu.removeAction(action)
+        self.windowMenu.addActions(globalref.mainControl.windowActions())
 
     def saveWindowGeom(self):
         """Save window geometry parameters to history options.

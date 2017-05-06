@@ -14,6 +14,7 @@
 
 import pathlib
 import json
+import os
 from PyQt5.QtCore import QObject, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QFileDialog,
                              QMenu, QMessageBox)
@@ -78,13 +79,16 @@ class TreeLocalControl(QObject):
         self.structure.undoList.altListRef = self.structure.redoList
         self.structure.redoList.altListRef = self.structure.undoList
         if not globalref.mainControl.activeControl:
-            self.windowNew(0)
+            self.windowNew(offset=0)
         elif forceNewWindow or globalref.genOptions['OpenNewWindow']:
             self.windowNew()
         else:
             oldControl = globalref.mainControl.activeControl
             window = oldControl.activeWindow
-            oldControl.controlClosed.emit(oldControl)
+            if len(oldControl.windowList) > 1:
+                oldControl.windowList.remove(window)
+            else:
+                oldControl.controlClosed.emit(oldControl)
             window.resetTreeModel(self.model)
             self.setWindowSignals(window, True)
             self.windowList.append(window)
@@ -279,6 +283,32 @@ class TreeLocalControl(QObject):
         for window in self.windowList:
             window.close()
 
+    def windowActions(self, startNum=1, active=False):
+        """Return a list of window menu actions to select this file's windows.
+
+        Arguments:
+            startNum -- where to start numbering the action names
+            active -- if True, activate the current active window
+        """
+        actions = []
+        maxActionPathLength = 30
+        abbrevPath = str(self.filePathObj)
+        if len(abbrevPath) > maxActionPathLength:
+            truncLength = maxActionPathLength - 3
+            pos = abbrevPath.find(os.sep, len(abbrevPath) - truncLength)
+            if pos < 0:
+                pos = len(abbrevPath) - truncLength
+            abbrevPath = '...' + abbrevPath[pos:]
+        for window in self.windowList:
+            action = QAction('&{0:d} {1}'.format(startNum, abbrevPath), self,
+                             statusTip=str(self.filePathObj), checkable=True)
+            action.triggered.connect(window.activateAndRaise)
+            if active and window == self.activeWindow:
+                action.setChecked(True)
+            actions.append(action)
+            startNum += 1
+        return actions
+
     def setupActions(self):
         """Add the actions for contols at the local level.
 
@@ -399,6 +429,11 @@ class TreeLocalControl(QObject):
         typeContextMenuAct = QAction(_('Set Node Type'), self.typeSubMenu)
         typeContextMenuAct.triggered.connect(self.showTypeContextMenu)
         localActions['DataNodeType'] = typeContextMenuAct
+
+        winNewAct = QAction(_('&New Window'), self,
+                            statusTip=_('Open a new window for the same file'))
+        winNewAct.triggered.connect(self.windowNew)
+        localActions['WinNewWindow'] = winNewAct
 
         for name, action in localActions.items():
             icon = globalref.toolIcons.getIcon(name.lower())
@@ -768,10 +803,11 @@ class TreeLocalControl(QObject):
         """
         self.activeWindow.treeView.showTypeMenu(self.typeSubMenu)
 
-    def windowNew(self, offset=30):
+    def windowNew(self, checked=False, offset=30):
         """Open a new window for this file.
 
         Arguments:
+            checked -- unused parameter needed by QAction signal
             offset -- location offset from previously saved position
         """
         window = treewindow.TreeWindow(self.model, self.allActions)
