@@ -79,7 +79,7 @@ class TreeSpot:
         return None
 
     def spotChain(self):
-        """Return a list of parent spots.
+        """Return a list of parent spots, including self.
         """
         chain = []
         spot = self
@@ -87,6 +87,16 @@ class TreeSpot:
             chain.insert(0, spot)
             spot = spot.parentSpot
         return chain
+
+    def parentSpotSet(self):
+        """Return a set of ancestor spots, not including self.
+        """
+        result = set()
+        spot = self.parentSpot
+        while spot.parentSpot:
+            result.add(spot)
+            spot = spot.parentSpot
+        return result
 
     def sortKey(self):
         """Return a tuple of parent row positions for sorting in tree order.

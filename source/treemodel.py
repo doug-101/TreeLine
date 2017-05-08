@@ -141,7 +141,7 @@ class TreeModel(QAbstractItemModel):
         spots = [index.internalPointer() for index in indexList]
         # remove selections from the same branch
         TreeModel.storedDragSpots = [spot for spot in spots if
-                                     set(spot.spotChain()[:-1]).
+                                     spot.parentSpotSet().
                                      isdisjoint(set(spots))]
         nodes = [spot.nodeRef for spot in TreeModel.storedDragSpots]
         TreeModel.storedDragModel = self

@@ -52,8 +52,8 @@ class TreeSelection(QItemSelectionModel):
         Remvoves any duplicates that are already covered by the branches.
         """
         spots = self.selectedSpots()
-        branchSpots = [spot for spot in spots if set(spot.spotChain()[:-1]).
-                       isdisjoint(set(spots))]
+        branchSpots = [spot for spot in spots if
+                       spot.parentSpotSet().isdisjoint(set(spots))]
         return treenodelist.TreeNodeList([spot.nodeRef for spot in
                                           branchSpots])
 
