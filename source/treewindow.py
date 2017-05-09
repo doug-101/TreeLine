@@ -131,6 +131,16 @@ class TreeWindow(QMainWindow):
             for i in range(2):
                 splitter.widget(i).updateContents()
 
+    def updateCommandsAvail(self):
+        """Set window commands available based on node selections.
+        """
+        self.allActions['ViewPrevSelect'].setEnabled(len(self.treeView.
+                                                         selectionModel().
+                                                         prevSpots) > 1)
+        self.allActions['ViewNextSelect'].setEnabled(len(self.treeView.
+                                                         selectionModel().
+                                                         nextSpots) > 0)
+
     def resetTreeModel(self, model):
         """Change the model assigned to the tree view.
 
@@ -205,6 +215,16 @@ class TreeWindow(QMainWindow):
         """
         winActions = {}
 
+        viewPrevSelectAct = QAction(_('&Previous Selection'), self,
+                          statusTip=_('Return to the previous tree selection'))
+        viewPrevSelectAct.triggered.connect(self.viewPrevSelect)
+        winActions['ViewPrevSelect'] = viewPrevSelectAct
+
+        viewNextSelectAct = QAction(_('&Next Selection'), self,
+                       statusTip=_('Go to the next tree selection in history'))
+        viewNextSelectAct.triggered.connect(self.viewNextSelect)
+        winActions['ViewNextSelect'] = viewNextSelectAct
+
         winCloseAct = QAction(_('&Close Window'), self,
                                     statusTip=_('Close this window'))
         winCloseAct.triggered.connect(self.close)
@@ -268,6 +288,10 @@ class TreeWindow(QMainWindow):
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
 
+        viewMenu = self.menuBar().addMenu(_('&View'))
+        viewMenu.addAction(self.allActions['ViewPrevSelect'])
+        viewMenu.addAction(self.allActions['ViewNextSelect'])
+
         self.windowMenu = self.menuBar().addMenu(_('&Window'))
         self.windowMenu.aboutToShow.connect(self.loadWindowMenu)
         self.windowMenu.addAction(self.allActions['WinNewWindow'])
@@ -276,6 +300,16 @@ class TreeWindow(QMainWindow):
 
         helpMenu = self.menuBar().addMenu(_('&Help'))
         helpMenu.addAction(self.allActions['HelpAbout'])
+
+    def viewPrevSelect(self):
+        """Return to the previous tree selection.
+        """
+        self.treeView.selectionModel().restorePrevSelect()
+
+    def viewNextSelect(self):
+        """Go to the next tree selection in history.
+        """
+        self.treeView.selectionModel().restoreNextSelect()
 
     def loadWindowMenu(self):
         """Load window list items to window menu before showing.

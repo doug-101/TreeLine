@@ -53,6 +53,19 @@ class TreeSpot:
                           key=operator.methodcaller('sortKey'))
         return spotList.index(self)
 
+    def isValid(self):
+        """Return True if spot references and all parents are valid.
+        """
+        spot = self
+        while spot.parentSpot:
+            if not (spot in spot.nodeRef.spotRefs and
+                    spot.nodeRef in spot.parentSpot.nodeRef.childList):
+                return False
+            spot = spot.parentSpot
+        if not spot in spot.nodeRef.spotRefs:
+            return False
+        return True
+
     def prevSiblingSpot(self):
         """Return the nearest previous sibling spot or None.
         """

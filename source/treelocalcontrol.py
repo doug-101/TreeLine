@@ -195,6 +195,7 @@ class TreeLocalControl(QObject):
         self.allActions['NodeMoveFirst'].setEnabled(hasPrevSibling)
         self.allActions['NodeMoveLast'].setEnabled(hasNextSibling)
         self.allActions['DataNodeType'].parent().setEnabled(len(selSpots) > 0)
+        self.activeWindow.updateCommandsAvail()
 
     def updatePasteAvail(self):
         """Set paste available based on a signal.

@@ -15,7 +15,10 @@
 import operator
 from PyQt5.QtCore import QItemSelectionModel
 import treenodelist
+import globalref
 
+
+_maxHistoryLength = 10
 
 class TreeSelection(QItemSelectionModel):
     """Class override for the tree view's selection model.
@@ -31,6 +34,10 @@ class TreeSelection(QItemSelectionModel):
         """
         super().__init__(model, parent)
         self.modelRef = model
+        self.prevSpots = []
+        self.nextSpots = []
+        self.restoreFlag = False
+        self.selectionChanged.connect(self.updateSelectLists)
 
     def selectedSpots(self):
         """Return a list of selected spots, sorted in tree order.
@@ -67,15 +74,25 @@ class TreeSelection(QItemSelectionModel):
         """
         return self.currentSpot().nodeRef
 
-    def selectSpots(self, spotList, signalUpdate=True):
+    def selectSpots(self, spotList, signalUpdate=True, expandParents=False):
         """Clear the current selection and select the given spots.
 
         Arguments:
             spotList -- the spots to select
             signalUpdate -- if False, block normal select update signals
+            expandParents -- open parent spots to make selection visible
         """
+        if expandParents:
+            treeView = (globalref.mainControl.activeControl.activeWindow.
+                        treeView)
+            for spot in spotList:
+                parent = spot.parentSpot
+                while parent.parentSpot:
+                    treeView.expandSpot(parent)
+                    parent = parent.parentSpot
         if not signalUpdate:
             self.blockSignals(True)
+            self.addToHistory(spotList)
         self.clear()
         if spotList:
             for spot in spotList:
@@ -84,3 +101,56 @@ class TreeSelection(QItemSelectionModel):
             self.setCurrentIndex(spotList[0].index(self.modelRef),
                                  QItemSelectionModel.Current)
         self.blockSignals(False)
+
+    def restorePrevSelect(self):
+        """Go back to the most recent saved selection.
+        """
+        self.validateHistory()
+        if len(self.prevSpots) > 1:
+            del self.prevSpots[-1]
+            oldSelect = self.selectedSpots()
+            if oldSelect and (not self.nextSpots or
+                              oldSelect != self.nextSpots[-1]):
+                self.nextSpots.append(oldSelect)
+            self.restoreFlag = True
+            self.selectSpots(self.prevSpots[-1], expandParents=True)
+            self.restoreFlag = False
+
+    def restoreNextSelect(self):
+        """Go forward to the most recent saved selection.
+        """
+        self.validateHistory()
+        if self.nextSpots:
+            select = self.nextSpots.pop(-1)
+            if select and (not self.prevSpots or
+                           select != self.prevSpots[-1]):
+                self.prevSpots.append(select)
+            self.restoreFlag = True
+            self.selectSpots(select, expandParents=True)
+            self.restoreFlag = False
+
+    def addToHistory(self, spots):
+        """Add given spots to previous select list.
+
+        Arguments:
+            spots -- a list of spots to be added
+        """
+        if spots and not self.restoreFlag and (not self.prevSpots or
+                                               spots != self.prevSpots[-1]):
+            self.prevSpots.append(spots)
+            if len(self.prevSpots) > _maxHistoryLength:
+                del self.previousNodes[:2]
+            self.nextSpots = []
+
+    def validateHistory(self):
+        """Clear invalid items from history lists.
+        """
+        for histList in (self.prevSpots, self.nextSpots):
+            for spots in histList:
+                spots[:] = [spot for spot in spots if spot.isValid()]
+            histList[:] = [spots for spots in histList if spots]
+
+    def updateSelectLists(self):
+        """Update history after a selection change.
+        """
+        self.addToHistory(self.selectedSpots())
