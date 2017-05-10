@@ -96,6 +96,8 @@ class BreadcrumbView(QTableWidget):
 
         Avoids update if view is not visible or has zero height or width.
         """
+        if not self.isVisible() or self.height() == 0 or self.width() == 0:
+            return
         self.clear()
         self.clearSpans()
         selModel = self.treeView.selectionModel()

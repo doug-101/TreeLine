@@ -14,8 +14,8 @@
 
 from PyQt5.QtCore import QEvent, QRect, Qt, pyqtSignal
 from PyQt5.QtGui import QGuiApplication
-from PyQt5.QtWidgets import (QAction, QApplication, QMainWindow, QSplitter,
-                             QStatusBar, QTabWidget, QWidget)
+from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QMainWindow,
+                             QSplitter, QStatusBar, QTabWidget, QWidget)
 import treeview
 import breadcrumbview
 import outputview
@@ -46,6 +46,7 @@ class TreeWindow(QMainWindow):
         super().__init__(parent)
         self.allActions = allActions.copy()
         self.allowCloseFlag = True
+        self.rightTabActList = []
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setAcceptDrops(True)
         self.setStatusBar(QStatusBar())
@@ -58,6 +59,8 @@ class TreeWindow(QMainWindow):
         self.setCentralWidget(self.breadcrumbSplitter)
         self.breadcrumbView = breadcrumbview.BreadcrumbView(self.treeView)
         self.breadcrumbSplitter.addWidget(self.breadcrumbView)
+        self.breadcrumbView.setVisible(globalref.
+                                       genOptions['InitShowBreadcrumb'])
 
         self.treeSplitter = QSplitter()
         self.breadcrumbSplitter.addWidget(self.treeSplitter)
@@ -126,6 +129,8 @@ class TreeWindow(QMainWindow):
         """Update all right-hand views and breadcrumb view.
         """
         if globalref.mainControl.activeControl:
+            self.rightTabActList[self.rightTabs.
+                                 currentIndex()].setChecked(True)
             self.breadcrumbView.updateContents()
             splitter = self.rightTabs.currentWidget()
             for i in range(2):
@@ -215,6 +220,16 @@ class TreeWindow(QMainWindow):
         """
         winActions = {}
 
+        viewExpandBranchAct = QAction(_('&Expand Full Branch'), self,
+                      statusTip=_('Expand all children of the selected nodes'))
+        viewExpandBranchAct.triggered.connect(self.viewExpandBranch)
+        winActions['ViewExpandBranch'] = viewExpandBranchAct
+
+        viewCollapseBranchAct = QAction(_('&Collapse Full Branch'), self,
+                    statusTip=_('Collapse all children of the selected nodes'))
+        viewCollapseBranchAct.triggered.connect(self.viewCollapseBranch)
+        winActions['ViewCollapseBranch'] = viewCollapseBranchAct
+
         viewPrevSelectAct = QAction(_('&Previous Selection'), self,
                           statusTip=_('Return to the previous tree selection'))
         viewPrevSelectAct.triggered.connect(self.viewPrevSelect)
@@ -224,6 +239,46 @@ class TreeWindow(QMainWindow):
                        statusTip=_('Go to the next tree selection in history'))
         viewNextSelectAct.triggered.connect(self.viewNextSelect)
         winActions['ViewNextSelect'] = viewNextSelectAct
+
+        viewRightTabGrp = QActionGroup(self)
+        viewOutputAct = QAction(_('Show Data &Output'), viewRightTabGrp,
+                                 statusTip=_('Show data output in right view'),
+                                 checkable=True)
+        winActions['ViewDataOutput'] = viewOutputAct
+
+        viewEditAct = QAction(_('Show Data &Editor'), viewRightTabGrp,
+                                 statusTip=_('Show data editor in right view'),
+                                 checkable=True)
+        winActions['ViewDataEditor'] = viewEditAct
+
+        viewTitleAct = QAction(_('Show &Title List'), viewRightTabGrp,
+                                  statusTip=_('Show title list in right view'),
+                                  checkable=True)
+        winActions['ViewTitleList'] = viewTitleAct
+        self.rightTabActList = [viewOutputAct, viewEditAct, viewTitleAct]
+        viewRightTabGrp.triggered.connect(self.viewRightTab)
+
+        viewBreadcrumbAct = QAction(_('Show &Breadcrumb View'), self,
+                        statusTip=_('Toggle showing breadcrumb ancestor view'),
+                        checkable=True)
+        viewBreadcrumbAct.setChecked(globalref.
+                                     genOptions['InitShowBreadcrumb'])
+        viewBreadcrumbAct.triggered.connect(self.viewBreadcrumb)
+        winActions['ViewBreadcrumb'] = viewBreadcrumbAct
+
+        viewChildPaneAct = QAction(_('&Show Child Pane'),  self,
+                          statusTip=_('Toggle showing right-hand child views'),
+                          checkable=True)
+        viewChildPaneAct.setChecked(globalref.genOptions['InitShowChildPane'])
+        viewChildPaneAct.triggered.connect(self.viewShowChildPane)
+        winActions['ViewShowChildPane'] = viewChildPaneAct
+
+        viewDescendAct = QAction(_('Show Output &Descedants'), self,
+                statusTip=_('Toggle showing output view indented descendants'),
+                checkable=True)
+        viewDescendAct.setChecked(globalref.genOptions['InitShowDescendants'])
+        viewDescendAct.triggered.connect(self.viewDescendants)
+        winActions['ViewShowDescend'] = viewDescendAct
 
         winCloseAct = QAction(_('&Close Window'), self,
                                     statusTip=_('Close this window'))
@@ -289,8 +344,19 @@ class TreeWindow(QMainWindow):
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
 
         viewMenu = self.menuBar().addMenu(_('&View'))
+        viewMenu.addAction(self.allActions['ViewExpandBranch'])
+        viewMenu.addAction(self.allActions['ViewCollapseBranch'])
+        viewMenu.addSeparator()
         viewMenu.addAction(self.allActions['ViewPrevSelect'])
         viewMenu.addAction(self.allActions['ViewNextSelect'])
+        viewMenu.addSeparator()
+        viewMenu.addAction(self.allActions['ViewDataOutput'])
+        viewMenu.addAction(self.allActions['ViewDataEditor'])
+        viewMenu.addAction(self.allActions['ViewTitleList'])
+        viewMenu.addSeparator()
+        viewMenu.addAction(self.allActions['ViewBreadcrumb'])
+        viewMenu.addAction(self.allActions['ViewShowChildPane'])
+        viewMenu.addAction(self.allActions['ViewShowDescend'])
 
         self.windowMenu = self.menuBar().addMenu(_('&Window'))
         self.windowMenu.aboutToShow.connect(self.loadWindowMenu)
@@ -301,6 +367,22 @@ class TreeWindow(QMainWindow):
         helpMenu = self.menuBar().addMenu(_('&Help'))
         helpMenu.addAction(self.allActions['HelpAbout'])
 
+    def viewExpandBranch(self):
+        """Expand all children of the selected spots.
+        """
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        for spot in self.treeView.selectionModel().selectedSpots():
+            self.treeView.expandBranch(spot)
+        QApplication.restoreOverrideCursor()
+
+    def viewCollapseBranch(self):
+        """Collapse all children of the selected spots.
+        """
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        for spot in self.treeView.selectionModel().selectedSpots():
+            self.treeView.collapseBranch(spot)
+        QApplication.restoreOverrideCursor()
+
     def viewPrevSelect(self):
         """Return to the previous tree selection.
         """
@@ -310,6 +392,50 @@ class TreeWindow(QMainWindow):
         """Go to the next tree selection in history.
         """
         self.treeView.selectionModel().restoreNextSelect()
+
+    def viewRightTab(self, action):
+        """Show the tab in the right-hand view given by action.
+
+        Arguments:
+            action -- the action triggered in the action group
+        """
+        if action == self.allActions['ViewDataOutput']:
+            self.rightTabs.setCurrentWidget(self.outputSplitter)
+        elif action == self.allActions['ViewDataEditor']:
+            self.rightTabs.setCurrentWidget(self.editorSplitter)
+        else:
+            self.rightTabs.setCurrentWidget(self.titleSplitter)
+
+    def viewBreadcrumb(self, checked):
+        """Enable or disable the display of the breadcrumb view.
+
+        Arguments:
+            checked -- True if to be shown, False if to be hidden
+        """
+        self.breadcrumbView.setVisible(checked)
+        if checked:
+            self.updateRightViews()
+
+    def viewShowChildPane(self, checked):
+        """Enable or disable the display of children in a split pane.
+
+        Arguments:
+            checked -- True if to be shown, False if to be hidden
+        """
+        for tabNum in range(3):
+            for splitNum in range(2):
+                view = self.rightTabs.widget(tabNum).widget(splitNum)
+                view.hideChildView = not checked
+        self.updateRightViews()
+
+    def viewDescendants(self, checked):
+        """Set the output view to show indented descendants if checked.
+
+        Arguments:
+            checked -- True if to be shown, False if to be hidden
+        """
+        self.outputSplitter.widget(1).showDescendants = checked
+        self.updateRightViews()
 
     def loadWindowMenu(self):
         """Load window list items to window menu before showing.

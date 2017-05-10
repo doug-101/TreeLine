@@ -66,6 +66,17 @@ class TreeSpot:
             return False
         return True
 
+    def spotDescendantGen(self):
+        """Return a generator to step through all spots in this branch.
+
+        Includes self.
+        """
+        yield self
+        for childNode in self.nodeRef.childList:
+            childSpot = childNode.matchedSpot(self)
+            for spot in childSpot.spotDescendantGen():
+                yield spot
+
     def prevSiblingSpot(self):
         """Return the nearest previous sibling spot or None.
         """

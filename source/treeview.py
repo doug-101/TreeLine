@@ -77,6 +77,26 @@ class TreeView(QTreeView):
         """
         self.collapse(spot.index(self.model()))
 
+    def expandBranch(self, parentSpot):
+        """Expand all spots in the given branch.
+
+        Arguments:
+            parentSpot -- the top spot in the branch
+        """
+        for spot in parentSpot.spotDescendantGen():
+            if spot.nodeRef.childList:
+                self.expand(spot.index(self.model()))
+
+    def collapseBranch(self, parentSpot):
+        """Collapse all spots in the given branch.
+
+        Arguments:
+            parentSpot -- the top spot in the branch
+        """
+        for spot in parentSpot.spotDescendantGen():
+            if spot.nodeRef.childList:
+                self.collapse(spot.index(self.model()))
+
     def endEditing(self):
         """Stop the editing of any item being renamed.
         """

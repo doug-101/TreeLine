@@ -29,9 +29,12 @@ def setGenOptionDefaults(generalOptions):
     BoolOptionItem(generalOptions, 'AutoFileOpen', False,
                    _('Startup Condition'),
                    _('Automatically open last file used'))
+    BoolOptionItem(generalOptions, 'InitShowBreadcrumb', True,
+                   _('Startup Condition'),
+                   _('Show breadcrumb ancestor view'))
     BoolOptionItem(generalOptions, 'InitShowChildPane', True,
                    _('Startup Condition'),
-                   _('Show child pane in right hand view'))
+                   _('Show child pane in right hand views'))
     BoolOptionItem(generalOptions, 'InitShowDescendants', False,
                    _('Startup Condition'),
                    _('Show descendants in output view'))
@@ -218,6 +221,7 @@ def setKeyboardOptionDefaults(keyboardOptions):
                   'View Menu')
     KeyOptionItem(keyboardOptions, 'ViewTitleList', 'Ctrl+Shift+T',
                   'View Menu')
+    KeyOptionItem(keyboardOptions, 'ViewBreadcrumb', '', 'View Menu')
     KeyOptionItem(keyboardOptions, 'ViewShowChildPane', 'Ctrl+Shift+C',
                   'View Menu')
     KeyOptionItem(keyboardOptions, 'ViewShowDescend', 'Ctrl+Shift+D',
