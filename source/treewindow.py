@@ -343,6 +343,23 @@ class TreeWindow(QMainWindow):
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
 
+        formatMenu = self.menuBar().addMenu(_('Fo&rmat'))
+        formatMenu.addAction(self.allActions['FormatBoldFont'])
+        formatMenu.addAction(self.allActions['FormatItalicFont'])
+        formatMenu.addAction(self.allActions['FormatUnderlineFont'])
+        formatMenu.addSeparator()
+        # add action's parent to get the sub-menu
+        formatMenu.addMenu(self.allActions['FormatFontSize'].parent())
+        # add the action to activate the shortcut key
+        self.addAction(self.allActions['FormatFontSize'])
+        formatMenu.addAction(self.allActions['FormatFontColor'])
+        formatMenu.addSeparator()
+        formatMenu.addAction(self.allActions['FormatExtLink'])
+        formatMenu.addAction(self.allActions['FormatIntLink'])
+        formatMenu.addSeparator()
+        formatMenu.addAction(self.allActions['FormatSelectAll'])
+        formatMenu.addAction(self.allActions['FormatClearFormat'])
+
         viewMenu = self.menuBar().addMenu(_('&View'))
         viewMenu.addAction(self.allActions['ViewExpandBranch'])
         viewMenu.addAction(self.allActions['ViewCollapseBranch'])

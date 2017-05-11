@@ -431,6 +431,61 @@ class TreeLocalControl(QObject):
         typeContextMenuAct.triggered.connect(self.showTypeContextMenu)
         localActions['DataNodeType'] = typeContextMenuAct
 
+        formatBoldAct = QAction(_('&Bold Font'), self,
+                       statusTip=_('Set the current or selected font to bold'),
+                       checkable=True)
+        formatBoldAct.setEnabled(False)
+        localActions['FormatBoldFont'] = formatBoldAct
+
+        formatItalicAct = QAction(_('&Italic Font'), self,
+                     statusTip=_('Set the current or selected font to italic'),
+                     checkable=True)
+        formatItalicAct.setEnabled(False)
+        localActions['FormatItalicFont'] = formatItalicAct
+
+        formatUnderlineAct = QAction(_('U&nderline Font'), self,
+                  statusTip=_('Set the current or selected font to underline'),
+                  checkable=True)
+        formatUnderlineAct.setEnabled(False)
+        localActions['FormatUnderlineFont'] = formatUnderlineAct
+
+        title = _('&Font Size')
+        key = globalref.keyboardOptions['FormatFontSize']
+        if not key.isEmpty():
+            title = '{0}  ({1})'.format(title, key.toString())
+        self.fontSizeSubMenu = QMenu(title,
+                       statusTip=_('Set size of the current or selected text'))
+        sizeActions = QActionGroup(self)
+        for size in (_('Small'), _('Default'), _('Large'), _('Larger'),
+                     _('Largest')):
+            action = QAction(size, sizeActions)
+            action.setCheckable(True)
+        self.fontSizeSubMenu.addActions(sizeActions.actions())
+        self.fontSizeSubMenu.setEnabled(False)
+        fontSizeContextMenuAct = QAction(_('Set Font Size'),
+                                         self.fontSizeSubMenu)
+        localActions['FormatFontSize'] = fontSizeContextMenuAct
+
+        formatColorAct =  QAction(_('Font C&olor...'), self,
+                  statusTip=_('Set the color of the current or selected text'))
+        formatColorAct.setEnabled(False)
+        localActions['FormatFontColor'] = formatColorAct
+
+        formatExtLinkAct = QAction(_('&External Link...'), self,
+                              statusTip=_('Add or modify an extrnal web link'))
+        formatExtLinkAct.setEnabled(False)
+        localActions['FormatExtLink'] = formatExtLinkAct
+
+        formatIntLinkAct = QAction(_('Internal &Link...'), self,
+                            statusTip=_('Add or modify an internal node link'))
+        formatIntLinkAct.setEnabled(False)
+        localActions['FormatIntLink'] = formatIntLinkAct
+
+        formatClearFormatAct =  QAction(_('Clear For&matting'), self,
+                      statusTip=_('Clear current or selected text formatting'))
+        formatClearFormatAct.setEnabled(False)
+        localActions['FormatClearFormat'] = formatClearFormatAct
+
         winNewAct = QAction(_('&New Window'), self,
                             statusTip=_('Open a new window for the same file'))
         winNewAct.triggered.connect(self.windowNew)

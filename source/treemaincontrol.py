@@ -18,7 +18,7 @@ import ast
 from PyQt5.QtCore import QIODevice, QObject, Qt
 from PyQt5.QtNetwork import QLocalServer, QLocalSocket
 from PyQt5.QtWidgets import (QAction, QApplication, QDialog, QFileDialog,
-                             QMessageBox)
+                             QMessageBox, qApp)
 import globalref
 import treelocalcontrol
 import options
@@ -108,6 +108,7 @@ class TreeMainControl(QObject):
         globalref.treeIcons = icondict.IconDict(iconPathList, ['', 'tree'])
         icon = globalref.treeIcons.getIcon('default')
         self.setupActions()
+        qApp.focusChanged.connect(self.updateActionsAvail)
         if pathObjects:
             for pathObj in pathObjects:
                 self.openFile(pathObj.resolve(), True)
@@ -261,6 +262,18 @@ class TreeMainControl(QObject):
                                                 control == self.activeControl))
         return actions
 
+    def updateActionsAvail(self, oldWidget, newWidget):
+        """Update command availability based on focus changes.
+
+        Arguments:
+            oldWidget -- the previously focused widget
+            newWidget -- the newly focused widget
+        """
+        self.allActions['FormatSelectAll'].setEnabled(hasattr(newWidget,
+                                                              'selectAll') and
+                                                    not hasattr(newWidget,
+                                                               'editTriggers'))
+
     def setupActions(self):
         """Add the actions for contols at the global level.
         """
@@ -289,6 +302,12 @@ class TreeMainControl(QObject):
                              statusTip=_('Set user preferences for all files'))
         toolsGenOptionsAct.triggered.connect(self.toolsGenOptions)
         self.allActions['ToolsGenOptions'] = toolsGenOptionsAct
+
+        formatSelectAllAct =  QAction(_('&Select All'), self,
+                                   statusTip=_('Select all text in an editor'))
+        formatSelectAllAct.setEnabled(False)
+        formatSelectAllAct.triggered.connect(self.formatSelectAll)
+        self.allActions['FormatSelectAll'] = formatSelectAllAct
 
         helpAboutAct = QAction(_('&About TreeLine...'), self,
                         statusTip=_('Display version info about this program'))
@@ -372,6 +391,14 @@ class TreeMainControl(QObject):
                 for window in control.windowList:
                     window.treeView.updateTreeGenOptions()
                 control.updateAll(False)
+
+    def formatSelectAll(self):
+        """Select all text in any currently focused editor.
+        """
+        try:
+            QApplication.focusWidget().selectAll()
+        except AttributeError:
+            pass
 
     def helpAbout(self):
         """ Display version info about this program.

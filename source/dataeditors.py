@@ -53,8 +53,8 @@ class PlainTextEditor(QTextEdit):
         self.setPalette(QApplication.palette())
         self.setStyleSheet('QTextEdit {border: 2px solid palette(highlight)}')
         self.setTabChangesFocus(True)
-        # self.cursorPositionChanged.connect(self.updateActions)
-        # self.selectionChanged.connect(self.updateActions)
+        self.cursorPositionChanged.connect(self.updateActions)
+        self.selectionChanged.connect(self.updateActions)
         self.allActions = parent.parent().allActions
         self.modified = False
         self.textChanged.connect(self.signalUpdate)
@@ -125,7 +125,7 @@ class PlainTextEditor(QTextEdit):
             event -- the menu event
         """
         menu = QMenu(self)
-        menu.addAction(self.allActions['EditSelectAll'])
+        menu.addAction(self.allActions['FormatSelectAll'])
         menu.addSeparator()
         menu.addAction(self.allActions['EditCut'])
         menu.addAction(self.allActions['EditCopy'])
@@ -139,7 +139,7 @@ class PlainTextEditor(QTextEdit):
             event -- the focus event
         """
         super().focusInEvent(event)
-        # self.updateActions()
+        self.updateActions()
 
     def focusOutEvent(self, event):
         """Reset format actions on focus loss if not focusing a menu.
@@ -148,8 +148,8 @@ class PlainTextEditor(QTextEdit):
             event -- the focus event
         """
         super().focusOutEvent(event)
-        # if event.reason() != Qt.PopupFocusReason:
-            # self.disableActions()
+        if event.reason() != Qt.PopupFocusReason:
+            self.disableActions()
 
     def hideEvent(self, event):
         """Reset format actions when the editor is hidden.
@@ -157,7 +157,7 @@ class PlainTextEditor(QTextEdit):
         Arguments:
             event -- the hide event
         """
-        # self.disableActions()
+        self.disableActions()
         super().hideEvent(event)
 
 
@@ -176,17 +176,18 @@ class HtmlTextEditor(PlainTextEditor):
         super().__init__(parent)
         self.intLinkDialog = None
         self.addedIntLinkFlag = False
-        # self.allActions['EditBoldFont'].triggered.connect(self.setBoldFont)
-        # self.allActions['EditItalicFont'].triggered.connect(self.setItalicFont)
-        # self.allActions['EditUnderlineFont'].triggered.connect(self.
-                                                              # setUnderlineFont)
-        # self.allActions['EditFontSize'].parent().triggered.connect(self.
-                                                                   # setFontSize)
-        # self.allActions['EditFontSize'].triggered.connect(self.
-                                                          # showFontSizeMenu)
-        # self.allActions['EditFontColor'].triggered.connect(self.setFontColor)
-        # self.allActions['EditExtLink'].triggered.connect(self.setExtLink)
-        # self.allActions['EditIntLink'].triggered.connect(self.setIntLink)
+        self.allActions['FormatBoldFont'].triggered.connect(self.setBoldFont)
+        self.allActions['FormatItalicFont'].triggered.connect(self.
+                                                              setItalicFont)
+        self.allActions['FormatUnderlineFont'].triggered.connect(self.
+                                                              setUnderlineFont)
+        self.allActions['FormatFontSize'].parent().triggered.connect(self.
+                                                                   setFontSize)
+        self.allActions['FormatFontSize'].triggered.connect(self.
+                                                          showFontSizeMenu)
+        self.allActions['FormatFontColor'].triggered.connect(self.setFontColor)
+        self.allActions['FormatExtLink'].triggered.connect(self.setExtLink)
+        self.allActions['FormatIntLink'].triggered.connect(self.setIntLink)
 
     def insertTagText(self, prefix, suffix):
         """Insert given tag text and maintain the original selection.
@@ -248,7 +249,7 @@ class HtmlTextEditor(PlainTextEditor):
         """
         try:
             if self.hasFocus():
-                actions = self.allActions['EditFontSize'].parent().actions()
+                actions = self.allActions['FormatFontSize'].parent().actions()
                 sizeNum = actions.index(action)
                 size = HtmlTextEditor.htmlFontSizes[sizeNum]
                 self.insertTagText('<span style="font-size:{0}">'.format(size),
@@ -360,34 +361,34 @@ class HtmlTextEditor(PlainTextEditor):
         """Set format actions to unavailable.
         """
         super().disableActions()
-        self.allActions['EditBoldFont'].setEnabled(False)
-        self.allActions['EditItalicFont'].setEnabled(False)
-        self.allActions['EditUnderlineFont'].setEnabled(False)
-        self.allActions['EditFontSize'].parent().setEnabled(False)
-        self.allActions['EditFontColor'].setEnabled(False)
-        self.allActions['EditExtLink'].setEnabled(False)
-        self.allActions['EditIntLink'].setEnabled(False)
+        self.allActions['FormatBoldFont'].setEnabled(False)
+        self.allActions['FormatItalicFont'].setEnabled(False)
+        self.allActions['FormatUnderlineFont'].setEnabled(False)
+        self.allActions['FormatFontSize'].parent().setEnabled(False)
+        self.allActions['FormatFontColor'].setEnabled(False)
+        self.allActions['FormatExtLink'].setEnabled(False)
+        self.allActions['FormatIntLink'].setEnabled(False)
 
     def updateActions(self):
         """Set editor format actions to available and update toggle states.
         """
         super().updateActions()
-        boldFontAct = self.allActions['EditBoldFont']
+        boldFontAct = self.allActions['FormatBoldFont']
         boldFontAct.setEnabled(True)
         boldFontAct.setChecked(False)
-        italicAct = self.allActions['EditItalicFont']
+        italicAct = self.allActions['FormatItalicFont']
         italicAct.setEnabled(True)
         italicAct.setChecked(False)
-        underlineAct = self.allActions['EditUnderlineFont']
+        underlineAct = self.allActions['FormatUnderlineFont']
         underlineAct.setEnabled(True)
         underlineAct.setChecked(False)
-        fontSizeSubMenu = self.allActions['EditFontSize'].parent()
+        fontSizeSubMenu = self.allActions['FormatFontSize'].parent()
         fontSizeSubMenu.setEnabled(True)
         for action in fontSizeSubMenu.actions():
             action.setChecked(False)
-        self.allActions['EditFontColor'].setEnabled(True)
-        self.allActions['EditExtLink'].setEnabled(True)
-        self.allActions['EditIntLink'].setEnabled(True)
+        self.allActions['FormatFontColor'].setEnabled(True)
+        self.allActions['FormatExtLink'].setEnabled(True)
+        self.allActions['FormatIntLink'].setEnabled(True)
 
     def showFontSizeMenu(self):
         """Show a context menu for font size at this edit box.
@@ -396,7 +397,7 @@ class HtmlTextEditor(PlainTextEditor):
             rect = self.rect()
             pt = self.mapToGlobal(QPoint(rect.center().x(),
                                                 rect.bottom()))
-            self.allActions['EditFontSize'].parent().popup(pt)
+            self.allActions['FormatFontSize'].parent().popup(pt)
 
     def contextMenuEvent(self, event):
         """Override popup menu to add formatting and global actions.
@@ -405,17 +406,17 @@ class HtmlTextEditor(PlainTextEditor):
             event -- the menu event
         """
         menu = QMenu(self)
-        menu.addAction(self.allActions['EditBoldFont'])
-        menu.addAction(self.allActions['EditItalicFont'])
-        menu.addAction(self.allActions['EditUnderlineFont'])
+        menu.addAction(self.allActions['FormatBoldFont'])
+        menu.addAction(self.allActions['FormatItalicFont'])
+        menu.addAction(self.allActions['FormatUnderlineFont'])
         menu.addSeparator()
-        menu.addMenu(self.allActions['EditFontSize'].parent())
-        menu.addAction(self.allActions['EditFontColor'])
+        menu.addMenu(self.allActions['FormatFontSize'].parent())
+        menu.addAction(self.allActions['FormatFontColor'])
         menu.addSeparator()
-        menu.addAction(self.allActions['EditExtLink'])
-        menu.addAction(self.allActions['EditIntLink'])
+        menu.addAction(self.allActions['FormatExtLink'])
+        menu.addAction(self.allActions['FormatIntLink'])
         menu.addSeparator()
-        menu.addAction(self.allActions['EditSelectAll'])
+        menu.addAction(self.allActions['FormatSelectAll'])
         menu.addSeparator()
         menu.addAction(self.allActions['EditCut'])
         menu.addAction(self.allActions['EditCopy'])
@@ -458,9 +459,9 @@ class RichTextEditor(HtmlTextEditor):
                 else:
                     pointSize = self.font().pointSize()
                 RichTextEditor.fontPointSizes.append(pointSize)
-        # self.allActions['EditClearFormat'].triggered.connect(self.
-                                                             # setClearFormat)
-        # self.allActions['EditPastePlain'].triggered.connect(self.pastePlain)
+        self.allActions['FormatClearFormat'].triggered.connect(self.
+                                                               setClearFormat)
+        self.allActions['EditPastePlain'].triggered.connect(self.pastePlain)
 
     def setContents(self, text):
         """Set the contents of the editor to text.
@@ -566,7 +567,7 @@ class RichTextEditor(HtmlTextEditor):
         """
         try:
             if self.hasFocus():
-                actions = self.allActions['EditFontSize'].parent().actions()
+                actions = self.allActions['FormatFontSize'].parent().actions()
                 sizeNum = actions.index(action)
                 pointSize = RichTextEditor.fontPointSizes[sizeNum]
                 charFormat = self.currentCharFormat()
@@ -703,25 +704,25 @@ class RichTextEditor(HtmlTextEditor):
         """Set format actions to unavailable.
         """
         super().disableActions()
-        self.allActions['EditClearFormat'].setEnabled(False)
+        self.allActions['FormatClearFormat'].setEnabled(False)
         self.allActions['EditPastePlain'].setEnabled(False)
 
     def updateActions(self):
         """Set editor format actions to available and update toggle states.
         """
         super().updateActions()
-        self.allActions['EditBoldFont'].setChecked(self.fontWeight() ==
+        self.allActions['FormatBoldFont'].setChecked(self.fontWeight() ==
                                                    QFont.Bold)
-        self.allActions['EditItalicFont'].setChecked(self.fontItalic())
-        self.allActions['EditUnderlineFont'].setChecked(self.fontUnderline())
-        fontSizeSubMenu = self.allActions['EditFontSize'].parent()
+        self.allActions['FormatItalicFont'].setChecked(self.fontItalic())
+        self.allActions['FormatUnderlineFont'].setChecked(self.fontUnderline())
+        fontSizeSubMenu = self.allActions['FormatFontSize'].parent()
         pointSize = int(self.fontPointSize())
         try:
             sizeNum = RichTextEditor.fontPointSizes.index(pointSize)
         except ValueError:
             sizeNum = 1   # default size
         fontSizeSubMenu.actions()[sizeNum].setChecked(True)
-        self.allActions['EditClearFormat'].setEnabled(True)
+        self.allActions['FormatClearFormat'].setEnabled(True)
         mime = QApplication.clipboard().mimeData()
         self.allActions['EditPastePlain'].setEnabled(len(mime.
                                                          data('text/plain'))
@@ -734,18 +735,18 @@ class RichTextEditor(HtmlTextEditor):
             event -- the menu event
         """
         menu = QMenu(self)
-        menu.addAction(self.allActions['EditBoldFont'])
-        menu.addAction(self.allActions['EditItalicFont'])
-        menu.addAction(self.allActions['EditUnderlineFont'])
+        menu.addAction(self.allActions['FormatBoldFont'])
+        menu.addAction(self.allActions['FormatItalicFont'])
+        menu.addAction(self.allActions['FormatUnderlineFont'])
         menu.addSeparator()
-        menu.addMenu(self.allActions['EditFontSize'].parent())
-        menu.addAction(self.allActions['EditFontColor'])
+        menu.addMenu(self.allActions['FormatFontSize'].parent())
+        menu.addAction(self.allActions['FormatFontColor'])
         menu.addSeparator()
-        menu.addAction(self.allActions['EditExtLink'])
-        menu.addAction(self.allActions['EditIntLink'])
+        menu.addAction(self.allActions['FormatExtLink'])
+        menu.addAction(self.allActions['FormatIntLink'])
         menu.addSeparator()
-        menu.addAction(self.allActions['EditSelectAll'])
-        menu.addAction(self.allActions['EditClearFormat'])
+        menu.addAction(self.allActions['FormatSelectAll'])
+        menu.addAction(self.allActions['FormatClearFormat'])
         menu.addSeparator()
         menu.addAction(self.allActions['EditCut'])
         menu.addAction(self.allActions['EditCopy'])
@@ -934,7 +935,7 @@ class LineEditor(QLineEdit):
             for action in self.extraMenuActions:
                 menu.addAction(action)
             menu.addSeparator()
-        menu.addAction(self.allActions['EditSelectAll'])
+        menu.addAction(self.allActions['FormatSelectAll'])
         menu.addSeparator()
         menu.addAction(self.allActions['EditCut'])
         menu.addAction(self.allActions['EditCopy'])
