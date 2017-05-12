@@ -68,8 +68,7 @@ class TreeLocalControl(QObject):
         self.encrypted = False
         self.windowList = []
         self.activeWindow = None
-        QApplication.clipboard().dataChanged.connect(self.updatePasteAvail)
-        self.updatePasteAvail()
+        QApplication.clipboard().dataChanged.connect(self.updateCommandsAvail)
         self.structure.undoList = undo.UndoRedoList(self.
                                                     allActions['EditUndo'],
                                                     self)
@@ -182,6 +181,20 @@ class TreeLocalControl(QObject):
                           [spot.prevSiblingSpot() for spot in selSpots])
         hasNextSibling = (len(selSpots) and None not in
                           [spot.nextSiblingSpot() for spot in selSpots])
+        mime = QApplication.clipboard().mimeData()
+        hasData = len(mime.data('application/json')) > 0
+        hasText = len(mime.data('text/plain')) > 0
+        self.allActions['EditPaste'].setEnabled(hasData or hasText)
+        self.allActions['EditPasteChild'].setEnabled(hasData)
+        self.allActions['EditPasteBefore'].setEnabled(hasData and
+                                                      len(selSpots) > 0)
+        self.allActions['EditPasteAfter'].setEnabled(hasData and
+                                                     len(selSpots) > 0)
+        self.allActions['EditPasteCloneChild'].setEnabled(hasData)
+        self.allActions['EditPasteCloneBefore'].setEnabled(hasData and
+                                                           len(selSpots) > 0)
+        self.allActions['EditPasteCloneAfter'].setEnabled(hasData and
+                                                          len(selSpots) > 0)
         self.allActions['NodeRename'].setEnabled(len(selSpots) == 1)
         self.allActions['NodeInsertBefore'].setEnabled(len(selSpots) > 0)
         self.allActions['NodeInsertAfter'].setEnabled(len(selSpots) > 0)
@@ -196,18 +209,6 @@ class TreeLocalControl(QObject):
         self.allActions['NodeMoveLast'].setEnabled(hasNextSibling)
         self.allActions['DataNodeType'].parent().setEnabled(len(selSpots) > 0)
         self.activeWindow.updateCommandsAvail()
-
-    def updatePasteAvail(self):
-        """Set paste available based on a signal.
-        """
-        mime = QApplication.clipboard().mimeData()
-        hasData = len(mime.data('application/json')) > 0
-        hasText = len(mime.data('text/plain')) > 0
-        self.allActions['EditPaste'].setEnabled(hasData or hasText)
-        self.allActions['EditPasteClone'].setEnabled(hasData)
-        # focusWidget = QApplication.focusWidget()
-        # if hasattr(focusWidget, 'pastePlain'):
-            # focusWidget.updateActions()
 
     def updateWindowCaptions(self):
         """Update the caption for all windows.
@@ -354,20 +355,50 @@ class TreeLocalControl(QObject):
         editPasteAct.triggered.connect(self.editPaste)
         localActions['EditPaste'] = editPasteAct
 
-        editPastePlainAct = QAction(_('P&aste Plain Text'), self,
+        editPastePlainAct = QAction(_('Pa&ste Plain Text'), self,
                     statusTip=_('Paste non-formatted text from the clipboard'))
         editPastePlainAct.setEnabled(False)
         localActions['EditPastePlain'] = editPastePlainAct
 
-        editPasteCloneAct = QAction(_('Paste Clone&d Node'), self,
-                  statusTip=_('Paste nodes that are linked to stay identical'))
-        editPasteCloneAct.triggered.connect(self.editPasteClone)
-        localActions['EditPasteClone'] = editPasteCloneAct
+        editPasteChildAct = QAction(_('Paste C&hild'), self,
+                          statusTip=_('Paste a child node from the clipboard'))
+        editPasteChildAct.triggered.connect(self.editPasteChild)
+        localActions['EditPasteChild'] = editPasteChildAct
+
+        editPasteBeforeAct = QAction(_('Paste Sibling &Before'), self,
+                               statusTip=_('Paste a sibling before selection'))
+        editPasteBeforeAct.triggered.connect(self.editPasteBefore)
+        localActions['EditPasteBefore'] = editPasteBeforeAct
+
+        editPasteAfterAct = QAction(_('Paste Sibling &After'), self,
+                                statusTip=_('Paste a sibling after selection'))
+        editPasteAfterAct.triggered.connect(self.editPasteAfter)
+        localActions['EditPasteAfter'] = editPasteAfterAct
+
+        editPasteCloneChildAct = QAction(_('Paste Cl&oned Child'), self,
+                         statusTip=_('Paste a child clone from the clipboard'))
+        editPasteCloneChildAct.triggered.connect(self.editPasteCloneChild)
+        localActions['EditPasteCloneChild'] = editPasteCloneChildAct
+
+        editPasteCloneBeforeAct = QAction(_('Paste Clo&ned Sibling Before'),
+                   self, statusTip=_('Paste a sibling clone before selection'))
+        editPasteCloneBeforeAct.triggered.connect(self.editPasteCloneBefore)
+        localActions['EditPasteCloneBefore'] = editPasteCloneBeforeAct
+
+        editPasteCloneAfterAct = QAction(_('Paste Clone&d Sibling After'),
+                    self, statusTip=_('Paste a sibling clone after selection'))
+        editPasteCloneAfterAct.triggered.connect(self.editPasteCloneAfter)
+        localActions['EditPasteCloneAfter'] = editPasteCloneAfterAct
 
         nodeRenameAct = QAction(_('&Rename'), self,
                             statusTip=_('Rename the current tree entry title'))
         nodeRenameAct.triggered.connect(self.nodeRename)
         localActions['NodeRename'] = nodeRenameAct
+
+        nodeAddChildAct = QAction(_('Add &Child'), self,
+                               statusTip=_('Add new child to selected parent'))
+        nodeAddChildAct.triggered.connect(self.nodeAddChild)
+        localActions['NodeAddChild'] = nodeAddChildAct
 
         nodeInBeforeAct = QAction(_('Insert Sibling &Before'), self,
                             statusTip=_('Insert new sibling before selection'))
@@ -378,11 +409,6 @@ class TreeLocalControl(QObject):
                             statusTip=_('Insert new sibling after selection'))
         nodeInAfterAct.triggered.connect(self.nodeInAfter)
         localActions['NodeInsertAfter'] = nodeInAfterAct
-
-        nodeAddChildAct = QAction(_('Add &Child'), self,
-                               statusTip=_('Add new child to selected parent'))
-        nodeAddChildAct.triggered.connect(self.nodeAddChild)
-        localActions['NodeAddChild'] = nodeAddChildAct
 
         nodeDeleteAct = QAction(_('&Delete Node'), self,
                                 statusTip=_('Delete the selected nodes'))
@@ -609,11 +635,7 @@ class TreeLocalControl(QObject):
         """Paste nodes or text from the clipboard.
         """
         if self.activeWindow.treeView.hasFocus():
-            if (self.currentSelectionModel().selectedNodes().
-                pasteNodes(self.structure)):
-                for spot in self.currentSelectionModel().selectedSpots():
-                    self.activeWindow.treeView.expandSpot(spot)
-                self.updateAll()
+            self.editPasteChild()
         else:
             widget = QApplication.focusWidget()
             try:
@@ -621,14 +643,158 @@ class TreeLocalControl(QObject):
             except AttributeError:
                 pass
 
-    def editPasteClone(self):
-        """Paste nodes that are linked to stay identical.
+    def editPasteChild(self):
+        """Paste a child node from the clipboard.
         """
-        if (self.currentSelectionModel().selectedNodes().
-            pasteClones(self.structure)):
-            for spot in self.currentSelectionModel().selectedSpots():
-                self.activeWindow.treeView.expandSpot(spot)
-            self.updateAll()
+        mimeData = QApplication.clipboard().mimeData()
+        parents = self.currentSelectionModel().selectedNodes()
+        if not parents:
+            parents = [self.structure]
+        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
+                                           self.structure.treeFormats)
+        for parent in parents:
+            newStruct = treestructure.structFromMimeData(mimeData)
+            if not newStruct:
+                self.structure.undoList.removeLastUndo(undoObj)
+                return
+            newStruct.replaceDuplicateIds(self.structure.nodeDict)
+            self.structure.addNodesFromStruct(newStruct, parent)
+        for spot in self.currentSelectionModel().selectedSpots():
+            self.activeWindow.treeView.expandSpot(spot)
+        self.updateAll()
+
+    def editPasteBefore(self):
+        """Paste a sibling before selection.
+        """
+        mimeData = QApplication.clipboard().mimeData()
+        selSpots = self.currentSelectionModel().selectedSpots()
+        parents = [spot.parentSpot.nodeRef for spot in selSpots]
+        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
+                                           self.structure.treeFormats)
+        for spot in selSpots:
+            newStruct = treestructure.structFromMimeData(mimeData)
+            if not newStruct:
+                self.structure.undoList.removeLastUndo(undoObj)
+                return
+            newStruct.replaceDuplicateIds(self.structure.nodeDict)
+            parent = spot.parentSpot.nodeRef
+            pos = parent.childList.index(spot.nodeRef)
+            self.structure.addNodesFromStruct(newStruct, parent, pos)
+        self.currentSelectionModel().selectSpots(selSpots, False)
+        self.updateAll()
+
+    def editPasteAfter(self):
+        """Paste a sibling after selection.
+        """
+        mimeData = QApplication.clipboard().mimeData()
+        selSpots = self.currentSelectionModel().selectedSpots()
+        parents = [spot.parentSpot.nodeRef for spot in selSpots]
+        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
+                                           self.structure.treeFormats)
+        for spot in selSpots:
+            newStruct = treestructure.structFromMimeData(mimeData)
+            if not newStruct:
+                self.structure.undoList.removeLastUndo(undoObj)
+                return
+            newStruct.replaceDuplicateIds(self.structure.nodeDict)
+            parent = spot.parentSpot.nodeRef
+            pos = parent.childList.index(spot.nodeRef) + 1
+            self.structure.addNodesFromStruct(newStruct, parent, pos)
+        self.currentSelectionModel().selectSpots(selSpots, False)
+        self.updateAll()
+
+    def editPasteCloneChild(self):
+        """Paste a child clone from the clipboard.
+        """
+        mimeData = QApplication.clipboard().mimeData()
+        newStruct = treestructure.structFromMimeData(mimeData)
+        if not newStruct:
+            return
+        try:
+            existNodes = [self.structure.nodeDict[node.uId] for node in
+                          newStruct.childList]
+        except KeyError:
+            return   # nodes copied from other file
+        parents = self.currentSelectionModel().selectedNodes()
+        if not parents:
+            parents = [self.structure]
+        for parent in parents:
+            if not parent.ancestors().isdisjoint(set(existNodes)):
+                return   # circular ref
+            for node in existNodes:
+                if parent in node.parents():
+                    return   # identical siblings
+        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
+                                           self.structure.treeFormats)
+        for parent in parents:
+            for node in existNodes:
+                parent.childList.append(node)
+                node.addSpotRef(parent)
+        for spot in self.currentSelectionModel().selectedSpots():
+            self.activeWindow.treeView.expandSpot(spot)
+        self.updateAll()
+
+    def editPasteCloneBefore(self):
+        """Paste a sibling clone before selection.
+        """
+        mimeData = QApplication.clipboard().mimeData()
+        newStruct = treestructure.structFromMimeData(mimeData)
+        if not newStruct:
+            return
+        try:
+            existNodes = [self.structure.nodeDict[node.uId] for node in
+                          newStruct.childList]
+        except KeyError:
+            return   # nodes copied from other file
+        selSpots = self.currentSelectionModel().selectedSpots()
+        parents = [spot.parentSpot.nodeRef for spot in selSpots]
+        for parent in parents:
+            if not parent.ancestors().isdisjoint(set(existNodes)):
+                return   # circular ref
+            for node in existNodes:
+                if parent in node.parents():
+                    return   # identical siblings
+        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
+                                           self.structure.treeFormats)
+        for spot in selSpots:
+            parent = spot.parentSpot.nodeRef
+            pos = parent.childList.index(spot.nodeRef)
+            for node in existNodes:
+                parent.childList.insert(pos, node)
+                node.addSpotRef(parent)
+        self.currentSelectionModel().selectSpots(selSpots, False)
+        self.updateAll()
+
+    def editPasteCloneAfter(self):
+        """Paste a sibling clone after selection.
+        """
+        mimeData = QApplication.clipboard().mimeData()
+        newStruct = treestructure.structFromMimeData(mimeData)
+        if not newStruct:
+            return
+        try:
+            existNodes = [self.structure.nodeDict[node.uId] for node in
+                          newStruct.childList]
+        except KeyError:
+            return   # nodes copied from other file
+        selSpots = self.currentSelectionModel().selectedSpots()
+        parents = [spot.parentSpot.nodeRef for spot in selSpots]
+        for parent in parents:
+            if not parent.ancestors().isdisjoint(set(existNodes)):
+                return   # circular ref
+            for node in existNodes:
+                if parent in node.parents():
+                    return   # identical siblings
+        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
+                                           self.structure.treeFormats)
+        for spot in selSpots:
+            parent = spot.parentSpot.nodeRef
+            pos = parent.childList.index(spot.nodeRef) + 1
+            for node in existNodes:
+                parent.childList.insert(pos, node)
+                node.addSpotRef(parent)
+        self.currentSelectionModel().selectSpots(selSpots, False)
+        self.updateAll()
 
     def nodeRename(self):
         """Start the rename editor in the selected tree node.
@@ -636,6 +802,29 @@ class TreeLocalControl(QObject):
         self.activeWindow.treeView.endEditing()
         self.activeWindow.treeView.edit(self.currentSelectionModel().
                                         currentIndex())
+
+    def nodeAddChild(self):
+        """Add new child to selected parent.
+        """
+        self.activeWindow.treeView.endEditing()
+        selSpots = self.currentSelectionModel().selectedSpots()
+        if not selSpots:
+            selSpots = list(self.structure.spotRefs)
+        undo.ChildListUndo(self.structure.undoList, [spot.nodeRef for spot in
+                                                     selSpots])
+        newSpots = []
+        for spot in selSpots:
+            newNode = spot.nodeRef.addNewChild(self.structure)
+            newSpots.append(newNode.matchedSpot(spot))
+            if spot.parentSpot:  # can't expand root struct spot
+                self.activeWindow.treeView.expandSpot(spot)
+        if globalref.genOptions['RenameNewNodes']:
+            self.currentSelectionModel().selectSpots(newSpots, False)
+            if len(newSpots) == 1:
+                self.updateAll()
+                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
+                return
+        self.updateAll()
 
     def nodeInBefore(self):
         """Insert new sibling before selection.
@@ -669,29 +858,6 @@ class TreeLocalControl(QObject):
             newNode = spot.parentSpot.nodeRef.addNewChild(self.structure,
                                                           spot.nodeRef, False)
             newSpots.append(newNode.matchedSpot(spot.parentSpot))
-        if globalref.genOptions['RenameNewNodes']:
-            self.currentSelectionModel().selectSpots(newSpots, False)
-            if len(newSpots) == 1:
-                self.updateAll()
-                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
-                return
-        self.updateAll()
-
-    def nodeAddChild(self):
-        """Add new child to selected parent.
-        """
-        self.activeWindow.treeView.endEditing()
-        selSpots = self.currentSelectionModel().selectedSpots()
-        if not selSpots:
-            selSpots = list(self.structure.spotRefs)
-        undo.ChildListUndo(self.structure.undoList, [spot.nodeRef for spot in
-                                                     selSpots])
-        newSpots = []
-        for spot in selSpots:
-            newNode = spot.nodeRef.addNewChild(self.structure)
-            newSpots.append(newNode.matchedSpot(spot))
-            if spot.parentSpot:  # can't expand root struct spot
-                self.activeWindow.treeView.expandSpot(spot)
         if globalref.genOptions['RenameNewNodes']:
             self.currentSelectionModel().selectSpots(newSpots, False)
             if len(newSpots) == 1:

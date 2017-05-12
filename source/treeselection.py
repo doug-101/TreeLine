@@ -139,7 +139,7 @@ class TreeSelection(QItemSelectionModel):
                                                spots != self.prevSpots[-1]):
             self.prevSpots.append(spots)
             if len(self.prevSpots) > _maxHistoryLength:
-                del self.previousNodes[:2]
+                del self.prevSpots[:2]
             self.nextSpots = []
 
     def validateHistory(self):
