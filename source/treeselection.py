@@ -12,9 +12,13 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
+import collections
+import json
 import operator
-from PyQt5.QtCore import QItemSelectionModel
-import treenodelist
+from PyQt5.QtCore import QItemSelectionModel, QMimeData
+from PyQt5.QtGui import QClipboard
+from PyQt5.QtWidgets import QApplication
+import treestructure
 import globalref
 
 
@@ -50,19 +54,26 @@ class TreeSelection(QItemSelectionModel):
 
         Removes any duplicate (cloned) nodes.
         """
-        return treenodelist.TreeNodeList([spot.nodeRef for spot in
-                                          self.selectedSpots()])
+        tmpDict = collections.OrderedDict()
+        for spot in self.selectedSpots():
+            node = spot.nodeRef
+            tmpDict[node.uId] = node
+        return list(tmpDict.values())
 
     def selectedBranches(self):
-        """Return a TreeNodeList of nodes at the top of selected branches.
+        """Return a list of nodes at the top of selected branches.
 
         Remvoves any duplicates that are already covered by the branches.
         """
         spots = self.selectedSpots()
+        spotSet = set(spots)
         branchSpots = [spot for spot in spots if
-                       spot.parentSpotSet().isdisjoint(set(spots))]
-        return treenodelist.TreeNodeList([spot.nodeRef for spot in
-                                          branchSpots])
+                       spot.parentSpotSet().isdisjoint(spotSet)]
+        tmpDict = collections.OrderedDict()
+        for spot in branchSpots:
+            node = spot.nodeRef
+            tmpDict[node.uId] = node
+        return list(tmpDict.values())
 
     def currentSpot(self):
         """Return the current tree spot.
@@ -101,6 +112,25 @@ class TreeSelection(QItemSelectionModel):
             self.setCurrentIndex(spotList[0].index(self.modelRef),
                                  QItemSelectionModel.Current)
         self.blockSignals(False)
+
+    def copySelectedNodes(self):
+        """Copy these node branches to the clipboard.
+        """
+        nodes = self.selectedBranches()
+        if not nodes:
+            return
+        clip = QApplication.clipboard()
+        if clip.supportsSelection():
+            titleList = []
+            for node in nodes:
+                titleList.extend(node.exportTitleText())
+            clip.setText('\n'.join(titleList), QClipboard.Selection)
+        data = treestructure.TreeStructure(topNodes=nodes,
+                                           addSpots=False).fileData()
+        dataStr = json.dumps(data, indent=0, sort_keys=True)
+        mime = QMimeData()
+        mime.setData('application/json', bytes(dataStr, encoding='utf-8'))
+        clip.setMimeData(mime)
 
     def restorePrevSelect(self):
         """Go back to the most recent saved selection.

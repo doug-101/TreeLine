@@ -609,7 +609,7 @@ class TreeLocalControl(QObject):
                 return
         except AttributeError:
             pass
-        self.currentSelectionModel().selectedBranches().copyNodes()
+        self.currentSelectionModel().copySelectedNodes()
         self.nodeDelete()
 
     def editCopy(self):
@@ -629,7 +629,7 @@ class TreeLocalControl(QObject):
                     return
             except AttributeError:
                 pass
-        self.currentSelectionModel().selectedBranches().copyNodes()
+        self.currentSelectionModel().copySelectedNodes()
 
     def editPaste(self):
         """Paste nodes or text from the clipboard.

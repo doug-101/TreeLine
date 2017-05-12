@@ -101,11 +101,11 @@ class BreadcrumbView(QTableWidget):
         self.clear()
         self.clearSpans()
         selModel = self.treeView.selectionModel()
-        selNodes = selModel.selectedNodes()
-        if len(selNodes) != 1:
+        selSpots = selModel.selectedSpots()
+        if len(selSpots) != 1:
             return
-        selSpot = selModel.selectedSpots()[0]
-        spotList = sorted(list(selNodes[0].spotRefs),
+        selSpot = selSpots[0]
+        spotList = sorted(list(selSpot.nodeRef.spotRefs),
                           key=operator.methodcaller('sortKey'))
         chainList = [[CrumbItem(chainSpot) for chainSpot in spot.spotChain()]
                      for spot in spotList]
