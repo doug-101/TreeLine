@@ -646,155 +646,48 @@ class TreeLocalControl(QObject):
     def editPasteChild(self):
         """Paste a child node from the clipboard.
         """
-        mimeData = QApplication.clipboard().mimeData()
-        parents = self.currentSelectionModel().selectedNodes()
-        if not parents:
-            parents = [self.structure]
-        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
-                                           self.structure.treeFormats)
-        for parent in parents:
-            newStruct = treestructure.structFromMimeData(mimeData)
-            if not newStruct:
-                self.structure.undoList.removeLastUndo(undoObj)
-                return
-            newStruct.replaceDuplicateIds(self.structure.nodeDict)
-            self.structure.addNodesFromStruct(newStruct, parent)
-        for spot in self.currentSelectionModel().selectedSpots():
-            self.activeWindow.treeView.expandSpot(spot)
-        self.updateAll()
+        if (self.currentSelectionModel().selectedSpots().
+            pasteChild(self.structure, self.activeWindow.treeView)):
+            self.updateAll()
 
     def editPasteBefore(self):
         """Paste a sibling before selection.
         """
-        mimeData = QApplication.clipboard().mimeData()
         selSpots = self.currentSelectionModel().selectedSpots()
-        parents = [spot.parentSpot.nodeRef for spot in selSpots]
-        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
-                                           self.structure.treeFormats)
-        for spot in selSpots:
-            newStruct = treestructure.structFromMimeData(mimeData)
-            if not newStruct:
-                self.structure.undoList.removeLastUndo(undoObj)
-                return
-            newStruct.replaceDuplicateIds(self.structure.nodeDict)
-            parent = spot.parentSpot.nodeRef
-            pos = parent.childList.index(spot.nodeRef)
-            self.structure.addNodesFromStruct(newStruct, parent, pos)
-        self.currentSelectionModel().selectSpots(selSpots, False)
-        self.updateAll()
+        if selSpots.pasteSibling(self.structure):
+            self.currentSelectionModel().selectSpots(selSpots, False)
+            self.updateAll()
 
     def editPasteAfter(self):
         """Paste a sibling after selection.
         """
-        mimeData = QApplication.clipboard().mimeData()
         selSpots = self.currentSelectionModel().selectedSpots()
-        parents = [spot.parentSpot.nodeRef for spot in selSpots]
-        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
-                                           self.structure.treeFormats)
-        for spot in selSpots:
-            newStruct = treestructure.structFromMimeData(mimeData)
-            if not newStruct:
-                self.structure.undoList.removeLastUndo(undoObj)
-                return
-            newStruct.replaceDuplicateIds(self.structure.nodeDict)
-            parent = spot.parentSpot.nodeRef
-            pos = parent.childList.index(spot.nodeRef) + 1
-            self.structure.addNodesFromStruct(newStruct, parent, pos)
-        self.currentSelectionModel().selectSpots(selSpots, False)
-        self.updateAll()
+        if selSpots.pasteSibling(self.structure, False):
+            self.currentSelectionModel().selectSpots(selSpots, False)
+            self.updateAll()
 
     def editPasteCloneChild(self):
         """Paste a child clone from the clipboard.
         """
-        mimeData = QApplication.clipboard().mimeData()
-        newStruct = treestructure.structFromMimeData(mimeData)
-        if not newStruct:
-            return
-        try:
-            existNodes = [self.structure.nodeDict[node.uId] for node in
-                          newStruct.childList]
-        except KeyError:
-            return   # nodes copied from other file
-        parents = self.currentSelectionModel().selectedNodes()
-        if not parents:
-            parents = [self.structure]
-        for parent in parents:
-            if not parent.ancestors().isdisjoint(set(existNodes)):
-                return   # circular ref
-            for node in existNodes:
-                if parent in node.parents():
-                    return   # identical siblings
-        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
-                                           self.structure.treeFormats)
-        for parent in parents:
-            for node in existNodes:
-                parent.childList.append(node)
-                node.addSpotRef(parent)
-        for spot in self.currentSelectionModel().selectedSpots():
-            self.activeWindow.treeView.expandSpot(spot)
-        self.updateAll()
+        if (self.currentSelectionModel().selectedSpots().
+            pasteCloneChild(self.structure, self.activeWindow.treeView)):
+            self.updateAll()
 
     def editPasteCloneBefore(self):
         """Paste a sibling clone before selection.
         """
-        mimeData = QApplication.clipboard().mimeData()
-        newStruct = treestructure.structFromMimeData(mimeData)
-        if not newStruct:
-            return
-        try:
-            existNodes = [self.structure.nodeDict[node.uId] for node in
-                          newStruct.childList]
-        except KeyError:
-            return   # nodes copied from other file
         selSpots = self.currentSelectionModel().selectedSpots()
-        parents = [spot.parentSpot.nodeRef for spot in selSpots]
-        for parent in parents:
-            if not parent.ancestors().isdisjoint(set(existNodes)):
-                return   # circular ref
-            for node in existNodes:
-                if parent in node.parents():
-                    return   # identical siblings
-        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
-                                           self.structure.treeFormats)
-        for spot in selSpots:
-            parent = spot.parentSpot.nodeRef
-            pos = parent.childList.index(spot.nodeRef)
-            for node in existNodes:
-                parent.childList.insert(pos, node)
-                node.addSpotRef(parent)
-        self.currentSelectionModel().selectSpots(selSpots, False)
-        self.updateAll()
+        if selSpots.pasteCloneSibling(self.structure):
+            self.currentSelectionModel().selectSpots(selSpots, False)
+            self.updateAll()
 
     def editPasteCloneAfter(self):
         """Paste a sibling clone after selection.
         """
-        mimeData = QApplication.clipboard().mimeData()
-        newStruct = treestructure.structFromMimeData(mimeData)
-        if not newStruct:
-            return
-        try:
-            existNodes = [self.structure.nodeDict[node.uId] for node in
-                          newStruct.childList]
-        except KeyError:
-            return   # nodes copied from other file
         selSpots = self.currentSelectionModel().selectedSpots()
-        parents = [spot.parentSpot.nodeRef for spot in selSpots]
-        for parent in parents:
-            if not parent.ancestors().isdisjoint(set(existNodes)):
-                return   # circular ref
-            for node in existNodes:
-                if parent in node.parents():
-                    return   # identical siblings
-        undoObj = undo.ChildListFormatUndo(self.structure.undoList, parents,
-                                           self.structure.treeFormats)
-        for spot in selSpots:
-            parent = spot.parentSpot.nodeRef
-            pos = parent.childList.index(spot.nodeRef) + 1
-            for node in existNodes:
-                parent.childList.insert(pos, node)
-                node.addSpotRef(parent)
-        self.currentSelectionModel().selectSpots(selSpots, False)
-        self.updateAll()
+        if selSpots.pasteCloneSibling(self.structure, False):
+            self.currentSelectionModel().selectSpots(selSpots, False)
+            self.updateAll()
 
     def nodeRename(self):
         """Start the rename editor in the selected tree node.
@@ -808,16 +701,8 @@ class TreeLocalControl(QObject):
         """
         self.activeWindow.treeView.endEditing()
         selSpots = self.currentSelectionModel().selectedSpots()
-        if not selSpots:
-            selSpots = list(self.structure.spotRefs)
-        undo.ChildListUndo(self.structure.undoList, [spot.nodeRef for spot in
-                                                     selSpots])
-        newSpots = []
-        for spot in selSpots:
-            newNode = spot.nodeRef.addNewChild(self.structure)
-            newSpots.append(newNode.matchedSpot(spot))
-            if spot.parentSpot:  # can't expand root struct spot
-                self.activeWindow.treeView.expandSpot(spot)
+        newSpots = selSpots.addChild(self.structure,
+                                     self.activeWindow.treeView)
         if globalref.genOptions['RenameNewNodes']:
             self.currentSelectionModel().selectSpots(newSpots, False)
             if len(newSpots) == 1:
@@ -831,13 +716,7 @@ class TreeLocalControl(QObject):
         """
         self.activeWindow.treeView.endEditing()
         selSpots = self.currentSelectionModel().selectedSpots()
-        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
-                                                     for spot in selSpots])
-        newSpots = []
-        for spot in selSpots:
-            newNode = spot.parentSpot.nodeRef.addNewChild(self.structure,
-                                                          spot.nodeRef)
-            newSpots.append(newNode.matchedSpot(spot.parentSpot))
+        newSpots = selSpots.insertSibling(self.structure)
         if globalref.genOptions['RenameNewNodes']:
             self.currentSelectionModel().selectSpots(newSpots, False)
             if len(newSpots) == 1:
@@ -851,13 +730,7 @@ class TreeLocalControl(QObject):
         """
         self.activeWindow.treeView.endEditing()
         selSpots = self.currentSelectionModel().selectedSpots()
-        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
-                                                     for spot in selSpots])
-        newSpots = []
-        for spot in selSpots:
-            newNode = spot.parentSpot.nodeRef.addNewChild(self.structure,
-                                                          spot.nodeRef, False)
-            newSpots.append(newNode.matchedSpot(spot.parentSpot))
+        newSpots = selSpots.insertSibling(self.structure, False)
         if globalref.genOptions['RenameNewNodes']:
             self.currentSelectionModel().selectSpots(newSpots, False)
             if len(newSpots) == 1:
@@ -870,21 +743,10 @@ class TreeLocalControl(QObject):
         """Delete the selected nodes.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
-        if not selSpots:
-            return
-        # gather next selected node in decreasing order of desirability
-        nextSel = [spot.nextSiblingSpot() for spot in selSpots]
-        nextSel.extend([spot.prevSiblingSpot() for spot in selSpots])
-        nextSel.extend([spot.parentSpot for spot in selSpots])
-        while (not nextSel[0] or not nextSel[0].parentSpot or
-               nextSel[0] in selSpots):
-            del nextSel[0]
-        undoParents = {spot.parentSpot.nodeRef for spot in selSpots}
-        undo.ChildListUndo(self.structure.undoList, list(undoParents))
-        for spot in selSpots:
-            self.structure.deleteNodeSpot(spot)
-        self.currentSelectionModel().selectSpots([nextSel[0]], False)
-        self.updateAll()
+        if selSpots:
+            nextSel = selSpots.delete(self.structure)
+            self.currentSelectionModel().selectSpots([nextSel], False)
+            self.updateAll()
 
     def nodeIndent(self):
         """Indent the selected nodes.
@@ -892,17 +754,7 @@ class TreeLocalControl(QObject):
         Makes them children of their previous siblings.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
-        undoSpots = ([spot.parentSpot for spot in selSpots] +
-                     [spot.prevSiblingSpot() for spot in selSpots])
-        undo.ChildListUndo(self.structure.undoList, [spot.nodeRef for spot in
-                                                     undoSpots])
-        newSpots = []
-        for spot in selSpots:
-            node = spot.nodeRef
-            newParentSpot = spot.prevSiblingSpot()
-            node.changeParent(spot.parentSpot.nodeRef, newParentSpot.nodeRef)
-            newSpots.append(node.matchedSpot(newParentSpot))
-            self.activeWindow.treeView.expandSpot(newParentSpot)
+        newSpots = selSpots.indent(self.structure, self.activeWindow.treeView)
         self.currentSelectionModel().selectSpots(newSpots, False)
         self.updateAll()
 
@@ -912,20 +764,7 @@ class TreeLocalControl(QObject):
         Makes them their parent's next sibling.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
-        undoSpots = [spot.parentSpot for spot in selSpots]
-        undoSpots.extend([spot.parentSpot for spot in undoSpots])
-        undo.ChildListUndo(self.structure.undoList, [spot.nodeRef for spot in
-                                                     undoSpots])
-        newSpots = []
-        for spot in reversed(selSpots):
-            node = spot.nodeRef
-            oldParentSpot = spot.parentSpot
-            newParentSpot = oldParentSpot.parentSpot
-            pos = (newParentSpot.nodeRef.childList.index(oldParentSpot.nodeRef)
-                   + 1)
-            node.changeParent(oldParentSpot.nodeRef, newParentSpot.nodeRef,
-                              pos)
-            newSpots.append(node.matchedSpot(newParentSpot))
+        newSpots = selSpots.unindent(self.structure)
         self.currentSelectionModel().selectSpots(newSpots, False)
         self.updateAll()
 
@@ -933,13 +772,7 @@ class TreeLocalControl(QObject):
         """Move the selected nodes upward in the sibling list.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
-        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
-                                                     for spot in selSpots])
-        for spot in selSpots:
-            parent = spot.parentSpot.nodeRef
-            pos = parent.childList.index(spot.nodeRef)
-            del parent.childList[pos]
-            parent.childList.insert(pos - 1, spot.nodeRef)
+        selSpots.move(self.structure)
         self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
 
@@ -947,13 +780,7 @@ class TreeLocalControl(QObject):
         """Move the selected nodes downward in the sibling list.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
-        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
-                                                     for spot in selSpots])
-        for spot in reversed(selSpots):
-            parent = spot.parentSpot.nodeRef
-            pos = parent.childList.index(spot.nodeRef)
-            del parent.childList[pos]
-            parent.childList.insert(pos + 1, spot.nodeRef)
+        selSpots.move(self.structure, False)
         self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
 
@@ -961,12 +788,7 @@ class TreeLocalControl(QObject):
         """Move the selected nodes to be the first children.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
-        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
-                                                     for spot in selSpots])
-        for spot in reversed(selSpots):
-            parent = spot.parentSpot.nodeRef
-            parent.childList.remove(spot.nodeRef)
-            parent.childList.insert(0, spot.nodeRef)
+        selSpots.moveToEnd(self.structure)
         self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
 
@@ -974,12 +796,7 @@ class TreeLocalControl(QObject):
         """Move the selected nodes to be the last children.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
-        undo.ChildListUndo(self.structure.undoList, [spot.parentSpot.nodeRef
-                                                     for spot in selSpots])
-        for spot in selSpots:
-            parent = spot.parentSpot.nodeRef
-            parent.childList.remove(spot.nodeRef)
-            parent.childList.append(spot.nodeRef)
+        selSpots.moveToEnd(self.structure, False)
         self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
 

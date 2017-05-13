@@ -14,11 +14,11 @@
 
 import collections
 import json
-import operator
 from PyQt5.QtCore import QItemSelectionModel, QMimeData
 from PyQt5.QtGui import QClipboard
 from PyQt5.QtWidgets import QApplication
 import treestructure
+import treespotlist
 import globalref
 
 
@@ -44,13 +44,13 @@ class TreeSelection(QItemSelectionModel):
         self.selectionChanged.connect(self.updateSelectLists)
 
     def selectedSpots(self):
-        """Return a list of selected spots, sorted in tree order.
+        """Return a SpotList of selected spots, sorted in tree order.
         """
-        spots = [index.internalPointer() for index in self.selectedIndexes()]
-        return sorted(spots, key=operator.methodcaller('sortKey'))
+        return treespotlist.TreeSpotList([index.internalPointer() for index in
+                                          self.selectedIndexes()])
 
     def selectedNodes(self):
-        """Return a TreeNodeList of the currently selected tree nodes.
+        """Return a list of the currently selected tree nodes.
 
         Removes any duplicate (cloned) nodes.
         """
