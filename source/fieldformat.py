@@ -13,14 +13,19 @@
 #******************************************************************************
 
 import re
+import datetime
 import xml.sax.saxutils
 import gennumber
 import genboolean
+import globalref
 
 fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
-              N_('Number'), N_('Boolean'), N_('Choice'), N_('Combination'),
-              N_('RegularExpression')]
+              N_('Number'), N_('Date'), N_('Boolean'),
+              N_('Choice'), N_('Combination'), N_('RegularExpression')]
 _errorStr = '#####'
+_dateStampString = _('Now')
+_timeStampString = _('Now')
+_multipleSpaceRegEx = re.compile(r' {2,}')
 
 
 class TextField:
@@ -503,6 +508,180 @@ class NumberField(HtmlTextField):
             return gennumber.GenNumber(value).num
         except ValueError:
             return 0
+
+
+class DateField(HtmlTextField):
+    """Class to handle a general date field format type.
+
+    Stores options and format strings for a date field type.
+    Provides methods to return formatted data.
+    """
+    typeName = 'Date'
+    defaultFormat = '%B %-d, %Y'
+    isoFormat = '%Y-%m-%d'
+    evalHtmlDefault = False
+    editorClassName = 'LineEditor'
+    # refDate = QDate(1970, 1, 1)
+    formatHelpMenuList = [(_('Day (1 or 2 digits)\t%-d'), '%-d'),
+                          (_('Day (2 digits)\t%d'), '%d'), ('', ''),
+                          (_('Weekday Abbreviation\t%a'), '%a'),
+                          (_('Weekday Name\t%A'), '%A'), ('', ''),
+                          (_('Month (1 or 2 digits)\t%-m'), '%-m'),
+                          (_('Month (2 digits)\t%m'), '%m'),
+                          (_('Month Abbreviation\t%b'), '%b'),
+                          (_('Month Name\t%B'), '%B'), ('', ''),
+                          (_('Year (2 digits)\t%y'), '%y'),
+                          (_('Year (4 digits)\t%Y'), '%Y')]
+    def __init__(self, name, formatData=None):
+        """Initialize a field format type.
+
+        Arguments:
+            name -- the field name string
+            formatData -- the dict that defines this field's format
+        """
+        super().__init__(name, formatData)
+
+    def formatOutput(self, storedText, titleMode, formatHtml):
+        """Return formatted output text from stored text for this field.
+
+        Arguments:
+            storedText -- the source text to format
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        try:
+            date = datetime.datetime.strptime(storedText,
+                                              DateField.isoFormat).date()
+            text = date.strftime(self.format)
+        except ValueError:
+            text = _errorStr
+        return super().formatOutput(text, titleMode, formatHtml)
+
+    def formatEditorText(self, storedText):
+        """Return text formatted for use in the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            storedText -- the source text to format
+        """
+        if not storedText:
+            return ''
+        date = datetime.datetime.strptime(storedText,
+                                          DateField.isoFormat).date()
+        editorFormat = globalref.genOptions['EditDateFormat']
+        return date.strftime(editorFormat)
+
+    def storedText(self, editorText):
+        """Return new text to be stored based on text from the data editor.
+
+        Two digit years are interpretted as 1950-2049.
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        editorText = _multipleSpaceRegEx.sub(' ', editorText.strip())
+        if not editorText:
+            return ''
+        editorFormat = globalref.genOptions['EditDateFormat']
+        date = datetime.datetime.strptime(editorText, editorFormat).date()
+        return date.strftime(DateField.isoFormat)
+        # if date.isValid():
+            # if 1900 <= date.year() < 1950 and 'yyyy' not in editorFormat:
+                # date = date.addYears(100)
+            # return date.toString(Qt.ISODate)
+        # # allow use of a 4-digit year to fix invalid dates
+        # if 'yyyy' not in editorFormat and 'yy' in editorFormat:
+            # modFormat = editorFormat.replace('yy', 'yyyy')
+            # date = QDate.fromString(editorText, modFormat)
+            # if date.isValid():
+                # return date.toString(Qt.ISODate)
+
+    def mathValue(self, node, zeroBlanks=True):
+        """Return a numeric value to be used in math field equations.
+
+        Return None if blank and not zeroBlanks,
+        raise a ValueError if it isn't a valid date.
+        Arguments:
+            node -- the tree item storing the data
+            zeroBlanks -- replace blank field values with zeros if True
+        """
+        storedText = node.data.get(self.name, '')
+        if storedText:
+            date = QDate.fromString(storedText, Qt.ISODate)
+            if not date.isValid():
+                raise ValueError
+            return DateField.refDate.daysTo(date)
+        return 0 if zeroBlanks else None
+
+    def getInitDefault(self):
+        """Return the initial stored value for newly created nodes.
+        """
+        if self.initDefault == _dateStampString:
+            date = QDate.currentDate()
+            return date.toString(Qt.ISODate)
+        return super().getInitDefault()
+
+    def setInitDefault(self, editorText):
+        """Set the default initial value from editor text.
+
+        The function for default text field just returns the stored text.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        if editorText == _dateStampString:
+            self.initDefault = _dateStampString
+        else:
+            super().setInitDefault(editorText)
+
+    def getEditorInitDefault(self):
+        """Return initial value in editor format.
+
+        The function for default text field just returns the initial value.
+        """
+        if self.initDefault == _dateStampString:
+            return _dateStampString
+        return super().getEditorInitDefault()
+
+    def initDefaultChoices(self):
+        """Return a list of choices for setting the init default.
+        """
+        return [_dateStampString]
+
+    def compareValue(self, node):
+        """Return a value for comparison to other nodes and for sorting.
+
+        Returns lowercase text for text fields or numbers for non-text fields.
+        Date field uses ISO date format (YYY-MM-DD).
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return node.data.get(self.name, '')
+
+    def sortKey(self, node):
+        """Return a tuple with field type and comparison values for sorting.
+
+        Allows different types to be sorted.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return ('40_date', self.compareValue(node))
+
+    def adjustedCompareValue(self, value):
+        """Return value adjusted like the compareValue for use in conditionals.
+
+        Date version converts to an ISO date format (YYY-MM-DD).
+        Arguments:
+            value -- the comparison value to adjust
+        """
+        value = _multipleSpaceRegEx.sub(' ', value.strip())
+        if not value:
+            return ''
+        if value == _dateStampString:
+            return QDate.currentDate().toString(Qt.ISODate)
+        try:
+            return self.storedText(value)
+        except ValueError:
+            return value
 
 
 class ChoiceField(HtmlTextField):

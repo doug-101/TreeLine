@@ -58,8 +58,8 @@ class NodeFormat:
                 self.addField(fieldName, fieldData)
         else:
             formatData = {}
-        self.titleLine = [formatData.get('titleline', '')]
-        self.outputLines = [formatData.get('outputlines', [])]
+        self.titleLine = formatData.get('titleline', '')
+        self.outputLines = formatData.get('outputlines', [])
         self.spaceBetween = formatData.get('spacebetween', True)
         self.formatHtml = formatData.get('formathtml', False)
         self.useBullets = formatData.get('bullets', False)

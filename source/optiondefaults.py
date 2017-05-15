@@ -68,7 +68,7 @@ def setGenOptionDefaults(generalOptions):
                   _('Number of recent files \nin the file menu'), 1)
     StringOptionItem(generalOptions, 'EditTimeFormat', 'H:mm:ss', False, True,
                      _('Data Editor Formats'), _('Times'), 1)
-    StringOptionItem(generalOptions, 'EditDateFormat', 'MM/dd/yy', False, True,
+    StringOptionItem(generalOptions, 'EditDateFormat', '%m/%d/%y', False, True,
                      _('Data Editor Formats'), _('Dates'), 1)
     ListOptionItem(generalOptions, 'WeekStart', daysOfWeek[-1], daysOfWeek,
                    _('Data Editor Formats'), _('First day\nof week'), 1)

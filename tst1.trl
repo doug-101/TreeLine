@@ -5,11 +5,17 @@
             {
                "fieldname": "Name",
                "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Date",
+               "fieldtype": "Date",
+               "format": "%B %-d, %Y"
             }
          ],
          "formatname": "DEFAULT",
          "outputlines": [
-            "{*Name*}"
+            "{*Name*}",
+            "{*Date*}"
          ],
          "titleline": "{*Name*}"
       }
@@ -52,6 +58,7 @@
             "05ed54b60e3311e7b83b3417ebd53aeb"
          ],
          "data": {
+            "Date": "1988-05-05",
             "Name": "First Node"
          },
          "format": "DEFAULT",
