@@ -13,6 +13,7 @@
 #******************************************************************************
 
 import re
+import sys
 import datetime
 import xml.sax.saxutils
 import gennumber
@@ -552,7 +553,7 @@ class DateField(HtmlTextField):
         try:
             date = datetime.datetime.strptime(storedText,
                                               DateField.isoFormat).date()
-            text = date.strftime(self.format)
+            text = date.strftime(adjOutDateFormat(self.format))
         except ValueError:
             text = _errorStr
         return super().formatOutput(text, titleMode, formatHtml)
@@ -568,7 +569,7 @@ class DateField(HtmlTextField):
             return ''
         date = datetime.datetime.strptime(storedText,
                                           DateField.isoFormat).date()
-        editorFormat = globalref.genOptions['EditDateFormat']
+        editorFormat = adjOutDateFormat(globalref.genOptions['EditDateFormat'])
         return date.strftime(editorFormat)
 
     def storedText(self, editorText):
@@ -582,19 +583,15 @@ class DateField(HtmlTextField):
         editorText = _multipleSpaceRegEx.sub(' ', editorText.strip())
         if not editorText:
             return ''
-        editorFormat = globalref.genOptions['EditDateFormat']
-        date = datetime.datetime.strptime(editorText, editorFormat).date()
+        editorFormat = adjInDateFormat(globalref.genOptions['EditDateFormat'])
+        try:
+            date = datetime.datetime.strptime(editorText, editorFormat).date()
+        except ValueError:  # allow use of a 4-digit year to fix invalid dates
+            fullYearFormat = editorFormat.replace('%y', '%Y')
+            if fullYearFormat != editorFormat:
+                date = datetime.datetime.strptime(editorText,
+                                                  fullYearFormat).date()
         return date.strftime(DateField.isoFormat)
-        # if date.isValid():
-            # if 1900 <= date.year() < 1950 and 'yyyy' not in editorFormat:
-                # date = date.addYears(100)
-            # return date.toString(Qt.ISODate)
-        # # allow use of a 4-digit year to fix invalid dates
-        # if 'yyyy' not in editorFormat and 'yy' in editorFormat:
-            # modFormat = editorFormat.replace('yy', 'yyyy')
-            # date = QDate.fromString(editorText, modFormat)
-            # if date.isValid():
-                # return date.toString(Qt.ISODate)
 
     def mathValue(self, node, zeroBlanks=True):
         """Return a numeric value to be used in math field equations.
@@ -1140,3 +1137,21 @@ def removeMarkup(text):
     """
     text = _stripTagRe.sub('', text)
     return xml.sax.saxutils.unescape(text)
+
+def adjOutDateFormat(dateFormat):
+    """Replace Linux lead zero removal with Windows version in date formats.
+
+    Arguments:
+        dateFormat -- the format to modify
+    """
+    if sys.platform.startswith('win'):
+        dateFormat = dateFormat.replace('%-', '%#')
+    return dateFormat
+
+def adjInDateFormat(dateFormat):
+    """Remove lead zero formatting in date formats for reading dates.
+
+    Arguments:
+        dateFormat -- the format to modify
+    """
+    return dateFormat.replace('%-', '%')
