@@ -66,8 +66,8 @@ def setGenOptionDefaults(generalOptions):
                   _('Minutes between saves\n(set to 0 to disable)'), 1)
     IntOptionItem(generalOptions, 'RecentFiles', 4, 0, 99, _('Recent Files'),
                   _('Number of recent files \nin the file menu'), 1)
-    StringOptionItem(generalOptions, 'EditTimeFormat', 'H:mm:ss', False, True,
-                     _('Data Editor Formats'), _('Times'), 1)
+    StringOptionItem(generalOptions, 'EditTimeFormat', '%-H:%M:%S', False,
+                     True, _('Data Editor Formats'), _('Times'), 1)
     StringOptionItem(generalOptions, 'EditDateFormat', '%m/%d/%y', False, True,
                      _('Data Editor Formats'), _('Dates'), 1)
     ListOptionItem(generalOptions, 'WeekStart', daysOfWeek[-1], daysOfWeek,

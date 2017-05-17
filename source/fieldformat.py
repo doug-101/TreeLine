@@ -21,7 +21,7 @@ import genboolean
 import globalref
 
 fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
-              N_('Number'), N_('Date'), N_('Boolean'),
+              N_('Number'), N_('Date'), N_('Time'), N_('Boolean'),
               N_('Choice'), N_('Combination'), N_('RegularExpression')]
 _errorStr = '#####'
 _dateStampString = _('Now')
@@ -522,7 +522,7 @@ class DateField(HtmlTextField):
     isoFormat = '%Y-%m-%d'
     evalHtmlDefault = False
     editorClassName = 'LineEditor'
-    # refDate = QDate(1970, 1, 1)
+    refDate = datetime.date(1970, 1, 1)
     formatHelpMenuList = [(_('Day (1 or 2 digits)\t%-d'), '%-d'),
                           (_('Day (2 digits)\t%d'), '%d'), ('', ''),
                           (_('Weekday Abbreviation\t%a'), '%a'),
@@ -532,7 +532,9 @@ class DateField(HtmlTextField):
                           (_('Month Abbreviation\t%b'), '%b'),
                           (_('Month Name\t%B'), '%B'), ('', ''),
                           (_('Year (2 digits)\t%y'), '%y'),
-                          (_('Year (4 digits)\t%Y'), '%Y')]
+                          (_('Year (4 digits)\t%Y'), '%Y'), ('', ''),
+                          (_('Week Number (0 to 53)\t%-U'), '%-U'),
+                          (_('Day of year (1 to 366)\t%-j'), '%-j')]
     def __init__(self, name, formatData=None):
         """Initialize a field format type.
 
@@ -593,29 +595,12 @@ class DateField(HtmlTextField):
                                                   fullYearFormat).date()
         return date.strftime(DateField.isoFormat)
 
-    def mathValue(self, node, zeroBlanks=True):
-        """Return a numeric value to be used in math field equations.
-
-        Return None if blank and not zeroBlanks,
-        raise a ValueError if it isn't a valid date.
-        Arguments:
-            node -- the tree item storing the data
-            zeroBlanks -- replace blank field values with zeros if True
-        """
-        storedText = node.data.get(self.name, '')
-        if storedText:
-            date = QDate.fromString(storedText, Qt.ISODate)
-            if not date.isValid():
-                raise ValueError
-            return DateField.refDate.daysTo(date)
-        return 0 if zeroBlanks else None
-
     def getInitDefault(self):
         """Return the initial stored value for newly created nodes.
         """
         if self.initDefault == _dateStampString:
-            date = QDate.currentDate()
-            return date.toString(Qt.ISODate)
+            date = datetime.date.today()
+            return date.strftime(DateField.isoFormat)
         return super().getInitDefault()
 
     def setInitDefault(self, editorText):
@@ -643,6 +628,22 @@ class DateField(HtmlTextField):
         """Return a list of choices for setting the init default.
         """
         return [_dateStampString]
+
+    def mathValue(self, node, zeroBlanks=True):
+        """Return a numeric value to be used in math field equations.
+
+        Return None if blank and not zeroBlanks,
+        raise a ValueError if it isn't a valid date.
+        Arguments:
+            node -- the tree item storing the data
+            zeroBlanks -- replace blank field values with zeros if True
+        """
+        storedText = node.data.get(self.name, '')
+        if storedText:
+            date = datetime.datetime.strptime(storedText,
+                                              DateField.isoFormat).date()
+            return (date - DateField.refDate).days
+        return 0 if zeroBlanks else None
 
     def compareValue(self, node):
         """Return a value for comparison to other nodes and for sorting.
@@ -674,7 +675,205 @@ class DateField(HtmlTextField):
         if not value:
             return ''
         if value == _dateStampString:
-            return QDate.currentDate().toString(Qt.ISODate)
+            date = datetime.date.today()
+            return date.strftime(DateField.isoFormat)
+        try:
+            return self.storedText(value)
+        except ValueError:
+            return value
+
+
+class TimeField(HtmlTextField):
+    """Class to handle a general time field format type
+
+    Stores options and format strings for a time field type.
+    Provides methods to return formatted data.
+    """
+    typeName = 'Time'
+    defaultFormat = '%-I:%M:%S %p'
+    isoFormat = '%H:%M:%S.%f'
+    evalHtmlDefault = False
+    editorClassName = 'LineEditor'
+    numChoiceColumns = 2
+    autoAddChoices = False
+    refTime = datetime.time()
+    formatHelpMenuList = [(_('Hour (0-23, 1 or 2 digits)\t%-H'), '%-H'),
+                          (_('Hour (00-23, 2 digits)\t%H'), '%H'),
+                          (_('Hour (1-12, 1 or 2 digits)\t%-I'), '%-I'),
+                          (_('Hour (01-12, 2 digits)\t%I'), '%I'), ('', ''),
+                          (_('Minute (1 or 2 digits)\t%-M'), '%-M'),
+                          (_('Minute (2 digits)\t%M'), '%M'), ('', ''),
+                          (_('Second (1 or 2 digits)\t%-S'), '%-S'),
+                          (_('Second (2 digits)\t%S'), '%S'), ('', ''),
+                          (_('Microseconds (6 digits)\t%f'), '%f'), ('', ''),
+                          (_('AM/PM\t%p'), '%p'),
+                          (_('am/pm\t%P'), '%P')]
+    def __init__(self, name, attrs=None):
+        """Initialize a field format type.
+
+        Arguments:
+            name -- the field name string
+            attrs -- the attributes that define this field's format
+        """
+        super().__init__(name, attrs)
+
+    def formatOutput(self, storedText, titleMode, formatHtml):
+        """Return formatted output text from stored text for this field.
+
+        Arguments:
+            storedText -- the source text to format
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        try:
+            time = datetime.datetime.strptime(storedText,
+                                              TimeField.isoFormat).time()
+            text = time.strftime(adjOutDateFormat(self.format))
+        except ValueError:
+            text = _errorStr
+        return super().formatOutput(text, titleMode, formatHtml)
+
+    def formatEditorText(self, storedText):
+        """Return text formatted for use in the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            storedText -- the source text to format
+        """
+        if not storedText:
+            return ''
+        time = datetime.datetime.strptime(storedText,
+                                          TimeField.isoFormat).time()
+        editorFormat = adjOutDateFormat(globalref.genOptions['EditTimeFormat'])
+        return time.strftime(editorFormat)
+
+    def storedText(self, editorText):
+        """Return new text to be stored based on text from the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        editorText = _multipleSpaceRegEx.sub(' ', editorText.strip())
+        if not editorText:
+            return ''
+        editorFormat = adjInDateFormat(globalref.genOptions['EditTimeFormat'])
+        try:
+            time = datetime.datetime.strptime(editorText, editorFormat).time()
+        except ValueError:
+            raise
+        return time.strftime(TimeField.isoFormat)
+        # time = QTime.fromString(editorText, editorFormat)
+        # if time.isValid():
+            # return time.toString()
+        # noSecFormat = editorFormat.replace(':ss', '').replace(':s', '')
+        # noSecFormat = multipleSpaceRegEx.sub(' ', noSecFormat.strip())
+        # altFormats = [editorFormat, noSecFormat]
+        # for altFormat in altFormats[:]:
+            # noAmFormat = altFormat.replace('AP', '').replace('ap', '')
+            # noAmFormat = multipleSpaceRegEx.sub(' ', noAmFormat.strip())
+            # altFormats.append(noAmFormat)
+        # for altFormat in altFormats:
+            # time = QTime.fromString(editorText, altFormat)
+            # if time.isValid():
+                # return time.toString()
+        # raise ValueError
+
+    def annotatedComboChoices(self, editorText):
+        """Return a list of (choice, annotation) tuples for the combo box.
+
+        Arguments:
+            editorText -- the text entered into the editor
+        """
+        editorFormat = globalref.genOptions.getValue('EditTimeFormat')
+        choices = [(QTime.currentTime().toString(editorFormat),
+                    '({0})'.format(_timeStampString))]
+        for hour in (6, 9, 12, 15, 18, 21, 0):
+            choices.append((QTime(hour, 0).toString(editorFormat), ''))
+        return choices
+
+    def mathValue(self, node, zeroBlanks=True):
+        """Return a numeric value to be used in math field equations.
+
+        Return None if blank and not zeroBlanks,
+        raise a ValueError if it isn't a valid time.
+        Arguments:
+            node -- the tree item storing the data
+            zeroBlanks -- replace blank field values with zeros if True
+        """
+        storedText = node.data.get(self.name, '')
+        if storedText:
+            time = QTime.fromString(storedText)
+            if not time.isValid():
+                raise ValueError
+            return TimeField.refTime.secsTo(time)
+        return 0 if zeroBlanks else None
+
+    def getInitDefault(self):
+        """Return the initial stored value for newly created nodes.
+        """
+        if self.initDefault == _timeStampString:
+            time = QTime.currentTime()
+            return time.toString()
+        return super().getInitDefault()
+
+    def setInitDefault(self, editorText):
+        """Set the default initial value from editor text.
+
+        The function for default text field just returns the stored text.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        if editorText == _timeStampString:
+            self.initDefault = _timeStampString
+        else:
+            super().setInitDefault(editorText)
+
+    def getEditorInitDefault(self):
+        """Return initial value in editor format.
+
+        The function for default text field just returns the initial value.
+        """
+        if self.initDefault == _timeStampString:
+            return _timeStampString
+        return super().getEditorInitDefault()
+
+    def initDefaultChoices(self):
+        """Return a list of choices for setting the init default.
+        """
+        return [_timeStampString]
+
+    def compareValue(self, node):
+        """Return a value for comparison to other nodes and for sorting.
+
+        Returns lowercase text for text fields or numbers for non-text fields.
+        Time field uses HH:MM:SS format.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return node.data.get(self.name, '')
+
+    def sortKey(self, node):
+        """Return a tuple with field type and comparison values for sorting.
+
+        Allows different types to be sorted.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return ('50_time', self.compareValue(node))
+
+    def adjustedCompareValue(self, value):
+        """Return value adjusted like the compareValue for use in conditionals.
+
+        Time version converts to HH:MM:SS format.
+        Arguments:
+            value -- the comparison value to adjust
+        """
+        value = _multipleSpaceRegEx.sub(' ', value.strip())
+        if not value:
+            return ''
+        if value == _timeStampString:
+            return QTime.currentTime().toString()
         try:
             return self.storedText(value)
         except ValueError:

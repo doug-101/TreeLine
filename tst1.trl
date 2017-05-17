@@ -10,12 +10,18 @@
                "fieldname": "Date",
                "fieldtype": "Date",
                "format": "%B %-d, %Y"
+            },
+            {
+               "fieldname": "Time",
+               "fieldtype": "Time",
+               "format": "%-I:%M:%S %p"
             }
          ],
          "formatname": "DEFAULT",
          "outputlines": [
             "{*Name*}",
-            "{*Date*}"
+            "{*Date*}",
+            "{*Time*}"
          ],
          "titleline": "{*Name*}"
       }
@@ -59,7 +65,8 @@
          ],
          "data": {
             "Date": "1988-05-05",
-            "Name": "First Node"
+            "Name": "First Node",
+            "Time": ""
          },
          "format": "DEFAULT",
          "uid": "701d5d18f91011e6995d3417ebd53aeb"
