@@ -706,8 +706,7 @@ class TimeField(HtmlTextField):
                           (_('Second (1 or 2 digits)\t%-S'), '%-S'),
                           (_('Second (2 digits)\t%S'), '%S'), ('', ''),
                           (_('Microseconds (6 digits)\t%f'), '%f'), ('', ''),
-                          (_('AM/PM\t%p'), '%p'),
-                          (_('am/pm\t%P'), '%P')]
+                          (_('AM/PM\t%p'), '%p')]
     def __init__(self, name, attrs=None):
         """Initialize a field format type.
 
@@ -758,26 +757,28 @@ class TimeField(HtmlTextField):
         if not editorText:
             return ''
         editorFormat = adjInDateFormat(globalref.genOptions['EditTimeFormat'])
+        time = None
         try:
             time = datetime.datetime.strptime(editorText, editorFormat).time()
         except ValueError:
-            raise
+            noSecFormat = editorFormat.replace(':%S', '')
+            noSecFormat = _multipleSpaceRegEx.sub(' ', noSecFormat.strip())
+            try:
+                time = datetime.datetime.strptime(editorText,
+                                                  noSecFormat).time()
+            except ValueError:
+                for altFormat in (editorFormat, noSecFormat):
+                    noAmFormat = altFormat.replace('%p', '')
+                    noAmFormat = _multipleSpaceRegEx.sub(' ',
+                                                         noAmFormat.strip())
+                    try:
+                        time = datetime.datetime.strptime(editorText,
+                                                          noAmFormat).time()
+                    except ValueError:
+                        pass
+                if not time:
+                    raise ValueError
         return time.strftime(TimeField.isoFormat)
-        # time = QTime.fromString(editorText, editorFormat)
-        # if time.isValid():
-            # return time.toString()
-        # noSecFormat = editorFormat.replace(':ss', '').replace(':s', '')
-        # noSecFormat = multipleSpaceRegEx.sub(' ', noSecFormat.strip())
-        # altFormats = [editorFormat, noSecFormat]
-        # for altFormat in altFormats[:]:
-            # noAmFormat = altFormat.replace('AP', '').replace('ap', '')
-            # noAmFormat = multipleSpaceRegEx.sub(' ', noAmFormat.strip())
-            # altFormats.append(noAmFormat)
-        # for altFormat in altFormats:
-            # time = QTime.fromString(editorText, altFormat)
-            # if time.isValid():
-                # return time.toString()
-        # raise ValueError
 
     def annotatedComboChoices(self, editorText):
         """Return a list of (choice, annotation) tuples for the combo box.
@@ -785,36 +786,19 @@ class TimeField(HtmlTextField):
         Arguments:
             editorText -- the text entered into the editor
         """
-        editorFormat = globalref.genOptions.getValue('EditTimeFormat')
-        choices = [(QTime.currentTime().toString(editorFormat),
+        editorFormat = adjOutDateFormat(globalref.genOptions['EditTimeFormat'])
+        choices = [(datetime.datetime.now().time().strftime(editorFormat),
                     '({0})'.format(_timeStampString))]
         for hour in (6, 9, 12, 15, 18, 21, 0):
-            choices.append((QTime(hour, 0).toString(editorFormat), ''))
+            choices.append((datetime.time(hour).strftime(editorFormat), ''))
         return choices
-
-    def mathValue(self, node, zeroBlanks=True):
-        """Return a numeric value to be used in math field equations.
-
-        Return None if blank and not zeroBlanks,
-        raise a ValueError if it isn't a valid time.
-        Arguments:
-            node -- the tree item storing the data
-            zeroBlanks -- replace blank field values with zeros if True
-        """
-        storedText = node.data.get(self.name, '')
-        if storedText:
-            time = QTime.fromString(storedText)
-            if not time.isValid():
-                raise ValueError
-            return TimeField.refTime.secsTo(time)
-        return 0 if zeroBlanks else None
 
     def getInitDefault(self):
         """Return the initial stored value for newly created nodes.
         """
         if self.initDefault == _timeStampString:
-            time = QTime.currentTime()
-            return time.toString()
+            time = datetime.datetime.now().time()
+            return time.strftime(TimeField.isoFormat)
         return super().getInitDefault()
 
     def setInitDefault(self, editorText):
@@ -842,6 +826,23 @@ class TimeField(HtmlTextField):
         """Return a list of choices for setting the init default.
         """
         return [_timeStampString]
+
+    def mathValue(self, node, zeroBlanks=True):
+        """Return a numeric value to be used in math field equations.
+
+        Return None if blank and not zeroBlanks,
+        raise a ValueError if it isn't a valid time.
+        Arguments:
+            node -- the tree item storing the data
+            zeroBlanks -- replace blank field values with zeros if True
+        """
+        storedText = node.data.get(self.name, '')
+        if storedText:
+            time = datetime.datetime.strptime(storedText,
+                                              TimeField.isoFormat).time()
+            return (time - TimeField.refTime).seconds
+            return TimeField.refTime.secsTo(time)
+        return 0 if zeroBlanks else None
 
     def compareValue(self, node):
         """Return a value for comparison to other nodes and for sorting.
@@ -873,7 +874,8 @@ class TimeField(HtmlTextField):
         if not value:
             return ''
         if value == _timeStampString:
-            return QTime.currentTime().toString()
+            time = datetime.datetime.now().time()
+            return time.strftime(TimeField.isoFormat)
         try:
             return self.storedText(value)
         except ValueError:
