@@ -21,8 +21,9 @@ import genboolean
 import globalref
 
 fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
-              N_('Number'), N_('Date'), N_('Time'), N_('Boolean'),
-              N_('Choice'), N_('Combination'), N_('RegularExpression')]
+              N_('Number'), N_('Date'), N_('Time'), N_('DateTime'),
+              N_('Boolean'), N_('Choice'), N_('Combination'),
+              N_('RegularExpression')]
 _errorStr = '#####'
 _dateStampString = _('Now')
 _timeStampString = _('Now')
@@ -667,7 +668,7 @@ class DateField(HtmlTextField):
     def adjustedCompareValue(self, value):
         """Return value adjusted like the compareValue for use in conditionals.
 
-        Date version converts to an ISO date format (YYY-MM-DD).
+        Date version converts to an ISO date format (YYYY-MM-DD).
         Arguments:
             value -- the comparison value to adjust
         """
@@ -774,6 +775,7 @@ class TimeField(HtmlTextField):
                     try:
                         time = datetime.datetime.strptime(editorText,
                                                           noAmFormat).time()
+                        break
                     except ValueError:
                         pass
                 if not time:
@@ -841,7 +843,6 @@ class TimeField(HtmlTextField):
             time = datetime.datetime.strptime(storedText,
                                               TimeField.isoFormat).time()
             return (time - TimeField.refTime).seconds
-            return TimeField.refTime.secsTo(time)
         return 0 if zeroBlanks else None
 
     def compareValue(self, node):
@@ -876,6 +877,208 @@ class TimeField(HtmlTextField):
         if value == _timeStampString:
             time = datetime.datetime.now().time()
             return time.strftime(TimeField.isoFormat)
+        try:
+            return self.storedText(value)
+        except ValueError:
+            return value
+
+
+class DateTimeField(HtmlTextField):
+    """Class to handle a general date and time field format type.
+
+    Stores options and format strings for a date and time field type.
+    Provides methods to return formatted data.
+    """
+    typeName = 'DateTime'
+    defaultFormat = '%B %-d, %Y %-I:%M:%S %p'
+    isoFormat = '%Y-%m-%d %H:%M:%S.%f'
+    evalHtmlDefault = False
+    editorClassName = 'LineEditor'
+    refDateTime = datetime.datetime(1970, 1, 1)
+    formatHelpMenuList = [(_('Day (1 or 2 digits)\t%-d'), '%-d'),
+                          (_('Day (2 digits)\t%d'), '%d'), ('', ''),
+                          (_('Weekday Abbreviation\t%a'), '%a'),
+                          (_('Weekday Name\t%A'), '%A'), ('', ''),
+                          (_('Month (1 or 2 digits)\t%-m'), '%-m'),
+                          (_('Month (2 digits)\t%m'), '%m'),
+                          (_('Month Abbreviation\t%b'), '%b'),
+                          (_('Month Name\t%B'), '%B'), ('', ''),
+                          (_('Year (2 digits)\t%y'), '%y'),
+                          (_('Year (4 digits)\t%Y'), '%Y'), ('', ''),
+                          (_('Week Number (0 to 53)\t%-U'), '%-U'),
+                          (_('Day of year (1 to 366)\t%-j'), '%-j'),
+                          (_('Hour (0-23, 1 or 2 digits)\t%-H'), '%-H'),
+                          (_('Hour (00-23, 2 digits)\t%H'), '%H'),
+                          (_('Hour (1-12, 1 or 2 digits)\t%-I'), '%-I'),
+                          (_('Hour (01-12, 2 digits)\t%I'), '%I'), ('', ''),
+                          (_('Minute (1 or 2 digits)\t%-M'), '%-M'),
+                          (_('Minute (2 digits)\t%M'), '%M'), ('', ''),
+                          (_('Second (1 or 2 digits)\t%-S'), '%-S'),
+                          (_('Second (2 digits)\t%S'), '%S'), ('', ''),
+                          (_('Microseconds (6 digits)\t%f'), '%f'), ('', ''),
+                          (_('AM/PM\t%p'), '%p')]
+    def __init__(self, name, formatData=None):
+        """Initialize a field format type.
+
+        Arguments:
+            name -- the field name string
+            formatData -- the dict that defines this field's format
+        """
+        super().__init__(name, formatData)
+
+    def formatOutput(self, storedText, titleMode, formatHtml):
+        """Return formatted output text from stored text for this field.
+
+        Arguments:
+            storedText -- the source text to format
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        try:
+            dateTime = datetime.datetime.strptime(storedText,
+                                                  DateTimeField.isoFormat)
+            text = dateTime.strftime(adjOutDateFormat(self.format))
+        except ValueError:
+            text = _errorStr
+        return super().formatOutput(text, titleMode, formatHtml)
+
+    def formatEditorText(self, storedText):
+        """Return text formatted for use in the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            storedText -- the source text to format
+        """
+        if not storedText:
+            return ''
+        dateTime = datetime.datetime.strptime(storedText,
+                                              DateTimeField.isoFormat)
+        editorFormat = '{0} {1}'.format(globalref.genOptions['EditDateFormat'],
+                                        globalref.genOptions['EditTimeFormat'])
+        editorFormat = adjOutDateFormat(editorFormat)
+        return dateTime.strftime(editorFormat)
+
+    def storedText(self, editorText):
+        """Return new text to be stored based on text from the data editor.
+
+        Two digit years are interpretted as 1950-2049.
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        editorText = _multipleSpaceRegEx.sub(' ', editorText.strip())
+        if not editorText:
+            return ''
+        editorFormat = '{0} {1}'.format(globalref.genOptions['EditDateFormat'],
+                                        globalref.genOptions['EditTimeFormat'])
+        editorFormat = adjInDateFormat(editorFormat)
+        dateTime = None
+        try:
+            dateTime = datetime.datetime.strptime(editorText, editorFormat)
+        except ValueError:
+            noSecFormat = editorFormat.replace(':%S', '')
+            noSecFormat = _multipleSpaceRegEx.sub(' ', noSecFormat.strip())
+            altFormats = [editorFormat, noSecFormat]
+            for altFormat in altFormats[:]:
+                noAmFormat = altFormat.replace('%p', '')
+                noAmFormat = _multipleSpaceRegEx.sub(' ', noAmFormat.strip())
+                altFormats.append(noAmFormat)
+            for altFormat in altFormats[:]:
+                fullYearFormat = altFormat.replace('%y', '%Y')
+                altFormats.append(fullYearFormat)
+            for editorFormat in altFormats[1:]:
+                try:
+                    dateTime = datetime.datetime.strptime(editorText,
+                                                          editorFormat)
+                    break
+                except ValueError:
+                    pass
+            if not dateTime:
+                raise ValueError
+        return dateTime.strftime(DateTimeField.isoFormat)
+
+    def getInitDefault(self):
+        """Return the initial stored value for newly created nodes.
+        """
+        if self.initDefault == _timeStampString:
+            dateTime = datetime.datetime.now()
+            return dateTime.strftime(DateTimeField.isoFormat)
+        return super().getInitDefault()
+
+    def setInitDefault(self, editorText):
+        """Set the default initial value from editor text.
+
+        The function for default text field just returns the stored text.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        if editorText == _timeStampString:
+            self.initDefault = _timeStampString
+        else:
+            super().setInitDefault(editorText)
+
+    def getEditorInitDefault(self):
+        """Return initial value in editor format.
+
+        The function for default text field just returns the initial value.
+        """
+        if self.initDefault == _timeStampString:
+            return _timeStampString
+        return super().getEditorInitDefault()
+
+    def initDefaultChoices(self):
+        """Return a list of choices for setting the init default.
+        """
+        return [_timeStampString]
+
+    def mathValue(self, node, zeroBlanks=True):
+        """Return a numeric value to be used in math field equations.
+
+        Return None if blank and not zeroBlanks,
+        raise a ValueError if it isn't a valid time.
+        Arguments:
+            node -- the tree item storing the data
+            zeroBlanks -- replace blank field values with zeros if True
+        """
+        storedText = node.data.get(self.name, '')
+        if storedText:
+            dateTime = datetime.datetime.strptime(storedText,
+                                                  DateTimeField.isoFormat)
+            return (dateTime - DateTimeField.refDateTime).seconds
+        return 0 if zeroBlanks else None
+
+    def compareValue(self, node):
+        """Return a value for comparison to other nodes and for sorting.
+
+        Returns lowercase text for text fields or numbers for non-text fields.
+        DateTime field uses YYYY-MM-DD HH:MM:SS format.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return node.data.get(self.name, '')
+
+    def sortKey(self, node):
+        """Return a tuple with field type and comparison values for sorting.
+
+        Allows different types to be sorted.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return ('45_datetime', self.compareValue(node))
+
+    def adjustedCompareValue(self, value):
+        """Return value adjusted like the compareValue for use in conditionals.
+
+        Time version converts to HH:MM:SS format.
+        Arguments:
+            value -- the comparison value to adjust
+        """
+        value = _multipleSpaceRegEx.sub(' ', value.strip())
+        if not value:
+            return ''
+        if value == _timeStampString:
+            dateTime = datetime.datetime.now()
+            return dateTime.strftime(DateTimeField.isoFormat)
         try:
             return self.storedText(value)
         except ValueError:

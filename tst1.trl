@@ -15,13 +15,19 @@
                "fieldname": "Time",
                "fieldtype": "Time",
                "format": "%-I:%M:%S %p"
+            },
+            {
+               "fieldname": "DateTime",
+               "fieldtype": "DateTime",
+               "format": "%B %-d, %Y %-I:%M:%S %p"
             }
          ],
          "formatname": "DEFAULT",
          "outputlines": [
             "{*Name*}",
             "{*Date*}",
-            "{*Time*}"
+            "{*Time*}",
+            "{*DateTime*}"
          ],
          "titleline": "{*Name*}"
       }
