@@ -1018,7 +1018,7 @@ class ComboEditor(QComboBox):
         self.setModel(self.listView.model())
         self.setView(self.listView)
         self.setModelColumn(0)
-        self.lineEdit().setFont(dataeditview.defaultFont)
+        # self.lineEdit().setFont(dataeditview.defaultFont)
         self.modified = False
         self.fieldRef = None
         self.nodeRef = None
@@ -1230,28 +1230,20 @@ class DateEditor(ComboEditor):
         """
         super().__init__(parent)
         self.calendar = None
-        self.editorFormat = globalref.genOptions['EditDateFormat']
         self.nowAction = QAction(_('Today\'s &Date'), self)
         self.nowAction.triggered.connect(self.setNow)
         self.lineEdit().extraMenuActions = [self.nowAction]
 
     def editorDate(self):
-        """Return the date set in the line editor.
+        """Return the date (as a QDate) set in the line editor.
 
         If none or invalid, return an invalid date.
         """
-        editorText = multipleSpaceRegEx.sub(' ', self.currentText().strip())
-        if not editorText:
+        try:
+            dateStr = self.fieldRef.storedText(self.currentText())
+        except ValueError:
             return QDate()
-        date = QDate.fromString(editorText, self.editorFormat)
-        if date.isValid():
-            if 1900 <= date.year() < 1950 and 'yyyy' not in self.editorFormat:
-                date = date.addYears(100)
-        elif 'yyyy' not in self.editorFormat and 'yy' in self.editorFormat:
-            # allow use of a 4-digit year to fix invalid dates
-            modFormat = self.editorFormat.replace('yy', 'yyyy')
-            date = QDate.fromString(editorText, modFormat)
-        return date
+        return QDate.fromString(dateStr, Qt.ISODate)
 
     def showPopup(self):
         """Override to show a calendar widget in place of a list view.
@@ -1260,7 +1252,7 @@ class DateEditor(ComboEditor):
             self.calendar = QCalendarWidget(self)
             self.calendar.setWindowFlags(Qt.Popup)
             weekStart = optiondefaults.daysOfWeek.index(globalref.
-                                                      genOptions['WeekStart'])
+                                                       genOptions['WeekStart'])
             self.calendar.setFirstDayOfWeek(weekStart + 1)
             self.calendar.setVerticalHeaderFormat(QCalendarWidget.
                                                   NoVerticalHeader)
@@ -1290,13 +1282,15 @@ class DateEditor(ComboEditor):
         Arguments:
             date -- the QDate to be set
         """
-        self.setEditText(date.toString(self.editorFormat))
+        dateStr = date.toString(Qt.ISODate)
+        self.setEditText(self.fieldRef.formatEditorText(dateStr))
         self.calendar.hide()
 
     def setNow(self):
         """Set to today's date.
         """
-        self.setEditText(QDate.currentDate().toString(self.editorFormat))
+        dateStr = QDate.currentDate().toString(Qt.ISODate)
+        self.setEditText(self.fieldRef.formatEditorText(dateStr))
 
 
 class TimeEditor(ComboEditor):
@@ -1316,10 +1310,10 @@ class TimeEditor(ComboEditor):
         self.lineEdit().extraMenuActions = [nowAction]
 
     def setNow(self):
-        """Set to today's date.
+        """Set to the current time.
         """
-        editorFormat = globalref.genOptions['EditTimeFormat']
-        self.setEditText(QTime.currentTime().toString(editorFormat))
+        timeStr = QTime.currentTime().toString('hh:mm:ss.zzz')
+        self.setEditText(self.fieldRef.formatEditorText(timeStr))
 
 
 class DateTimeEditor(DateEditor):
@@ -1334,10 +1328,6 @@ class DateTimeEditor(DateEditor):
             parent -- the parent, if given
         """
         super().__init__(parent)
-        self.editorFormat = '{0} {1}'.format(globalref.
-                                             genOptions['EditDateFormat'],
-                                             globalref.
-                                             genOptions['EditTimeFormat'])
         self.nowAction.setText(_('Set to &Now'))
 
     def editorDate(self):
@@ -1355,31 +1345,12 @@ class DateTimeEditor(DateEditor):
 
         If none or invalid, return an invalid date.
         """
-        editorText = multipleSpaceRegEx.sub(' ', self.currentText().strip())
-        if not editorText:
-            return QDate()
-        dateTime = QDateTime.fromString(editorText, self.editorFormat)
-        if not dateTime.isValid():
-            noSecFormat = self.editorFormat.replace(':ss', '').replace(':s',
-                                                                       '')
-            noSecFormat = multipleSpaceRegEx.sub(' ', noSecFormat.strip())
-            altFormats = [self.editorFormat, noSecFormat]
-            for altFormat in altFormats[:]:
-                noAmFormat = altFormat.replace('AP', '').replace('ap', '')
-                noAmFormat = multipleSpaceRegEx.sub(' ', noAmFormat.strip())
-                altFormats.append(noAmFormat)
-            if 'yyyy' not in self.editorFormat and 'yy' in self.editorFormat:
-                # allow use of a 4-digit year to fix invalid dates
-                for altFormat in altFormats[:]:
-                    altFormats.append(altFormat.replace('yy', 'yyyy'))
-            for altFormat in altFormats:
-                dateTime = QDateTime.fromString(editorText, altFormat)
-                if dateTime.isValid():
-                    break
-        if (dateTime.isValid() and 1900 <= dateTime.date().year() < 1950 and
-            'yyyy' not in self.editorFormat):
-            dateTime = dateTime.addYears(100)
-        return dateTime
+        try:
+            dateTimeStr = self.fieldRef.storedText(self.currentText())
+        except ValueError:
+            return QDateTime()
+        return QDateTime.fromString(dateTimeStr[:-3],
+                                    'yyyy-MM-dd HH:mm:ss.zzz')
 
     def setDate(self, date):
         """Set the date based on a signal from the calendar popup.
@@ -1389,14 +1360,16 @@ class DateTimeEditor(DateEditor):
         """
         dateTime = self.editorDateTime()
         dateTime.setDate(date)
-        self.setEditText(dateTime.toString(self.editorFormat))
+        dateTimeStr = dateTime.toString('yyyy-MM-dd HH:mm:ss.zzz')
+        self.setEditText(self.fieldRef.formatEditorText(dateTimeStr))
         self.calendar.hide()
 
     def setNow(self):
         """Set to the current date and time.
         """
         dateTime = QDateTime.currentDateTime()
-        self.setEditText(dateTime.toString(self.editorFormat))
+        dateTimeStr = dateTime.toString('yyyy-MM-dd HH:mm:ss.zzz')
+        self.setEditText(self.fieldRef.formatEditorText(dateTimeStr))
 
 
 class ExtLinkEditor(ComboEditor):

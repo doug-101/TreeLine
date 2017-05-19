@@ -522,7 +522,7 @@ class DateField(HtmlTextField):
     defaultFormat = '%B %-d, %Y'
     isoFormat = '%Y-%m-%d'
     evalHtmlDefault = False
-    editorClassName = 'LineEditor'
+    editorClassName = 'DateEditor'
     refDate = datetime.date(1970, 1, 1)
     formatHelpMenuList = [(_('Day (1 or 2 digits)\t%-d'), '%-d'),
                           (_('Day (2 digits)\t%d'), '%d'), ('', ''),
@@ -694,7 +694,7 @@ class TimeField(HtmlTextField):
     defaultFormat = '%-I:%M:%S %p'
     isoFormat = '%H:%M:%S.%f'
     evalHtmlDefault = False
-    editorClassName = 'LineEditor'
+    editorClassName = 'TimeEditor'
     numChoiceColumns = 2
     autoAddChoices = False
     refTime = datetime.time()
@@ -893,7 +893,7 @@ class DateTimeField(HtmlTextField):
     defaultFormat = '%B %-d, %Y %-I:%M:%S %p'
     isoFormat = '%Y-%m-%d %H:%M:%S.%f'
     evalHtmlDefault = False
-    editorClassName = 'LineEditor'
+    editorClassName = 'DateTimeEditor'
     refDateTime = datetime.datetime(1970, 1, 1)
     formatHelpMenuList = [(_('Day (1 or 2 digits)\t%-d'), '%-d'),
                           (_('Day (2 digits)\t%d'), '%d'), ('', ''),
