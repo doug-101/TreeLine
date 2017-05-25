@@ -20,6 +20,10 @@
                "fieldname": "DateTime",
                "fieldtype": "DateTime",
                "format": "%B %-d, %Y %-I:%M:%S %p"
+            },
+            {
+               "fieldname": "ExtLink",
+               "fieldtype": "ExternalLink"
             }
          ],
          "formatname": "DEFAULT",
@@ -27,7 +31,8 @@
             "{*Name*}",
             "{*Date*}",
             "{*Time*}",
-            "{*DateTime*}"
+            "{*DateTime*}",
+            "{*ExtLink*}"
          ],
          "titleline": "{*Name*}"
       }
@@ -71,6 +76,7 @@
          ],
          "data": {
             "Date": "1988-05-05",
+            "ExtLink": "<a href=\"http://google.com\">Google</a>",
             "Name": "First Node",
             "Time": ""
          },

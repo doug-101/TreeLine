@@ -78,8 +78,10 @@ class TreeWindow(QMainWindow):
         self.outputSplitter = QSplitter(Qt.Vertical)
         self.rightTabs.addTab(self.outputSplitter, _('Data Output'))
         parentOutputView = outputview.OutputView(self.treeView, False)
+        parentOutputView.highlighted[str].connect(self.statusBar().showMessage)
         self.outputSplitter.addWidget(parentOutputView)
         childOutputView = outputview.OutputView(self.treeView, True)
+        childOutputView.highlighted[str].connect(self.statusBar().showMessage)
         self.outputSplitter.addWidget(childOutputView)
 
         self.editorSplitter = QSplitter(Qt.Vertical)

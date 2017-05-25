@@ -15,19 +15,22 @@
 import re
 import sys
 import datetime
-import xml.sax.saxutils
+import xml.sax.saxutils as saxutils
 import gennumber
 import genboolean
+import urltools
 import globalref
 
 fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
               N_('Number'), N_('Date'), N_('Time'), N_('DateTime'),
               N_('Boolean'), N_('Choice'), N_('Combination'),
-              N_('RegularExpression')]
+              N_('ExternalLink'), N_('RegularExpression')]
 _errorStr = '#####'
 _dateStampString = _('Now')
 _timeStampString = _('Now')
 _multipleSpaceRegEx = re.compile(r' {2,}')
+linkRegExp = re.compile(r'<a [^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.I | re.S)
+linkSeparateNameRegExp = re.compile(r'(.*?)\[(.*)\]')
 
 
 class TextField:
@@ -130,8 +133,8 @@ class TextField:
                 prefix = removeMarkup(prefix)
                 suffix = removeMarkup(suffix)
         elif not formatHtml:
-            prefix = xml.sax.saxutils.escape(prefix)
-            suffix = xml.sax.saxutils.escape(suffix)
+            prefix = saxutils.escape(prefix)
+            suffix = saxutils.escape(suffix)
         return '{0}{1}{2}'.format(prefix, storedText, suffix)
 
     def editorText(self, node):
@@ -172,7 +175,7 @@ class TextField:
         Arguments:
             titleText -- the new title text
         """
-        return self.storedText(xml.sax.saxutils.escape(titleText))
+        return self.storedText(saxutils.escape(titleText))
 
     def getInitDefault(self):
         """Return the initial stored value for newly created nodes.
@@ -372,7 +375,7 @@ class SpacedTextField(TextField):
         Arguments:
             storedText -- the source text to format
         """
-        return xml.sax.saxutils.unescape(storedText)
+        return saxutils.unescape(storedText)
 
     def storedText(self, editorText):
         """Return new text to be stored based on text from the data editor.
@@ -380,7 +383,7 @@ class SpacedTextField(TextField):
         Arguments:
             editorText -- the new text entered into the editor
         """
-        return xml.sax.saxutils.escape(editorText)
+        return saxutils.escape(editorText)
 
     def storedTextFromTitle(self, titleText):
         """Return new text to be stored based on title text edits.
@@ -1122,7 +1125,7 @@ class ChoiceField(HtmlTextField):
         if self.evalHtml:
             self.choices = set(self.choiceList)
         else:
-            self.choices = set([xml.sax.saxutils.escape(choice) for choice in
+            self.choices = set([saxutils.escape(choice) for choice in
                                 self.choiceList])
 
     def formatOutput(self, storedText, titleMode, formatHtml):
@@ -1148,7 +1151,7 @@ class ChoiceField(HtmlTextField):
             raise ValueError
         if self.evalHtml:
             return storedText
-        return xml.sax.saxutils.unescape(storedText)
+        return saxutils.unescape(storedText)
 
     def storedText(self, editorText):
         """Return new text to be stored based on text from the data editor.
@@ -1158,7 +1161,7 @@ class ChoiceField(HtmlTextField):
             editorText -- the new text entered into the editor
         """
         if not self.evalHtml:
-            editorText = xml.sax.saxutils.escape(editorText)
+            editorText = saxutils.escape(editorText)
         if not editorText or editorText in self.choices:
             return editorText
         raise ValueError
@@ -1216,7 +1219,7 @@ class CombinationField(ChoiceField):
         """
         TextField.setFormat(self, format)
         if not self.evalHtml:
-            format = xml.sax.saxutils.escape(format)
+            format = saxutils.escape(format)
         self.choiceList = self.splitText(format)
         self.choices = set(self.choiceList)
         self.outputSep = ''
@@ -1259,7 +1262,7 @@ class CombinationField(ChoiceField):
         if selections.issubset(self.choices):
             if self.evalHtml:
                 return storedText
-            return xml.sax.saxutils.unescape(storedText)
+            return saxutils.unescape(storedText)
         raise ValueError
 
     def storedText(self, editorText):
@@ -1270,7 +1273,7 @@ class CombinationField(ChoiceField):
             editorText -- the new text entered into the editor
         """
         if not self.evalHtml:
-            editorText = xml.sax.saxutils.escape(editorText)
+            editorText = saxutils.escape(editorText)
         selections, valid = self.sortedSelections(editorText)
         if not valid:
             raise ValueError
@@ -1281,7 +1284,7 @@ class CombinationField(ChoiceField):
         """
         if self.evalHtml:
             return self.choiceList
-        return [xml.sax.saxutils.unescape(text) for text in self.choiceList]
+        return [saxutils.unescape(text) for text in self.choiceList]
 
     def comboActiveChoices(self, editorText):
         """Return a sorted list of choices currently in editorText.
@@ -1289,11 +1292,10 @@ class CombinationField(ChoiceField):
         Arguments:
             editorText -- the text entered into the editor
         """
-        selections, valid = self.sortedSelections(xml.sax.saxutils.
-                                                  escape(editorText))
+        selections, valid = self.sortedSelections(saxutils.escape(editorText))
         if self.evalHtml:
             return selections
-        return [xml.sax.saxutils.unescape(text) for text in selections]
+        return [saxutils.unescape(text) for text in selections]
 
     def initDefaultChoices(self):
         """Return a list of choices for setting the init default.
@@ -1440,6 +1442,104 @@ class BooleanField(ChoiceField):
                 return False
 
 
+class ExternalLinkField(HtmlTextField):
+    """Class to handle a field containing various types of external HTML links.
+
+    Protocol choices include http, https, file, mailto.
+    Stores data as HTML tags, shows in editors as "protocol:address [name]".
+    """
+    typeName = 'ExternalLink'
+    evalHtmlDefault = False
+    editorClassName = 'ExtLinkEditor'
+
+    def __init__(self, name, attrs=None):
+        """Initialize a field format type.
+
+        Arguments:
+            name -- the field name string
+            attrs -- the attributes that define this field's format
+        """
+        super().__init__(name, attrs)
+
+    def formatOutput(self, storedText, titleMode, formatHtml):
+        """Return formatted output text from stored text for this field.
+
+        Arguments:
+            storedText -- the source text to format
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        if titleMode:
+            linkMatch = linkRegExp.search(storedText)
+            if linkMatch:
+                address, name = linkMatch.groups()
+                storedText = name.strip()
+                if not storedText:
+                    storedText = address.lstrip('#')
+        return super().formatOutput(storedText, titleMode, formatHtml)
+
+    def formatEditorText(self, storedText):
+        """Return text formatted for use in the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            storedText -- the source text to format
+        """
+        if not storedText:
+            return ''
+        linkMatch = linkRegExp.search(storedText)
+        if not linkMatch:
+            raise ValueError
+        address, name = linkMatch.groups()
+        name = name.strip()
+        if not name:
+            name = urltools.shortName(address)
+        return '{0} [{1}]'.format(address, name)
+
+    def storedText(self, editorText):
+        """Return new text to be stored based on text from the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        if not editorText:
+            return ''
+        nameMatch = linkSeparateNameRegExp.match(editorText)
+        if nameMatch:
+            address, name = nameMatch.groups()
+        else:
+            address = editorText
+            name = urltools.shortName(address)
+        return '<a href="{0}">{1}</a>'.format(address.strip(), name.strip())
+
+    def compareValue(self, node):
+        """Return a value for comparison to other nodes and for sorting.
+
+        Returns lowercase text for text fields or numbers for non-text fields.
+        Link fields use link address.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        storedText = node.data.get(self.name, '')
+        if not storedText:
+            return ''
+        linkMatch = linkRegExp.search(storedText)
+        if not linkMatch:
+            return storedText
+        address, name = linkMatch.groups()
+        return address.lstrip('#').lower()
+
+    def sortKey(self, node):
+        """Return a tuple with field type and comparison values for sorting.
+
+        Allows different types to be sorted.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return ('60_link', self.compareValue(node))
+
+
 class RegularExpressionField(HtmlTextField):
     """Class to handle a field format type controlled by a regular expression.
 
@@ -1496,7 +1596,7 @@ class RegularExpressionField(HtmlTextField):
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
-        match = re.match(self.format, xml.sax.saxutils.unescape(storedText))
+        match = re.match(self.format, saxutils.unescape(storedText))
         if not storedText or match:
             text = storedText
         else:
@@ -1511,7 +1611,7 @@ class RegularExpressionField(HtmlTextField):
             storedText -- the source text to format
         """
         if not self.evalHtml:
-            storedText = xml.sax.saxutils.unescape(storedText)
+            storedText = saxutils.unescape(storedText)
         match = re.match(self.format, storedText)
         if not storedText or match:
             return storedText
@@ -1528,7 +1628,7 @@ class RegularExpressionField(HtmlTextField):
         if not editorText or match:
             if self.evalHtml:
                 return editorText
-            return xml.sax.saxutils.escape(editorText)
+            return saxutils.escape(editorText)
         raise ValueError
 
 
@@ -1540,7 +1640,7 @@ def removeMarkup(text):
     """Return text with all HTML Markup removed and entities unescaped.
     """
     text = _stripTagRe.sub('', text)
-    return xml.sax.saxutils.unescape(text)
+    return saxutils.unescape(text)
 
 def adjOutDateFormat(dateFormat):
     """Replace Linux lead zero removal with Windows version in date formats.

@@ -30,7 +30,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication,
                              QVBoxLayout, QWidget)
 import dataeditview
 import fieldformat
-# import urltools
+import urltools
 import globalref
 import optiondefaults
 

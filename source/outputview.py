@@ -16,8 +16,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPalette, QTextCursor
 from PyQt5.QtWidgets import QTextBrowser, QTextEdit
 import treeoutput
-# import urltools
-# import dataeditors
+import urltools
+import dataeditors
 import globalref
 
 
