@@ -88,7 +88,7 @@ class OutputView(QTextBrowser):
         """
         name = url.toString()
         if name.startswith('#'):
-            if not self.selectModel.selectNodeById(name[1:]):
+            if not self.treeView.selectionModel().selectNodeById(name[1:]):
                 super().setSource(url)
         else:
             if urltools.isRelative(name):    # check for relative path

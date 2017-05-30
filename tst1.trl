@@ -24,6 +24,10 @@
             {
                "fieldname": "ExtLink",
                "fieldtype": "ExternalLink"
+            },
+            {
+               "fieldname": "IntLink",
+               "fieldtype": "InternalLink"
             }
          ],
          "formatname": "DEFAULT",
@@ -32,7 +36,8 @@
             "{*Date*}",
             "{*Time*}",
             "{*DateTime*}",
-            "{*ExtLink*}"
+            "{*ExtLink*}",
+            "{*IntLink*}"
          ],
          "titleline": "{*Name*}"
       }

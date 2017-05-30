@@ -155,6 +155,11 @@ class TreeNode:
             spots.update(spot.spotChain())
         return {spot.nodeRef for spot in spots}
 
+    def treeStructureRef(self):
+        """Return the tree structure based on the root spot ref.
+        """
+        return next(iter(self.spotRefs)).rootSpot().nodeRef
+
     def fileData(self):
         """Return the file data dict for this node.
         """

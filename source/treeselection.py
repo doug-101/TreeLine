@@ -113,6 +113,20 @@ class TreeSelection(QItemSelectionModel):
                                  QItemSelectionModel.Current)
         self.blockSignals(False)
 
+    def selectNodeById(self, nodeId):
+        """Select the first spot from the given node ID.
+
+        Return True on success.
+        Arguments:
+            nodeId -- the ID of the node to select
+        """
+        try:
+            node = self.modelRef.treeStructure.nodeDict[nodeId]
+            self.selectSpots([node.spotByNumber(0)], True, True)
+        except KeyError:
+            return False
+        return True
+
     def copySelectedNodes(self):
         """Copy these node branches to the clipboard.
         """

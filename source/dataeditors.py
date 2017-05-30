@@ -1747,7 +1747,58 @@ class ExtLinkDialog(QDialog):
         self.contentsChanged.emit()
 
 
-class IntLinkEditor(ComboEditor):
+class IntLinkEditor(QWidget):
+    """An editor widget for internal link fields.
+
+    Uses a combo box for the linked node title and a line edit for the name.
+    """
+    dragLinkEnabled = False
+    contentsChanged = pyqtSignal(QWidget)
+    def __init__(self, parent=None):
+        """Initialize the editor class.
+
+        Arguments:
+            parent -- the parent, if given
+        """
+        super().__init__(parent)
+        self.setPalette(QApplication.palette())
+        self.setStyleSheet('QWidget {border: 2px solid palette(highlight)}')
+        layout = QHBoxLayout(self)
+        layout.setSpacing(0)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
+        self.targetCombo = QComboBox(self)
+        layout.addWidget(self.targetCombo)
+        self.nameEditor = LineEditor(self, True)
+        layout.addWidget(self.nameEditor)
+        self.modified = False
+        self.fieldRef = None
+        self.nodeRef = None
+        self.errorFlag = False
+
+    def setContents(self, text):
+        """Set the contents of the editor to text.
+
+        Arguments:
+            text - the new text contents for the editor
+        """
+        storedText = self.nodeRef.data.get(self.fieldRef.name, '')
+        treeStructRef = self.nodeRef.treeStructureRef()
+        linkTitle, name = self.fieldRef.titleAndName(storedText, treeStructRef)
+        # self.setText(text)
+
+    def setCursorPoint(self, point):
+        """Set the cursor to the given point.
+
+        Arguments:
+            point -- the QPoint for the new cursor position
+        """
+        pass
+        # self.savedCursorPos = self.cursorPositionAt(self.mapFromGlobal(point))
+        # self.setCursorPosition(self.savedCursorPos)
+
+
+class IntLinkEditorX(ComboEditor):
     """An editor widget for internal link fields.
 
     Uses a combo box with a link entry box in place of the list popup.

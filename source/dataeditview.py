@@ -291,7 +291,7 @@ class DataEditDelegate(QStyledItemDelegate):
                 view.shortcutEntered.emit(key)
                 return True
         if event.type() == QEvent.MouseButtonPress:
-            self.prevNumLines = -1  # reset undo avail for mose cursor changes
+            self.prevNumLines = -1  # reset undo avail for mouse cursor changes
         if event.type() == QEvent.FocusOut:
             self.prevNumLines = -1  # reset undo avail for any focus loss
             if (event.reason() in (Qt.MouseFocusReason,
@@ -404,8 +404,8 @@ class DataEditView(QTableWidget):
                       if field.typeName != 'Math']
         for row, field in enumerate(fields, startRow + 1):
             self.setItem(row, 0, self.createInactiveCell(field.name,
-                                                       Qt.AlignRight |
-                                                       Qt.AlignVCenter))
+                                                         Qt.AlignRight |
+                                                         Qt.AlignVCenter))
             self.setItem(row, 1, DataEditCell(node, field, titleCell,
                                               typeCell))
         self.setItem(row + 1, 0, self.createInactiveCell(''))

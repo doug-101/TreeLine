@@ -24,7 +24,7 @@ import globalref
 fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
               N_('Number'), N_('Date'), N_('Time'), N_('DateTime'),
               N_('Boolean'), N_('Choice'), N_('Combination'),
-              N_('ExternalLink'), N_('RegularExpression')]
+              N_('ExternalLink'), N_('InternalLink'), N_('RegularExpression')]
 _errorStr = '#####'
 _dateStampString = _('Now')
 _timeStampString = _('Now')
@@ -1538,6 +1538,108 @@ class ExternalLinkField(HtmlTextField):
             node -- the tree item storing the data
         """
         return ('60_link', self.compareValue(node))
+
+
+class InternalLinkField(ExternalLinkField):
+    """Class to handle a field containing internal links to nodes.
+
+    Stores data as HTML local link tag, shows in editors as "id [name]".
+    """
+    typeName = 'InternalLink'
+    editorClassName = 'IntLinkEditor'
+
+    def __init__(self, name, attrs=None):
+        """Initialize a field format type.
+
+        Arguments:
+            name -- the field name string
+            attrs -- the attributes that define this field's format
+        """
+        super().__init__(name, attrs)
+
+    def titleAndName(self, storedText, treeStructRef):
+        """Return the link title and the name from the stored link.
+
+        Raise ValueError if the stored text is not formatted as a link.
+        Arguments:
+            storedText -- the source text to format
+            treeStructRef -- ref to the tree structure to get the linked title
+        """
+        if not storedText:
+            return ('', '')
+        linkMatch = linkRegExp.search(storedText)
+        if not linkMatch:
+            raise ValueError
+        address, name = linkMatch.groups()
+        address = address.lstrip('#')
+        targetNode = treeStructRef.nodeDict.get(address, None)
+        linkTitle = targetNode.title() if targetNode else _errorStr
+        name = name.strip()
+        if not name and targetNode:
+            name = linkTitle
+        return (linkTitle, name)
+
+    def editorText(self, node):
+        """Return text formatted for use in the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Also raises a ValueError if the link is not a valid destination, with
+        the editor text as the second argument to the exception.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        storedText = node.data.get(self.name, '')
+        return self.formatEditorText(storedText, node.treeStructureRef())
+
+    def formatEditorText(self, storedText, treeStructRef):
+        """Return text formatted for use in the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Also raises a ValueError if the link is not a valid destination, with
+        the editor text as the second argument to the exception.
+        Arguments:
+            storedText -- the source text to format
+            treeStructRef -- ref to the tree structure to get the linked title
+        """
+        if not storedText:
+            return ''
+        linkTitle, name = self.titleAndName(storedText, treeStructRef)
+        result = 'LinkTo: {0} [{1}]'.format(linkTitle, name)
+        if linkTitle == _errorStr:
+            raise ValueError('invalid address', result)
+        return result
+
+    def storedText(self, editorText):
+        """Return new text to be stored based on text from the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        if not editorText:
+            return ''
+        nameMatch = linkSeparateNameRegExp.match(editorText)
+        if nameMatch:
+            address, name = nameMatch.groups()
+        else:
+            address = editorText
+            name = address
+        return '<a href="#{0}">{1}</a>'.format(address.strip(), name.strip())
+
+    def getEditorInitDefault(self):
+        """Return initial value in editor format.
+
+        The function for default text field just returns the initial value.
+        """
+        if not self.initDefault:
+            return ''
+        linkMatch = linkRegExp.search(self.initDefault)
+        if not linkMatch:
+            raise ValueError
+        address, name = linkMatch.groups()
+        if not name:
+            name = _errorStr
+        return 'LinkTo: {0} [{1}]'.format(_errorStr, name)
 
 
 class RegularExpressionField(HtmlTextField):

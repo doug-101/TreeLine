@@ -122,6 +122,14 @@ class TreeSpot:
             spot = spot.parentSpot
         return result
 
+    def rootSpot(self):
+        """Return the root spot that references the tree structure.
+        """
+        spot = self
+        while spot.parentSpot:
+            spot = spot.parentSpot
+        return spot
+
     def sortKey(self):
         """Return a tuple of parent row positions for sorting in tree order.
         """
