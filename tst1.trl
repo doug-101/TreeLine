@@ -82,6 +82,7 @@
          "data": {
             "Date": "1988-05-05",
             "ExtLink": "<a href=\"http://google.com\">Google</a>",
+            "IntLink": "<a href=\"#5dc9f57a0d6711e780c13417ebd53aeb\">Third Node</a>",
             "Name": "First Node",
             "Time": ""
          },

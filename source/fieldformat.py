@@ -1461,6 +1461,21 @@ class ExternalLinkField(HtmlTextField):
         """
         super().__init__(name, attrs)
 
+    def addressAndName(self, storedText):
+        """Return the link title and the name from the given stored link.
+
+        Raise ValueError if the stored text is not formatted as a link.
+        Arguments:
+            storedText -- the source text to format
+        """
+        if not storedText:
+            return ('', '')
+        linkMatch = linkRegExp.search(storedText)
+        if not linkMatch:
+            raise ValueError
+        address, name = linkMatch.groups()
+        return (address, name)
+
     def formatOutput(self, storedText, titleMode, formatHtml):
         """Return formatted output text from stored text for this field.
 
@@ -1487,10 +1502,7 @@ class ExternalLinkField(HtmlTextField):
         """
         if not storedText:
             return ''
-        linkMatch = linkRegExp.search(storedText)
-        if not linkMatch:
-            raise ValueError
-        address, name = linkMatch.groups()
+        address, name = self.addressAndName(storedText)
         name = name.strip()
         if not name:
             name = urltools.shortName(address)
@@ -1524,10 +1536,10 @@ class ExternalLinkField(HtmlTextField):
         storedText = node.data.get(self.name, '')
         if not storedText:
             return ''
-        linkMatch = linkRegExp.search(storedText)
-        if not linkMatch:
+        try:
+            address, name = self.addressAndName(storedText)
+        except ValueError:
             return storedText
-        address, name = linkMatch.groups()
         return address.lstrip('#').lower()
 
     def sortKey(self, node):
@@ -1557,28 +1569,6 @@ class InternalLinkField(ExternalLinkField):
         """
         super().__init__(name, attrs)
 
-    def titleAndName(self, storedText, treeStructRef):
-        """Return the link title and the name from the stored link.
-
-        Raise ValueError if the stored text is not formatted as a link.
-        Arguments:
-            storedText -- the source text to format
-            treeStructRef -- ref to the tree structure to get the linked title
-        """
-        if not storedText:
-            return ('', '')
-        linkMatch = linkRegExp.search(storedText)
-        if not linkMatch:
-            raise ValueError
-        address, name = linkMatch.groups()
-        address = address.lstrip('#')
-        targetNode = treeStructRef.nodeDict.get(address, None)
-        linkTitle = targetNode.title() if targetNode else _errorStr
-        name = name.strip()
-        if not name and targetNode:
-            name = linkTitle
-        return (linkTitle, name)
-
     def editorText(self, node):
         """Return text formatted for use in the data editor.
 
@@ -1603,7 +1593,13 @@ class InternalLinkField(ExternalLinkField):
         """
         if not storedText:
             return ''
-        linkTitle, name = self.titleAndName(storedText, treeStructRef)
+        address, name = self.addressAndName(storedText)
+        address = address.lstrip('#')
+        targetNode = treeStructRef.nodeDict.get(address, None)
+        linkTitle = targetNode.title() if targetNode else _errorStr
+        name = name.strip()
+        if not name and targetNode:
+            name = linkTitle
         result = 'LinkTo: {0} [{1}]'.format(linkTitle, name)
         if linkTitle == _errorStr:
             raise ValueError('invalid address', result)

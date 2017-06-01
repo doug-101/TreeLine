@@ -1747,7 +1747,127 @@ class ExtLinkDialog(QDialog):
         self.contentsChanged.emit()
 
 
-class IntLinkEditor(QWidget):
+class IntLinkEditor(ComboEditor):
+    """An editor widget for internal link fields.
+
+    Uses a combo box with a link select dialog in place of the list popup.
+    """
+    def __init__(self, parent=None):
+        """Initialize the editor class.
+
+        Arguments:
+            parent -- the parent, if given
+        """
+        super().__init__(parent)
+        self.intLinkDialog = None
+        self.setLineEdit(PartialLineEditor(self))
+        openAction = QAction(_('&Go to Target'), self)
+        openAction.triggered.connect(self.openLink)
+        self.lineEdit().extraMenuActions = [openAction]
+
+    def setContents(self, text):
+        """Set the contents of the editor to text.
+
+        Arguments:
+            text - the new text contents for the editor
+        """
+        super().setContents(text)
+        if not text:
+            self.lineEdit().staticLength = 0
+            return
+        nameMatch = fieldformat.linkSeparateNameRegExp.match(text)
+        if nameMatch:
+            link = nameMatch.group(1)
+            self.lineEdit().staticLength = len(link)
+        else:
+            self.lineEdit().staticLength = len(text)
+
+    def openLink(self):
+        """Open the link in a web browser.
+        """
+        storedText = self.nodeRef.data.get(self.fieldRef.name, '')
+        if storedText:
+            try:
+                address, name = self.fieldRef.addressAndName(storedText)
+            except ValueError:
+                return
+            if address.startswith('#'):
+                editView = self.parent().parent()
+                editView.treeView.selectionModel().selectNodeById(address[1:])
+
+    def setCursorPoint(self, point):
+        """Set the cursor to the given point.
+
+        Arguments:
+            point -- the QPoint for the new cursor position
+        """
+        self.lineEdit().setCursorPoint(point)
+        self.lineEdit().fixSelection()
+
+
+class PartialLineEditor(LineEditor):
+    """A line used in internal link combo editors.
+
+    Only allows the name portion to be selected or editd.
+    """
+    def __init__(self, parent=None):
+        """Initialize the editor class.
+
+        Arguments:
+            parent -- the parent, if given
+        """
+        super().__init__(parent, True)
+        self.staticLength = 0
+
+    def fixSelection(self):
+        """Fix the selection and cursor to not include static portion of text.
+        """
+        cursorPos = self.cursorPosition()
+        if -1 < self.selectionStart() < self.staticLength:
+            endPos = self.selectionStart() + len(self.selectedText())
+            if endPos > self.staticLength:
+                if cursorPos >= self.staticLength:
+                    self.setSelection(self.staticLength,
+                                      endPos - self.staticLength)
+                else:
+                    # reverse select to get cursor at selection start
+                    self.setSelection(endPos, self.staticLength - endPos)
+                return
+            self.deselect()
+        if cursorPos < self.staticLength:
+            self.setCursorPosition(self.staticLength)
+
+    def selectAll(self):
+        """Select all editable text.
+        """
+        self.setSelection(self.staticLength, len(self.text()))
+
+    def mouseReleaseEvent(self, event):
+        """Fix selection if required after mouse release.
+
+        Arguments:
+            event -- the mouse release event
+        """
+        super().mouseReleaseEvent(event)
+        self.fixSelection()
+
+    def keyPressEvent(self, event):
+        """Avoid edits or cursor movements to the statis portion of the text.
+
+        Arguments:
+            event -- the mouse release event
+        """
+        if (event.key() == Qt.Key_Backspace and
+            self.cursorPosition() <= self.staticLength):
+                return
+        if event.key() in (Qt.Key_Left, Qt.Key_Home):
+            super().keyPressEvent(event)
+            self.fixSelection()
+            return
+        super().keyPressEvent(event)
+
+
+class IntLinkEditorY(QWidget):
     """An editor widget for internal link fields.
 
     Uses a combo box for the linked node title and a line edit for the name.
