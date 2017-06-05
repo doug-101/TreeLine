@@ -30,7 +30,7 @@ _dateStampString = _('Now')
 _timeStampString = _('Now')
 _multipleSpaceRegEx = re.compile(r' {2,}')
 linkRegExp = re.compile(r'<a [^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.I | re.S)
-linkSeparateNameRegExp = re.compile(r'(.*?)\[(.*)\]')
+linkSeparateNameRegExp = re.compile(r'(.*) \[(.*)\]\s*$')
 
 
 class TextField:
@@ -1608,18 +1608,18 @@ class InternalLinkField(ExternalLinkField):
     def storedText(self, editorText):
         """Return new text to be stored based on text from the data editor.
 
+        Uses the "address [name]" format as input, not the final editor form.
         Raises a ValueError if the data does not match the format.
         Arguments:
-            editorText -- the new text entered into the editor
+            editorText -- the new editor text in "address [name]" format
         """
+        print(editorText)
         if not editorText:
             return ''
         nameMatch = linkSeparateNameRegExp.match(editorText)
-        if nameMatch:
-            address, name = nameMatch.groups()
-        else:
-            address = editorText
-            name = address
+        if not nameMatch:
+            raise ValueError
+        address, name = nameMatch.groups()
         return '<a href="#{0}">{1}</a>'.format(address.strip(), name.strip())
 
     def getEditorInitDefault(self):

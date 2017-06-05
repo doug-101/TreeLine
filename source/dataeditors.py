@@ -1759,6 +1759,7 @@ class IntLinkEditor(ComboEditor):
             parent -- the parent, if given
         """
         super().__init__(parent)
+        self.address = ''
         self.intLinkDialog = None
         self.setLineEdit(PartialLineEditor(self))
         openAction = QAction(_('&Go to Target'), self)
@@ -1774,13 +1775,29 @@ class IntLinkEditor(ComboEditor):
         super().setContents(text)
         if not text:
             self.lineEdit().staticLength = 0
+            self.address = ''
             return
+        self.address, name = self.fieldRef.addressAndName(self.nodeRef.data.
+                                                   get(self.fieldRef.name, ''))
+        self.address = self.address.lstrip('#')
         nameMatch = fieldformat.linkSeparateNameRegExp.match(text)
         if nameMatch:
             link = nameMatch.group(1)
             self.lineEdit().staticLength = len(link)
         else:
             self.lineEdit().staticLength = len(text)
+
+    def contents(self):
+        """Return the editor contents in "address [name]" format.
+        """
+        if not self.address:
+            return ''
+        print('Address: ', self.address)
+        nameMatch = fieldformat.linkSeparateNameRegExp.match(self.
+                                                             currentText())
+        name = nameMatch.group(2) if nameMatch else self.nodeRef.title()
+        print('Name: ', name)
+        return '{0} [{1}]'.format(self.address, name.strip())
 
     def openLink(self):
         """Open the link in a web browser.
