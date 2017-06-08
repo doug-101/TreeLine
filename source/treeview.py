@@ -12,9 +12,10 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-from PyQt5.QtCore import QPoint, Qt
+from PyQt5.QtCore import QPoint, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAbstractItemView, QHeaderView, QTreeView)
 import treeselection
+import treenode
 import globalref
 
 
@@ -23,6 +24,7 @@ class TreeView(QTreeView):
 
     Sets view defaults and links with document for content.
     """
+    skippedMouseSelect = pyqtSignal(treenode.TreeNode)
     def __init__(self, model, allActions, parent=None):
         """Initialize the tree view.
 
@@ -34,6 +36,7 @@ class TreeView(QTreeView):
         super().__init__(parent)
         self.resetModel(model)
         self.allActions = allActions
+        self.noMouseSelectMode = False
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.header().setStretchLastSection(False)
@@ -101,6 +104,30 @@ class TreeView(QTreeView):
         """Stop the editing of any item being renamed.
         """
         self.closePersistentEditor(self.selectionModel().currentIndex())
+
+    def toggleNoMouseSelectMode(self, active=True):
+        """Set noMouseSelectMode to active or inactive.
+
+        noMouseSelectMode will not change selection on mouse click,
+        it will just signal the clicked node for use in links, etc.
+        Arguments:
+            active -- if True, activate noMouseSelectMode
+        """
+        self.noMouseSelectMode = active
+
+    def mousePressEvent(self, event):
+        """Skip unselecting click on blank spaces and if in noMouseSelectMode.
+
+        If in noMouseSelectMode, signal which node is under the mouse.
+        Arguments:
+            event -- the mouse click event
+        """
+        clickedSpot = self.indexAt(event.pos()).internalPointer()
+        if self.noMouseSelectMode and clickedSpot:
+            self.skippedMouseSelect.emit(clickedSpot.nodeRef)
+            event.ignore()
+            return
+        super().mousePressEvent(event)
 
     def dropEvent(self, event):
         """Event handler for view drop actions.

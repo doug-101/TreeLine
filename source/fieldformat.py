@@ -1521,8 +1521,7 @@ class ExternalLinkField(HtmlTextField):
         if nameMatch:
             address, name = nameMatch.groups()
         else:
-            address = editorText
-            name = urltools.shortName(address)
+            raise ValueError
         return '<a href="{0}">{1}</a>'.format(address.strip(), name.strip())
 
     def compareValue(self, node):
@@ -1613,14 +1612,20 @@ class InternalLinkField(ExternalLinkField):
         Arguments:
             editorText -- the new editor text in "address [name]" format
         """
-        print(editorText)
         if not editorText:
             return ''
         nameMatch = linkSeparateNameRegExp.match(editorText)
         if not nameMatch:
             raise ValueError
         address, name = nameMatch.groups()
-        return '<a href="#{0}">{1}</a>'.format(address.strip(), name.strip())
+        if not address:
+            raise ValueError('invalid address', '')
+        if not name:
+            name = _errorStr
+        result = '<a href="#{0}">{1}</a>'.format(address.strip(), name.strip())
+        if name == _errorStr:
+            raise ValueError('invalid name', result)
+        return result
 
     def getEditorInitDefault(self):
         """Return initial value in editor format.

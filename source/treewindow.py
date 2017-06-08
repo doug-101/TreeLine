@@ -90,11 +90,19 @@ class TreeWindow(QMainWindow):
                                                    self.allActions, False)
         parentEditView.nodeModified.connect(self.nodeModified)
         parentEditView.focusOtherView.connect(self.focusNextView)
+        parentEditView.inLinkSelectMode.connect(self.treeView.
+                                                toggleNoMouseSelectMode)
+        self.treeView.skippedMouseSelect.connect(parentEditView.
+                                                 internalLinkSelected)
         self.editorSplitter.addWidget(parentEditView)
         childEditView = dataeditview.DataEditView(self.treeView,
                                                   self.allActions, True)
         childEditView.nodeModified.connect(self.nodeModified)
         childEditView.focusOtherView.connect(self.focusNextView)
+        childEditView.inLinkSelectMode.connect(self.treeView.
+                                               toggleNoMouseSelectMode)
+        self.treeView.skippedMouseSelect.connect(childEditView.
+                                                 internalLinkSelected)
         self.editorSplitter.addWidget(childEditView)
 
         self.titleSplitter = QSplitter(Qt.Vertical)

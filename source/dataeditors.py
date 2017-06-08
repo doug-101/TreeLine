@@ -1648,7 +1648,7 @@ class ExtLinkDialog(QDialog):
             return ''
         name = self.nameEdit.text().strip()
         if not name:
-            return address
+            name = urltools.shortName(address)
         return '{0} [{1}]'.format(address, name)
 
     def htmlText(self):
@@ -1752,6 +1752,7 @@ class IntLinkEditor(ComboEditor):
 
     Uses a combo box with a link select dialog in place of the list popup.
     """
+    inLinkSelectMode = pyqtSignal(bool)
     def __init__(self, parent=None):
         """Initialize the editor class.
 
@@ -1764,7 +1765,9 @@ class IntLinkEditor(ComboEditor):
         self.setLineEdit(PartialLineEditor(self))
         openAction = QAction(_('&Go to Target'), self)
         openAction.triggered.connect(self.openLink)
-        self.lineEdit().extraMenuActions = [openAction]
+        clearAction = QAction(_('Clear &Link'), self)
+        clearAction.triggered.connect(self.clearLink)
+        self.lineEdit().extraMenuActions = [openAction, clearAction]
 
     def setContents(self, text):
         """Set the contents of the editor to text.
@@ -1777,40 +1780,86 @@ class IntLinkEditor(ComboEditor):
             self.lineEdit().staticLength = 0
             self.address = ''
             return
-        self.address, name = self.fieldRef.addressAndName(self.nodeRef.data.
-                                                   get(self.fieldRef.name, ''))
+        try:
+            self.address, name = self.fieldRef.addressAndName(self.nodeRef.
+                                              data.get(self.fieldRef.name, ''))
+        except ValueError:
+            self.address = ''
         self.address = self.address.lstrip('#')
         nameMatch = fieldformat.linkSeparateNameRegExp.match(text)
         if nameMatch:
             link = nameMatch.group(1)
-            self.lineEdit().staticLength = len(link)
+            self.lineEdit().staticLength = len(link) + 1
         else:
-            self.lineEdit().staticLength = len(text)
+            self.lineEdit().staticLength = 0
 
     def contents(self):
         """Return the editor contents in "address [name]" format.
         """
         if not self.address:
-            return ''
-        print('Address: ', self.address)
+            return self.currentText()
         nameMatch = fieldformat.linkSeparateNameRegExp.match(self.
                                                              currentText())
-        name = nameMatch.group(2) if nameMatch else self.nodeRef.title()
-        print('Name: ', name)
+        if nameMatch:
+            name = nameMatch.group(2)
+        else:
+            name = ''
         return '{0} [{1}]'.format(self.address, name.strip())
+
+    def clearLink(self):
+        """Clear the contents of the editor.
+        """
+        self.setContents('')
+        self.signalUpdate()
+
+    def showPopup(self):
+        """Override to show a popup entry widget in place of a list view.
+        """
+        if not self.intLinkDialog:
+            self.intLinkDialog = IntLinkDialog(True, self)
+        self.intLinkDialog.show()
+        pos = self.mapToGlobal(self.rect().bottomRight())
+        pos.setX(pos.x() - self.intLinkDialog.width() + 1)
+        screenBottom =  (QApplication.desktop().screenGeometry(self).
+                         bottom())
+        if pos.y() + self.intLinkDialog.height() > screenBottom:
+            pos.setY(pos.y() - self.rect().height() -
+                     self.intLinkDialog.height())
+        self.intLinkDialog.move(pos)
+        self.inLinkSelectMode.emit(True)
+
+    def hidePopup(self):
+        """Override to hide the popup entry widget.
+        """
+        if self.intLinkDialog:
+            self.intLinkDialog.hide()
+        self.inLinkSelectMode.emit(False)
+        super().hidePopup()
+
+    def setLinkFromNode(self, node):
+        """Set the current link from a clicked node.
+
+        Arguments:
+            node -- the node to set the unique ID from
+        """
+        self.hidePopup()
+        self.address = node.uId
+        linkTitle = node.title()
+        nameMatch = fieldformat.linkSeparateNameRegExp.match(self.
+                                                             currentText())
+        if nameMatch:
+            name = nameMatch.group(2)
+        else:
+            name = linkTitle
+        self.setEditText('LinkTo: {0} [{1}]'.format(linkTitle, name))
+        self.lineEdit().staticLength = len(linkTitle) + 9
 
     def openLink(self):
         """Open the link in a web browser.
         """
-        storedText = self.nodeRef.data.get(self.fieldRef.name, '')
-        if storedText:
-            try:
-                address, name = self.fieldRef.addressAndName(storedText)
-            except ValueError:
-                return
-            if address.startswith('#'):
-                editView = self.parent().parent()
-                editView.treeView.selectionModel().selectNodeById(address[1:])
+        if self.address:
+            editView = self.parent().parent()
+            editView.treeView.selectionModel().selectNodeById(self.address)
 
     def setCursorPoint(self, point):
         """Set the cursor to the given point.
@@ -1875,8 +1924,9 @@ class PartialLineEditor(LineEditor):
             event -- the mouse release event
         """
         if (event.key() == Qt.Key_Backspace and
-            self.cursorPosition() <= self.staticLength):
-                return
+            (self.cursorPosition() <= self.staticLength and
+             not self.hasSelectedText())):
+            return
         if event.key() in (Qt.Key_Left, Qt.Key_Home):
             super().keyPressEvent(event)
             self.fixSelection()
@@ -1884,155 +1934,28 @@ class PartialLineEditor(LineEditor):
         super().keyPressEvent(event)
 
 
-class IntLinkEditorY(QWidget):
-    """An editor widget for internal link fields.
-
-    Uses a combo box for the linked node title and a line edit for the name.
+class IntLinkDialog(QDialog):
+    """A popup dialog box for internal link editing.
     """
-    dragLinkEnabled = False
-    contentsChanged = pyqtSignal(QWidget)
-    def __init__(self, parent=None):
-        """Initialize the editor class.
+    contentsChanged = pyqtSignal()
+    def __init__(self, popupDialog=False, parent=None):
+        """Initialize the dialog widgets.
 
         Arguments:
-            parent -- the parent, if given
+            popupDialog -- add OK and cancel buttons if False
+            parent -- the dialog's parent widget
         """
         super().__init__(parent)
-        self.setPalette(QApplication.palette())
-        self.setStyleSheet('QWidget {border: 2px solid palette(highlight)}')
-        layout = QHBoxLayout(self)
-        layout.setSpacing(0)
-        layout.setContentsMargins(0, 0, 0, 0)
-        self.setLayout(layout)
-        self.targetCombo = QComboBox(self)
-        layout.addWidget(self.targetCombo)
-        self.nameEditor = LineEditor(self, True)
-        layout.addWidget(self.nameEditor)
-        self.modified = False
-        self.fieldRef = None
-        self.nodeRef = None
-        self.errorFlag = False
-
-    def setContents(self, text):
-        """Set the contents of the editor to text.
-
-        Arguments:
-            text - the new text contents for the editor
-        """
-        storedText = self.nodeRef.data.get(self.fieldRef.name, '')
-        treeStructRef = self.nodeRef.treeStructureRef()
-        linkTitle, name = self.fieldRef.titleAndName(storedText, treeStructRef)
-        # self.setText(text)
-
-    def setCursorPoint(self, point):
-        """Set the cursor to the given point.
-
-        Arguments:
-            point -- the QPoint for the new cursor position
-        """
-        pass
-        # self.savedCursorPos = self.cursorPositionAt(self.mapFromGlobal(point))
-        # self.setCursorPosition(self.savedCursorPos)
-
-
-class IntLinkEditorX(ComboEditor):
-    """An editor widget for internal link fields.
-
-    Uses a combo box with a link entry box in place of the list popup.
-    """
-    inLinkSelectMode = pyqtSignal(bool)
-    def __init__(self, parent=None):
-        """Initialize the editor class.
-
-        Arguments:
-            parent -- the parent, if given
-        """
-        super().__init__(parent)
-        self.intLinkDialog = None
-        self.addedIntLinkFlag = False
-        openAction = QAction(_('&Go to Target'), self)
-        openAction.triggered.connect(self.openLink)
-        self.lineEdit().extraMenuActions = [openAction]
-
-    def showPopup(self):
-        """Override to show a popup entry widget in place of a list view.
-        """
-        if not self.intLinkDialog:
-            self.intLinkDialog = IntLinkDialog(True, self)
-            self.intLinkDialog.contentsChanged.connect(self.setLink)
-        self.intLinkDialog.show()
-        pos = self.mapToGlobal(self.rect().bottomRight())
-        pos.setX(pos.x() - self.intLinkDialog.width() + 1)
-        screenBottom =  (QApplication.desktop().screenGeometry(self).
-                         bottom())
-        if pos.y() + self.intLinkDialog.height() > screenBottom:
-            pos.setY(pos.y() - self.rect().height() -
-                     self.intLinkDialog.height())
-        self.intLinkDialog.move(pos)
-        self.intLinkDialog.setFromEditor(self.currentText())
-
-    def hidePopup(self):
-        """Override to hide the popup entry widget.
-        """
-        if self.intLinkDialog:
-            if self.intLinkDialog.targetButton.isChecked():
-                self.intLinkDialog.toggleTargetClick(False)
-            self.intLinkDialog.hide()
-        super().hidePopup()
-
-    def signalUpdate(self):
-        """Signal the delegate to update the model based on an editor change.
-
-        Also checks for invalid link destination.
-        """
-        self.modified = True
-        self.lineEdit().errorFlag = False
-        text = self.currentText()
-        if text:
-            nameMatch = fieldformat.linkSeparateNameRegExp.match(text)
-            if nameMatch:
-                address = nameMatch.group(1).strip()
-            else:
-                address = text.strip()
-            if address:
-                self.addedIntLinkFlag = True
-                editView = self.parent().parent()
-                if address not in editView.selectModel.model().nodeIdDict:
-                    self.lineEdit().errorFlag = True
-        self.contentsChanged.emit(self)
-
-    def setLink(self):
-        """Set the current link from the popup dialog.
-        """
-        self.setEditText(self.intLinkDialog.editorText())
-
-    def setLinkFromNode(self, node):
-        """Set the current link from a clicked node.
-
-        Arguments:
-            node -- the node to set the unique ID from
-        """
-        if self.intLinkDialog:
-            self.intLinkDialog.setFromNode(node)
-        self.setLink()
-
-    def openLink(self):
-        """Open the link in a web browser.
-        """
-        text = self.currentText()
-        if text:
-            nameMatch = fieldformat.linkSeparateNameRegExp.match(text)
-            if nameMatch:
-                address = nameMatch.group(1).strip()
-                if address:
-                    editView = self.parent().parent()
-                    editView.selectModel.selectNodeById(address)
+        self.setWindowFlags(Qt.Dialog | Qt.FramelessWindowHint)
+        layout = QVBoxLayout(self)
+        label = QLabel(_('(Click link target in tree)'))
+        layout.addWidget(label)
 
 
 _targetButtonLabel = {False: _('Enable click-on-&target'),
                       True: _('Disable click-on-&target')}
 
-class IntLinkDialog(QDialog):
+class IntLinkDialogX(QDialog):
     """A popup or normal dialog box for internal link editing.
     """
     contentsChanged = pyqtSignal()

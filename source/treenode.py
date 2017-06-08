@@ -215,8 +215,11 @@ class TreeNode:
         """
         try:
             self.data[field.name] = field.storedText(editorText)
-        except ValueError:
-            self.data[field.name] = editorText
+        except ValueError as err:
+            if len(err.args) >= 2:
+                self.data[field.name] = err.args[1]
+            else:
+                self.data[field.name] = editorText
             raise ValueError
 
     def addNewChild(self, treeStructure, posRefNode=None, insertBefore=True,
