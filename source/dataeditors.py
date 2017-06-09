@@ -175,7 +175,7 @@ class HtmlTextEditor(PlainTextEditor):
         """
         super().__init__(parent)
         self.intLinkDialog = None
-        self.addedIntLinkFlag = False
+        self.nodeRef = None
         self.allActions['FormatBoldFont'].triggered.connect(self.setBoldFont)
         self.allActions['FormatItalicFont'].triggered.connect(self.
                                                               setItalicFont)
@@ -293,16 +293,18 @@ class HtmlTextEditor(PlainTextEditor):
         """
         try:
             if self.hasFocus():
-                self.intLinkDialog = IntLinkDialog(False, self)
+                self.intLinkDialog = EmbedIntLinkDialog(self.nodeRef.
+                                                        treeStructureRef(),
+                                                        self)
                 address, name = self.selectLink()
                 if address.startswith('#'):
                     address = address.lstrip('#')
                 else:
                     address = ''
                 self.intLinkDialog.setFromComponents(address, name)
-                self.intLinkDialog.setModal(True)
                 self.intLinkDialog.finished.connect(self.insertInternalLink)
                 self.intLinkDialog.show()
+                self.inLinkSelectMode.emit(True)
         except RuntimeError:
             pass    # avoid calling a deleted C++ editor object
 
@@ -313,9 +315,9 @@ class HtmlTextEditor(PlainTextEditor):
             resultCode -- the result from the dialog (OK or cancel)
         """
         if resultCode == QDialog.Accepted:
-            self.addedIntLinkFlag = True
             self.insertPlainText(self.intLinkDialog.htmlText())
         self.intLinkDialog = None
+        self.inLinkSelectMode.emit(False)
 
     def setLinkFromNode(self, node):
         """Set the current internal link from a clicked node.
@@ -631,12 +633,12 @@ class RichTextEditor(HtmlTextEditor):
             resultCode -- the result from the dialog (OK or cancel)
         """
         if resultCode == QDialog.Accepted:
-            self.addedIntLinkFlag = True
             if self.textCursor().hasSelection():
                 self.insertHtml(self.intLinkDialog.htmlText())
             else:
                 self.insertHtml(self.intLinkDialog.htmlText() + ' ')
         self.intLinkDialog = None
+        self.inLinkSelectMode.emit(False)
 
     def selectLink(self):
         """Select the full link at the cursor, return link data.
@@ -767,7 +769,8 @@ class RichTextEditor(HtmlTextEditor):
             if address:
                 if address.startswith('#'):
                     editView = self.parent().parent()
-                    editView.selectModel.selectNodeById(address[1:])
+                    selectModel = editView.treeView.selectionModel()
+                    selectModel.selectNodeById(address[1:])
                 else:     # check for relative path
                     if urltools.isRelative(address):
                         defaultPath = (globalref.mainControl.
@@ -1603,22 +1606,6 @@ class ExtLinkDialog(QDialog):
                 name = urltools.shortName(address)
         self.setFromComponents(address, name)
 
-    def setFromHtml(self, htmlStr):
-        """Set the dialog contents from an HTML link.
-
-        Arguments:
-            htmlStr -- string in HTML link format
-        """
-        name = address = ''
-        if htmlStr:
-            linkMatch = fieldformat.linkRegExp.search(htmlStr)
-            if linkMatch:
-                address, name = linkMatch.groups()
-                name = name.strip()
-                if not name:
-                    name = urltools.shortName(address)
-        self.setFromComponents(address, name)
-
     def setFromComponents(self, address, name):
         """Set the dialog contents from separate address and name.
 
@@ -1952,92 +1939,61 @@ class IntLinkDialog(QDialog):
         layout.addWidget(label)
 
 
-_targetButtonLabel = {False: _('Enable click-on-&target'),
-                      True: _('Disable click-on-&target')}
-
-class IntLinkDialogX(QDialog):
+class EmbedIntLinkDialog(QDialog):
     """A popup or normal dialog box for internal link editing.
     """
     contentsChanged = pyqtSignal()
     targetClickDialogRef = None
-    def __init__(self, popupDialog=False, parent=None):
+    def __init__(self, structRef, parent=None):
         """Initialize the dialog widgets.
 
         Arguments:
-            popupDialog -- add OK and cancel buttons if False
+            structRef -- a ref to the tree structure
             parent -- the dialog's parent widget
         """
         super().__init__(parent)
+        self.structRef = structRef
+        self.address = ''
         self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
                             Qt.WindowCloseButtonHint)
         self.setWindowTitle(_('Internal Link'))
-        self.popupDialog = popupDialog
-        self.targetMode = False
         vertLayout = QVBoxLayout(self)
         vertLayout.setSpacing(1)
-        self.targetButton = QPushButton(_targetButtonLabel[False])
-        self.targetButton.setCheckable(True)
-        self.targetButton.clicked.connect(self.toggleTargetClick)
-        vertLayout.addWidget(self.targetButton)
-        vertLayout.addSpacing(8)
-        addressLabel = QLabel(_('Unique ID'))
-        vertLayout.addWidget(addressLabel)
-        self.addressEdit = QLineEdit()
-        self.addressEdit.textEdited.connect(self.contentsChanged)
-        vertLayout.addWidget(self.addressEdit)
+        self.linkLabel = QLabel()
+        vertLayout.addWidget(self.linkLabel)
+        infoLabel = QLabel(_('(Click link target in tree)'))
+        vertLayout.addWidget(infoLabel)
         vertLayout.addSpacing(8)
         nameLabel = QLabel(_('Display Name'))
         vertLayout.addWidget(nameLabel)
         self.nameEdit = QLineEdit()
         self.nameEdit.textEdited.connect(self.contentsChanged)
         vertLayout.addWidget(self.nameEdit)
-        if self.popupDialog:
-            self.setWindowFlags(Qt.Popup)
-        else:
-            vertLayout.addSpacing(8)
-            ctrlLayout = QHBoxLayout()
-            vertLayout.addLayout(ctrlLayout)
-            ctrlLayout.addStretch(0)
-            okButton = QPushButton(_('&OK'))
-            ctrlLayout.addWidget(okButton)
-            okButton.setDefault(True)
-            okButton.clicked.connect(self.accept)
-            cancelButton = QPushButton(_('&Cancel'))
-            ctrlLayout.addWidget(cancelButton)
-            cancelButton.clicked.connect(self.reject)
+        vertLayout.addSpacing(8)
+        ctrlLayout = QHBoxLayout()
+        vertLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch(0)
+        self.okButton = QPushButton(_('&OK'))
+        ctrlLayout.addWidget(self.okButton)
+        self.okButton.setDefault(True)
+        self.okButton.clicked.connect(self.accept)
+        cancelButton = QPushButton(_('&Cancel'))
+        ctrlLayout.addWidget(cancelButton)
+        cancelButton.clicked.connect(self.reject)
 
-    def setFromEditor(self, editorText):
-        """Set the dialog contents from a string in editor format.
-
-        Arguments:
-            editorText -- string in "link [name]" format
+    def updateLinkText(self):
+        """Update the link label using the current address.
         """
-        name = address = ''
-        if editorText:
-            nameMatch = fieldformat.linkSeparateNameRegExp.match(editorText)
-            if nameMatch:
-                address, name = nameMatch.groups()
-            else:
-                name = address = editorText
-            address = address.strip()
-        self.setFromComponents(address, name)
-
-    def setFromHtml(self, htmlStr):
-        """Set the dialog contents from an HTML link.
-
-        Arguments:
-            htmlStr -- string in HTML link format
-        """
-        name = address = ''
-        if htmlStr:
-            linkMatch = fieldformat.linkRegExp.search(htmlStr)
-            if linkMatch:
-                address, name = linkMatch.groups()
-                address = address.lstrip('#')
-                name = name.strip()
+        title = ''
+        name = self.nameEdit.text().strip()
+        if self.address:
+            targetNode = self.structRef.nodeDict.get(self.address, None)
+            if targetNode:
+                title = targetNode.title()
                 if not name:
-                    name = address
-        self.setFromComponents(address, name)
+                    self.nameEdit.setText(title)
+        self.linkLabel.setText('LinkTo: {0}'.format(title))
+        self.okButton.setEnabled(len(self.address) > 0)
 
     def setFromNode(self, node):
         """Set the dialog contents from a clicked node.
@@ -2045,13 +2001,8 @@ class IntLinkDialogX(QDialog):
         Arguments:
             node -- the node to set the unique ID from
         """
-        if self.targetMode:
-            address = node.uniqueId
-            name = self.nameEdit.text().strip()
-            if not name:
-                name = node.title()
-            self.setFromComponents(address, name)
-            self.toggleTargetClick(False)
+        self.address = node.uId
+        self.updateLinkText()
 
     def setFromComponents(self, address, name):
         """Set the dialog contents from separate address and name.
@@ -2060,71 +2011,17 @@ class IntLinkDialogX(QDialog):
             address -- the link address, including the protocol prefix
             name -- the displayed name for the link
         """
-        self.addressEdit.setText(address)
+        self.address = address
         self.nameEdit.setText(name)
-
-    def editorText(self):
-        """Return the dialog contents in data editor format ("link [name]").
-        """
-        address = self.addressEdit.text().strip()
-        name = self.nameEdit.text().strip()
-        if not name:
-            return address
-        return '{0} [{1}]'.format(address, name)
+        self.updateLinkText()
 
     def htmlText(self):
         """Return the dialog contents in HTML link format.
         """
-        address = self.addressEdit.text().strip()
         name = self.nameEdit.text().strip()
         if not name:
-            name = address
-        return '<a href="#{0}">{1}</a>'.format(address, name)
-
-    def address(self):
-        """Return the address from the dialog contents.
-        """
-        return  self.addressEdit.text().strip()
-
-    def toggleTargetClick(self, enabled):
-        """Toggle state of clicking on target nodes.
-
-        Arguments:
-            enabled -- True if clicking enabled
-        """
-        self.targetMode = enabled
-        self.targetButton.setChecked(enabled)
-        self.targetButton.setText(_targetButtonLabel[enabled])
-        self.addressEdit.setEnabled(not enabled)
-        if self.popupDialog:
-            if enabled:
-                self.setWindowFlags(Qt.Dialog |
-                                    Qt.FramelessWindowHint)
-                if (IntLinkDialog.targetClickDialogRef and
-                    IntLinkDialog.targetClickDialogRef != self):
-                    IntLinkDialog.targetClickDialogRef.parent().hidePopup()
-                IntLinkDialog.targetClickDialogRef = self
-            else:
-                self.setWindowFlags(Qt.Popup)
-                IntLinkDialog.targetClickDialogRef = None
-        else:
-            self.setModal(not enabled)
-        self.show()
-        self.parent().inLinkSelectMode.emit(enabled)
-
-    def accept(self):
-        """Reset target click mode if necessary after the user clicks OK.
-        """
-        if self.targetMode:
-            self.toggleTargetClick(False)
-        super().accept()
-
-    def reject(self):
-        """Reset target click mode if necessary after the user cancels.
-        """
-        if self.targetMode:
-            self.toggleTargetClick(False)
-        super().reject()
+            name = _('link')
+        return '<a href="#{0}">{1}</a>'.format(self.address, name)
 
 
 class PictureLinkEditor(ComboEditor):
