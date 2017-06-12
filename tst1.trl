@@ -28,6 +28,14 @@
             {
                "fieldname": "IntLink",
                "fieldtype": "InternalLink"
+            },
+            {
+               "fieldname": "AutoChoice",
+               "fieldtype": "AutoChoice"
+            },
+            {
+               "fieldname": "AutoCombo",
+               "fieldtype": "AutoCombination"
             }
          ],
          "formatname": "DEFAULT",
@@ -37,7 +45,9 @@
             "{*Time*}",
             "{*DateTime*}",
             "{*ExtLink*}",
-            "{*IntLink*}"
+            "{*IntLink*}",
+            "{*AutoChoice*}",
+            "{*AutoCombo*}"
          ],
          "titleline": "{*Name*}"
       }

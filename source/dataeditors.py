@@ -1049,8 +1049,8 @@ class ComboEditor(QComboBox):
         text = self.currentText()
         if self.fieldRef.autoAddChoices:
             self.fieldRef.clearChoices()
-            for node in self.nodeRef.modelRef.root.descendantGen():
-                if node.formatName == self.nodeRef.formatName:
+            for node in self.nodeRef.treeStructureRef().nodeDict.values():
+                if node.formatRef == self.nodeRef.formatRef:
                     self.fieldRef.addChoice(node.data.get(self.fieldRef.name,
                                                           ''))
         self.blockSignals(True)
@@ -1141,8 +1141,8 @@ class CombinationEditor(ComboEditor):
         """
         if self.fieldRef.autoAddChoices:
             self.fieldRef.clearChoices()
-            for node in self.nodeRef.modelRef.root.descendantGen():
-                if node.formatName == self.nodeRef.formatName:
+            for node in self.nodeRef.treeStructureRef().nodeDict.values():
+                if node.formatRef == self.nodeRef.formatRef:
                     self.fieldRef.addChoice(node.data.get(self.fieldRef.name,
                                                           ''))
         selectList = self.fieldRef.comboActiveChoices(self.currentText())

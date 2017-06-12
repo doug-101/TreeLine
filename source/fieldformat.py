@@ -23,8 +23,9 @@ import globalref
 
 fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
               N_('Number'), N_('Date'), N_('Time'), N_('DateTime'),
-              N_('Boolean'), N_('Choice'), N_('Combination'),
-              N_('ExternalLink'), N_('InternalLink'), N_('RegularExpression')]
+              N_('Boolean'), N_('Choice'), N_('AutoChoice'), N_('Combination'),
+              N_('AutoCombination'), N_('ExternalLink'), N_('InternalLink'),
+              N_('RegularExpression')]
 _errorStr = '#####'
 _dateStampString = _('Now')
 _timeStampString = _('Now')
@@ -1193,6 +1194,73 @@ class ChoiceField(HtmlTextField):
         return result
 
 
+class AutoChoiceField(HtmlTextField):
+    """Class to handle a field with automatically populated text choices.
+
+    Stores options and possible entries for an auto-choice field type.
+    Provides methods to return formatted data.
+    """
+    typeName = 'AutoChoice'
+    evalHtmlDefault = False
+    fixEvalHtmlSetting = False
+    editorClassName = 'ComboEditor'
+    numChoiceColumns = 1
+    autoAddChoices = True
+    def __init__(self, name, attrs=None):
+        """Initialize a field format type.
+
+        Arguments:
+            name -- the field name string
+            attrs -- the attributes that define this field's format
+        """
+        super().__init__(name, attrs)
+        self.choices = set()
+
+    def formatEditorText(self, storedText):
+        """Return text formatted for use in the data editor.
+
+        Arguments:
+            storedText -- the source text to format
+        """
+        if self.evalHtml:
+            return storedText
+        return saxutils.unescape(storedText)
+
+    def storedText(self, editorText):
+        """Return new text to be stored based on text from the data editor.
+
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        if self.evalHtml:
+            return editorText
+        return saxutils.escape(editorText)
+
+    def comboChoices(self):
+        """Return a list of choices for the combo box.
+        """
+        if self.evalHtml:
+            choices = self.choices
+        else:
+            choices = [saxutils.unescape(text) for text in
+                       self.choices]
+        return sorted(choices, key=str.lower)
+
+    def addChoice(self, text):
+        """Add a new choice.
+
+        Arguments:
+            text -- the choice to be added
+        """
+        if text:
+            self.choices.add(text)
+
+    def clearChoices(self):
+        """Remove all current choices.
+        """
+        self.choices = set()
+
+
 class CombinationField(ChoiceField):
     """Class to handle a field with multiple pre-defined text choices.
 
@@ -1323,6 +1391,120 @@ class CombinationField(ChoiceField):
         """
         return self.editSep.join([text.replace(self.editSep, self.editSep * 2)
                                   for text in textList])
+
+
+class AutoCombinationField(CombinationField):
+    """Class for a field with multiple automatically populated text choices.
+
+    Stores options and possible entries for an auto-choice field type.
+    Provides methods to return formatted data.
+    """
+    typeName = 'AutoCombination'
+    autoAddChoices = True
+    defaultFormat = ''
+    formatHelpMenuList = []
+    def __init__(self, name, attrs=None):
+        """Initialize a field format type.
+
+        Arguments:
+            name -- the field name string
+            attrs -- the attributes that define this field's format
+        """
+        super().__init__(name, attrs)
+        self.choices = set()
+        self.outputSep = ''
+
+    def outputText(self, node, titleMode, formatHtml):
+        """Return formatted output text for this field in this node.
+
+        Sets output separator prior to calling base class methods.
+        Arguments:
+            node -- the tree item storing the data
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        self.outputSep = node.nodeFormat().outputSeparator
+        return super().outputText(node, titleMode, formatHtml)
+
+    def formatOutput(self, storedText, titleMode, formatHtml):
+        """Return formatted output text from stored text for this field.
+
+        Arguments:
+            storedText -- the source text to format
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        result = self.outputSep.join(self.splitText(storedText))
+        return TextField.formatOutput(self, result, titleMode, formatHtml)
+
+    def formatEditorText(self, storedText):
+        """Return text formatted for use in the data editor.
+
+        Arguments:
+            storedText -- the source text to format
+        """
+        if self.evalHtml:
+            return storedText
+        return saxutils.unescape(storedText)
+
+    def storedText(self, editorText):
+        """Return new text to be stored based on text from the data editor.
+
+        Also resets outputSep, to be defined at the next output.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        self.outputSep = ''
+        if not self.evalHtml:
+            editorText = saxutils.escape(editorText)
+        selections = sorted(self.splitText(editorText), key=str.lower)
+        return self.joinText(selections)
+
+    def comboChoices(self):
+        """Return a list of choices for the combo box.
+        """
+        if self.evalHtml:
+            choices = self.choices
+        else:
+            choices = [saxutils.unescape(text) for text in
+                       self.choices]
+        return sorted(choices, key=str.lower)
+
+    def comboActiveChoices(self, editorText):
+        """Return a sorted list of choices currently in editorText.
+
+        Arguments:
+            editorText -- the text entered into the editor
+        """
+        selections, valid = self.sortedSelections(saxutils.escape(editorText))
+        if self.evalHtml:
+            return selections
+        return [saxutils.unescape(text) for text in selections]
+
+    def sortedSelections(self, inText):
+        """Split inText using editSep and sort like format string.
+
+        Return a tuple of resulting selection list and bool validity.
+        This version always returns valid.
+        Arguments:
+            inText -- the text to split and sequence
+        """
+        selections = sorted(self.splitText(inText), key=str.lower)
+        return (selections, True)
+
+    def addChoice(self, text):
+        """Add a new choice.
+
+        Arguments:
+            text -- the stored text combinations to be added
+        """
+        for choice in self.splitText(text):
+            self.choices.add(choice)
+
+    def clearChoices(self):
+        """Remove all current choices.
+        """
+        self.choices = set()
 
 
 class BooleanField(ChoiceField):
