@@ -19,6 +19,7 @@ import fieldformat
 
 
 _defaultFieldName = _('Name')
+_defaultOutputSeparator = ', '
 _fieldSplitRe = re.compile(r'({\*(?:\**|\?|!|&|#)[\w_\-.]+\*})')
 _fieldPartRe = re.compile(r'{\*(\**|\?|!|&|#)([\w_\-.]+)\*}')
 _endTagRe = re.compile(r'.*(<br[ /]*?>|<BR[ /]*?>|<hr[ /]*?>|<HR[ /]*?>)$')
@@ -39,11 +40,18 @@ class NodeFormat:
         """
         self.name = name
         self.readFormat(formatData)
+        self.siblingPrefix = ''
+        self.siblingSuffix = ''
+        self.origOutputLines = [] # lines without bullet or table modifications
         if addDefaultField:
             self.addFieldIfNew(_defaultFieldName)
             self.titleLine = ['{{*{0}*}}'.format(_defaultFieldName)]
             self.outputLines = [['{{*{0}*}}'.format(_defaultFieldName)]]
         self.updateLineParsing()
+        if self.useBullets:
+            self.addBullets()
+        if self.useTables:
+            self.addTables()
 
     def readFormat(self, formatData=None):
         """Read JSON format data into this format.
@@ -66,6 +74,8 @@ class NodeFormat:
         self.useTables = formatData.get('tables', False)
         self.childType = formatData.get('childtype', '')
         self.iconName = formatData.get('icon', '')
+        self.outputSeparator = formatData.get('outputsep',
+                                              _defaultOutputSeparator)
 
     def storeFormat(self):
         """Return JSON format data for this format.
@@ -97,6 +107,10 @@ class NodeFormat:
         """
         self.name = sourceFormat.name
         self.readFormat(sourceFormat.storeFormat())
+        self.siblingPrefix = sourceFormat.siblingPrefix
+        self.siblingSuffix = sourceFormat.siblingSuffix
+        self.outputLines = sourceFormat.getOutputLines(False)
+        self.origOutputLines = sourceFormat.getOutputLines()
         self.updateLineParsing()
 
     def fields(self):
@@ -243,7 +257,10 @@ class NodeFormat:
         """
         self.titleLine = self.parseLine(self.getTitleLine())
         self.outputLines = [self.parseLine(line) for line in
-                            self.getOutputLines()]
+                            self.getOutputLines(False)]
+        if self.origOutputLines:
+            self.origOutputLines = [self.parseLine(line) for line in
+                                    self.getOutputLines(True)]
 
     def parseLine(self, text):
         """Parse text format line, return list of field types and text.
@@ -279,12 +296,18 @@ class NodeFormat:
         return ''.join([part.sepName() if hasattr(part, 'sepName') else part
                         for part in self.titleLine])
 
-    def getOutputLines(self):
+    def getOutputLines(self, useOriginal=True):
         """Return text list of output format lines with field names embedded.
+
+        Arguments:
+            useOriginal -- use original line list, wothout bullet or table mods
         """
+        lines = self.outputLines
+        if useOriginal and self.origOutputLines:
+            lines = self.origOutputLines
         lines = [''.join([part.sepName() if hasattr(part, 'sepName') else part
                           for part in line])
-                 for line in self.outputLines]
+                 for line in lines]
         return lines if lines else ['']
 
     def changeTitleLine(self, text):
@@ -309,6 +332,12 @@ class NodeFormat:
             newLine = self.parseLine(line)
             if keepBlanks or newLine:
                 self.outputLines.append(newLine)
+        if self.useBullets:
+            self.origOutputLines = self.outputLines[:]
+            self.addBullets()
+        if self.useTables:
+            self.origOutputLines = self.outputLines[:]
+            self.addTables()
 
     def addOutputLine(self, line):
         """Add an output format line after existing lines.
@@ -355,3 +384,54 @@ class NodeFormat:
         except ValueError:
             return False
         return True
+
+    def addBullets(self):
+        """Add bullet HTML tags to sibling prefix, suffix and output lines.
+        """
+        self.siblingPrefix = '<ul>'
+        self.siblingSuffix = '</ul>'
+        lines = self.getOutputLines()
+        if lines != ['']:
+            lines[0] = '<li>' + lines[0]
+            lines[-1] += '</li>'
+        self.origOutputLines = self.outputLines[:]
+        self.outputLines = lines
+        self.updateLineParsing()
+
+    def addTables(self):
+        """Add table HTML tags to sibling prefix, suffix and output lines.
+        """
+        lines = [line for line in self.getOutputLines() if line]
+        newLines = []
+        headings = []
+        for line in lines:
+            head = ''
+            firstPart = self.parseLine(line)[0]
+            if hasattr(firstPart, 'split') and ':' in firstPart:
+                head, line = line.split(':', 1)
+            newLines.append(line.strip())
+            headings.append(head.strip())
+        self.siblingPrefix = '<table border="1" cellpadding="3">'
+        if [head for head in headings if head]:
+            self.siblingPrefix += '<tr>'
+            for head in headings:
+                self.siblingPrefix = ('{0}<th>{1}</th>'.
+                                      format(self.siblingPrefix, head))
+            self.siblingPrefix += '</tr>'
+        self.siblingSuffix = '</table>'
+        newLines = ['<td>{0}</td>'.format(line) for line in newLines]
+        newLines[0] = '<tr>' + newLines[0]
+        newLines[-1] += '</tr>'
+        self.origOutputLines = self.outputLines[:]
+        self.outputLines = newLines
+        self.updateLineParsing()
+
+    def clearBulletsAndTables(self):
+        """Remove any HTML tags for bullets and tables.
+        """
+        self.siblingPrefix = ''
+        self.siblingSuffix = ''
+        if self.origOutputLines:
+            self.outputLines = self.origOutputLines
+            self.updateLineParsing()
+        self.origOutputLines = []

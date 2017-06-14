@@ -1301,7 +1301,7 @@ class CombinationField(ChoiceField):
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
-        self.outputSep = node.nodeFormat().outputSeparator
+        self.outputSep = node.formatRef.outputSeparator
         return super().outputText(node, titleMode, formatHtml)
 
     def formatOutput(self, storedText, titleMode, formatHtml):
@@ -1423,7 +1423,7 @@ class AutoCombinationField(CombinationField):
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
-        self.outputSep = node.nodeFormat().outputSeparator
+        self.outputSep = node.formatRef.outputSeparator
         return super().outputText(node, titleMode, formatHtml)
 
     def formatOutput(self, storedText, titleMode, formatHtml):

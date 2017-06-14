@@ -33,12 +33,18 @@ class OutputItem:
             forceAnchor -- if true, add an ID anchor in any case
         """
         nodeFormat = node.formatRef
-        self.textLines = [line + '<br />' for line in node.output()]
+        if not nodeFormat.useTables:
+            self.textLines = [line + '<br />' for line in node.output()]
+        else:
+            self.textLines = node.output(keepBlanks=True)
         if not self.textLines:
             self.textLines = ['']
         self.addSpace = nodeFormat.spaceBetween
-        self.siblingPrefix = ''
-        self.siblingSuffix = ''
+        self.siblingPrefix = nodeFormat.siblingPrefix
+        self.siblingSuffix = nodeFormat.siblingSuffix
+        if nodeFormat.useBullets and self.textLines:
+            # remove <br /> extra space for bullets
+            self.textLines[-1] = self.textLines[-1][:-6]
         self.level = level
         # following variables used by printdata only:
         height = 0

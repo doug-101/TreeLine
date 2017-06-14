@@ -466,12 +466,12 @@ class TypeConfigPage(ConfigPage):
         self.htmlButton = QCheckBox(_('Allow &HTML rich text in format'))
         optionsLayout.addWidget(self.htmlButton)
         self.htmlButton.toggled.connect(self.mainDialogRef.setModified)
-        # self.bulletButton = QCheckBox(_('Add text bullet&s'))
-        # optionsLayout.addWidget(self.bulletButton)
-        # self.bulletButton.toggled.connect(self.changeUseBullets)
-        # self.tableButton = QCheckBox(_('Use a table for field &data'))
-        # optionsLayout.addWidget(self.tableButton)
-        # self.tableButton.toggled.connect(self.changeUseTable)
+        self.bulletButton = QCheckBox(_('Add text bullet&s'))
+        optionsLayout.addWidget(self.bulletButton)
+        self.bulletButton.toggled.connect(self.changeUseBullets)
+        self.tableButton = QCheckBox(_('Use a table for field &data'))
+        optionsLayout.addWidget(self.tableButton)
+        self.tableButton.toggled.connect(self.changeUseTable)
 
         # advanced widgets
         outputSepBox = QGroupBox(_('Combination && Child List Output '
@@ -552,13 +552,13 @@ class TypeConfigPage(ConfigPage):
         self.htmlButton.setChecked(currentFormat.formatHtml)
         self.htmlButton.blockSignals(False)
 
-        # self.bulletButton.blockSignals(True)
-        # self.bulletButton.setChecked(currentFormat.useBullets)
-        # self.bulletButton.blockSignals(False)
+        self.bulletButton.blockSignals(True)
+        self.bulletButton.setChecked(currentFormat.useBullets)
+        self.bulletButton.blockSignals(False)
 
-        # self.tableButton.blockSignals(True)
-        # self.tableButton.setChecked(currentFormat.useTables)
-        # self.tableButton.blockSignals(False)
+        self.tableButton.blockSignals(True)
+        self.tableButton.setChecked(currentFormat.useTables)
+        self.tableButton.blockSignals(False)
 
         self.htmlButton.setEnabled(not currentFormat.useBullets and
                                    not currentFormat.useTables)
@@ -693,18 +693,18 @@ class TypeConfigPage(ConfigPage):
             # currentFormat.updateFromGeneric(formatsRef=ConfigDialog.formatsRef)
         currentFormat.spaceBetween = self.blanksButton.isChecked()
         currentFormat.formatHtml = self.htmlButton.isChecked()
-        # useBullets = self.bulletButton.isChecked()
-        # useTables = self.tableButton.isChecked()
-        # if (useBullets != currentFormat.useBullets or
-            # useTables != currentFormat.useTables):
-            # currentFormat.useBullets = useBullets
-            # currentFormat.useTables = useTables
-            # if useBullets:
-                # currentFormat.addBullets()
-            # elif useTables:
-                # currentFormat.addTables()
-            # else:
-                # currentFormat.clearBulletsAndTables()
+        useBullets = self.bulletButton.isChecked()
+        useTables = self.tableButton.isChecked()
+        if (useBullets != currentFormat.useBullets or
+            useTables != currentFormat.useTables):
+            currentFormat.useBullets = useBullets
+            currentFormat.useTables = useTables
+            if useBullets:
+                currentFormat.addBullets()
+            elif useTables:
+                currentFormat.addTables()
+            else:
+                currentFormat.clearBulletsAndTables()
         # currentFormat.idField = currentFormat.fieldDict[self.idFieldCombo.
                                                         # currentText()]
         # if currentFormat.idField != oldIdField:
