@@ -70,13 +70,27 @@ class TreeView(QTreeView):
         self.setIndentation(globalref.genOptions['IndentOffset'] *
                             self.fontInfo().pixelSize())
 
+    def isSpotExpanded(self, spot):
+        """Return True if the given spot is expanded (showing children).
+
+        Arguments:
+            spot -- the spot to check
+        """
+        return self.isExpanded(spot.index(self.model()))
+
     def expandSpot(self, spot):
         """Expand a spot in this view.
+
+        Arguments:
+            spot -- the spot to expand
         """
         self.expand(spot.index(self.model()))
 
     def collapseSpot(self, spot):
         """Collapse a spot in this view.
+
+        Arguments:
+            spot -- the spot to collapse
         """
         self.collapse(spot.index(self.model()))
 

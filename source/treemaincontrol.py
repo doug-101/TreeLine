@@ -25,6 +25,7 @@ import options
 import optiondefaults
 import icondict
 import configdialog
+import miscdialogs
 try:
     from __main__ import __version__, __author__
 except ImportError:
@@ -55,6 +56,7 @@ class TreeMainControl(QObject):
         self.localControls = []
         self.activeControl = None
         self.configDialog = None
+        self.findTextDialog = None
         globalref.mainControl = self
         self.allActions = {}
         try:
@@ -298,6 +300,12 @@ class TreeMainControl(QObject):
         dataConfigAct.triggered.connect(self.dataConfigDialog)
         self.allActions['DataConfigType'] = dataConfigAct
 
+        toolsFindTextAct = QAction(_('&Find Text...'), self,
+                                statusTip=_('Find text in node titles & data'),
+                                checkable=True)
+        toolsFindTextAct.triggered.connect(self.toolsFindTextDialog)
+        self.allActions['ToolsFindText'] = toolsFindTextAct
+
         toolsGenOptionsAct = QAction(_('&General Options...'), self,
                              statusTip=_('Set user preferences for all files'))
         toolsGenOptionsAct.triggered.connect(self.toolsGenOptions)
@@ -377,6 +385,23 @@ class TreeMainControl(QObject):
             self.configDialog.show()
         else:
             self.configDialog.close()
+
+    def toolsFindTextDialog(self, show):
+        """Show or hide the non-modal find text dialog.
+
+        Arguments:
+            show -- true if dialog should be shown
+        """
+        if show:
+            if not self.findTextDialog:
+                self.findTextDialog = (miscdialogs.FindFilterDialog())
+                toolsFindTextAct = self.allActions['ToolsFindText']
+                self.findTextDialog.dialogShown.connect(toolsFindTextAct.
+                                                        setChecked)
+            self.findTextDialog.selectAllText()
+            self.findTextDialog.show()
+        else:
+            self.findTextDialog.close()
 
     def toolsGenOptions(self):
         """Set general user preferences for all files.

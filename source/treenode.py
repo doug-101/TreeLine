@@ -222,6 +222,39 @@ class TreeNode:
                 self.data[field.name] = editorText
             raise ValueError
 
+    def wordSearch(self, wordList, titleOnly=False):
+        """Return True if all words in wordlist are found in this node's data.
+
+        Arguments:
+            wordList -- a list of words or phrases to find
+            titleOnly -- search only in the title text if True
+        """
+        dataStr = self.title().lower()
+        if not titleOnly:
+            # join with null char so phrase matches don't cross borders
+            dataStr = '{0}\0{1}'.format(dataStr,
+                                        '\0'.join(self.data.values()).lower())
+        for word in wordList:
+            if word not in dataStr:
+                return False
+        return True
+
+    def regExpSearch(self, regExpList, titleOnly=False):
+        """Return True if the regular expression is found in this node's data.
+
+        Arguments:
+            regExpList -- a list of regular expression objects to find
+            titleOnly -- search only in the title text if True
+        """
+        dataStr = self.title()
+        if not titleOnly:
+            # join with null char so phrase matches don't cross borders
+            dataStr = '{0}\0{1}'.format(dataStr, '\0'.join(self.data.values()))
+        for regExpObj in regExpList:
+            if not regExpObj.search(dataStr):
+                return False
+        return True
+
     def addNewChild(self, treeStructure, posRefNode=None, insertBefore=True,
                     newTitle=_('New')):
         """Add a new child node with this node as the parent.
@@ -344,4 +377,3 @@ class TreeNode:
         for child in self.childList:
             textList.extend(child.exportTitleText(level + 1))
         return textList
-

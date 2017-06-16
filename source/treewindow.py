@@ -359,6 +359,8 @@ class TreeWindow(QMainWindow):
         dataMenu.addAction(self.allActions['DataConfigType'])
 
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
+        toolsMenu.addAction(self.allActions['ToolsFindText'])
+        toolsMenu.addSeparator()
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
 
         formatMenu = self.menuBar().addMenu(_('Fo&rmat'))

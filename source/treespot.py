@@ -84,9 +84,7 @@ class TreeSpot:
             pos = self.row()
             if pos > 0:
                 node = self.parentSpot.nodeRef.childList[pos - 1]
-                for spot in node.spotRefs:
-                    if spot.parentSpot == self.parentSpot:
-                        return spot
+                return node.matchedSpot(self.parentSpot)
         return None
 
     def nextSiblingSpot(self):
@@ -96,11 +94,51 @@ class TreeSpot:
             childList = self.parentSpot.nodeRef.childList
             pos = self.row() + 1
             if pos < len(childList):
-                node = childList[pos]
-                for spot in node.spotRefs:
-                    if spot.parentSpot == self.parentSpot:
-                        return spot
+                return childList[pos].matchedSpot(self.parentSpot)
         return None
+
+    def prevTreeSpot(self, loop=False):
+        """Return the previous node in the tree order.
+
+        Return None at the start of the tree unless loop is true.
+        Arguments:
+            loop -- return the last node of the tree after the first if true
+        """
+        sibling = self.prevSiblingSpot()
+        if sibling:
+            return sibling.lastDescendantSpot()
+        if self.parentSpot.parentSpot:
+            return self.parentSpot
+        elif loop:
+            return self.rootSpot().lastDescendantSpot()
+        return None
+
+    def nextTreeSpot(self, loop=False):
+        """Return the next node in the tree order.
+
+        Return None at the end of the tree unless loop is true.
+        Arguments:
+            loop -- return the root node at the end of the tree if true
+        """
+        if self.nodeRef.childList:
+            return self.nodeRef.childList[0].matchedSpot(self)
+        ancestor = self
+        while ancestor.parentSpot:
+            sibling = ancestor.nextSiblingSpot()
+            if sibling:
+                return sibling
+            ancestor = ancestor.parentSpot
+        if loop:
+            return ancestor.nodeRef.childList[0].matchedSpot(ancestor)
+        return None
+
+    def lastDescendantSpot(self):
+        """Return the last spot of this spots's branch (last in tree order).
+        """
+        spot = self
+        while spot.nodeRef.childList:
+            spot = spot.nodeRef.childList[-1].matchedSpot(spot)
+        return spot
 
     def spotChain(self):
         """Return a list of parent spots, including self.

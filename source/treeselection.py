@@ -38,6 +38,7 @@ class TreeSelection(QItemSelectionModel):
         """
         super().__init__(model, parent)
         self.modelRef = model
+        self.tempExpandedSpots = []
         self.prevSpots = []
         self.nextSpots = []
         self.restoreFlag = False
@@ -96,10 +97,15 @@ class TreeSelection(QItemSelectionModel):
         if expandParents:
             treeView = (globalref.mainControl.activeControl.activeWindow.
                         treeView)
+            for spot in self.tempExpandedSpots:
+                treeView.collapseSpot(spot)
+            self.tempExpandedSpots = []
             for spot in spotList:
                 parent = spot.parentSpot
                 while parent.parentSpot:
-                    treeView.expandSpot(parent)
+                    if not treeView.isSpotExpanded(parent):
+                        treeView.expandSpot(parent)
+                        self.tempExpandedSpots.append(parent)
                     parent = parent.parentSpot
         if not signalUpdate:
             self.blockSignals(True)

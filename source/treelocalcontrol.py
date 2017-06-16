@@ -842,6 +842,58 @@ class TreeLocalControl(QObject):
         """
         self.activeWindow.treeView.showTypeMenu(self.typeSubMenu)
 
+    def findNodesByWords(self, wordList, titlesOnly=False, forward=True):
+        """Search for and select nodes that match the word list criteria.
+
+        Called from the text find dialog.
+        Returns True if found, otherwise False.
+        Arguments:
+            wordList -- a list of words or phrases to find
+            titleOnly -- search only in the title text if True
+            forward -- next if True, previous if False
+        """
+        currentSpot = self.currentSelectionModel().currentSpot()
+        spot = currentSpot
+        while True:
+            if forward:
+                spot = spot.nextTreeSpot(True)
+            else:
+                spot = spot.prevTreeSpot(True)
+            if spot is currentSpot:
+                return False
+            if spot.nodeRef.wordSearch(wordList, titlesOnly):
+                self.currentSelectionModel().selectSpots([spot], True, True)
+                rightView = self.activeWindow.rightParentView()
+                if rightView:
+                    rightView.highlightSearch(wordList=wordList)
+                return True
+
+    def findNodesByRegExp(self, regExpList, titlesOnly=False, forward=True):
+        """Search for and select nodes that match the regular exp criteria.
+
+        Called from the text find dialog.
+        Returns True if found, otherwise False.
+        Arguments:
+            regExpList -- a list of regular expression objects
+            titleOnly -- search only in the title text if True
+            forward -- next if True, previous if False
+        """
+        currentSpot = self.currentSelectionModel().currentSpot()
+        spot = currentSpot
+        while True:
+            if forward:
+                spot = spot.nextTreeSpot(True)
+            else:
+                spot = spot.prevTreeSpot(True)
+            if spot is currentSpot:
+                return False
+            if spot.nodeRef.regExpSearch(regExpList, titlesOnly):
+                self.currentSelectionModel().selectSpots([spot], True, True)
+                rightView = self.activeWindow.rightParentView()
+                if rightView:
+                    rightView.highlightSearch(regExpList=regExpList)
+                return True
+
     def windowNew(self, checked=False, offset=30):
         """Open a new window for this file.
 

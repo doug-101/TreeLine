@@ -494,7 +494,7 @@ class DataEditView(QTableWidget):
         if regExpList is None:
             regExpList = []
         for regExp in regExpList:
-            for match in regExp.finditer('\n'.join(node.formatOutput())):
+            for match in regExp.finditer('\n'.join(node.output())):
                 matchText = match.group().lower()
                 if matchText not in wordList:
                     wordList.append(matchText)
