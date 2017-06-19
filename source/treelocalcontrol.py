@@ -21,6 +21,7 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QFileDialog,
 import treestructure
 import treemodel
 import treewindow
+import printdata
 import undo
 import globalref
 
@@ -46,6 +47,7 @@ class TreeLocalControl(QObject):
             parent -- a parent object if given
         """
         super().__init__(parent)
+        self.printData = printdata.PrintData(self)
         self.allActions = allActions.copy()
         self.setupActions()
         self.filePathObj = (pathlib.Path(fileObj.name) if
@@ -329,6 +331,25 @@ class TreeLocalControl(QObject):
         fileSaveAsAct.triggered.connect(self.fileSaveAs)
         localActions['FileSaveAs'] = fileSaveAsAct
 
+        filePrintSetupAct = QAction(_('P&rint Setup...'), self,
+              statusTip=_('Set margins, page size and other printing options'))
+        filePrintSetupAct.triggered.connect(self.printData.printSetup)
+        localActions['FilePrintSetup'] = filePrintSetupAct
+
+        filePrintPreviewAct = QAction(_('Print Pre&view...'), self,
+                             statusTip=_('Show a preview of printing results'))
+        filePrintPreviewAct.triggered.connect(self.printData.printPreview)
+        localActions['FilePrintPreview'] = filePrintPreviewAct
+
+        filePrintAct = QAction(_('&Print...'), self,
+                     statusTip=_('Print tree output based on current options'))
+        filePrintAct.triggered.connect(self.printData.filePrint)
+        localActions['FilePrint'] = filePrintAct
+
+        filePrintPdfAct = QAction(_('Print &to PDF...'), self,
+                    statusTip=_('Export to PDF with current printing options'))
+        filePrintPdfAct.triggered.connect(self.printData.filePrintPdf)
+        localActions['FilePrintPdf'] = filePrintPdfAct
 
         editUndoAct = QAction(_('&Undo'), self,
                               statusTip=_('Undo the previous action'))
