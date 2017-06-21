@@ -4,7 +4,7 @@
 # printdata.py, provides a class for printing
 #
 # TreeLine, an information storage program
-# Copyright (C) 2015, Douglas W. Bell
+# Copyright (C) 2017, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -13,6 +13,7 @@
 #******************************************************************************
 
 import os.path
+import enum
 from PyQt5.QtCore import QMarginsF, QSizeF, Qt
 from PyQt5.QtGui import (QAbstractTextDocumentLayout, QFontMetrics,
                          QPageLayout, QPageSize, QPainter, QTextDocument)
@@ -22,7 +23,7 @@ import treeoutput
 import printdialogs
 import globalref
 
-entireTree, selectBranch, selectNode = range(3)
+PrintScope = enum.IntEnum('PrintScope', 'entireTree selectBranch selectNode')
 _defaultMargin = 0.5
 _defaultHeaderPos = 0.2
 _defaultColumnSpace = 0.5
@@ -41,7 +42,7 @@ class PrintData:
         """
         self.localControl = localControl
         self.outputGroup = None
-        self.printWhat = entireTree
+        self.printWhat = PrintScope.entireTree
         self.includeRoot = True
         self.openOnly = False
         self.printer = QPrinter(QPrinter.HighResolution)
@@ -85,86 +86,86 @@ class PrintData:
                                               self.printer).lineSpacing()
         self.indentSize = self.indentFactor * self.lineSpacing
 
-    def xmlAttr(self):
+    def fileData(self):
         """Return a dictionary of non-default settings for storage.
         """
-        attrs = {}
+        data = {}
         if not self.drawLines:
-            attrs['printlines'] = 'n'
+            data['printlines'] = 'n'
         if not self.widowControl:
-            attrs['printwidowcontrol'] = 'n'
+            data['printwidowcontrol'] = 'n'
         if self.indentFactor != 2.0:
-            attrs['printindentfactor'] = repr(self.indentFactor)
+            data['printindentfactor'] = repr(self.indentFactor)
         pageSizeId = self.pageLayout.pageSize().id()
         if pageSizeId == QPageSize.Custom:
             paperWidth, paperHeight = self.roundedPaperSize()
-            attrs['printpaperwidth'] = repr(paperWidth)
-            attrs['printpaperheight'] = repr(paperHeight)
+            data['printpaperwidth'] = repr(paperWidth)
+            data['printpaperheight'] = repr(paperHeight)
         elif pageSizeId != QPageSize.Letter:
-            attrs['printpapersize'] = self.paperSizeName(pageSizeId)
+            data['printpapersize'] = self.paperSizeName(pageSizeId)
         if self.pageLayout.orientation() != QPageLayout.Portrait:
-            attrs['printportrait'] = 'n'
+            data['printportrait'] = 'n'
         if self.roundedMargins() != (_defaultMargin,) * 4:
-            attrs['printmargins'] = ' '.join([repr(margin) for margin in
+            data['printmargins'] = ' '.join([repr(margin) for margin in
                                               self.roundedMargins()])
         if self.headerMargin != _defaultHeaderPos:
-            attrs['printheadermargin'] = repr(self.headerMargin)
+            data['printheadermargin'] = repr(self.headerMargin)
         if self.footerMargin != _defaultHeaderPos:
-            attrs['printfootermargin'] = repr(self.footerMargin)
+            data['printfootermargin'] = repr(self.footerMargin)
         if self.numColumns > 1:
-            attrs['printnumcolumns'] = repr(self.numColumns)
+            data['printnumcolumns'] = repr(self.numColumns)
         if self.columnSpacing != _defaultColumnSpace:
-            attrs['printcolumnspace'] = repr(self.columnSpacing)
+            data['printcolumnspace'] = repr(self.columnSpacing)
         if self.headerText:
-            attrs['printheadertext'] = self.headerText
+            data['printheadertext'] = self.headerText
         if self.footerText:
-            attrs['printfootertext'] = self.footerText
+            data['printfootertext'] = self.footerText
         if not self.useDefaultFont:
-            attrs['printfont'] = self.mainFont.toString()
-        return attrs
+            data['printfont'] = self.mainFont.toString()
+        return data
 
-    def restoreXmlAttrs(self, attrs):
+    def readData(self, data):
         """Restore saved settings from a dictionary.
 
         Arguments:
-            attrs -- a dictionary of stored non-default settings
+            data -- a dictionary of stored non-default settings
         """
         self.setDefaults()   # necessary for undo/redo
-        if attrs.get('printlines', '').startswith('n'):
+        if data.get('printlines', '').startswith('n'):
             self.drawLines = False
-        if attrs.get('printwidowcontrol', '').startswith('n'):
+        if data.get('printwidowcontrol', '').startswith('n'):
             self.widowControl = False
-        if 'printindentfactor' in attrs:
-            self.indentFactor = float(attrs['printindentfactor'])
-        if 'printpapersize' in attrs:
+        if 'printindentfactor' in data:
+            self.indentFactor = float(data['printindentfactor'])
+        if 'printpapersize' in data:
             self.pageLayout.setPageSize(QPageSize(getattr(QPageSize,
-                                                  attrs['printpapersize'])))
+                                                  data['printpapersize'])))
             self.pageLayout.setMargins(QMarginsF(*(_defaultMargin,) * 4))
-        if 'printpaperwidth' in attrs and 'printpaperheight' in attrs:
-            width =  float(attrs['printpaperwidth'])
-            height = float(attrs['printpaperheight'])
+        if 'printpaperwidth' in data and 'printpaperheight' in data:
+            width =  float(data['printpaperwidth'])
+            height = float(data['printpaperheight'])
             self.pageLayout.setPageSize(QPageSize(QSizeF(width, height),
                                         QPageSize.Inch))
             self.pageLayout.setMargins(QMarginsF(*(_defaultMargin,) * 4))
-        if attrs.get('printportrait', '').startswith('n'):
+        if data.get('printportrait', '').startswith('n'):
             self.pageLayout.setOrientation(QPageLayout.Landscape)
-        if 'printmargins' in attrs:
+        if 'printmargins' in data:
             margins = [float(margin) for margin in
-                       attrs['printmargins'].split()]
+                       data['printmargins'].split()]
             self.pageLayout.setMargins(QMarginsF(*margins))
-        if 'printheadermargin' in attrs:
-            self.headerMargin = float(attrs['printheadermargin'])
-        if 'printfootermargin' in attrs:
-            self.footerMargin = float(attrs['printfootermargin'])
-        if 'printnumcolumns' in attrs:
-            self.numColumns = int(attrs['printnumcolumns'])
-        if 'printcolumnspace' in attrs:
-            self.columnSpacing = float(attrs['printcolumnspace'])
-        self.headerText = attrs.get('printheadertext', '')
-        self.footerText = attrs.get('printfootertext', '')
-        if 'printfont' in attrs:
+        if 'printheadermargin' in data:
+            self.headerMargin = float(data['printheadermargin'])
+        if 'printfootermargin' in data:
+            self.footerMargin = float(data['printfootermargin'])
+        if 'printnumcolumns' in data:
+            self.numColumns = int(data['printnumcolumns'])
+        if 'printcolumnspace' in data:
+            self.columnSpacing = float(data['printcolumnspace'])
+        self.headerText = data.get('printheadertext', '')
+        self.footerText = data.get('printfootertext', '')
+        if 'printfont' in data:
             self.useDefaultFont = False
-            self.mainFont.fromString(attrs['printfont'])
+            self.mainFont.fromString(data['printfont'])
         self.adjustSpacing()
 
     def roundedMargins(self):
@@ -209,13 +210,14 @@ class PrintData:
     def setupData(self):
         """Load data to be printed and set page info.
         """
-        if self.printWhat == entireTree:
-            selNodes = [self.localControl.model.root]
+        if self.printWhat == PrintScope.entireTree:
+            selNodes = self.localControl.structure.childList
         else:
             selNodes = (self.localControl.currentSelectionModel().
                         selectedNodes())
         self.outputGroup = treeoutput.OutputGroup(selNodes, self.includeRoot,
-                                                  self.printWhat != selectNode,
+                                                  self.printWhat !=
+                                                  PrintScope.selectNode,
                                                   self.openOnly)
         self.paginate()
 
@@ -550,7 +552,7 @@ class PrintData:
         previewDialog = printdialogs.PrintPreviewDialog(self,QApplication.
                                                         activeWindow())
         previewDialog.previewWidget.paintRequested.connect(self.paintData)
-        if globalref.genOptions.getValue('SaveWindowGeom'):
+        if globalref.genOptions['SaveWindowGeom']:
             previewDialog.restoreDialogGeom()
         previewDialog.exec_()
 

@@ -54,11 +54,14 @@ class TreeLocalControl(QObject):
                             hasattr(fileObj, 'read') else fileObj)
         if treeStruct:
             self.structure = treeStruct
-        elif fileObj and hasattr(fileObj, 'read'):
-            self.structure = treestructure.TreeStructure(json.load(fileObj))
         elif fileObj:
-            with fileObj.open('r', encoding='utf-8') as f:
-                self.structure = treestructure.TreeStructure(json.load(f))
+            if  hasattr(fileObj, 'read'):
+                fileData = json.load(fileObj)
+            else:
+                with fileObj.open('r', encoding='utf-8') as f:
+                    fileData = json.load(f)
+            self.structure = treestructure.TreeStructure(fileData)
+            self.printData.readData(fileData['properties'])
         else:
             self.structure = treestructure.TreeStructure(addDefaults=True)
         self.model = treemodel.TreeModel(self.structure)
@@ -561,6 +564,7 @@ class TreeLocalControl(QObject):
         if backupFile:
             savePathObj = pathlib.Path(str(savePathObj) + '~')
         fileData = self.structure.fileData()
+        fileData['properties'].update(self.printData.fileData())
         try:
             with savePathObj.open('w', encoding='utf-8', newline='\n') as f:
                 json.dump(fileData, f, indent=3, sort_keys=True)

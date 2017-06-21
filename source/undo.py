@@ -411,3 +411,62 @@ class ChildListFormatUndo(UndoBase):
                     child.addSpotRef(node)
                     for newChild in child.descendantGen():
                         self.treeStructRef.addNodeDictRef(newChild)
+
+
+class ParamUndo(UndoBase):
+    """Info for undo/redo of any variable parameter.
+    """
+    def __init__(self, listRef, varList, notRedo=True):
+        """Create the data undo class and add it to the undoStore.
+
+        Arguments:
+            listRef -- a ref to the undo/redo list this gets added to
+            varList - list of tuples, variable's owner and variable's name
+            notRedo -- if True, clear redo list (after changes)
+        """
+        super().__init__(listRef.localControlRef)
+        for varOwner, varName in varList:
+            value = varOwner.__dict__[varName]
+            self.dataList.append((varOwner, varName, value))
+        listRef.addUndoObj(self, notRedo)
+
+    def undo(self, redoRef):
+        """Save current state to redoRef and restore saved state.
+
+        Arguments:
+            redoRef -- the redo list where the current state is saved
+        """
+        if redoRef != None:
+            ParamUndo(redoRef, [item[:2] for item in self.dataList], False)
+        for varOwner, varName, value in self.dataList:
+            varOwner.__dict__[varName] = value
+
+
+class StateSettingUndo(UndoBase):
+    """Info for undo/redo of objects with get/set functions for attributes.
+    """
+    def __init__(self, listRef, getFunction, setFunction, notRedo=True):
+        """Create the data undo class and add it to the undoStore.
+
+        Arguments:
+            listRef -- a ref to the undo/redo list this gets added to
+            getFunction -- a function ref that returns a state variable
+            setFunction -- a function ref that restores from the state varible
+            notRedo -- if True, clear redo list (after changes)
+        """
+        super().__init__(listRef.localControlRef)
+        self.getFunction = getFunction
+        self.setFunction = setFunction
+        self.data = getFunction()
+        listRef.addUndoObj(self, notRedo)
+
+    def undo(self, redoRef):
+        """Save current state to redoRef and restore saved state.
+
+        Arguments:
+            redoRef -- the redo list where the current state is saved
+        """
+        if redoRef != None:
+            StateSettingUndo(redoRef, self.getFunction, self.setFunction,
+                             False)
+        self.setFunction(self.data)

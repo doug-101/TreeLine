@@ -278,10 +278,10 @@ class PrintPreviewDialog(QDialog):
     def restoreDialogGeom(self):
         """Restore dialog window geometry from history options.
         """
-        rect = QRect(globalref.histOptions.getValue('PrintPrevXPos'),
-                            globalref.histOptions.getValue('PrintPrevYPos'),
-                            globalref.histOptions.getValue('PrintPrevXSize'),
-                            globalref.histOptions.getValue('PrintPrevYSize'))
+        rect = QRect(globalref.histOptions['PrintPrevXPos'],
+                            globalref.histOptions['PrintPrevYPos'],
+                            globalref.histOptions['PrintPrevXSize'],
+                            globalref.histOptions['PrintPrevYSize'])
         if rect.height() and rect.width():
             self.setGeometry(rect)
 
@@ -299,7 +299,7 @@ class PrintPreviewDialog(QDialog):
         Arguments:
             event -- the close event
         """
-        if globalref.genOptions.getValue('SaveWindowGeom'):
+        if globalref.genOptions['SaveWindowGeom']:
             self.saveDialogGeom()
 
 
@@ -379,17 +379,18 @@ class PrintSetupDialog(QDialog):
                                 _('Error:  Page size or margins are invalid'))
             return
         changed = False
-        undoObj = undo.StateSettingUndo(self.printData.localControl.model.
-                                        undoList, self.printData.xmlAttr,
-                                        self.printData.restoreXmlAttrs)
+        control = self.printData.localControl
+        undoObj = undo.StateSettingUndo(control.structure.undoList,
+                                        self.printData.fileData,
+                                        self.printData.readData)
         for page in self.tabPages:
             if page.saveChanges():
                 changed = True
         if changed:
             self.printData.adjustSpacing()
-            self.printData.localControl.setModified()
+            control.setModified()
         else:
-            self.printData.localControl.model.undoList.removeLastUndo(undoObj)
+            control.structure.undoList.removeLastUndo(undoObj)
         super().accept()
 
 
@@ -425,13 +426,14 @@ class GeneralPage(QWidget):
         whatLayout = QVBoxLayout(whatGroupBox)
         self.whatButtons = QButtonGroup(self)
         treeButton = QRadioButton(_('&Entire tree'))
-        self.whatButtons.addButton(treeButton, printdata.entireTree)
+        self.whatButtons.addButton(treeButton, printdata.PrintScope.entireTree)
         whatLayout.addWidget(treeButton)
         branchButton = QRadioButton(_('Selected &branches'))
-        self.whatButtons.addButton(branchButton, printdata.selectBranch)
+        self.whatButtons.addButton(branchButton,
+                                   printdata.PrintScope.selectBranch)
         whatLayout.addWidget(branchButton)
         nodeButton = QRadioButton(_('Selected &nodes'))
-        self.whatButtons.addButton(nodeButton, printdata.selectNode)
+        self.whatButtons.addButton(nodeButton, printdata.PrintScope.selectNode)
         whatLayout.addWidget(nodeButton)
         self.whatButtons.button(self.printData.printWhat).setChecked(True)
         self.whatButtons.buttonClicked.connect(self.updateCmdAvail)
@@ -489,7 +491,7 @@ class GeneralPage(QWidget):
     def updateCmdAvail(self):
         """Update options available based on print what settings.
         """
-        if self.whatButtons.checkedId() == printdata.selectNode:
+        if self.whatButtons.checkedId() == printdata.PrintScope.selectNode:
             self.rootButton.setChecked(True)
             self.rootButton.setEnabled(False)
             self.openOnlyButton.setChecked(False)
@@ -571,7 +573,7 @@ class PageSetupPage(QWidget):
         unitsCombo = QComboBox()
         unitsLayout.addWidget(unitsCombo)
         unitsCombo.addItems(list(_units.values()))
-        self.currentUnit = globalref.miscOptions.getValue('PrintUnits')
+        self.currentUnit = globalref.miscOptions['PrintUnits']
         if self.currentUnit not in _units:
             self.currentUnit = 'in'
         unitsCombo.setCurrentIndex(list(_units.keys()).index(self.currentUnit))
@@ -766,7 +768,7 @@ class PageSetupPage(QWidget):
 
         Return True if saved settings have changed, False otherwise.
         """
-        if self.currentUnit != globalref.miscOptions.getValue('PrintUnits'):
+        if self.currentUnit != globalref.miscOptions['PrintUnits']:
             globalref.miscOptions.changeValue('PrintUnits', self.currentUnit)
             globalref.miscOptions.writeFile()
         changed = False
@@ -1194,8 +1196,8 @@ class HeaderPage(QWidget):
     def loadContent(self):
         """Load field names and header/footer text into the controls.
         """
-        self.fieldListWidget.addItems(self.printData.localControl.model.
-                                      formats.fileInfoFormat.fieldNames())
+        self.fieldListWidget.addItems(self.printData.localControl.structure.
+                                      treeFormats.fileInfoFormat.fieldNames())
         self.fieldListWidget.setCurrentRow(0)
         for text, lineEdit in zip(splitHeaderFooter(self.printData.headerText),
                                   self.headerEdits):
@@ -1272,7 +1274,7 @@ class HeaderPage(QWidget):
     def showFieldFormatDialog(self):
         """Show thw dialog used to set file info field formats.
         """
-        fileInfoFormat = (self.printData.localControl.model.formats.
+        fileInfoFormat = (self.printData.localControl.structure.treeFormats.
                           fileInfoFormat)
         fieldName = self.fieldListWidget.currentItem().text()
         field = fileInfoFormat.fieldDict[fieldName]
@@ -1414,8 +1416,8 @@ class HeaderFieldFormatDialog(QDialog):
         format = self.formatEdit.text()
         if (self.field.prefix != prefix or self.field.suffix != suffix or
             self.field.format != format):
-            undo.FormatUndo(self.localControl.model.undoList,
-                            self.localControl.model.formats,
+            undo.FormatUndo(self.localControl.structure.undoList,
+                            self.localControl.structure.treeFormats,
                             treeformats.TreeFormats())
             self.field.prefix = prefix
             self.field.suffix = suffix

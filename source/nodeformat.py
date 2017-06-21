@@ -13,6 +13,7 @@
 #******************************************************************************
 
 import re
+import sys
 import collections
 import xml.sax.saxutils
 import fieldformat
@@ -435,3 +436,89 @@ class NodeFormat:
             self.outputLines = self.origOutputLines
             self.updateLineParsing()
         self.origOutputLines = []
+
+
+class FileInfoFormat(NodeFormat):
+    """Node format class to store and update special file info fields.
+
+    Fields used in print header/footer and in outputs of other node types.
+    """
+    typeName = 'INT_TL_FILE_DATA_FORM'
+    fileFieldName = 'File_Name'
+    pathFieldName = 'File_Path'
+    sizeFieldName = 'File_Size'
+    dateFieldName = 'File_Mod_Date'
+    timeFieldName = 'File_Mod_Time'
+    ownerFieldName = 'File_Owner'
+    pageNumFieldName = 'Page_Number'
+    numPagesFieldName = 'Number_of_Pages'
+    def __init__(self):
+        """Create a file info format.
+        """
+        super().__init__(FileInfoFormat.typeName)
+        self.fieldFormatModified = False
+        self.addField(FileInfoFormat.fileFieldName)
+        self.addField(FileInfoFormat.pathFieldName)
+        self.addField(FileInfoFormat.sizeFieldName, {'type': 'Number'})
+        self.addField(FileInfoFormat.dateFieldName, {'type': 'Date'})
+        self.addField(FileInfoFormat.timeFieldName, {'type': 'Time'})
+        if not sys.platform.startswith('win'):
+            self.addField(FileInfoFormat.ownerFieldName)
+        # page info only for print header:
+        self.addField(FileInfoFormat.pageNumFieldName)
+        self.fieldDict[FileInfoFormat.pageNumFieldName].showInDialog = False
+        self.addField(FileInfoFormat.numPagesFieldName)
+        self.fieldDict[FileInfoFormat.numPagesFieldName].showInDialog = False
+        for field in self.fields():
+            field.useFileInfo = True
+
+    def updateFileInfo(self, fileName, fileInfoNode):
+        """Update data of file info node.
+
+        Arguments:
+            fileName -- the TreeLine file path
+            fileInfoNode -- the node to update
+        """
+        try:
+            status = os.stat(fileName)
+        except OSError:
+            fileInfoNode.data = {}
+            return
+        fileInfoNode.data[FileInfoFormat.fileFieldName] = (os.path.
+                                                           basename(fileName))
+        fileInfoNode.data[FileInfoFormat.pathFieldName] = (os.path.
+                                                           dirname(fileName))
+        fileInfoNode.data[FileInfoFormat.sizeFieldName] = str(status[stat.
+                                                                     ST_SIZE])
+        modDateTime = QDateTime()
+        modDateTime.setTime_t(status[stat.ST_MTIME])
+        modDateTime = modDateTime.toLocalTime()
+        modDate = modDateTime.date().toString(Qt.ISODate)
+        modTime = modDateTime.time().toString()
+        fileInfoNode.data[FileInfoFormat.dateFieldName] = modDate
+        fileInfoNode.data[FileInfoFormat.timeFieldName] = modTime
+        if not sys.platform.startswith('win'):
+            try:
+                owner = pwd.getpwuid(status[stat.ST_UID])[0]
+            except KeyError:
+                owner = repr(status[stat.ST_UID])
+            fileInfoNode.data[FileInfoFormat.ownerFieldName] = owner
+
+    def duplicateFieldFormats(self, altFileFormat):
+        """Copy field format settings from alternate file format.
+
+        Arguments:
+            altFileFormat -- the file info format to copy from
+        """
+        for field in self.fields():
+            altField = altFileFormat.fieldDict.get(field.name)
+            if altField:
+                if field.format != altField.format:
+                    field.setFormat(altField.format)
+                    self.fieldFormatModified = True
+                if altField.prefix:
+                    field.prefix = altField.prefix
+                    self.fieldFormatModified = True
+                if altField.suffix:
+                    field.suffix = altField.suffix
+                    self.fieldFormatModified = True

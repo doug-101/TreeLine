@@ -41,6 +41,7 @@ class TreeFormats(dict):
             for formatData in formatList:
                 name = formatData['formatname']
                 self[name] = nodeformat.NodeFormat(name, formatData)
+        self.fileInfoFormat = nodeformat.FileInfoFormat()
         if setDefault:
             self[defaultTypeName] = nodeformat.NodeFormat(defaultTypeName,
                                                           addDefaultField=True)
