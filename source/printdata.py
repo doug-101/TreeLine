@@ -501,9 +501,10 @@ class PrintData:
             textParts = printdialogs.splitHeaderFooter(self.footerText)
         if not textParts:
             return ''
-        fileInfoFormat = self.localControl.model.formats.fileInfoFormat
-        fileInfoNode = self.localControl.model.fileInfoNode
-        fileInfoFormat.updateFileInfo(self.localControl.filePath, fileInfoNode)
+        fileInfoFormat = self.localControl.structure.treeFormats.fileInfoFormat
+        fileInfoNode = self.localControl.structure.fileInfoNode
+        fileInfoFormat.updateFileInfo(self.localControl.filePathObj,
+                                      fileInfoNode)
         fileInfoNode.data[fileInfoFormat.pageNumFieldName] = repr(pageNum)
         fileInfoNode.data[fileInfoFormat.numPagesFieldName] = repr(numPages)
         fileInfoFormat.changeOutputLines(textParts, keepBlanks=True)

@@ -37,20 +37,28 @@ class TreeFormats(dict):
         self.typeRenameDict = {}
         # nested dict for fields renamed, keys are type name then orig field
         self.fieldRenameDict = {}
+        self.fileInfoFormat = nodeformat.FileInfoFormat(self)
         if formatList:
             for formatData in formatList:
                 name = formatData['formatname']
-                self[name] = nodeformat.NodeFormat(name, formatData)
-        self.fileInfoFormat = nodeformat.FileInfoFormat()
+                self[name] = nodeformat.NodeFormat(name, self, formatData)
+        if nodeformat.FileInfoFormat.typeName in self:
+            self.fileInfoFormat.duplicateFileInfo(self[nodeformat.
+                                                       FileInfoFormat.
+                                                       typeName])
+            del self[nodeformat.FileInfoFormat.typeName]
         if setDefault:
             self[defaultTypeName] = nodeformat.NodeFormat(defaultTypeName,
+                                                          self,
                                                           addDefaultField=True)
 
     def storeFormats(self):
         """Return a list of formats stored in JSON data.
         """
-        return sorted([nodeFormat.storeFormat() for nodeFormat in
-                       self.values()],
+        formats = list(self.values())
+        if self.fileInfoFormat.fieldFormatModified:
+            formats.append(self.fileInfoFormat)
+        return sorted([nodeFormat.storeFormat() for nodeFormat in formats],
                       key=operator.itemgetter('formatname'))
 
     def copySettings(self, sourceFormats):
@@ -76,6 +84,9 @@ class TreeFormats(dict):
         for name in sourceFormats.keys():
             if name not in self:
                 self[name] = copy.deepcopy(sourceFormats[name])
+        if (sourceFormats.fileInfoFormat.fieldFormatModified or
+            self.fileInfoFormat.fieldFormatModified):
+            self.fileInfoFormat.duplicateFileInfo(sourceFormats.fileInfoFormat)
 
     def typeNames(self):
         """Return a sorted list of type names.

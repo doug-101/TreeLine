@@ -81,6 +81,7 @@ class TreeStructure(treenode.TreeNode):
                 self.generateSpots(None)
         else:
             self.treeFormats = treeformats.TreeFormats()
+        self.fileInfoNode = treenode.TreeNode(self.treeFormats.fileInfoFormat)
 
     def fileData(self):
         """Return a fileData dict in JSON file format.

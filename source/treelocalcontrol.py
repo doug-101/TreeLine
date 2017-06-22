@@ -64,6 +64,9 @@ class TreeLocalControl(QObject):
             self.printData.readData(fileData['properties'])
         else:
             self.structure = treestructure.TreeStructure(addDefaults=True)
+        fileInfoFormat = self.structure.treeFormats.fileInfoFormat
+        fileInfoFormat.updateFileInfo(self.filePathObj,
+                                      self.structure.fileInfoNode)
         self.model = treemodel.TreeModel(self.structure)
         self.model.treeModified.connect(self.updateRightViews)
 
@@ -576,6 +579,9 @@ class TreeLocalControl(QObject):
         else:
             QApplication.restoreOverrideCursor()
             if not backupFile:
+                fileInfoFormat = self.structure.treeFormats.fileInfoFormat
+                fileInfoFormat.updateFileInfo(self.filePathObj,
+                                              self.structure.fileInfoNode)
                 self.setModified(False)
                 self.imported = False
                 self.activeWindow.statusBar().showMessage(_('File saved'),

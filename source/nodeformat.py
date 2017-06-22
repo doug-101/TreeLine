@@ -13,9 +13,13 @@
 #******************************************************************************
 
 import re
-import sys
 import collections
+import os.path
+import sys
+import datetime
 import xml.sax.saxutils
+if not sys.platform.startswith('win'):
+    import pwd
 import fieldformat
 
 
@@ -31,15 +35,18 @@ class NodeFormat:
     Stores node field lists and line formatting.
     Provides methods to return formatted data.
     """
-    def __init__(self, name, formatData=None, addDefaultField=False):
+    def __init__(self, name, parentFormats, formatData=None,
+                 addDefaultField=False):
         """Initialize a tree format.
 
         Arguments:
             name -- the type name string
+            parentFormats -- a ref to TreeFormats class for outside field refs
             formatData -- the JSON dict for this format
             addDefaultField -- if true, adds a default initial field
         """
         self.name = name
+        self.parentFormats = parentFormats
         self.readFormat(formatData)
         self.siblingPrefix = ''
         self.siblingSuffix = ''
@@ -287,6 +294,9 @@ class NodeFormat:
             try:
                 if not modifier:
                     return self.fieldDict[fieldName]
+                elif modifier == '!':
+                    return (self.parentFormats.fileInfoFormat.
+                            fieldDict[fieldName])
             except KeyError:
                 pass
         return text
@@ -452,16 +462,16 @@ class FileInfoFormat(NodeFormat):
     ownerFieldName = 'File_Owner'
     pageNumFieldName = 'Page_Number'
     numPagesFieldName = 'Number_of_Pages'
-    def __init__(self):
+    def __init__(self, parentFormats):
         """Create a file info format.
         """
-        super().__init__(FileInfoFormat.typeName)
+        super().__init__(FileInfoFormat.typeName, parentFormats)
         self.fieldFormatModified = False
         self.addField(FileInfoFormat.fileFieldName)
         self.addField(FileInfoFormat.pathFieldName)
-        self.addField(FileInfoFormat.sizeFieldName, {'type': 'Number'})
-        self.addField(FileInfoFormat.dateFieldName, {'type': 'Date'})
-        self.addField(FileInfoFormat.timeFieldName, {'type': 'Time'})
+        self.addField(FileInfoFormat.sizeFieldName, {'fieldtype': 'Number'})
+        self.addField(FileInfoFormat.dateFieldName, {'fieldtype': 'Date'})
+        self.addField(FileInfoFormat.timeFieldName, {'fieldtype': 'Time'})
         if not sys.platform.startswith('win'):
             self.addField(FileInfoFormat.ownerFieldName)
         # page info only for print header:
@@ -472,39 +482,34 @@ class FileInfoFormat(NodeFormat):
         for field in self.fields():
             field.useFileInfo = True
 
-    def updateFileInfo(self, fileName, fileInfoNode):
+    def updateFileInfo(self, fileObj, fileInfoNode):
         """Update data of file info node.
 
         Arguments:
-            fileName -- the TreeLine file path
+            fileObj -- the TreeLine file path object
             fileInfoNode -- the node to update
         """
         try:
-            status = os.stat(fileName)
+            status = fileObj.stat()
         except OSError:
             fileInfoNode.data = {}
             return
-        fileInfoNode.data[FileInfoFormat.fileFieldName] = (os.path.
-                                                           basename(fileName))
-        fileInfoNode.data[FileInfoFormat.pathFieldName] = (os.path.
-                                                           dirname(fileName))
-        fileInfoNode.data[FileInfoFormat.sizeFieldName] = str(status[stat.
-                                                                     ST_SIZE])
-        modDateTime = QDateTime()
-        modDateTime.setTime_t(status[stat.ST_MTIME])
-        modDateTime = modDateTime.toLocalTime()
-        modDate = modDateTime.date().toString(Qt.ISODate)
-        modTime = modDateTime.time().toString()
+        fileInfoNode.data[FileInfoFormat.fileFieldName] = fileObj.name
+        fileInfoNode.data[FileInfoFormat.pathFieldName] = fileObj.parent
+        fileInfoNode.data[FileInfoFormat.sizeFieldName] = str(status.st_size)
+        modDateTime = datetime.datetime.fromtimestamp(status.st_mtime)
+        modDate = modDateTime.date().strftime(fieldformat.DateField.isoFormat)
+        modTime = modDateTime.time().strftime(fieldformat.TimeField.isoFormat)
         fileInfoNode.data[FileInfoFormat.dateFieldName] = modDate
         fileInfoNode.data[FileInfoFormat.timeFieldName] = modTime
         if not sys.platform.startswith('win'):
             try:
-                owner = pwd.getpwuid(status[stat.ST_UID])[0]
+                owner = pwd.getpwuid(status.st_uid)[0]
             except KeyError:
-                owner = repr(status[stat.ST_UID])
+                owner = repr(status.st_uid)
             fileInfoNode.data[FileInfoFormat.ownerFieldName] = owner
 
-    def duplicateFieldFormats(self, altFileFormat):
+    def duplicateFileInfo(self, altFileFormat):
         """Copy field format settings from alternate file format.
 
         Arguments:

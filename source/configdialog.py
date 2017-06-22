@@ -329,7 +329,9 @@ class TypeListPage(ConfigPage):
         dlg = NameEntryDialog(_('Add Type'), _('Enter new type name:'), '', '',
                               ConfigDialog.formatsRef.typeNames(), self)
         if dlg.exec_() == QDialog.Accepted:
-            newFormat = nodeformat.NodeFormat(dlg.text, None, True)
+            newFormat = nodeformat.NodeFormat(dlg.text,
+                                              ConfigDialog.formatsRef, None,
+                                              True)
             ConfigDialog.formatsRef[dlg.text] = newFormat
             ConfigDialog.currentTypeName = dlg.text
             ConfigDialog.currentFieldName = newFormat.fieldNames()[0]
@@ -1388,10 +1390,7 @@ class  OutputPage(ConfigPage):
         for field in activeFormat.fields():
             if field.showInDialog:
                 QTreeWidgetItem(self.fieldListBox,
-                                      [field.name, field.typeName])
-        if self.refLevelFlag == '!':
-            QTreeWidgetItem(self.fieldListBox,
-                                  [nodeformat.uniqueIdFieldName, 'Text'])
+                                [field.name, field.typeName])
         selectList = self.fieldListBox.findItems(ConfigDialog.currentFieldName,
                                                  Qt.MatchFixedString |
                                                  Qt.MatchCaseSensitive)

@@ -112,7 +112,7 @@ class TextField:
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         if self.useFileInfo:
-            node = node.modelRef.fileInfoNode
+            node = node.treeStructureRef().fileInfoNode
         storedText = node.data.get(self.name, '')
         if storedText:
             return self.formatOutput(storedText, titleMode, formatHtml)
