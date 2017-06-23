@@ -65,6 +65,7 @@ class TreeWindow(QMainWindow):
         self.treeSplitter = QSplitter()
         self.breadcrumbSplitter.addWidget(self.treeSplitter)
         self.treeSplitter.addWidget(self.treeView)
+        self.treeView.shortcutEntered.connect(self.execShortcut)
         self.treeView.selectionModel().selectionChanged.connect(self.
                                                                 selectChanged)
         self.treeView.selectionModel().selectionChanged.connect(self.
@@ -89,6 +90,7 @@ class TreeWindow(QMainWindow):
         parentEditView = dataeditview.DataEditView(self.treeView,
                                                    self.allActions, False)
         parentEditView.nodeModified.connect(self.nodeModified)
+        parentEditView.shortcutEntered.connect(self.execShortcut)
         parentEditView.focusOtherView.connect(self.focusNextView)
         parentEditView.inLinkSelectMode.connect(self.treeView.
                                                 toggleNoMouseSelectMode)
@@ -98,6 +100,7 @@ class TreeWindow(QMainWindow):
         childEditView = dataeditview.DataEditView(self.treeView,
                                                   self.allActions, True)
         childEditView.nodeModified.connect(self.nodeModified)
+        childEditView.shortcutEntered.connect(self.execShortcut)
         childEditView.focusOtherView.connect(self.focusNextView)
         childEditView.inLinkSelectMode.connect(self.treeView.
                                                toggleNoMouseSelectMode)
@@ -110,10 +113,12 @@ class TreeWindow(QMainWindow):
         parentTitleView = titlelistview.TitleListView(self.treeView, False)
         parentTitleView.nodeModified.connect(self.nodeModified)
         parentTitleView.treeModified.connect(self.treeModified)
+        parentTitleView.shortcutEntered.connect(self.execShortcut)
         self.titleSplitter.addWidget(parentTitleView)
         childTitleView = titlelistview.TitleListView(self.treeView, True)
         childTitleView.nodeModified.connect(self.nodeModified)
         childTitleView.treeModified.connect(self.treeModified)
+        childTitleView.shortcutEntered.connect(self.execShortcut)
         self.titleSplitter.addWidget(childTitleView)
 
         self.rightTabs.currentChanged.connect(self.updateRightViews)
@@ -221,6 +226,21 @@ class TreeWindow(QMainWindow):
             rightChild.setFocus(reason)
         else:
             rightParent.setFocus(reason)
+
+    def execShortcut(self, key):
+        """Execute an action based on a shortcut key signal from a view.
+
+        Arguments:
+            key -- the QKeySequence shortcut
+        """
+        keyDict = {action.shortcut().toString(): action for action in
+                   self.allActions.values()}
+        try:
+            action = keyDict[key.toString()]
+        except KeyError:
+            return
+        if action.isEnabled():
+            action.trigger()
 
     def setupActions(self):
         """Add the actions for contols at the window level.

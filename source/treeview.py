@@ -12,8 +12,10 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-from PyQt5.QtCore import QPoint, Qt, pyqtSignal
-from PyQt5.QtWidgets import (QAbstractItemView, QHeaderView, QTreeView)
+from PyQt5.QtCore import QEvent, QPoint, Qt, pyqtSignal
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import (QAbstractItemView, QHeaderView,
+                             QStyledItemDelegate, QTreeView)
 import treeselection
 import treenode
 import globalref
@@ -25,6 +27,7 @@ class TreeView(QTreeView):
     Sets view defaults and links with document for content.
     """
     skippedMouseSelect = pyqtSignal(treenode.TreeNode)
+    shortcutEntered = pyqtSignal(QKeySequence)
     def __init__(self, model, allActions, parent=None):
         """Initialize the tree view.
 
@@ -41,6 +44,7 @@ class TreeView(QTreeView):
         self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.header().setStretchLastSection(False)
         self.setHeaderHidden(True)
+        self.setItemDelegate(TreeEditDelegate(self))
         self.updateTreeGenOptions()
         self.setDragDropMode(QAbstractItemView.DragDrop)
         self.setDefaultDropAction(Qt.MoveAction)
@@ -163,3 +167,41 @@ class TreeView(QTreeView):
             self.selectionModel().selectSpots([])
             self.scheduleDelayedItemsLayout()
         self.model().treeModified.emit(True)
+
+
+class TreeEditDelegate(QStyledItemDelegate):
+    """Class override for editing tree items to capture shortcut keys.
+    """
+    def __init__(self, parent=None):
+        """Initialize the delegate class.
+
+        Arguments:
+            parent -- the parent view
+        """
+        super().__init__(parent)
+
+    def createEditor(self, parent, styleOption, modelIndex):
+        """Return a new text editor for an item.
+
+        Arguments:
+            parent -- the parent widget for the editor
+            styleOption -- the data for styles and geometry
+            modelIndex -- the index of the item to be edited
+        """
+        editor = super().createEditor(parent, styleOption, modelIndex)
+        return editor
+
+    def eventFilter(self, editor, event):
+        """Override to handle shortcut control keys.
+
+        Arguments:
+            editor -- the editor that Qt installed a filter on
+            event -- the key press event
+        """
+        if (event.type() == QEvent.KeyPress and
+            event.modifiers() == Qt.ControlModifier and
+            Qt.Key_A <= event.key() <= Qt.Key_Z):
+            key = QKeySequence(event.modifiers() | event.key())
+            self.parent().shortcutEntered.emit(key)
+            return True
+        return super().eventFilter(editor, event)
