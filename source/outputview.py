@@ -46,16 +46,17 @@ class OutputView(QTextBrowser):
 
         Avoids update if view is not visible or has zero height or width.
         """
-        selNodes = self.treeView.selectionModel().selectedNodes()
+        selSpots = self.treeView.selectionModel().selectedSpots()
         if self.isChildView:
-            if (len(selNodes) > 1 or self.hideChildView or
-                (selNodes and not selNodes[0].childList)):
+            if (len(selSpots) > 1 or self.hideChildView or
+                (selSpots and not selSpots[0].nodeRef.childList)):
                 self.hide()
                 return
-            if not selNodes:
+            if not selSpots:
                 # use top node childList from tree structure
-                selNodes = [globalref.mainControl.activeControl.structure]
-        elif not selNodes:
+                selSpots = [globalref.mainControl.activeControl.structure.
+                            spotByNumber(0)]
+        elif not selSpots:
             self.hide()
             return
         self.show()
@@ -63,17 +64,17 @@ class OutputView(QTextBrowser):
             return
         if self.isChildView:
             if self.showDescendants:
-                outputGroup = treeoutput.OutputGroup(selNodes, False, True)
+                outputGroup = treeoutput.OutputGroup(selSpots, False, True)
                 if outputGroup.hasPrefixes():
                     outputGroup.combineAllSiblings()
                 outputGroup.addBlanksBetween()
                 outputGroup.addAbsoluteIndents()
             else:
-                outputGroup = treeoutput.OutputGroup(selNodes[0].childList)
+                outputGroup = treeoutput.OutputGroup(selSpots[0].childSpots())
                 outputGroup.addBlanksBetween()
                 outputGroup.addSiblingPrefixes()
         else:
-            outputGroup = treeoutput.OutputGroup(selNodes)
+            outputGroup = treeoutput.OutputGroup(selSpots)
             outputGroup.addBlanksBetween()
             outputGroup.addSiblingPrefixes()
         self.setHtml('\n'.join(outputGroup.getLines()))

@@ -111,7 +111,8 @@ class TextField:
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
-        if self.useFileInfo:
+        if self.useFileInfo and node.spotRefs:
+            # get file info node if not already the file info node
             node = node.treeStructureRef().fileInfoNode
         storedText = node.data.get(self.name, '')
         if storedText:

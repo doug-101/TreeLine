@@ -77,6 +77,12 @@ class TreeSpot:
             for spot in childSpot.spotDescendantGen():
                 yield spot
 
+    def childSpots(self):
+        """Return a list of immediate child  spots.
+        """
+        return [childNode.matchedSpot(self) for childNode in
+                self.nodeRef.childList]
+
     def prevSiblingSpot(self):
         """Return the nearest previous sibling spot or None.
         """

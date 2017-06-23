@@ -201,12 +201,12 @@ class OutputGroup(list):
 
     Modifies the output text for use in views, html and printing.
     """
-    def __init__(self, nodeList, includeRoot=True, includeDescend=False,
+    def __init__(self, spotList, includeRoot=True, includeDescend=False,
                  openOnly=False, addAnchors=False, extraAnchorLevels=0):
         """Convert the node iter list into a list of output items.
 
         Arguments:
-            nodeList -- a list of nodes to convert to output
+            spotList -- a list of spots to convert to output
             includeRoot -- if True, include the nodes in nodeList
             includeDescend -- if True, include children, grandchildren, etc.
             openOnly -- if true, ignore collapsed children in the main treeView
@@ -214,29 +214,30 @@ class OutputGroup(list):
             extraAnchorLevels -- add extra anchors if the level < this
         """
         super().__init__()
-        for node in nodeList:
+        for spot in spotList:
             level = -1
             if includeRoot:
                 level = 0
-                self.append(OutputItem(node, level, addAnchors,
+                self.append(OutputItem(spot.nodeRef, level, addAnchors,
                                        level < extraAnchorLevels))
             if includeDescend:
-                self.addChildren(node, level, openOnly, addAnchors,
+                self.addChildren(spot, level, openOnly, addAnchors,
                                  extraAnchorLevels)
 
-    def addChildren(self, node, level, openOnly=False, addAnchors=False,
+    def addChildren(self, spot, level, openOnly=False, addAnchors=False,
                     extraAnchorLevels=0):
-        """Recursively add OutputItems for descendants of the given node.
+        """Recursively add OutputItems for descendants of the given spot.
 
         Arguments:
-            node -- the parent tree node
+            spot -- the parent tree spot
             level -- the parent node's original indent level
             addAnchors - if true, add ID anchors to nodes used as link targets
             extraAnchorLevels -- add extra anchors if the level < this
         """
-        if not openOnly or node.isExpanded():
-            for child in node.childList:
-                self.append(OutputItem(child, level + 1, addAnchors,
+        treeView = globalref.mainControl.activeControl.activeWindow.treeView
+        if not openOnly or treeView.isSpotExpanded(spot):
+            for child in spot.childSpots():
+                self.append(OutputItem(child.nodeRef, level + 1, addAnchors,
                                        level + 1 < extraAnchorLevels))
                 self.addChildren(child, level + 1, openOnly, addAnchors,
                                  extraAnchorLevels)
