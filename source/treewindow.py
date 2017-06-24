@@ -12,7 +12,9 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-from PyQt5.QtCore import QEvent, QRect, Qt, pyqtSignal
+import pathlib
+import base64
+from PyQt5.QtCore import QEvent, QRect, QSize, Qt, pyqtSignal
 from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QMainWindow,
                              QSplitter, QStatusBar, QTabWidget, QWidget)
@@ -46,6 +48,7 @@ class TreeWindow(QMainWindow):
         super().__init__(parent)
         self.allActions = allActions.copy()
         self.allowCloseFlag = True
+        self.toolbars = []
         self.rightTabActList = []
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setAcceptDrops(True)
@@ -53,6 +56,8 @@ class TreeWindow(QMainWindow):
         self.setCaption()
         self.setupActions()
         self.setupMenus()
+        self.setupToolbars()
+        self.restoreToolbarPosition()
 
         self.treeView = treeview.TreeView(model, self.allActions)
         self.breadcrumbSplitter = QSplitter(Qt.Vertical)
@@ -323,6 +328,30 @@ class TreeWindow(QMainWindow):
             if not key.isEmpty():
                 action.setShortcut(key)
         self.allActions.update(winActions)
+
+    def setupToolbars(self):
+        """Add toolbars based on option settings.
+        """
+        for toolbar in self.toolbars:
+            self.removeToolBar(toolbar)
+        self.toolbars = []
+        numToolbars = globalref.toolbarOptions['ToolbarQuantity']
+        iconSize = globalref.toolbarOptions['ToolbarSize']
+        for num in range(numToolbars):
+            name = 'Toolbar{:d}'.format(num)
+            toolbar = self.addToolBar(name)
+            toolbar.setObjectName(name)
+            toolbar.setIconSize(QSize(iconSize, iconSize))
+            self.toolbars.append(toolbar)
+            commandList = globalref.toolbarOptions[name].split(',')
+            for command in commandList:
+                if command:
+                    try:
+                        toolbar.addAction(self.allActions[command])
+                    except KeyError:
+                        pass
+                else:
+                    toolbar.addSeparator()
 
     def setupMenus(self):
         """Add menu items for actions.
@@ -601,6 +630,40 @@ class TreeWindow(QMainWindow):
                                                'EditorSplitPercent',
                                                'TitleSplitPercent',
                                                'ActiveRightView'])
+
+    def saveToolbarPosition(self):
+        """Save the toolbar position to the toolbar options.
+        """
+        toolbarPos = base64.b64encode(self.saveState().data()).decode('ascii')
+        globalref.toolbarOptions.changeValue('ToolbarPosition', toolbarPos)
+        globalref.toolbarOptions.writeFile()
+
+    def restoreToolbarPosition(self):
+        """Restore the toolbar position from the toolbar options.
+        """
+        toolbarPos = globalref.toolbarOptions['ToolbarPosition']
+        if toolbarPos:
+            self.restoreState(base64.b64decode(bytes(toolbarPos, 'ascii')))
+
+    def dragEnterEvent(self, event):
+        """Accept drags of files to this window.
+
+        Arguments:
+            event -- the drag event object
+        """
+        if event.mimeData().hasUrls():
+            event.accept()
+
+    def dropEvent(self, event):
+        """Open a file dropped onto this window.
+
+         Arguments:
+             event -- the drop event object
+        """
+        fileList = event.mimeData().urls()
+        if fileList:
+            path = pathlib.Path(fileList[0].toLocalFile())
+            globalref.mainControl.openFile(path, checkModified=True)
 
     def changeEvent(self, event):
         """Detect an activation of the main window and emit a signal.

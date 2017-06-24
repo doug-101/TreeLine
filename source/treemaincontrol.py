@@ -170,13 +170,15 @@ class TreeMainControl(QObject):
             pathObj = pathObj.parent
         return pathObj
 
-    def openFile(self, pathObj, forceNewWindow=False, importOnFail=True):
+    def openFile(self, pathObj, forceNewWindow=False, checkModified=False,
+                 importOnFail=True):
         """Open the file given by path if not already open.
 
         If already open in a different window, focus and raise the window.
         Arguments:
             pathObj -- the path object to read
             forceNewWindow -- if True, use a new window regardless of option
+            checkModified -- if True & not new win, prompt if file modified
             importOnFail -- if True, prompts for import on non-TreeLine files
         """
         match = [control for control in self.localControls if
@@ -185,7 +187,9 @@ class TreeMainControl(QObject):
             control = match[0]
             control.activeWindow.activateAndRaise()
             self.updateLocalControlRef(control)
-        else:
+        elif (not checkModified or forceNewWindow or
+              globalref.genOptions['OpenNewWindow'] or
+              self.activeControl.checkSaveChanges()):
             try:
                 QApplication.setOverrideCursor(Qt.WaitCursor)
                 self.createLocalControl(pathObj, None, forceNewWindow)
@@ -248,6 +252,7 @@ class TreeMainControl(QObject):
                 localControl.windowList[0].saveWindowGeom()
             else:
                 localControl.windowList[0].resetWindowGeom()
+            localControl.windowList[0].saveToolbarPosition()
             globalref.histOptions.writeFile()
 
     def currentStatusBar(self):

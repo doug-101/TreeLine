@@ -491,7 +491,7 @@ class FileInfoFormat(NodeFormat):
         """
         try:
             status = fileObj.stat()
-        except OSError:
+        except (AttributeError, OSError):
             fileInfoNode.data = {}
             return
         fileInfoNode.data[FileInfoFormat.fileFieldName] = fileObj.name
