@@ -98,6 +98,7 @@ class TreeLocalControl(QObject):
                 oldControl.controlClosed.emit(oldControl)
             window.resetTreeModel(self.model)
             self.setWindowSignals(window, True)
+            window.updateActions(self.allActions)
             self.windowList.append(window)
             window.setCaption(self.filePathObj)
             self.activeWindow = window
@@ -120,6 +121,7 @@ class TreeLocalControl(QObject):
         window.treeModified.connect(self.updateTree)
         window.winActivated.connect(self.setActiveWin)
         window.winClosing.connect(self.checkWindowClose)
+        window.setExternalSignals()
 
     def updateTreeNode(self, node, setModified=True):
         """Update the full tree in all windows.

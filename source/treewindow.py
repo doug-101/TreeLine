@@ -48,6 +48,7 @@ class TreeWindow(QMainWindow):
         super().__init__(parent)
         self.allActions = allActions.copy()
         self.allowCloseFlag = True
+        self.winActions = {}
         self.toolbars = []
         self.rightTabActList = []
         self.setAttribute(Qt.WA_DeleteOnClose)
@@ -72,8 +73,6 @@ class TreeWindow(QMainWindow):
         self.treeSplitter.addWidget(self.treeView)
         self.treeView.shortcutEntered.connect(self.execShortcut)
         self.treeView.selectionModel().selectionChanged.connect(self.
-                                                                selectChanged)
-        self.treeView.selectionModel().selectionChanged.connect(self.
                                                               updateRightViews)
 
         self.rightTabs = QTabWidget()
@@ -94,7 +93,6 @@ class TreeWindow(QMainWindow):
         self.rightTabs.addTab(self.editorSplitter, _('Data Edit'))
         parentEditView = dataeditview.DataEditView(self.treeView,
                                                    self.allActions, False)
-        parentEditView.nodeModified.connect(self.nodeModified)
         parentEditView.shortcutEntered.connect(self.execShortcut)
         parentEditView.focusOtherView.connect(self.focusNextView)
         parentEditView.inLinkSelectMode.connect(self.treeView.
@@ -104,7 +102,6 @@ class TreeWindow(QMainWindow):
         self.editorSplitter.addWidget(parentEditView)
         childEditView = dataeditview.DataEditView(self.treeView,
                                                   self.allActions, True)
-        childEditView.nodeModified.connect(self.nodeModified)
         childEditView.shortcutEntered.connect(self.execShortcut)
         childEditView.focusOtherView.connect(self.focusNextView)
         childEditView.inLinkSelectMode.connect(self.treeView.
@@ -116,17 +113,43 @@ class TreeWindow(QMainWindow):
         self.titleSplitter = QSplitter(Qt.Vertical)
         self.rightTabs.addTab(self.titleSplitter, _('Title List'))
         parentTitleView = titlelistview.TitleListView(self.treeView, False)
-        parentTitleView.nodeModified.connect(self.nodeModified)
-        parentTitleView.treeModified.connect(self.treeModified)
         parentTitleView.shortcutEntered.connect(self.execShortcut)
         self.titleSplitter.addWidget(parentTitleView)
         childTitleView = titlelistview.TitleListView(self.treeView, True)
-        childTitleView.nodeModified.connect(self.nodeModified)
-        childTitleView.treeModified.connect(self.treeModified)
         childTitleView.shortcutEntered.connect(self.execShortcut)
         self.titleSplitter.addWidget(childTitleView)
 
         self.rightTabs.currentChanged.connect(self.updateRightViews)
+
+    def setExternalSignals(self):
+        """Connect widow object signals to signals in this onject.
+
+        In a separate method to refresh after local control change.
+        """
+        self.treeView.selectionModel().selectionChanged.connect(self.
+                                                                selectChanged)
+        for i in range(2):
+            self.editorSplitter.widget(i).nodeModified.connect(self.
+                                                               nodeModified)
+            self.titleSplitter.widget(i).nodeModified.connect(self.
+                                                              nodeModified)
+            self.titleSplitter.widget(i).treeModified.connect(self.
+                                                              treeModified)
+
+    def updateActions(self, allActions):
+        """Use new actions for menus, etc. when the local control changes.
+
+        Arguments:
+            allActions -- a dict containing the upper level actions
+        """
+        self.allActions = allActions.copy()
+        self.allActions.update(self.winActions)
+        self.menuBar().clear()
+        self.setupMenus()
+        self.addToolbarCommands()
+        self.treeView.allActions = self.allActions
+        for i in range(2):
+            self.editorSplitter.widget(i).allActions = self.allActions
 
     def updateTreeNode(self, node):
         """Update all spots for the given node in the tree view.
@@ -253,43 +276,41 @@ class TreeWindow(QMainWindow):
         These actions only affect an individual window,
         they're independent in multiple windows of the same file.
         """
-        winActions = {}
-
         viewExpandBranchAct = QAction(_('&Expand Full Branch'), self,
                       statusTip=_('Expand all children of the selected nodes'))
         viewExpandBranchAct.triggered.connect(self.viewExpandBranch)
-        winActions['ViewExpandBranch'] = viewExpandBranchAct
+        self.winActions['ViewExpandBranch'] = viewExpandBranchAct
 
         viewCollapseBranchAct = QAction(_('&Collapse Full Branch'), self,
                     statusTip=_('Collapse all children of the selected nodes'))
         viewCollapseBranchAct.triggered.connect(self.viewCollapseBranch)
-        winActions['ViewCollapseBranch'] = viewCollapseBranchAct
+        self.winActions['ViewCollapseBranch'] = viewCollapseBranchAct
 
         viewPrevSelectAct = QAction(_('&Previous Selection'), self,
                           statusTip=_('Return to the previous tree selection'))
         viewPrevSelectAct.triggered.connect(self.viewPrevSelect)
-        winActions['ViewPrevSelect'] = viewPrevSelectAct
+        self.winActions['ViewPrevSelect'] = viewPrevSelectAct
 
         viewNextSelectAct = QAction(_('&Next Selection'), self,
                        statusTip=_('Go to the next tree selection in history'))
         viewNextSelectAct.triggered.connect(self.viewNextSelect)
-        winActions['ViewNextSelect'] = viewNextSelectAct
+        self.winActions['ViewNextSelect'] = viewNextSelectAct
 
         viewRightTabGrp = QActionGroup(self)
         viewOutputAct = QAction(_('Show Data &Output'), viewRightTabGrp,
                                  statusTip=_('Show data output in right view'),
                                  checkable=True)
-        winActions['ViewDataOutput'] = viewOutputAct
+        self.winActions['ViewDataOutput'] = viewOutputAct
 
         viewEditAct = QAction(_('Show Data &Editor'), viewRightTabGrp,
                                  statusTip=_('Show data editor in right view'),
                                  checkable=True)
-        winActions['ViewDataEditor'] = viewEditAct
+        self.winActions['ViewDataEditor'] = viewEditAct
 
         viewTitleAct = QAction(_('Show &Title List'), viewRightTabGrp,
                                   statusTip=_('Show title list in right view'),
                                   checkable=True)
-        winActions['ViewTitleList'] = viewTitleAct
+        self.winActions['ViewTitleList'] = viewTitleAct
         self.rightTabActList = [viewOutputAct, viewEditAct, viewTitleAct]
         viewRightTabGrp.triggered.connect(self.viewRightTab)
 
@@ -299,35 +320,35 @@ class TreeWindow(QMainWindow):
         viewBreadcrumbAct.setChecked(globalref.
                                      genOptions['InitShowBreadcrumb'])
         viewBreadcrumbAct.triggered.connect(self.viewBreadcrumb)
-        winActions['ViewBreadcrumb'] = viewBreadcrumbAct
+        self.winActions['ViewBreadcrumb'] = viewBreadcrumbAct
 
         viewChildPaneAct = QAction(_('&Show Child Pane'),  self,
                           statusTip=_('Toggle showing right-hand child views'),
                           checkable=True)
         viewChildPaneAct.setChecked(globalref.genOptions['InitShowChildPane'])
         viewChildPaneAct.triggered.connect(self.viewShowChildPane)
-        winActions['ViewShowChildPane'] = viewChildPaneAct
+        self.winActions['ViewShowChildPane'] = viewChildPaneAct
 
         viewDescendAct = QAction(_('Show Output &Descedants'), self,
                 statusTip=_('Toggle showing output view indented descendants'),
                 checkable=True)
         viewDescendAct.setChecked(globalref.genOptions['InitShowDescendants'])
         viewDescendAct.triggered.connect(self.viewDescendants)
-        winActions['ViewShowDescend'] = viewDescendAct
+        self.winActions['ViewShowDescend'] = viewDescendAct
 
         winCloseAct = QAction(_('&Close Window'), self,
                                     statusTip=_('Close this window'))
         winCloseAct.triggered.connect(self.close)
-        winActions['WinCloseWindow'] = winCloseAct
+        self.winActions['WinCloseWindow'] = winCloseAct
 
-        for name, action in winActions.items():
+        for name, action in self.winActions.items():
             icon = globalref.toolIcons.getIcon(name.lower())
             if icon:
                 action.setIcon(icon)
             key = globalref.keyboardOptions[name]
             if not key.isEmpty():
                 action.setShortcut(key)
-        self.allActions.update(winActions)
+        self.allActions.update(self.winActions)
 
     def setupToolbars(self):
         """Add toolbars based on option settings.
@@ -343,7 +364,16 @@ class TreeWindow(QMainWindow):
             toolbar.setObjectName(name)
             toolbar.setIconSize(QSize(iconSize, iconSize))
             self.toolbars.append(toolbar)
-            commandList = globalref.toolbarOptions[name].split(',')
+        self.addToolbarCommands()
+
+    def addToolbarCommands(self):
+        """Add toolbar commands for current actions.
+        """
+        numToolbars = globalref.toolbarOptions['ToolbarQuantity']
+        for toolbar in self.toolbars:
+            toolbar.clear()
+            commandList = (globalref.toolbarOptions[toolbar.objectName()].
+                           split(','))
             for command in commandList:
                 if command:
                     try:
@@ -352,6 +382,7 @@ class TreeWindow(QMainWindow):
                         pass
                 else:
                     toolbar.addSeparator()
+
 
     def setupMenus(self):
         """Add menu items for actions.
