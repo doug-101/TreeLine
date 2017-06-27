@@ -13,8 +13,8 @@
 #******************************************************************************
 
 from PyQt5.QtCore import QEvent, QPoint, Qt, pyqtSignal
-from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import (QAbstractItemView, QHeaderView,
+from PyQt5.QtGui import QContextMenuEvent, QKeySequence
+from PyQt5.QtWidgets import (QAbstractItemView, QHeaderView, QMenu,
                              QStyledItemDelegate, QTreeView)
 import treeselection
 import treenode
@@ -122,6 +122,66 @@ class TreeView(QTreeView):
         """Stop the editing of any item being renamed.
         """
         self.closePersistentEditor(self.selectionModel().currentIndex())
+
+    def contextMenu(self):
+        """Return the context menu, creating it if necessary.
+        """
+        menu = QMenu(self)
+        menu.addAction(self.allActions['EditCut'])
+        menu.addAction(self.allActions['EditCopy'])
+        menu.addAction(self.allActions['EditPaste'])
+        menu.addAction(self.allActions['NodeRename'])
+        menu.addSeparator()
+        menu.addAction(self.allActions['NodeInsertBefore'])
+        menu.addAction(self.allActions['NodeInsertAfter'])
+        menu.addAction(self.allActions['NodeAddChild'])
+        menu.addSeparator()
+        menu.addAction(self.allActions['NodeDelete'])
+        menu.addAction(self.allActions['NodeIndent'])
+        menu.addAction(self.allActions['NodeUnindent'])
+        menu.addSeparator()
+        menu.addAction(self.allActions['NodeMoveUp'])
+        menu.addAction(self.allActions['NodeMoveDown'])
+        menu.addSeparator()
+        menu.addMenu(self.allActions['DataNodeType'].parent())
+        return menu
+
+    def contextMenuEvent(self, event):
+        """Show popup context menu on mouse click or menu key.
+
+        Arguments:
+            event -- the context menu event
+        """
+        if event.reason() == QContextMenuEvent.Mouse:
+            clickedSpot = self.indexAt(event.pos()).internalPointer()
+            if not clickedSpot:
+                event.ignore()
+                return
+            if clickedSpot not in self.selectionModel().selectedSpots():
+                self.selectionModel().selectSpot(clickedSpot)
+            pos = event.globalPos()
+        else:       # shown for menu key or other reason
+            selectList = self.selectionModel().selectedSpots()
+            if not selectList:
+                event.ignore()
+                return
+            currentSpot = self.selectionModel().currentSpot()
+            if currentSpot in selectList:
+                selectList.insert(0, currentSpot)
+            position = None
+            for spot in selectList:
+                rect = self.visualRect(spot.index(self.model()))
+                pt = QPoint(rect.center().x(), rect.bottom())
+                if self.rect().contains(pt):
+                    position = pt
+                    break
+            if not position:
+                self.scrollTo(selectList[0].index(self.model()))
+                rect = self.visualRect(selectList[0].index(self.model()))
+                position = QPoint(rect.center().x(), rect.bottom())
+            pos = self.mapToGlobal(position)
+        self.contextMenu().popup(pos)
+        event.accept()
 
     def toggleNoMouseSelectMode(self, active=True):
         """Set noMouseSelectMode to active or inactive.

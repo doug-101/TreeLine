@@ -222,9 +222,12 @@ class TreeSpotList(list):
         while (not nextSel[0] or not nextSel[0].parentSpot or
                nextSel[0] in self):
             del nextSel[0]
-        undoParents = {spot.parentSpot.nodeRef for spot in self}
+        spotSet = set(self)
+        branchSpots = [spot for spot in self if
+                       spot.parentSpotSet().isdisjoint(spotSet)]
+        undoParents = {spot.parentSpot.nodeRef for spot in branchSpots}
         undo.ChildListUndo(treeStruct.undoList, list(undoParents))
-        for spot in self:
+        for spot in branchSpots:
             treeStruct.deleteNodeSpot(spot)
         return nextSel[0]
 

@@ -75,6 +75,24 @@
          "uid": "05ed54b60e3311e7b83b3417ebd53aeb"
       },
       {
+         "children": [
+            "3644433e5a6f11e792413417ebd53aeb"
+         ],
+         "data": {
+            "Name": "Another"
+         },
+         "format": "DEFAULT",
+         "uid": "33377ef65a6f11e7bcf03417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "and another"
+         },
+         "format": "DEFAULT",
+         "uid": "3644433e5a6f11e792413417ebd53aeb"
+      },
+      {
          "children": [],
          "data": {
             "Name": "Third Node"
@@ -168,7 +186,8 @@
       "tlversion": "2.9.0",
       "topnodes": [
          "701d5d18f91011e6995d3417ebd53aeb",
-         "b832a776108711e7b9643417ebd53aeb"
+         "b832a776108711e7b9643417ebd53aeb",
+         "33377ef65a6f11e7bcf03417ebd53aeb"
       ]
    }
 }
