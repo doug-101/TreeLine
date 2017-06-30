@@ -23,6 +23,7 @@ import globalref
 import treelocalcontrol
 import options
 import optiondefaults
+import recentfiles
 import icondict
 import configdialog
 import miscdialogs
@@ -109,6 +110,11 @@ class TreeMainControl(QObject):
             QApplication.setWindowIcon(windowIcon)
         globalref.treeIcons = icondict.IconDict(iconPathList, ['', 'tree'])
         icon = globalref.treeIcons.getIcon('default')
+        self.recentFiles = recentfiles.RecentFileList()
+        if globalref.genOptions['AutoFileOpen'] and not pathObjects:
+            recentPath = self.recentFiles.firstPath()
+            if recentPath:
+                pathObjects = [recentPath]
         self.setupActions()
         qApp.focusChanged.connect(self.updateActionsAvail)
         if pathObjects:
@@ -163,9 +169,9 @@ class TreeMainControl(QObject):
         if  self.activeControl:
             pathObj = self.activeControl.filePathObj
         if not pathObj:
-            # pathObj = self.recentFiles.firstDir()
-            # if not pathObj:
-            pathObj = pathlib.Path.home()
+            pathObj = self.recentFiles.firstDir()
+            if not pathObj:
+                pathObj = pathlib.Path.home()
         if dirOnly:
             pathObj = pathObj.parent
         return pathObj
@@ -193,17 +199,22 @@ class TreeMainControl(QObject):
             try:
                 QApplication.setOverrideCursor(Qt.WaitCursor)
                 self.createLocalControl(pathObj, None, forceNewWindow)
+                self.recentFiles.addItem(pathObj)
+                if globalref.genOptions['SaveTreeStates']:
+                    self.recentFiles.retrieveTreeState(self.activeControl)
                 QApplication.restoreOverrideCursor()
             except IOError:
                 QApplication.restoreOverrideCursor()
                 QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
                                     _('Error - could not read file {0}').
                                     format(str(pathObj)))
+                self.recentFiles.removeItem(pathObj)
             except (ValueError, KeyError, TypeError):
                 QApplication.restoreOverrideCursor()
                 QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
                                     _('Error - invalid TreeLine file {0}').
                                     format(str(pathObj)))
+                self.recentFiles.removeItem(pathObj)
             if not self.localControls:
                 self.createLocalControl()
 
@@ -247,11 +258,14 @@ class TreeMainControl(QObject):
             localControl -- the local control that is closing
         """
         self.localControls.remove(localControl)
+        if globalref.genOptions['SaveTreeStates']:
+            self.recentFiles.saveTreeState(localControl)
         if not self.localControls:
             if globalref.genOptions['SaveWindowGeom']:
                 localControl.windowList[0].saveWindowGeom()
             else:
                 localControl.windowList[0].resetWindowGeom()
+            self.recentFiles.writeItems()
             localControl.windowList[0].saveToolbarPosition()
             globalref.histOptions.writeFile()
 
@@ -417,6 +431,7 @@ class TreeMainControl(QObject):
         if (dialog.exec_() == QDialog.Accepted and
             globalref.genOptions.modified):
             globalref.genOptions.writeFile()
+            self.recentFiles.updateNumEntries()
             for control in self.localControls:
                 for window in control.windowList:
                     window.treeView.updateTreeGenOptions()

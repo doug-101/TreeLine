@@ -118,6 +118,24 @@ class TreeView(QTreeView):
             if spot.nodeRef.childList:
                 self.collapse(spot.index(self.model()))
 
+    def spotAtTop(self):
+        """If view is scrolled, return the spot at the top of the view.
+
+        If not scrolled, return None.
+        """
+        if self.verticalScrollBar().value() > 0:
+            return self.indexAt(QPoint(0, 0)).internalPointer()
+        return None
+
+    def scrollToSpot(self, spot):
+        """Scroll the view to move the spot to the top position.
+
+        Arguments:
+            spot -- the spot to move to the top
+        """
+        self.scrollTo(spot.index(self.model()),
+                      QAbstractItemView.PositionAtTop)
+
     def endEditing(self):
         """Stop the editing of any item being renamed.
         """

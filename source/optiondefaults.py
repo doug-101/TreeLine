@@ -79,67 +79,49 @@ def setMiscOptionDefaults(miscOptions):
     """Set defaults for miscellaneous config options.
     """
     StringOptionItem = options.StringOptionItem
-    StringOptionItem(miscOptions, 'PrintUnits', 'in', False, True,
-                     _('Printer Settings'))
-    StringOptionItem(miscOptions, 'SpellCheckPath', '', True, False,
-                     _('Spell Check'))
-    StringOptionItem(miscOptions, 'TreeFont', '', True, True, _('Fonts'))
-    StringOptionItem(miscOptions, 'OutputFont', '', True, True, _('Fonts'))
-    StringOptionItem(miscOptions, 'EditorFont', '', True, True, _('Fonts'))
+    StringOptionItem(miscOptions, 'PrintUnits', 'in', False, True)
+    StringOptionItem(miscOptions, 'SpellCheckPath', '')
+    StringOptionItem(miscOptions, 'TreeFont', '', True, True)
+    StringOptionItem(miscOptions, 'OutputFont', '', True, True)
+    StringOptionItem(miscOptions, 'EditorFont', '', True, True)
 
 def setHistOptionDefaults(historyOptions):
     """Set defaults for history config options.
     """
     IntOptionItem = options.IntOptionItem
-    IntOptionItem(historyOptions, 'WindowXSize', 640, 10, 10000,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'WindowYSize', 640, 10, 10000,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'WindowXPos', -1000, -1000, 10000,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'WindowYPos', -1000, -1000, 10000,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'CrumbSplitPercent', 10, 1, 99,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'TreeSplitPercent', 40, 1, 99,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'OutputSplitPercent', 20, 1, 99,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'EditorSplitPercent', 25, 1, 99,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'TitleSplitPercent', 10, 1, 99,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'ActiveRightView', 0, 0, 2,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'PrintPrevXSize', 0, 0, 10000,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'PrintPrevYSize', 0, 0, 10000,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'PrintPrevXPos', -1000, -1000, 10000,
-                  _('Window Geometry'))
-    IntOptionItem(historyOptions, 'PrintPrevYPos', -1000, -1000, 10000,
-                  _('Window Geometry'))
+    DataListOptionItem = options.DataListOptionItem
+    IntOptionItem(historyOptions, 'WindowXSize', 640, 10, 10000)
+    IntOptionItem(historyOptions, 'WindowYSize', 640, 10, 10000)
+    IntOptionItem(historyOptions, 'WindowXPos', -1000, -1000, 10000)
+    IntOptionItem(historyOptions, 'WindowYPos', -1000, -1000, 10000)
+    IntOptionItem(historyOptions, 'CrumbSplitPercent', 10, 1, 99)
+    IntOptionItem(historyOptions, 'TreeSplitPercent', 40, 1, 99)
+    IntOptionItem(historyOptions, 'OutputSplitPercent', 20, 1, 99)
+    IntOptionItem(historyOptions, 'EditorSplitPercent', 25, 1, 99)
+    IntOptionItem(historyOptions, 'TitleSplitPercent', 10, 1, 99)
+    IntOptionItem(historyOptions, 'ActiveRightView', 0, 0, 2)
+    IntOptionItem(historyOptions, 'PrintPrevXSize', 0, 0, 10000)
+    IntOptionItem(historyOptions, 'PrintPrevYSize', 0, 0, 10000)
+    IntOptionItem(historyOptions, 'PrintPrevXPos', -1000, -1000, 10000)
+    IntOptionItem(historyOptions, 'PrintPrevYPos', -1000, -1000, 10000)
+    DataListOptionItem(historyOptions, 'RecentFiles', [])
 
 def setToolbarOptionDefaults(toolbarOptions):
     """Set defaults for toolbar geometry and buttons.
     """
     StringOptionItem = options.StringOptionItem
     IntOptionItem = options.IntOptionItem
-    IntOptionItem(toolbarOptions, 'ToolbarQuantity', 2, 0, 20,
-                  _('Toolbar Geometry'))
-    IntOptionItem(toolbarOptions, 'ToolbarSize', 16, 1, 128,
-                  _('Toolbar Geometry'))
-    StringOptionItem(toolbarOptions, 'ToolbarPosition', '', True, False,
-                     _('Toolbar Geometry'))
+    IntOptionItem(toolbarOptions, 'ToolbarQuantity', 2, 0, 20)
+    IntOptionItem(toolbarOptions, 'ToolbarSize', 16, 1, 128)
+    StringOptionItem(toolbarOptions, 'ToolbarPosition', '')
     StringOptionItem(toolbarOptions, 'Toolbar0',
                      'FileNew,FileOpen,FileSave,,FilePrintPreview,FilePrint,,'
                      'EditUndo,EditRedo,,EditCut,EditCopy,EditPaste,,'
-                     'DataConfigType', True, False, _('Toolbar Commands'))
+                     'DataConfigType')
     StringOptionItem(toolbarOptions, 'Toolbar1',
                      'NodeInsertAfter,NodeAddChild,,NodeDelete,NodeIndent,'
                      'NodeUnindent,,NodeMoveUp,NodeMoveDown,,'
-                     'ViewPrevSelect,ViewNextSelect,,ViewShowDescend',
-                     True, False, _('Toolbar Commands'))
+                     'ViewPrevSelect,ViewNextSelect,,ViewShowDescend')
 
 def setKeyboardOptionDefaults(keyboardOptions):
     """Set defaults for keyboard shortcuts.

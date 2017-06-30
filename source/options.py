@@ -455,11 +455,10 @@ class ChoiceOptionItem(StringOptionItem):
 class KeyOptionItem(StringOptionItem):
     """Class to store and control a keyboard key based config option entry.
 
-    Stores the name, value, category and description, provides validation,
-    config file output and dialog controls.
+    Stores the name, value and category, provides validation and config file
+    output.
     """
-    def __init__(self, optionDict, name, value, category='', description='',
-                 columnNum=0):
+    def __init__(self, optionDict, name, value, category=''):
         """Set the parameters and initial value and add to optionDict.
 
         Raises a ValueError if initial validation fails.
@@ -468,11 +467,8 @@ class KeyOptionItem(StringOptionItem):
             name -- the string key for the option
             value -- a numeric or string-based value
             category -- a string for the option group this belongs to
-            description -- a string for use in the control dialog
-            columnNum -- the column position for this control in the dialog
         """
-        super().__init__(optionDict, name, value, True, False, category,
-                         description, columnNum)
+        super().__init__(optionDict, name, value, True, False, category)
 
     def setValue(self, value):
         """Sets the value and validates, returns True if OK.
@@ -481,7 +477,7 @@ class KeyOptionItem(StringOptionItem):
         or if the value is unchanged.
         Raises a ValueError if validation fails without an old value.
         Arguments:
-            value -- a numeric or string-based value to set
+            value -- a key string value to set
         """
         key = QKeySequence(value)
         if value and key.isEmpty():
@@ -497,6 +493,39 @@ class KeyOptionItem(StringOptionItem):
         """Return the value to be stored in the JSON file.
         """
         return self.value.toString()
+
+
+class DataListOptionItem(StringOptionItem):
+    """Class to store an arbitrary length list containing various data.
+
+    Stores the name and value, provides validation and config file output.
+    """
+    def __init__(self, optionDict, name, value):
+        """Set the parameters and initial value and add to optionDict.
+
+        Raises a ValueError if initial validation fails.
+        Arguments:
+            optionDict -- a dictionary to add this option item to
+            name -- the string key for the option
+            value -- a list containg other basic data types
+        """
+        super().__init__(optionDict, name, value)
+
+    def setValue(self, value):
+        """Sets the value and validates, returns True if OK.
+
+        Returns False if validation fails but the old value is OK,
+        or if the value is unchanged.
+        Raises a ValueError if validation fails without an old value.
+        Arguments:
+            value -- a list containg other basic data types
+        """
+        if isinstance(value, list) and value != self.value:
+            self.value = value
+            return True
+        if self.value == None:
+            raise ValueError
+        return False
 
 
 class Options(OrderedDict):

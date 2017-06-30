@@ -614,6 +614,7 @@ class TreeLocalControl(QObject):
                 self.filePathObj.with_suffix('.trl')
             self.fileSave()
             if not self.modified:
+                globalref.mainControl.recentFiles.addItem(self.filePathObj)
                 self.updateWindowCaptions()
                 return
         self.filePathObj = oldPathObj

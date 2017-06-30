@@ -142,6 +142,16 @@ class TreeStructure(treenode.TreeNode):
             else:
                 node.removeInvalidSpotRefs(False)
 
+    def spotById(self, spotId):
+        """Return a spot based on a spot ID string.
+
+        Raises KeyError on invalid node ID, an IndexError on invalid spot num.
+        Arguments:
+            spotId -- a spot ID string, in the form "nodeID:spotInstance"
+        """
+        nodeId, spotNum = spotId.split(':', 1)
+        return self.nodeDict[nodeId].spotByNumber(int(spotNum))
+
     def getConfigDialogFormats(self, forceReset=False):
         """Return duplicate formats for use in the config dialog.
 

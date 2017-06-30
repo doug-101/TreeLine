@@ -388,6 +388,7 @@ class TreeWindow(QMainWindow):
         """Add menu items for actions.
         """
         self.fileMenu = self.menuBar().addMenu(_('&File'))
+        self.fileMenu.aboutToShow.connect(self.loadRecentMenu)
         self.fileMenu.addAction(self.allActions['FileNew'])
         self.fileMenu.addAction(self.allActions['FileOpen'])
         self.fileMenu.addSeparator()
@@ -493,7 +494,11 @@ class TreeWindow(QMainWindow):
         """Expand all children of the selected spots.
         """
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        for spot in self.treeView.selectionModel().selectedSpots():
+        selectedSpots = self.treeView.selectionModel().selectedSpots()
+        if not selectedSpots:
+            selectedSpots = (self.treeView.model().treeStructure.
+                             spotByNumber(0).childSpots())
+        for spot in selectedSpots:
             self.treeView.expandBranch(spot)
         QApplication.restoreOverrideCursor()
 
@@ -501,7 +506,11 @@ class TreeWindow(QMainWindow):
         """Collapse all children of the selected spots.
         """
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        for spot in self.treeView.selectionModel().selectedSpots():
+        selectedSpots = self.treeView.selectionModel().selectedSpots()
+        if not selectedSpots:
+            selectedSpots = (self.treeView.model().treeStructure.
+                             spotByNumber(0).childSpots())
+        for spot in selectedSpots:
             self.treeView.collapseBranch(spot)
         QApplication.restoreOverrideCursor()
 
@@ -558,6 +567,17 @@ class TreeWindow(QMainWindow):
         """
         self.outputSplitter.widget(1).showDescendants = checked
         self.updateRightViews()
+
+    def loadRecentMenu(self):
+        """Load recent file items to file menu before showing.
+        """
+        for action in self.fileMenu.actions():
+            text = action.text()
+            if len(text) > 1 and text[0] == '&' and '0' <= text[1] <= '9':
+                self.fileMenu.removeAction(action)
+        self.fileMenu.insertActions(self.recentFileSep,
+                                    globalref.mainControl.recentFiles.
+                                    getActions())
 
     def loadWindowMenu(self):
         """Load window list items to window menu before showing.

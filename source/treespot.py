@@ -53,6 +53,11 @@ class TreeSpot:
                           key=operator.methodcaller('sortKey'))
         return spotList.index(self)
 
+    def spotId(self):
+        """Return a spot ID string, in the form "nodeID:spotInstance".
+        """
+        return '{0}:{1:d}'.format(self.nodeRef.uId, self.instanceNumber())
+
     def isValid(self):
         """Return True if spot references and all parents are valid.
         """
@@ -76,6 +81,19 @@ class TreeSpot:
             childSpot = childNode.matchedSpot(self)
             for spot in childSpot.spotDescendantGen():
                 yield spot
+
+    def expandedSpotDescendantGen(self, treeView):
+        """Return a generator to step through expanded spots in this branch.
+
+        Does not include root spot.
+        Arguments:
+            treeView -- a ref to the treeview
+        """
+        for childSpot in self.childSpots():
+            if treeView.isSpotExpanded(childSpot):
+                yield childSpot
+                for spot in childSpot.expandedSpotDescendantGen(treeView):
+                    yield spot
 
     def childSpots(self):
         """Return a list of immediate child  spots.
