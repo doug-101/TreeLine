@@ -51,10 +51,14 @@ class RadioChoiceDialog(QDialog):
         groupLayout = QVBoxLayout(groupBox)
         self.buttonGroup = QButtonGroup(self)
         for text, value in choiceList:
-            button = QRadioButton(text)
-            button.returnValue = value
-            groupLayout.addWidget(button)
-            self.buttonGroup.addButton(button)
+            if value:
+                button = QRadioButton(text)
+                button.returnValue = value
+                groupLayout.addWidget(button)
+                self.buttonGroup.addButton(button)
+            else:  # add heading if no return value
+                label = QLabel('<b>{0}:</b>'.format(text))
+                groupLayout.addWidget(label)
         self.buttonGroup.buttons()[0].setChecked(True)
 
         ctrlLayout = QHBoxLayout()

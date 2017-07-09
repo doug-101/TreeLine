@@ -26,6 +26,7 @@ translationPath = 'translations'
 import sys
 import pathlib
 import argparse
+import locale
 import builtins
 from PyQt5.QtWidgets import QApplication
 
@@ -52,6 +53,9 @@ if __name__ == '__main__':
                         help='input filename(s) to load')
     args = parser.parse_args()
     pathObjects = [pathlib.Path(path) for path in args.fileList]
+
+    import globalref
+    globalref.localTextEncoding = locale.getpreferredencoding()
 
     import treemaincontrol
     treeMainControl = treemaincontrol.TreeMainControl(pathObjects)

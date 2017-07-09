@@ -25,6 +25,7 @@ import options
 import optiondefaults
 import recentfiles
 import icondict
+import imports
 import configdialog
 import miscdialogs
 try:
@@ -308,6 +309,11 @@ class TreeMainControl(QObject):
         fileOpenAct.triggered.connect(self.fileOpen)
         self.allActions['FileOpen'] = fileOpenAct
 
+        fileImportAct = QAction(_('&Import...'), self,
+                                      statusTip=_('Open a non-TreeLine file'))
+        fileImportAct.triggered.connect(self.fileImport)
+        self.allActions['FileImport'] = fileImportAct
+
         fileQuitAct = QAction(_('&Quit'), self,
                               statusTip=_('Exit the application'))
         fileQuitAct.triggered.connect(self.fileQuit)
@@ -382,6 +388,15 @@ class TreeMainControl(QObject):
                                                 filters)
             if fileName:
                 self.openFile(pathlib.Path(fileName))
+
+    def fileImport(self):
+        """Prompt for an import type, then a file to import.
+        """
+        importControl = imports.ImportControl()
+        structure = importControl.interactiveImport()
+        if structure:
+            self.createLocalControl(importControl.pathObj, structure)
+            self.activeControl.imported = True
 
     def fileQuit(self):
         """Close all windows to exit the applications.

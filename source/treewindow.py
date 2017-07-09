@@ -391,6 +391,7 @@ class TreeWindow(QMainWindow):
         self.fileMenu.aboutToShow.connect(self.loadRecentMenu)
         self.fileMenu.addAction(self.allActions['FileNew'])
         self.fileMenu.addAction(self.allActions['FileOpen'])
+        self.fileMenu.addAction(self.allActions['FileImport'])
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.allActions['FileSave'])
         self.fileMenu.addAction(self.allActions['FileSaveAs'])

@@ -69,7 +69,7 @@ class NodeFormat:
         """
         self.fieldDict = collections.OrderedDict()
         if formatData:
-            for fieldData in formatData['fields']:
+            for fieldData in formatData.get('fields', []):
                 fieldName = fieldData['fieldname']
                 self.addField(fieldName, fieldData)
         else:
@@ -200,6 +200,7 @@ class NodeFormat:
             fieldData -- the dict that defines this field's format
         """
         if name not in self.fieldDict:
+            print(fieldData.get('format', ''))
             self.addField(name, fieldData)
 
     def addFieldList(self, nameList, addFirstTitle=False, addToOutput=False):

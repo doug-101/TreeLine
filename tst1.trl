@@ -30,6 +30,11 @@
                "fieldtype": "InternalLink"
             },
             {
+               "fieldname": "Choice",
+               "fieldtype": "Choice",
+               "format": "1/2/3/4/5"
+            },
+            {
                "fieldname": "AutoChoice",
                "fieldtype": "AutoChoice"
             },
@@ -108,11 +113,13 @@
             "05ed54b60e3311e7b83b3417ebd53aeb"
          ],
          "data": {
+            "Choice": "5",
             "Date": "1988-05-05",
+            "DateTime": "2017-07-09 14:02:29.000000",
             "ExtLink": "<a href=\"http://google.com\">Google</a>",
             "IntLink": "<a href=\"#5dc9f57a0d6711e780c13417ebd53aeb\">Third Node</a>",
             "Name": "First Node",
-            "Time": ""
+            "Time": "14:02:22.000000"
          },
          "format": "DEFAULT",
          "uid": "701d5d18f91011e6995d3417ebd53aeb"
