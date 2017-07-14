@@ -597,12 +597,12 @@ class TreeLocalControl(QObject):
         oldImportFlag = self.imported
         self.modified = True
         self.imported = False
-        filters = ';;'.join((globalref.fileFilters['trl'],
-                             globalref.fileFilters['trlgz'],
-                             globalref.fileFilters['trlenc']))
-        initFilter = globalref.fileFilters['trl']
+        filters = ';;'.join((globalref.fileFilters['trlnsave'],
+                             globalref.fileFilters['trlngz'],
+                             globalref.fileFilters['trlnenc']))
+        initFilter = globalref.fileFilters['trlnsave']
         defaultPathObj = globalref.mainControl.defaultPathObj()
-        defaultPathObj = defaultPathObj.with_suffix('.trl')
+        defaultPathObj = defaultPathObj.with_suffix('.trln')
         newPath, selectFilter = (QFileDialog.
                                  getSaveFileName(self.activeWindow,
                                                  _('TreeLine - Save As'),
@@ -611,7 +611,7 @@ class TreeLocalControl(QObject):
         if newPath:
             self.filePathObj = pathlib.Path(newPath)
             if not self.filePathObj.suffix:
-                self.filePathObj.with_suffix('.trl')
+                self.filePathObj.with_suffix('.trln')
             self.fileSave()
             if not self.modified:
                 globalref.mainControl.recentFiles.addItem(self.filePathObj)

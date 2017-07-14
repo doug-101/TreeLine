@@ -377,9 +377,7 @@ class TreeMainControl(QObject):
         """
         if (globalref.genOptions['OpenNewWindow'] or
             self.activeControl.checkSaveChanges()):
-            filters = ';;'.join((globalref.fileFilters['trl'],
-                                 globalref.fileFilters['trlgz'],
-                                 globalref.fileFilters['trlenc'],
+            filters = ';;'.join((globalref.fileFilters['trlnopen'],
                                  globalref.fileFilters['all']))
             fileName, selFilter = QFileDialog.getOpenFileName(QApplication.
                                                 activeWindow(),

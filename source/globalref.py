@@ -26,10 +26,14 @@ treeIcons = None
 localTextEncoding = ''
 lang = ''
 
-fileFilters = {'trl': '{} (*.trl *.xml)'.format(_('TreeLine Files')),
-               'trlgz': '{} (*.trl *.trl.gz)'.
-                        format(_('TreeLine Files - Compressed')),
-               'trlenc': '{} (*.trl)'.format(_('TreeLine Files - Encrypted')),
+fileFilters = {'trlnopen': '{} (*.trln *.trln.gz *.trl)'.
+                           format(_('All TreeLine Files')),
+               'trlnsave': '{} (*.trln)'.format(_('TreeLine Files')),
+               'trlngz': '{} (*.trln *.trln.gz)'.
+                         format(_('TreeLine Files - Compressed')),
+               'trlnenc': '{} (*.trln)'.
+                          format(_('TreeLine Files - Encrypted')),
+               'trl': '{} (*.trl *.xml)'.format(_('Old TreeLine Files')),
                'all': '{} (*)'.format(_('All Files')),
                'html': '{} (*.html *.htm)'.format(_('HTML Files')),
                'txt': '{} (*.txt)'.format(_('Text Files')),
