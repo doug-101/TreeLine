@@ -51,7 +51,7 @@ class RadioChoiceDialog(QDialog):
         groupLayout = QVBoxLayout(groupBox)
         self.buttonGroup = QButtonGroup(self)
         for text, value in choiceList:
-            if value:
+            if value != None:
                 button = QRadioButton(text)
                 button.returnValue = value
                 groupLayout.addWidget(button)

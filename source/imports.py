@@ -33,7 +33,7 @@ import globalref
 
 
 methods = collections.OrderedDict()
-methods.update([(_('Text'), ''),
+methods.update([(_('Text'), None),
                 (_('&Tab indented text, one node per line'),
                  'importTabbedText'),
                 (_('Co&mma delimited (CSV) text table with header &row'),
@@ -44,10 +44,10 @@ methods.update([(_('Text'), ''),
                  'importTextLines'),
                 (_('Plain text &paragraphs (blank line delimited)'),
                  'importTextPara'),
-                (_('Bookmarks'), ''),
+                (_('Bookmarks'), None),
                 (_('&HTML bookmarks (Mozilla Format)'), 'importMozilla'),
                 (_('&XML bookmarks (XBEL format)'), 'importXbel'),
-                (_('Other'), ''),
+                (_('Other'), None),
                 (_('Old TreeLine File (1.x or 2.x)'), 'importOldTreeLine'),
                 (_('Treepad &file (text nodes only)'), 'importTreePad'),
                 (_('&Generic XML (non-TreeLine file)'), 'importXml'),
