@@ -200,7 +200,6 @@ class NodeFormat:
             fieldData -- the dict that defines this field's format
         """
         if name not in self.fieldDict:
-            print(fieldData.get('format', ''))
             self.addField(name, fieldData)
 
     def addFieldList(self, nameList, addFirstTitle=False, addToOutput=False):

@@ -18,6 +18,7 @@ import collections
 import zipfile
 import csv
 import html.parser
+import xml.sax.saxutils
 from xml.etree import ElementTree
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QMessageBox
@@ -27,6 +28,7 @@ import treestructure
 import treemodel
 import nodeformat
 import treeformats
+import urltools
 import globalref
 
 
@@ -81,6 +83,10 @@ class ImportControl:
         """
         self.pathObj = pathObj
         self.errorMessage = ''
+        # below members for old TreeLine file imports
+        self.treeLineImportVersion = []
+        self.treeLineRootAttrib = {}
+        self.treeLineOldFieldAttr = {}
 
     def interactiveImport(self, addWarning=False):
         """Prompt the user for import type & proceed with import.
@@ -292,25 +298,47 @@ class ImportControl:
             return None
         version = tree.getroot().get('tlversion', '').split('.')
         try:
-            version = [int(i) for i in version]
+            self.treeLineImportVersion = [int(i) for i in version]
         except ValueError:
-            version = []
+            pass
+        self.treeLineRootAttrib = tree.getroot().attrib
         structure = treestructure.TreeStructure()
         idRefDict = {}
-        self.loadOldTreeLineNode(tree.getroot(), structure, idRefDict, None)
+        linkList = []
+        self.loadOldTreeLineNode(tree.getroot(), structure, idRefDict,
+                                 linkList, None)
         self.convertOldNodes(structure)
+        linkRe = re.compile(r'<a [^>]*href="#(.*?)"[^>]*>.*?</a>', re.I | re.S)
+        for node, fieldName in linkList:
+            text = node.data[fieldName]
+            startPos = 0
+            while True:
+                match = linkRe.search(text, startPos)
+                if not match:
+                    break
+                newId = idRefDict.get(match.group(1), '')
+                if newId:
+                    text = text[:match.start(1)] + newId + text[match.end(1):]
+                startPos = match.start(1)
+            node.data[fieldName] = text
         structure.generateSpots(None)
         for nodeFormat in structure.treeFormats.values():
             nodeFormat.updateLineParsing()
+            if nodeFormat.useBullets:
+                nodeFormat.addBullets()
+            if nodeFormat.useTables:
+                nodeFormat.addTables()
         return structure
 
-    def loadOldTreeLineNode(self, element, structure, idRefDict, parent=None):
+    def loadOldTreeLineNode(self, element, structure, idRefDict, linkList,
+                            parent=None):
         """Recursively load an old TreeLine ElementTree node and its children.
 
         Arguments:
             element -- an ElementTree node
             structure -- a ref to the new tree structure
             idRefDict -- a dict to relate old to new unique node IDs
+            linkList -- internal link list ref with (node, fieldname) tuples
             parent  -- the parent TreeNode (None for the root node only)
         """
         try:
@@ -321,6 +349,7 @@ class ImportControl:
                                                structure.treeFormats,
                                                formatData)
             structure.treeFormats[element.tag] = typeFormat
+            self.treeLineOldFieldAttr[typeFormat.name] = {}
         if element.get('item') == 'y':
             node = treenode.TreeNode(typeFormat)
             oldId = element.attrib.get('uniqueid', '')
@@ -331,16 +360,29 @@ class ImportControl:
             else:
                 structure.childList.append(node)
             structure.nodeDict[node.uId] = node
+            cloneAttr = element.attrib.get('clones', '')
+            if cloneAttr:
+                for cloneId in cloneAttr.split(','):
+                    if cloneId in idRefDict:
+                        cloneNode = structure.nodeDict[idRefDict[cloneId]]
+                        node.data = cloneNode.data.copy()
+                        break
         else:     # bare format (no nodes)
             node = None
         for child in element:
             if child.get('item') and node:
-                self.loadOldTreeLineNode(child, structure, idRefDict, node)
+                self.loadOldTreeLineNode(child, structure, idRefDict,
+                                         linkList, node)
             else:
                 if node and child.text:
                     node.data[child.tag] = child.text
-                fieldData = self.convertOldFieldFormat(child.attrib)
-                typeFormat.addFieldIfNew(child.tag, fieldData)
+                    if child.get('linkcount'):
+                        linkList.append((node, child.tag))
+                if child.tag not in typeFormat.fieldDict:
+                    fieldData = self.convertOldFieldFormat(child.attrib)
+                    oldFormatDict = self.treeLineOldFieldAttr[typeFormat.name]
+                    oldFormatDict[child.tag] = fieldData
+                    typeFormat.addField(child.tag, fieldData)
 
     def convertOldNodeFormat(self, attrib):
         """Return JSON format data from old node format attributes.
@@ -351,9 +393,6 @@ class ImportControl:
         for key in ('spacebetween', 'formathtml', 'bullets', 'tables'):
             if key in attrib:
                 attrib[key] = attrib[key].startswith('y')
-        for key in ('childtype', 'icon', 'outputsep'):
-            if key in attrib:
-                attrib[key] = attrib[key]
         attrib['titleline'] = attrib.get('line0', '')
         lineKeyRe = re.compile(r'line\d+$')
         lineNums = sorted([int(key[4:]) for key in attrib.keys()
@@ -362,6 +401,11 @@ class ImportControl:
             del lineNums[0]
         attrib['outputlines'] = [[attrib['line{0}'.format(keyNum)]] for
                                  keyNum in lineNums]
+        if self.treeLineImportVersion < [1, 9]:  # for very old TL versions
+            attrib['spacebetween'] = not (self.treeLineRootAttrib.
+                                          get('nospace', '').startswith('y'))
+            attrib['formathtml'] = not (self.treeLineRootAttrib.
+                                        get('nohtml', '').startswith('y'))
         return attrib
 
     def convertOldFieldFormat(self, attrib):
@@ -373,12 +417,30 @@ class ImportControl:
         fieldType = attrib.get('type', '')
         if fieldType:
             attrib['fieldtype'] = fieldType
+        fieldFormat = attrib.get('format', '')
+        if self.treeLineImportVersion < [1, 9]:  # for very old TL versions
+            if fieldType in ('URL', 'Path', 'ExecuteLink', 'Email'):
+                attrib['oldfieldtype'] = fieldType
+                fieldType = 'ExternalLink'
+                attrib['fieldtype'] = fieldType
+            if fieldType == 'Date':
+                fieldFormat = fieldFormat.replace('w', 'd')
+                fieldFormat = fieldFormat.replace('m', 'M')
+            if fieldType == 'Time':
+                fieldFormat = fieldFormat.replace('M', 'm')
+                fieldFormat = fieldFormat.replace('s', 'z')
+                fieldFormat = fieldFormat.replace('S', 's')
+                fieldFormat = fieldFormat.replace('AA', 'AP')
+                fieldFormat = fieldFormat.replace('aa', 'ap')
+        if 'lines' in attrib:
+            attrib['lines'] = int(attrib['lines'])
+        if 'sortkeynum' in attrib:
+            attrib['sortkeynum'] = int(attrib['sortkeynum'])
         if 'sortkeydir' in attrib:
             attrib['sortkeyfwd'] = not attrib['sortkeydir'].startswith('r')
         if 'evalhtml' in attrib:
-            attrib['evalhtml'] = attrib.get('evalhtml', '').startswith('y')
+            attrib['evalhtml'] = attrib['evalhtml'].startswith('y')
         if fieldType in ('Date', 'Time', 'DateTime'):
-            fieldFormat = attrib.get('format', '')
             fieldFormat = fieldFormat.replace('dddd', '%A')
             fieldFormat = fieldFormat.replace('ddd', '%a')
             fieldFormat = fieldFormat.replace('dd', '%d')
@@ -400,6 +462,7 @@ class ImportControl:
             fieldFormat = fieldFormat.replace('zzz', '%f')
             fieldFormat = fieldFormat.replace('AP', '%p')
             fieldFormat = fieldFormat.replace('ap', '%p')
+        if fieldFormat:
             attrib['format'] = fieldFormat
         return attrib
 
@@ -411,14 +474,56 @@ class ImportControl:
         """
         for node in structure.nodeDict.values():
             for field in node.formatRef.fields():
-                if field.typeName in ('Date', 'DateTime'):
-                    value = node.data.get(field.name, '')
-                    if value:
-                        node.data[field.name] = value.replace('/', '-')
-                if field.typeName in ('Time', 'DateTime'):
-                    value = node.data.get(field.name, '')
-                    if value:
-                        node.data[field.name] = value + '.000000'
+                text = node.data.get(field.name, '')
+                if text:
+                    if field.typeName in ('Date', 'DateTime'):
+                        text = text.replace('/', '-')
+                    if field.typeName in ('Time', 'DateTime'):
+                        text = text + '.000000'
+                    if self.treeLineImportVersion < [1, 9]:  # very old TL ver
+                        oldFormatDict = self.treeLineOldFieldAttr[node.
+                                                                formatRef.name]
+                        oldFieldAttr = oldFormatDict[field.name]
+                        if (field.typeName == 'Text' and not
+                            oldFieldAttr.get('html', '').startswith('y')):
+                            text = text.strip()
+                            text = xml.sax.saxutils.escape(text)
+                            text = text.replace('\n', '<br />\n')
+                        elif (field.typeName == 'ExternalLink' and
+                              oldFieldAttr.get('oldfieldtype', '')):
+                            oldType = oldFieldAttr['oldfieldtype']
+                            linkAltField = oldFieldAttr.get('linkalt', '')
+                            dispName = node.data.get(linkAltField, '')
+                            if not dispName:
+                                dispName = text
+                            if oldType == 'URL':
+                                if not urltools.extractScheme(text):
+                                    text = urltools.replaceScheme('http', text)
+                            elif oldType == 'Path':
+                                text = urltools.replaceScheme('file', text)
+                            elif oldType == 'ExecuteLink':
+                                if urltools.isRelative(text):
+                                    fullPath = urltools.which(text)
+                                    if fullPath:
+                                        text = fullPath
+                                text = urltools.replaceScheme('file', text)
+                            elif oldType == 'Email':
+                                text = urltools.replaceScheme('mailto', text)
+                            text = '<a href="{0}">{1}</a>'.format(text,
+                                                                  dispName)
+                        elif field.typeName == 'InternalLink':
+                            linkAltField = oldFieldAttr.get('linkalt', '')
+                            dispName = node.data.get(linkAltField, '')
+                            if not dispName:
+                                dispName = text
+                            uniqueId = text.strip().split('\n', 1)[0]
+                            uniqueId = uniqueId.replace(' ', '_').lower()
+                            uniqueId = re.sub(r'[^a-zA-Z0-9_-]+', '', uniqueId)
+                            text = '<a href="#{0}">{1}</a>'.format(uniqueId,
+                                                                   dispName)
+                        elif field.typeName == 'Picture':
+                            text = '<img src="{0}" />'.format(text)
+                    node.data[field.name] = text
 
 
     def importTreePad(self):

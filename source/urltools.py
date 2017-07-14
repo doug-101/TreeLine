@@ -14,7 +14,8 @@
 
 
 import re
-import os
+import sys
+import os.path
 
 _urlRegExp = re.compile(r'([a-z]{2,}://)?(?:/?([a-z]:))?(.*)', re.IGNORECASE)
 
@@ -129,3 +130,21 @@ def toRelative(url, refPath):
     if os.sep == '\\':
         url = url.replace('\\', '/')
     return url
+
+def which(fileName):
+    """Return the full path if the fileName is found somewhere in the PATH.
+
+    If not found, return an empty string.
+    Similar to the Linux which command.
+    Arguments:
+        fileName -- the name to search for
+    """
+    extList = ['']
+    if sys.platform.startswith('win'):
+        extList.extend(os.getenv('PATHEXT', '').split(os.pathsep))
+    for path in os.get_exec_path():
+        for ext in extList:
+            fullPath = os.path.join(path, fileName + ext)
+            if os.access(fullPath, os.X_OK):
+                return fullPath
+    return ''
