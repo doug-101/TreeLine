@@ -211,11 +211,21 @@ class TreeMainControl(QObject):
                                     format(str(pathObj)))
                 self.recentFiles.removeItem(pathObj)
             except (ValueError, KeyError, TypeError):
-                QApplication.restoreOverrideCursor()
-                QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
-                                    _('Error - invalid TreeLine file {0}').
-                                    format(str(pathObj)))
-                self.recentFiles.removeItem(pathObj)
+                importControl = imports.ImportControl(pathObj)
+                structure = importControl.importOldTreeLine()
+                if structure:
+                    self.createLocalControl(pathObj, structure, forceNewWindow)
+                    self.recentFiles.addItem(pathObj)
+                    if globalref.genOptions['SaveTreeStates']:
+                        self.recentFiles.retrieveTreeState(self.activeControl)
+                    QApplication.restoreOverrideCursor()
+                else:
+                    QApplication.restoreOverrideCursor()
+                    QMessageBox.warning(QApplication.activeWindow(),
+                                        'TreeLine',
+                                        _('Error - invalid TreeLine file {0}').
+                                        format(str(pathObj)))
+                    self.recentFiles.removeItem(pathObj)
             if not self.localControls:
                 self.createLocalControl()
 
