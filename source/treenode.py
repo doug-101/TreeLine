@@ -367,6 +367,29 @@ class TreeNode:
             else:
                 self.childList[i].replaceClonedBranches(origStruct)
 
+    def loadChildLevels(self, textLevelList, structure, initLevel=0):
+        """Recursively add children from a list of text titles and levels.
+
+        Return True on success, False if data levels are not valid.
+        Arguments:
+            textLevelList -- list of tuples with title text and level
+            structure -- a ref to the tree structure
+            initLevel -- the level of this node in the structure
+        """
+        while textLevelList:
+            text, level = textLevelList[0]
+            if level == initLevel + 1:
+                del textLevelList[0]
+                child = TreeNode(self.formatRef)
+                child.setTitle(text)
+                self.childList.append(child)
+                structure.addNodeDictRef(child)
+                if not child.loadChildLevels(textLevelList, structure, level):
+                    return False
+            else:
+                return -1 < level <= initLevel
+        return True
+
     def exportTitleText(self, level=0):
         """Return a list of tabbed title lines for this node and descendants.
 

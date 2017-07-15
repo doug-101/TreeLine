@@ -153,16 +153,15 @@ class ImportControl:
                     level = line.count('\t', 0, len(line) - len(line.lstrip()))
                     textLevelList.append((text, level))
         if textLevelList:
-            if len([item for item in textLevelList if item[1] == 0]) > 1:
-                textLevelList = [(text, level + 1) for text, level in
-                                 textLevelList]
-                textLevelList.insert(0, (treemodel.defaultRootName, 0))
-            model = treemodel.TreeModel(True)
-            text, level = textLevelList.pop(0)
-            if level == 0:
-                model.root.setTitle(text)
-                if model.root.loadChildLevels(textLevelList):
-                    return model
+            structure = treestructure.TreeStructure(addDefaults=True,
+                                                    addSpots=False)
+            structure.formatRef = structure.childList[0].formatRef
+            structure.removeNodeDictRef(structure.childList[0])
+            structure.childList = []
+            if structure.loadChildLevels(textLevelList, structure, -1):
+                structure.formatRef = None
+                structure.generateSpots(None)
+                return structure
         return None
 
     def importTableCsv(self):
