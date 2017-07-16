@@ -169,20 +169,22 @@ class ImportControl:
 
         Return the model if import is successful, otherwise None.
         """
-        model = treemodel.TreeModel(True)
-        typeName = _('TABLE')
-        tableFormat = nodeformat.NodeFormat(typeName, model.formats)
-        model.formats.addTypeIfMissing(tableFormat)
+        structure = treestructure.TreeStructure(addDefaults=True,
+                                                addSpots=False)
+        tableFormat = nodeformat.NodeFormat(_('TABLE'), structure.treeFormats)
+        structure.treeFormats.addTypeIfMissing(tableFormat)
         with self.pathObj.open(newline='',
                                encoding=globalref.localTextEncoding) as f:
             reader = csv.reader(f)
             try:
-                headings = next(reader)
+                headings = [self.correctFieldName(name) for name in
+                            next(reader)]
                 tableFormat.addFieldList(headings, True, True)
                 for entries in reader:
                     if entries:
-                        node = treenode.TreeNode(model.root, typeName, model)
-                        model.root.childList.append(node)
+                        node = treenode.TreeNode(tableFormat)
+                        structure.childList[0].childList.append(node)
+                        structure.addNodeDictRef(node)
                         try:
                             for heading in headings:
                                 node.data[heading] = entries.pop(0)
@@ -193,22 +195,22 @@ class ImportControl:
                                                    'Line {0}').
                                                  format(reader.line_num))
                             return None   # abort if too few headings
-                        node.setUniqueId(True)
             except csv.Error:
                 self.errorMessage = (_('Bad CSV format on Line {0}').
                                      format(reader.line_num))
                 return None   # abort
-        return model
+        structure.generateSpots(None)
+        return structure
 
     def importTableTabbed(self):
         """Import a file with a tab-delimited table with header row.
 
         Return the model if import is successful, otherwise None.
         """
-        model = treemodel.TreeModel(True)
-        typeName = _('TABLE')
-        tableFormat = nodeformat.NodeFormat(typeName, model.formats)
-        model.formats.addTypeIfMissing(tableFormat)
+        structure = treestructure.TreeStructure(addDefaults=True,
+                                                addSpots=False)
+        tableFormat = nodeformat.NodeFormat(_('TABLE'), structure.treeFormats)
+        structure.treeFormats.addTypeIfMissing(tableFormat)
         with self.pathObj.open(encoding=globalref.localTextEncoding) as f:
             headings = [self.correctFieldName(name) for name in
                         f.readline().split('\t')]
@@ -218,8 +220,9 @@ class ImportControl:
                 lineNum += 1
                 if line.strip():
                     entries = line.split('\t')
-                    node = treenode.TreeNode(model.root, typeName, model)
-                    model.root.childList.append(node)
+                    node = treenode.TreeNode(tableFormat)
+                    structure.childList[0].childList.append(node)
+                    structure.addNodeDictRef(node)
                     try:
                         for heading in headings:
                             node.data[heading] = entries.pop(0)
@@ -229,8 +232,8 @@ class ImportControl:
                         self.errorMessage = (_('Too many entries on Line {0}').
                                              format(lineNum))
                         return None   # abort if too few headings
-                    node.setUniqueId(True)
-        return model
+        structure.generateSpots(None)
+        return structure
 
     @staticmethod
     def correctFieldName(name):
