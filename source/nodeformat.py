@@ -23,7 +23,7 @@ if not sys.platform.startswith('win'):
 import fieldformat
 
 
-_defaultFieldName = _('Name')
+defaultFieldName = _('Name')
 _defaultOutputSeparator = ', '
 _fieldSplitRe = re.compile(r'({\*(?:\**|\?|!|&|#)[\w_\-.]+\*})')
 _fieldPartRe = re.compile(r'{\*(\**|\?|!|&|#)([\w_\-.]+)\*}')
@@ -52,9 +52,9 @@ class NodeFormat:
         self.siblingSuffix = ''
         self.origOutputLines = [] # lines without bullet or table modifications
         if addDefaultField:
-            self.addFieldIfNew(_defaultFieldName)
-            self.titleLine = ['{{*{0}*}}'.format(_defaultFieldName)]
-            self.outputLines = [['{{*{0}*}}'.format(_defaultFieldName)]]
+            self.addFieldIfNew(defaultFieldName)
+            self.titleLine = ['{{*{0}*}}'.format(defaultFieldName)]
+            self.outputLines = [['{{*{0}*}}'.format(defaultFieldName)]]
         self.updateLineParsing()
         if self.useBullets:
             self.addBullets()

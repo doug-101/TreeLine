@@ -91,7 +91,7 @@ class ImportControl:
     def interactiveImport(self, addWarning=False):
         """Prompt the user for import type & proceed with import.
 
-        Return the model if import is successful, otherwise None
+        Return the structure if import is successful, otherwise None
         Arguments:
             addWarning - if True, add non-valid file warning to dialog
         """
@@ -143,7 +143,7 @@ class ImportControl:
     def importTabbedText(self):
         """Import a file with tabbed title structure.
 
-        Return the model if import is successful, otherwise None
+        Return the structure if import is successful, otherwise None
         """
         textLevelList = []
         with self.pathObj.open(encoding=globalref.localTextEncoding) as f:
@@ -167,7 +167,7 @@ class ImportControl:
     def importTableCsv(self):
         """Import a file with a CSV-delimited table with header row.
 
-        Return the model if import is successful, otherwise None.
+        Return the structure if import is successful, otherwise None.
         """
         structure = treestructure.TreeStructure(addDefaults=True,
                                                 addSpots=False)
@@ -205,7 +205,7 @@ class ImportControl:
     def importTableTabbed(self):
         """Import a file with a tab-delimited table with header row.
 
-        Return the model if import is successful, otherwise None.
+        Return the structure if import is successful, otherwise None.
         """
         structure = treestructure.TreeStructure(addDefaults=True,
                                                 addSpots=False)
@@ -252,39 +252,47 @@ class ImportControl:
     def importTextLines(self):
         """Import a text file, creating one node per line.
 
-        Return the model if import is successful, otherwise None.
+        Return the structure if import is successful, otherwise None.
         """
-        model = treemodel.TreeModel(True)
+        structure = treestructure.TreeStructure(addDefaults=True,
+                                                addSpots=False)
+        nodeFormat = structure.childList[0].formatRef
+        structure.removeNodeDictRef(structure.childList[0])
+        structure.childList = []
         with self.pathObj.open(encoding=globalref.localTextEncoding) as f:
             for line in f:
                 line = line.strip()
                 if line:
-                    node = treenode.TreeNode(model.root, model.root.formatName,
-                                             model)
-                    model.root.childList.append(node)
+                    node = treenode.TreeNode(nodeFormat)
+                    structure.childList.append(node)
+                    structure.addNodeDictRef(node)
                     node.data[nodeformat.defaultFieldName] = line
-                    node.setUniqueId(True)
-        return model
+        structure.generateSpots(None)
+        return structure
 
     def importTextPara(self):
         """Import a text file, creating one node per paragraph.
 
         Blank line delimited.
-        Return the model if import is successful, otherwise None.
+        Return the structure if import is successful, otherwise None.
         """
-        model = treemodel.TreeModel(True)
+        structure = treestructure.TreeStructure(addDefaults=True,
+                                                addSpots=False)
+        nodeFormat = structure.childList[0].formatRef
+        structure.removeNodeDictRef(structure.childList[0])
+        structure.childList = []
         with self.pathObj.open(encoding=globalref.localTextEncoding) as f:
             text = f.read()
         paraList = text.split('\n\n')
         for para in paraList:
             para = para.strip()
             if para:
-                node = treenode.TreeNode(model.root, model.root.formatName,
-                                         model)
-                model.root.childList.append(node)
+                node = treenode.TreeNode(nodeFormat)
+                structure.childList.append(node)
+                structure.addNodeDictRef(node)
                 node.data[nodeformat.defaultFieldName] = para
-                node.setUniqueId(True)
-        return model
+        structure.generateSpots(None)
+        return structure
 
     def importOldTreeLine(self):
         """Import an old TreeLine File (1.x or 2.x).
