@@ -541,8 +541,12 @@ class ImportControl:
 
         Return the model if import is successful, otherwise None.
         """
-        model = treemodel.TreeModel(True)
-        tpFormat = model.formats[treeformats.defaultTypeName]
+        structure = treestructure.TreeStructure(addDefaults=True,
+                                                addSpots=False)
+        nodeFormat = structure.childList[0].formatRef
+        structure.removeNodeDictRef(structure.childList[0])
+        structure.childList = []
+        tpFormat = structure.treeFormats[treeformats.defaultTypeName]
         tpFormat.addFieldList([textFieldName], False, True)
         tpFormat.fieldDict[textFieldName].changeType('SpacedText')
         with self.pathObj.open(encoding=globalref.localTextEncoding) as f:
@@ -559,12 +563,12 @@ class ImportControl:
                     lines = lines[2:]
                 except (ValueError, IndexError):
                     return None
-                node =  treenode.TreeNode(None, tpFormat.name, model)
+                node =  treenode.TreeNode(tpFormat)
                 node.data[nodeformat.defaultFieldName] = title
                 node.data[textFieldName] = '\n'.join(lines)
                 node.level = level
-                node.setUniqueId(True)
                 nodeList.append(node)
+                structure.addNodeDictRef(node)
         parentList = []
         for node in nodeList:
             if node.level != 0:
@@ -572,8 +576,9 @@ class ImportControl:
                 node.parent = parentList[-1]
                 parentList[-1].childList.append(node)
             parentList.append(node)
-        model.root = nodeList[0]
-        return model
+        structure.childList = [nodeList[0]]
+        structure.generateSpots(None)
+        return structure
 
     def importXml(self):
         """Import a non-treeline generic XML file.
