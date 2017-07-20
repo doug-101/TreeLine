@@ -535,7 +535,6 @@ class ImportControl:
                             text = '<img src="{0}" />'.format(text)
                     node.data[field.name] = text
 
-
     def importTreePad(self):
         """Import a Treepad file, text nodes only.
 
@@ -543,7 +542,6 @@ class ImportControl:
         """
         structure = treestructure.TreeStructure(addDefaults=True,
                                                 addSpots=False)
-        nodeFormat = structure.childList[0].formatRef
         structure.removeNodeDictRef(structure.childList[0])
         structure.childList = []
         tpFormat = structure.treeFormats[treeformats.defaultTypeName]
@@ -583,48 +581,46 @@ class ImportControl:
     def importXml(self):
         """Import a non-treeline generic XML file.
 
-        Return the model if import is successful, otherwise None.
+        Return the structure if import is successful, otherwise None.
         """
-        model = treemodel.TreeModel()
+        structure = treestructure.TreeStructure()
         tree = ElementTree.ElementTree()
         try:
             tree.parse(str(self.pathObj))
-            self.loadXmlNode(tree.getroot(), model, None)
+            self.loadXmlNode(tree.getroot(), structure, None)
         except ElementTree.ParseError:
             return None
-        for elemFormat in model.formats.values():  # fix formats if required
-            if not elemFormat.getLines()[0]:
+        for elemFormat in structure.treeFormats.values():
+            if not elemFormat.getTitleLine():  # fix formats if required
                 elemFormat.changeTitleLine(elemFormat.name)
                 for fieldName in elemFormat.fieldNames():
                     elemFormat.addOutputLine('{0}="{{*{1}*}}"'.
                                              format(fieldName, fieldName))
             if not elemFormat.fieldDict:
                 elemFormat.addField(genericXmlTextFieldName)
-        if model.root:
-            for node in model.root.descendantGen():
-                node.updateUniqueId()
-            return model
+        if structure.childList:
+            structure.generateSpots(None)
+            return structure
         return None
 
-    def loadXmlNode(self, element, model, parent=None):
+    def loadXmlNode(self, element, structure, parent=None):
         """Recursively load a generic XML ElementTree node and its children.
 
         Arguments:
             element -- an XML ElementTree node
-            model -- a ref to the TreeLine model
+            structure -- a ref to the TreeLine structure
             parent -- the parent TreeNode (None for the root node only)
         """
-        elemFormat = model.formats.get(element.tag, None)
+        elemFormat = structure.treeFormats.get(element.tag, None)
         if not elemFormat:
-            elemFormat = nodeformat.NodeFormat(element.tag, model.formats)
-            model.formats[element.tag] = elemFormat
-        node = treenode.TreeNode(parent, elemFormat.name, model)
-        if parent:
-            parent.childList.append(node)
-        elif model.root:
-            raise ElementTree.ParseError  # invalid with two roots
-        else:
-            model.root = node
+            elemFormat = nodeformat.NodeFormat(element.tag,
+                                               structure.treeFormats)
+            structure.treeFormats[element.tag] = elemFormat
+        node = treenode.TreeNode(elemFormat)
+        structure.addNodeDictRef(node)
+        if not parent:
+            parent = structure
+        parent.childList.append(node)
         if element.text and element.text.strip():
             if genericXmlTextFieldName not in elemFormat.fieldDict:
                 elemFormat.addFieldList([genericXmlTextFieldName], True, True)
@@ -633,15 +629,18 @@ class ImportControl:
             elemFormat.addFieldIfNew(key)
             node.data[key] = value
         for child in element:
-            self.loadXmlNode(child, model, node)
+            self.loadXmlNode(child, structure, node)
 
     def importOdfText(self):
         """Import an ODF format text file outline.
 
-        Return the model if import is successful, otherwise None.
+        Return the structure if import is successful, otherwise None.
         """
-        model = treemodel.TreeModel(True)
-        odfFormat = model.formats[treeformats.defaultTypeName]
+        structure = treestructure.TreeStructure(addDefaults=True,
+                                                addSpots=False)
+        structure.removeNodeDictRef(structure.childList[0])
+        structure.childList = []
+        odfFormat = structure.treeFormats[treeformats.defaultTypeName]
         odfFormat.addField(textFieldName)
         odfFormat.changeOutputLines(['<b>{{*{0}*}}</b>'.
                                      format(nodeformat.defaultFieldName),
@@ -660,8 +659,8 @@ class ImportControl:
         headerTag = '{0}h'.format(nameSpace)
         paraTag = '{0}p'.format(nameSpace)
         numRegExp = re.compile(r'.*?(\d+)$')
-        currentNode = model.root
-        currentLevel = 0
+        parents = [structure]
+        prevLevel = 0
         for elem in rootElement.iter():
             if elem.tag == headerTag:
                 style = elem.get('{0}style-name'.format(nameSpace), '')
@@ -669,25 +668,24 @@ class ImportControl:
                     level = int(numRegExp.match(style).group(1))
                 except AttributeError:
                     return None
-                if level < 1 or level > currentLevel + 1:
+                if level < 1 or level > prevLevel + 1:
                     return None
-                while(currentLevel >= level):
-                    currentNode = currentNode.parent
-                    currentLevel -= 1
-                node = treenode.TreeNode(currentNode, odfFormat.name, model)
-                currentNode.childList.append(node)
+                parents = parents[:level]
+                node = treenode.TreeNode(odfFormat)
+                structure.addNodeDictRef(node)
+                parents[-1].childList.append(node)
                 node.data[nodeformat.defaultFieldName] = ''.join(elem.
                                                                 itertext())
-                node.setUniqueId(True)
-                currentNode = node
-                currentLevel = level
+                parents.append(node)
+                prevLevel = level
             elif elem.tag == paraTag:
                 text = ''.join(elem.itertext())
-                origText = currentNode.data.get(textFieldName, '')
+                origText = node.data.get(textFieldName, '')
                 if origText:
                     text = '{0}<br />{1}'.format(origText, text)
                 node.data[textFieldName] = text
-        return model
+        structure.generateSpots(None)
+        return structure
 
     def createBookmarkFormat(self):
         """Return a set of node formats for bookmark imports.
