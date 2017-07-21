@@ -697,12 +697,13 @@ class ImportControl:
         treeFormats[folderFormat.name] = folderFormat
         linkFormat = nodeformat.NodeFormat(bookmarkLinkTypeName, treeFormats,
                                            addDefaultField=True)
-        linkFormat.addField(bookmarkLinkFieldName, {'type': 'ExternalLink'})
+        linkFormat.addField(bookmarkLinkFieldName,
+                            {'fieldtype': 'ExternalLink'})
         linkFormat.addOutputLine('{{*{0}*}}'.format(bookmarkLinkFieldName))
         linkFormat.iconName = 'bookmark'
         treeFormats[linkFormat.name] = linkFormat
         sepFormat = nodeformat.NodeFormat(bookmarkSeparatorTypeName,
-                                          treeFormats, {'formathtml': 'y'},
+                                          treeFormats, {'formathtml': True},
                                           True)
         sepFormat.changeTitleLine('------------------')
         sepFormat.changeOutputLines(['<hr>'])
@@ -712,38 +713,40 @@ class ImportControl:
     def importMozilla(self):
         """Import an HTML mozilla-format bookmark file.
 
-        Return the model if import is successful, otherwise None.
+        Return the structure if import is successful, otherwise None.
         """
-        model = treemodel.TreeModel()
-        model.formats = self.createBookmarkFormat()
+        structure = treestructure.TreeStructure()
+        structure.treeFormats = self.createBookmarkFormat()
         with self.pathObj.open(encoding='utf-8') as f:
             text = f.read()
         try:
-            handler = HtmlBookmarkHandler(model)
+            handler = HtmlBookmarkHandler(structure)
             handler.feed(text)
             handler.close()
-        except html.parser.HTMLParseError:
+        except ValueError:
             return None
-        return model
+        structure.generateSpots(None)
+        return structure
 
     def importXbel(self):
         """Import an XBEL format bookmark file.
 
-        Return the model if import is successful, otherwise None.
+        Return the structure if import is successful, otherwise None.
         """
-        model = treemodel.TreeModel()
-        model.formats = self.createBookmarkFormat()
+        structure = treestructure.TreeStructure()
+        structure.treeFormats = self.createBookmarkFormat()
         tree = ElementTree.ElementTree()
         try:
             tree.parse(str(self.pathObj))
         except ElementTree.ParseError:
             return None
-        self.loadXbelNode(tree.getroot(), model, None)
-        if model.root:
-            return model
+        self.loadXbelNode(tree.getroot(), structure, None)
+        if structure.childList:
+            structure.generateSpots(None)
+            return structure
         return None
 
-    def loadXbelNode(self, element, model, parent=None):
+    def loadXbelNode(self, element, structure, parent=None):
         """Recursively load an XBEL ElementTree node and its children.
 
         Arguments:
@@ -752,28 +755,33 @@ class ImportControl:
             parent  -- the parent TreeNode (None for the root node only)
         """
         if element.tag in ('xbel', 'folder'):
-            node = treenode.TreeNode(parent, bookmarkFolderTypeName, model)
+            node = treenode.TreeNode(structure.
+                                     treeFormats[bookmarkFolderTypeName])
+            structure.addNodeDictRef(node)
             if parent:
                 parent.childList.append(node)
             else:
-                model.root = node
+                structure.childList.append(node)
             for child in element:
-                self.loadXbelNode(child, model, node)
+                self.loadXbelNode(child, structure, node)
         elif element.tag == 'bookmark':
-            node = treenode.TreeNode(parent, bookmarkLinkTypeName, model)
+            node = treenode.TreeNode(structure.
+                                     treeFormats[bookmarkLinkTypeName])
+            structure.addNodeDictRef(node)
             parent.childList.append(node)
             link = element.get('href').strip()
             if link:
                 node.data[bookmarkLinkFieldName] = ('<a href="{0}">{1}</a>'.
                                                     format(link, link))
             for child in element:
-                self.loadXbelNode(child, model, node)
+                self.loadXbelNode(child, structure, node)
         elif element.tag == 'title':
             parent.setTitle(element.text)
         elif element.tag == 'separator':
-            node = treenode.TreeNode(parent, bookmarkSeparatorTypeName, model)
+            node = treenode.TreeNode(structure.
+                                     treeFormats[bookmarkSeparatorTypeName])
+            structure.addNodeDictRef(node)
             parent.childList.append(node)
-            node.setUniqueId(True)
         else:   # unsupported tags
             pass
 
@@ -781,19 +789,21 @@ class ImportControl:
 class HtmlBookmarkHandler(html.parser.HTMLParser):
     """Handler to parse HTML mozilla bookmark format.
     """
-    def __init__(self, model):
+    def __init__(self, structure):
         """Initialize the HTML parser object.
 
         Arguments:
-            model -- a reference to the tree model
+            structure -- a reference to the tree structure
         """
         super().__init__()
-        self.model = model
-        self.model.root = treenode.TreeNode(None, bookmarkFolderTypeName,
-                                            self.model)
-        self.model.root.data[nodeformat.defaultFieldName] = _('Bookmarks')
-        self.currentNode = self.model.root
-        self.currentParent = None
+        self.structure = structure
+        rootNode = treenode.TreeNode(self.structure.
+                                     treeFormats[bookmarkFolderTypeName])
+        rootNode.data[nodeformat.defaultFieldName] = _('Bookmarks')
+        self.structure.addNodeDictRef(rootNode)
+        self.structure.childList = [rootNode]
+        self.currentNode = rootNode
+        self.parents = []
         self.text = ''
 
     def handle_starttag(self, tag, attrs):
@@ -806,33 +816,33 @@ class HtmlBookmarkHandler(html.parser.HTMLParser):
         if tag == 'dt' or tag == 'h1':      # start any entry
             self.text = ''
         elif tag == 'dl':    # start indent
-            self.currentParent = self.currentNode
+            self.parents.append(self.currentNode)
             self.currentNode = None
         elif tag == 'h3':    # start folder
-            if not self.currentParent:
-                raise html.parser.HTMLParseError
-            self.currentNode = treenode.TreeNode(self.currentParent,
-                                                 bookmarkFolderTypeName,
-                                                 self.model)
-            self.currentParent.childList.append(self.currentNode)
+            if not self.parents:
+                raise ValueError
+            self.currentNode = treenode.TreeNode(self.structure.
+                                           treeFormats[bookmarkFolderTypeName])
+            self.structure.addNodeDictRef(self.currentNode)
+            self.parents[-1].childList.append(self.currentNode)
         elif tag == 'a':     # start link
-            if not self.currentParent:
-                raise html.parser.HTMLParseError
-            self.currentNode = treenode.TreeNode(self.currentParent,
-                                                 bookmarkLinkTypeName,
-                                                 self.model)
-            self.currentParent.childList.append(self.currentNode)
+            if not self.parents:
+                raise ValueError
+            self.currentNode = treenode.TreeNode(self.structure.
+                                             treeFormats[bookmarkLinkTypeName])
+            self.structure.addNodeDictRef(self.currentNode)
+            self.parents[-1].childList.append(self.currentNode)
             for name, value in attrs:
                 if name == 'href':
                     link = '<a href="{0}">{0}</a>'.format(value)
                     self.currentNode.data[bookmarkLinkFieldName] = link
         elif tag == 'hr':     # separator
-            if not self.currentParent:
-                raise html.parser.HTMLParseError
-            node = treenode.TreeNode(self.currentParent,
-                                     bookmarkSeparatorTypeName, self.model)
-            node.setUniqueId(True)
-            self.currentParent.childList.append(node)
+            if not self.parents:
+                raise ValueError
+            node = treenode.TreeNode(self.structure.
+                                     treeFormats[bookmarkSeparatorTypeName])
+            self.structure.addNodeDictRef(node)
+            self.parents[-1].childList.append(node)
             self.currentNode = None
 
     def handle_endtag(self, tag):
@@ -842,16 +852,15 @@ class HtmlBookmarkHandler(html.parser.HTMLParser):
             tag -- the tag label
         """
         if tag == 'dl':      # end indented section
-            self.currentParent = self.currentParent.parent
+            self.parents = self.parents[:-1]
             self.currentNode = None
         elif tag == 'h3' or tag == 'a':    # end folder or link
             if not self.currentNode:
-                raise html.parser.HTMLParseError
+                raise ValueError
             self.currentNode.data[nodeformat.defaultFieldName] = self.text
-            self.currentNode.updateUniqueId()
         elif tag == 'h1':    # end main title
-            self.model.root.data[nodeformat.defaultFieldName] = self.text
-            self.currentNode.updateUniqueId()
+            self.structure.childList[0].data[nodeformat.
+                                             defaultFieldName] = self.text
 
     def handle_data(self, data):
         """Called by the reader to process text.

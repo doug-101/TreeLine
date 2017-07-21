@@ -21,6 +21,7 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QFileDialog,
 import treestructure
 import treemodel
 import treewindow
+import exports
 import printdata
 import undo
 import globalref
@@ -339,6 +340,11 @@ class TreeLocalControl(QObject):
         fileSaveAsAct.triggered.connect(self.fileSaveAs)
         localActions['FileSaveAs'] = fileSaveAsAct
 
+        fileExportAct = QAction(_('&Export...'), self,
+                       statusTip=_('Export the file in various other formats'))
+        fileExportAct.triggered.connect(self.fileExport)
+        localActions['FileExport'] = fileExportAct
+
         filePrintSetupAct = QAction(_('P&rint Setup...'), self,
               statusTip=_('Set margins, page size and other printing options'))
         filePrintSetupAct.triggered.connect(self.printData.printSetup)
@@ -620,6 +626,21 @@ class TreeLocalControl(QObject):
         self.filePathObj = oldPathObj
         self.modified = oldModifiedFlag
         self.imported = oldImportFlag
+
+    def fileExport(self):
+        """Export the file in various other formats.
+        """
+        exportControl = exports.ExportControl(self.model.root,
+                                              self.currentSelectionModel().
+                                              selectedNodes(),
+                                              globalref.mainControl.
+                                              defaultFilePath())
+        try:
+            exportControl.interactiveExport()
+        except IOError:
+            QApplication.restoreOverrideCursor()
+            QMessageBox.warning(self.activeWindow, 'TreeLine',
+                                _('Error - could not write to file'))
 
     def editUndo(self):
         """Undo the previous action and update the views.
