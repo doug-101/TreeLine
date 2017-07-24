@@ -24,7 +24,7 @@ try:
 except ImportError:
     __version__ = ''
 
-_defaultRootTitle = _('Main')
+defaultRootTitle = _('Main')
 
 
 class TreeStructure(treenode.TreeNode):
@@ -74,7 +74,7 @@ class TreeStructure(treenode.TreeNode):
             self.treeFormats = treeformats.TreeFormats(setDefault=True)
             node = treenode.TreeNode(self.treeFormats[treeformats.
                                                       defaultTypeName])
-            node.setTitle(_defaultRootTitle)
+            node.setTitle(defaultRootTitle)
             self.nodeDict[node.uId] = node
             self.childList.append(node)
             if addSpots:

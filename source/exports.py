@@ -12,7 +12,8 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-import os.path
+import os
+import pathlib
 import copy
 import io
 import zipfile
@@ -24,9 +25,10 @@ from PyQt5.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QDialog,
                              QFileDialog, QGroupBox, QHBoxLayout, QLabel,
                              QRadioButton, QSpinBox, QVBoxLayout, QWizard,
                              QWizardPage)
+import treestructure
 import treenode
 import treeformats
-import treemodel
+import nodeformat
 import treeoutput
 import globalref
 
@@ -44,17 +46,17 @@ _odfNamespace = {'fo':
 class ExportControl:
     """Control to do file exports for tree branches and nodes.
     """
-    def __init__(self, rootNode, selectedNodes, defaultFilePath=''):
+    def __init__(self, structure, selectedNodes, defaultPathObj=''):
         """Initialize export control object.
 
         Arguments:
-            rootNode -- the root node for exporting the entire tree
+            structure -- the tree structure ref for exporting the entire tree
             selectedNodes -- the selection for exporting partial trees
-            defaultFilePath -- path or path/name to use as file dialog default
+            defaultPathObj -- path object to use as file dialog default
         """
-        self.rootNode = rootNode
+        self.structure = structure
         self.selectedNodes = selectedNodes
-        self.defaultFilePath = os.path.splitext(defaultFilePath)[0]
+        self.defaultPathObj = defaultPathObj
 
     def interactiveExport(self):
         """Prompt the user for types, options, filename & proceed with export.
@@ -69,8 +71,9 @@ class ExportControl:
                          'textPlain': self.exportTextPlain,
                          'textTableCsv': self.exportTextTableCsv,
                          'textTableTab': self.exportTextTableTab,
+                         'oldTreeLine': self.exportOldTreeLine,
+                         'treeLineSubtree': self.exportSubtree,
                          'xmlGeneric': self.exportXmlGeneric,
-                         'xmlSubtree': self.exportXmlSubtree,
                          'odfText': self.exportOdfText,
                          'bookmarksHtml': self.exportBookmarksHtml,
                          'bookmarksXbel': self.exportBookmarksXbel}
@@ -83,7 +86,7 @@ class ExportControl:
         return False
 
     def getFileName(self, dialogTitle, defaultExt='txt'):
-        """Prompt the user for a filename and return it.
+        """Prompt the user for a filename and return a path object.
 
         Arguments:
             dialogTitle -- the title for use on the dialog window
@@ -91,33 +94,37 @@ class ExportControl:
         """
         filters = ';;'.join((globalref.fileFilters[defaultExt],
                              globalref.fileFilters['all']))
-        if os.path.basename(self.defaultFilePath):
-            self.defaultFilePath = '{0}.{1}'.format(self.defaultFilePath,
-                                                    defaultExt)
-        filePath, selectfilter = QFileDialog.getSaveFileName(QApplication.
-                                                             activeWindow(),
-                                                             dialogTitle,
-                                                          self.defaultFilePath, 
-                                                          filters)
-        if filePath and not os.path.splitext(filePath)[1]:
-            filePath = '{0}.{1}'.format(filePath, defaultExt)
-        return filePath
+        if self.defaultPathObj.name:
+            self.defaultPathObj = self.defaultPathObj.with_suffix('.' +
+                                                                  defaultExt)
+        filePath, selectFilter = QFileDialog.getSaveFileName(QApplication.
+                                                      activeWindow(),
+                                                      dialogTitle,
+                                                      str(self.defaultPathObj),
+                                                      filters)
+        if filePath:
+            pathObj = pathlib.Path(filePath)
+            if not pathObj.suffix:
+                pathObj = pathObj.with_suffix('.' + defaultExt)
+            return pathObj
+        return None
 
-    def exportHtmlSingle(self, filePath=''):
+
+    def exportHtmlSingle(self, pathObj=None):
         """Export to a single web page, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export HTML'), 'html')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export HTML'), 'html')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+            self.selectedNodes = self.structure.childList
         outputGroup = treeoutput.OutputGroup(self.selectedNodes,
                                              ExportDialog.includeRoot,
                                              ExportDialog.exportWhat !=
@@ -127,7 +134,7 @@ class ExportControl:
         outputGroup.addIndents()
         outputGroup.addSiblingPrefixes()
         outGroups = outputGroup.splitColumns(ExportDialog.numColumns)
-        htmlTitle = os.path.splitext(os.path.basename(filePath))[0]
+        htmlTitle = pathObj.stem
         indent = globalref.genOptions.getValue('IndentOffset')
         lines = ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 '
                  'Transitional//EN">', '<html>', '<head>',
@@ -154,24 +161,24 @@ class ExportControl:
             if footerText:
                 lines.append(footerText)
         lines.extend(['</body>', '</html>'])
-        with open(filePath, 'w', encoding='utf-8') as f:
+        with pathObj.open('w', encoding='utf-8') as f:
             f.writelines([(line + '\n') for line in lines])
         return True
 
-    def exportHtmlNavSingle(self, filePath=''):
+    def exportHtmlNavSingle(self, pathObj=None):
         """Export single web page with a navigation pane, ExportDialog options.
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export HTML'), 'html')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export HTML'), 'html')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+            self.selectedNodes = self.structure.childList
         outputGroup = treeoutput.OutputGroup(self.selectedNodes,
                                              ExportDialog.includeRoot, True,
                                              ExportDialog.openOnly, True,
@@ -179,7 +186,7 @@ class ExportControl:
         outputGroup.addBlanksBetween()
         outputGroup.addIndents()
         outputGroup.addSiblingPrefixes()
-        htmlTitle = os.path.splitext(os.path.basename(filePath))[0]
+        htmlTitle = pathObj.stem
         indent = globalref.genOptions.getValue('IndentOffset')
         lines = ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 '
                  'Transitional//EN">', '<html>', '<head>',
@@ -232,29 +239,30 @@ class ExportControl:
             if footerText:
                 lines.append(footerText)
         lines.extend(['</div>', '</body>', '</html>'])
-        with open(filePath, 'w', encoding='utf-8') as f:
+        with pathObj.open('w', encoding='utf-8') as f:
             f.writelines([(line + '\n') for line in lines])
         return True
 
 
-    def exportHtmlPages(self, filePath=''):
+    def exportHtmlPages(self, pathObj=None):
         """Export multiple web pages with navigation, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = QFileDialog.getExistingDirectory(QApplication.
+        if not pathObj:
+            path = QFileDialog.getExistingDirectory(QApplication.
                                                    activeWindow(),
                                                    _('TreeLine - Export HTML'),
-                                                   self.defaultFilePath)
-            if not filePath:
+                                                   str(self.defaultPathObj))
+            if not path:
                 return False
+            pathObj = pathlib.Path(path)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         oldDir = os.getcwd()
-        os.chdir(filePath)
+        os.chdir(str(pathObj))
         indent = globalref.genOptions.getValue('IndentOffset')
         cssLines = ['#sidebar {',
                     '   width: 16em;',
@@ -270,12 +278,12 @@ class ExportControl:
         with open('default.css', 'w', encoding='utf-8') as f:
             f.writelines([(line + '\n') for line in cssLines])
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+            self.selectedNodes = self.structure.childList
         if len(self.selectedNodes) > 1:
             modelRef = self.selectedNodes[0].modelRef
             dummyFormat = modelRef.formats.addDummyRootType()
             root = treenode.TreeNode(None, dummyFormat.name, modelRef)
-            name = os.path.basename(self.defaultFilePath)
+            name = self.defaultPathObj.stem
             if not name:
                 name = treemodel.defaultRootName
             root.setTitle(name)
@@ -289,31 +297,32 @@ class ExportControl:
         os.chdir(oldDir)
         return True
 
-    def exportHtmlTables(self, filePath=''):
+    def exportHtmlTables(self, pathObj=None):
         """Export to multiple web page tables, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = QFileDialog.getExistingDirectory(QApplication.
+        if not pathObj:
+            path = QFileDialog.getExistingDirectory(QApplication.
                                                    activeWindow(),
                                                    _('TreeLine - Export HTML'),
-                                                   self.defaultFilePath)
-            if not filePath:
+                                                   str(self.defaultPathObj))
+            if not path:
                 return False
+            pathObj = pathlib.Path(path)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         oldDir = os.getcwd()
-        os.chdir(filePath)
+        os.chdir(str(pathObj))
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+            self.selectedNodes = self.structure.childList
         if len(self.selectedNodes) > 1:
             modelRef = self.selectedNodes[0].modelRef
             dummyFormat = modelRef.formats.addDummyRootType()
             root = treenode.TreeNode(None, dummyFormat.name, modelRef)
-            name = os.path.basename(self.defaultFilePath)
+            name = self.defaultPathObj.stem
             if not name:
                 name = treemodel.defaultRootName
             root.setTitle(name)
@@ -327,22 +336,22 @@ class ExportControl:
         os.chdir(oldDir)
         return False
 
-    def exportTextTitles(self, filePath=''):
+    def exportTextTitles(self, pathObj=None):
         """Export tabbed title text, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export Text Titles'),
-                                        'txt')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export Text Titles'),
+                                       'txt')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+            self.selectedNodes = self.structure.childList
         if ExportDialog.exportWhat == ExportDialog.selectNode:
             lines = [node.title() for node in self.selectedNodes]
         else:
@@ -353,26 +362,26 @@ class ExportControl:
                 if not ExportDialog.includeRoot:
                     del text[0]
                 lines.extend(text)
-        with open(filePath, 'w', encoding=globalref.localTextEncoding) as f:
+        with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
             f.writelines([(line + '\n') for line in lines])
         return True
 
-    def exportTextPlain(self, filePath=''):
+    def exportTextPlain(self, pathObj=None):
         """Export unformatted text for all output, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export Plain Text'),
-                                        'txt')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export Plain Text'),
+                                       'txt')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+            self.selectedNodes = self.structure.childList
         lines = []
         for root in self.selectedNodes:
             if ExportDialog.includeRoot:
@@ -385,22 +394,22 @@ class ExportControl:
                     lines.extend(node.formatOutput(True))
                     if node.nodeFormat().spaceBetween:
                         lines.append('')
-        with open(filePath, 'w', encoding=globalref.localTextEncoding) as f:
+        with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
             f.writelines([(line + '\n') for line in lines])
         return True
 
-    def exportTextTableCsv(self, filePath=''):
+    def exportTextTableCsv(self, pathObj=None):
         """Export child CSV delimited text table, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export Text Tables'),
-                                        'csv')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export Text Tables'),
+                                       'csv')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.selectNode:
@@ -421,24 +430,24 @@ class ExportControl:
         lines = [headings]
         for node in nodeList:
             lines.append([node.data.get(head, '') for head in headings])
-        with open(filePath, 'w', newline='',
-                  encoding=globalref.localTextEncoding) as f:
+        with pathObj.open('w', newline='',
+                          encoding=globalref.localTextEncoding) as f:
             writer = csv.writer(f)
             writer.writerows(lines)
         return True
 
-    def exportTextTableTab(self, filePath=''):
+    def exportTextTableTab(self, pathObj=None):
         """Export child tab delimited text table, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export Text Tables'),
-                                        'txt')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export Text Tables'),
+                                       'txt')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.selectNode:
@@ -460,59 +469,64 @@ class ExportControl:
         for node in nodeList:
             lines.append('\t'.join([node.data.get(head, '') for head in
                                     headings]))
-        with open(filePath, 'w', encoding=globalref.localTextEncoding) as f:
+        with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
             f.writelines([(line + '\n') for line in lines])
         return True
 
-    def exportXmlGeneric(self, filePath=''):
-        """Export generic XML, use ExportDialog options.
+    def exportOldTreeLine(self, pathObj=None):
+        """Export old TreeLine version (2.0.x), use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export Generic XML'),
-                                        'xml')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export TreeLine Subtree'),
+                                       'trl')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+        if not ExportDialog.exportWhat == ExportDialog.entireTree:
+            self.structure = treestructure.TreeStructure(topNodes=self.
+                                                         selectedNodes,
+                                                         addSpots=False)
+        if len(self.structure.childList) > 1:
+            rootType = nodeformat.NodeFormat(treeformats.defaultTypeName,
+                                             self.structure.treeFormats,
+                                             addDefaultField=True)
+            self.structure.treeFormats.addTypeIfMissing(rootType)
+            root = treenode.TreeNode(self.structure.
+                                     treeFormats[treeformats.defaultTypeName])
+            root.setTitle(treestructure.defaultRootTitle)
+            self.structure.addNodeDictRef(root)
+            root.childList = self.structure.childList
+            self.structure.childList = [root]
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
-        if len(self.selectedNodes) > 1:
-            rootElement = ElementTree.Element(treeformat.defaultTypeName)
-            for node in self.selectedNodes:
-                rootElement.append(node.exportGenericXml(addBranches))
-        else:
-            rootElement = self.selectedNodes[0].exportGenericXml(addBranches)
-        elementTree = ElementTree.ElementTree(rootElement)
-        elementTree.write(filePath,  'utf-8', True)
         return True
 
-    def exportXmlSubtree(self, filePath=''):
+    def exportSubtree(self, pathObj=None):
         """Export TreeLine subtree, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export TreeLine '
-                                          'Subtree'), 'trl')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export TreeLine Subtree'),
+                                       'trln')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+            self.selectedNodes = self.structure.childList
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
         if len(self.selectedNodes) > 1:
             modelRef = self.selectedNodes[0].modelRef
             dummyFormat = modelRef.formats.addDummyRootType()
             root = treenode.TreeNode(None, dummyFormat.name, modelRef)
-            name = os.path.basename(self.defaultFilePath)
+            name = self.defaultPathObj.stem
             if not name:
                 name = treemodel.defaultRootName
             root.setTitle(name)
@@ -525,25 +539,52 @@ class ExportControl:
         rootElement.attrib.update(globalref.mainControl.activeControl.
                                   printData.xmlAttr())
         elementTree = ElementTree.ElementTree(rootElement)
-        elementTree.write(filePath, 'utf-8', True)
+        elementTree.write(str(pathObj), 'utf-8', True)
         root.modelRef.formats.removeDummyRootType()
         return True
 
-    def exportOdfText(self, filePath=''):
+    def exportXmlGeneric(self, pathObj=None):
+        """Export generic XML, use ExportDialog options.
+
+        Prompt user for path if not given in argument.
+        Return True on successful export.
+        Arguments:
+            pathObj -- use if given, otherwise prompt user
+        """
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export Generic XML'),
+                                       'xml')
+            if not pathObj:
+                return False
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        if ExportDialog.exportWhat == ExportDialog.entireTree:
+            self.selectedNodes = self.structure.childList
+        addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
+        if len(self.selectedNodes) > 1:
+            rootElement = ElementTree.Element(treeformat.defaultTypeName)
+            for node in self.selectedNodes:
+                rootElement.append(node.exportGenericXml(addBranches))
+        else:
+            rootElement = self.selectedNodes[0].exportGenericXml(addBranches)
+        elementTree = ElementTree.ElementTree(rootElement)
+        elementTree.write(str(pathObj),  'utf-8', True)
+        return True
+
+    def exportOdfText(self, pathObj=None):
         """Export an ODF text file, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export ODF Text'), 'odt')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export ODF Text'), 'odt')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+            self.selectedNodes = self.structure.childList
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
         for prefix, uri in _odfNamespace.items():
             ElementTree.register_namespace(prefix, uri)
@@ -662,28 +703,29 @@ class ExportControl:
                       {'style:name': 'Standard',
                        'style:page-layout-name': 'pm1'})
 
-        with zipfile.ZipFile(filePath, 'w', zipfile.ZIP_DEFLATED) as odfZip:
+        with zipfile.ZipFile(str(pathObj), 'w',
+                             zipfile.ZIP_DEFLATED) as odfZip:
             _addElemToZip(odfZip, contentRoot, 'content.xml')
             _addElemToZip(odfZip, manifestRoot, 'META-INF/manifest.xml')
             _addElemToZip(odfZip, styleRoot, 'styles.xml')
         return True
 
-    def exportBookmarksHtml(self, filePath=''):
+    def exportBookmarksHtml(self, pathObj=None):
         """Export HTML format bookmarks, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export HTML Bookmarks'),
-                                        'html')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export HTML Bookmarks'),
+                                       'html')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+            self.selectedNodes = self.structure.childList
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
         title = _bookmarkTitle
         if len(self.selectedNodes) == 1 and addBranches:
@@ -695,26 +737,26 @@ class ExportControl:
                  '<h1>{0}</h1>'.format(title)]
         for node in self.selectedNodes:
             lines.extend(node.exportHtmlBookmarks(addBranches))
-        with open(filePath, 'w', encoding='utf-8') as f:
+        with pathObj.open('w', encoding='utf-8') as f:
             f.writelines([(line + '\n') for line in lines])
         return True
 
-    def exportBookmarksXbel(self, filePath=''):
+    def exportBookmarksXbel(self, pathObj=None):
         """Export XBEL format bookmarks, use ExportDialog options.
 
         Prompt user for path if not given in argument.
         Return True on successful export.
         Arguments:
-            filePath -- use if given, otherwise prompt user
+            pathObj -- use if given, otherwise prompt user
         """
-        if not filePath:
-            filePath = self.getFileName(_('TreeLine - Export XBEL Bookmarks'),
-                                        'xml')
-            if not filePath:
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export XBEL Bookmarks'),
+                                       'xml')
+            if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = [self.rootNode]
+            self.selectedNodes = self.structure.childList
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
         title = _bookmarkTitle
         if len(self.selectedNodes) == 1 and addBranches:
@@ -727,7 +769,7 @@ class ExportControl:
         for node in self.selectedNodes:
             rootElem.append(node.exportXbel(addBranches))
         elementTree = ElementTree.ElementTree(rootElem)
-        with open(filePath, 'wb') as f:
+        with pathObj.open('wb') as f:
             f.write(b'<!DOCTYPE xbel>\n')
             elementTree.write(f, 'utf-8', False)
         return True
@@ -739,7 +781,7 @@ def _addElemToZip(destZip, rootElem, fileName):
     Arguments:
         destZip -- the destination zip file
         rootElem -- the root element tree item to add
-        fileName -- the fiel name or path in the zip file
+        fileName -- the file name or path in the zip file
     """
     elemTree = ElementTree.ElementTree(rootElem)
     with io.BytesIO() as output:
@@ -785,16 +827,18 @@ class ExportDialog(QWizard):
     addHeader = False
     numColumns = 1
     navPaneLevels = 2
-    exportTypes = ['html', 'text', 'xml', 'odf', 'bookmarks']
+    exportTypes = ['html', 'text', 'treeline', 'xml', 'odf', 'bookmarks']
     currentType = 'html'
     exportTypeDescript = {'html': _('&HTML'), 'text': _('&Text'),
-                          'xml': _('&XML'), 'odf': _('&ODF Outline'),
+                          'treeline': _('Tree&Line'),
+                          'xml': _('&XML (generic)'), 'odf': _('&ODF Outline'),
                           'bookmarks': _('Book&marks')}
     exportSubtypes = {'html': ['htmlSingle', 'htmlNavSingle','htmlPages',
                                'htmlTables'],
                       'text': ['textTitles', 'textPlain', 'textTableCsv',
                                'textTableTab'],
-                      'xml': ['xmlGeneric', 'xmlSubtree'],
+                      'treeline': ['oldTreeLine', 'treeLineSubtree'],
+                      'xml': ['xmlGeneric'],
                       'odf': ['odfText'],
                       'bookmarks': ['bookmarksHtml', 'bookmarksXbel']}
     currentSubtype = 'htmlSingle'
@@ -809,11 +853,11 @@ class ExportDialog(QWizard):
                        'textTableCsv': _('&Comma delimited (CSV) table '
                                          'of children'),
                        'textTableTab': _('Tab &delimited table of children'),
-                       'xmlGeneric': _('Generic &XML output'),
-                       'xmlSubtree': _('&Subtree in TreeLine format'),
+                       'oldTreeLine': _('&Old TreeLine (2.0.x)'),
+                       'treeLineSubtree': _('&TreeLine Subtree'),
                        'bookmarksHtml': _('&HTML format bookmarks'),
                        'bookmarksXbel': _('&XBEL format bookmarks')}
-    disableEntireTree = {'textTableCsv', 'textTableTab'}
+    disableEntireTree = {'textTableCsv', 'textTableTab', 'treeLineSubtree'}
     disableSelBranches = set()
     disableSelNodes = {'htmlNavSingle', 'htmlPages', 'htmlTables'}
     enableRootNode = {'htmlSingle', 'htmlNavSingle', 'textTitles',

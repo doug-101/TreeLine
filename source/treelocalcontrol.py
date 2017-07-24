@@ -630,11 +630,11 @@ class TreeLocalControl(QObject):
     def fileExport(self):
         """Export the file in various other formats.
         """
-        exportControl = exports.ExportControl(self.model.root,
+        exportControl = exports.ExportControl(self.structure,
                                               self.currentSelectionModel().
                                               selectedNodes(),
                                               globalref.mainControl.
-                                              defaultFilePath())
+                                              defaultPathObj())
         try:
             exportControl.interactiveExport()
         except IOError:
