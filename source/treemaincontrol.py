@@ -215,6 +215,8 @@ class TreeMainControl(QObject):
                 structure = importControl.importOldTreeLine()
                 if structure:
                     self.createLocalControl(pathObj, structure, forceNewWindow)
+                    self.activeControl.printData.readData(importControl.
+                                                          treeLineRootAttrib)
                     self.recentFiles.addItem(pathObj)
                     if globalref.genOptions['SaveTreeStates']:
                         self.recentFiles.retrieveTreeState(self.activeControl)

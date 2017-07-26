@@ -311,7 +311,7 @@ class ImportControl:
             self.treeLineImportVersion = [int(i) for i in version]
         except ValueError:
             pass
-        self.treeLineRootAttrib = tree.getroot().attrib
+        self.treeLineRootAttrib = self.convertPrintData(tree.getroot().attrib)
         structure = treestructure.TreeStructure()
         idRefDict = {}
         linkList = []
@@ -393,6 +393,27 @@ class ImportControl:
                     oldFormatDict = self.treeLineOldFieldAttr[typeFormat.name]
                     oldFormatDict[child.tag] = fieldData
                     typeFormat.addField(child.tag, fieldData)
+
+    def convertPrintData(self, attrib):
+        """Return JSON print data from old root attributes.
+
+        Arguments:
+            attrib -- old root print data attributes
+        """
+        for key in ('printlines', 'printwidowcontrol', 'printportrait'):
+            if key in attrib:
+                attrib[key] = not attrib[key].startswith('n')
+        for key in ('printindentfactor', 'printpaperwidth', 'printpaperheight',
+                    'printheadermargin', 'printfootermargin',
+                    'printcolumnspace'):
+            if key in attrib:
+                attrib[key] = float(attrib[key])
+        if 'printmargins' in attrib:
+            attrib['printmargins'] = [float(margin) for margin in
+                                      attrib['printmargins'].split()]
+        if 'printnumcolumns' in attrib:
+            attrib['printnumcolumns'] = int(attrib['printnumcolumns'])
+        return attrib
 
     def convertOldNodeFormat(self, attrib):
         """Return JSON format data from old node format attributes.

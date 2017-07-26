@@ -1013,6 +1013,9 @@ class FontPage(QWidget):
         if matches:
             self.styleList.setCurrentItem(matches[0])
             self.styleList.scrollToItem(matches[0])
+        else:
+            self.styleList.setCurrentRow(0)
+            self.styleList.scrollToItem(self.styleList.currentItem())
         size = repr(fontInfo.pointSize())
         matches = self.sizeList.findItems(size, Qt.MatchExactly)
         if matches:

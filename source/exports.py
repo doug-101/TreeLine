@@ -14,6 +14,7 @@
 
 import os
 import pathlib
+import re
 import copy
 import io
 import zipfile
@@ -31,6 +32,10 @@ import treeformats
 import nodeformat
 import treeoutput
 import globalref
+try:
+    from __main__ import __version__
+except ImportError:
+    __version__ = ''
 
 _bookmarkTitle = _('Bookmarks')
 _odfNamespace = {'fo':
@@ -503,6 +508,14 @@ class ExportControl:
             root.childList = self.structure.childList
             self.structure.childList = [root]
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
+        idDict = {}
+        for node in self.structure.childList[0].descendantGen():
+            _setOldUniqueId(idDict, node)
+        idDict = {i[1]: i[0] for i in idDict.items()}  # reverse (new id keys)
+        rootElement = _oldElementXml(self.structure.childList[0],
+                                     self.structure, idDict)
+        elementTree = ElementTree.ElementTree(rootElement)
+        elementTree.write(str(pathObj), 'utf-8', True)
         return True
 
     def exportSubtree(self, pathObj=None):
@@ -597,111 +610,111 @@ class ExportControl:
                     'fixed' if fontInfo.fixedPitch() else 'variable',
                     'style:name': fontInfo.family(),
                     'svg:font-family': fontInfo.family()}
-        fontElem = addOdfElement('office:font-face-decls')
-        addOdfElement('style:font-face', fontElem, fontAttr)
+        fontElem = _addOdfElement('office:font-face-decls')
+        _addOdfElement('style:font-face', fontElem, fontAttr)
         fontSizeDelta = 2
 
-        contentRoot = addOdfElement('office:document-content',
-                                    attr=versionAttr)
+        contentRoot = _addOdfElement('office:document-content',
+                                     attr=versionAttr)
         contentRoot.append(fontElem)
-        contentBodyElem = addOdfElement('office:body', contentRoot)
-        contentTextElem = addOdfElement('office:text', contentBodyElem)
+        contentBodyElem = _addOdfElement('office:body', contentRoot)
+        contentTextElem = _addOdfElement('office:text', contentBodyElem)
         maxLevel = 0
         for node in self.selectedNodes:
             level = node.exportOdf(contentTextElem, addBranches)
             maxLevel = max(level, maxLevel)
 
-        manifestRoot = addOdfElement('manifest:manifest')
-        addOdfElement('manifest:file-entry', manifestRoot,
-                      {'manifest:media-type':
-                       'application/vnd.oasis.opendocument.text',
-                       'manifest:full-path': '/'})
-        addOdfElement('manifest:file-entry', manifestRoot,
-                      {'manifest:media-type': 'text/xml',
-                       'manifest:full-path': 'content.xml'})
-        addOdfElement('manifest:file-entry', manifestRoot,
-                      {'manifest:media-type': 'text/xml',
-                       'manifest:full-path': 'styles.xml'})
+        manifestRoot = _addOdfElement('manifest:manifest')
+        _addOdfElement('manifest:file-entry', manifestRoot,
+                       {'manifest:media-type':
+                        'application/vnd.oasis.opendocument.text',
+                        'manifest:full-path': '/'})
+        _addOdfElement('manifest:file-entry', manifestRoot,
+                       {'manifest:media-type': 'text/xml',
+                        'manifest:full-path': 'content.xml'})
+        _addOdfElement('manifest:file-entry', manifestRoot,
+                       {'manifest:media-type': 'text/xml',
+                        'manifest:full-path': 'styles.xml'})
 
-        styleRoot = addOdfElement('office:document-styles', attr=versionAttr)
+        styleRoot = _addOdfElement('office:document-styles', attr=versionAttr)
         styleRoot.append(fontElem)
-        stylesElem = addOdfElement('office:styles', styleRoot)
-        defaultStyleElem = addOdfElement('style:default-style', stylesElem,
-                                         {'style:family': 'paragraph'})
-        addOdfElement('style:paragraph-properties', defaultStyleElem,
-                      {'style:writing-mode': 'page'})
-        addOdfElement('style:text-properties', defaultStyleElem,
-                      {'fo:font-size': '{0}pt'.format(fontInfo.pointSize()),
-                       'fo:hyphenate': 'false',
-                       'style:font-name': fontInfo.family()})
-        addOdfElement('style:style', stylesElem,
-                      {'style:name': 'Standard', 'style:class': 'text',
-                       'style:family': 'paragraph'})
-        bodyStyleElem = addOdfElement('style:style', stylesElem,
+        stylesElem = _addOdfElement('office:styles', styleRoot)
+        defaultStyleElem = _addOdfElement('style:default-style', stylesElem,
+                                          {'style:family': 'paragraph'})
+        _addOdfElement('style:paragraph-properties', defaultStyleElem,
+                       {'style:writing-mode': 'page'})
+        _addOdfElement('style:text-properties', defaultStyleElem,
+                       {'fo:font-size': '{0}pt'.format(fontInfo.pointSize()),
+                        'fo:hyphenate': 'false',
+                        'style:font-name': fontInfo.family()})
+        _addOdfElement('style:style', stylesElem,
+                       {'style:name': 'Standard', 'style:class': 'text',
+                        'style:family': 'paragraph'})
+        bodyStyleElem = _addOdfElement('style:style', stylesElem,
                                       {'style:name': 'Text_20_body',
                                        'style:display-name': 'Text body',
                                        'style:class': 'text',
                                        'style:family': 'paragraph',
                                        'style:parent-style-name': 'Standard'})
-        addOdfElement('style:paragraph-properties', bodyStyleElem,
+        _addOdfElement('style:paragraph-properties', bodyStyleElem,
                        {'fo:margin-bottom': '6.0pt'})
-        headStyleElem =  addOdfElement('style:style', stylesElem,
+        headStyleElem =  _addOdfElement('style:style', stylesElem,
                                        {'style:name': 'Heading',
                                         'style:class': 'text',
                                         'style:family': 'paragraph',
                                         'style:next-style-name':
                                         'Text_20_body',
                                         'style:parent-style-name': 'Standard'})
-        addOdfElement('style:paragraph-properties', headStyleElem,
-                      {'fo:keep-with-next': 'always',
-                       'fo:margin-bottom': '6.0pt',
-                       'fo:margin-top': '12.0pt'})
-        addOdfElement('style:text-properties', headStyleElem,
-                      {'fo:font-size':
-                       '{0}pt'.format(fontInfo.pointSize() + fontSizeDelta),
-                       'style:font-name': fontInfo.family()})
-        outlineStyleElem = addOdfElement('text:outline-style')
+        _addOdfElement('style:paragraph-properties', headStyleElem,
+                       {'fo:keep-with-next': 'always',
+                        'fo:margin-bottom': '6.0pt',
+                        'fo:margin-top': '12.0pt'})
+        _addOdfElement('style:text-properties', headStyleElem,
+                       {'fo:font-size':
+                        '{0}pt'.format(fontInfo.pointSize() + fontSizeDelta),
+                        'style:font-name': fontInfo.family()})
+        outlineStyleElem = _addOdfElement('text:outline-style')
         for level in range(1, maxLevel + 1):
             size = fontInfo.pointSize()
             if level <= 2:
                 size += 2 * fontSizeDelta
             elif level <= 4:
                 size += fontSizeDelta
-            levelStyleElem = addOdfElement('style:style', stylesElem,
-                                           {'style:name':
-                                            'Heading_20_{0}'.format(level),
-                                            'style:display-name':
-                                            'Heading {0}'.format(level),
-                                            'style:class': 'text',
-                                            'style:family': 'paragraph',
-                                            'style:parent-style-name':
-                                            'Heading',
-                                            'style:default-outline-level':
-                                            '{0}'.format(level)})
-            levelTextElem = addOdfElement('style:text-properties',
-                                          levelStyleElem,
-                                          {'fo:font-size':
-                                           '{0}pt'.format(size),
-                                           'fo:font-weight': 'bold'})
+            levelStyleElem = _addOdfElement('style:style', stylesElem,
+                                            {'style:name':
+                                             'Heading_20_{0}'.format(level),
+                                             'style:display-name':
+                                             'Heading {0}'.format(level),
+                                             'style:class': 'text',
+                                             'style:family': 'paragraph',
+                                             'style:parent-style-name':
+                                             'Heading',
+                                             'style:default-outline-level':
+                                             '{0}'.format(level)})
+            levelTextElem = _addOdfElement('style:text-properties',
+                                           levelStyleElem,
+                                           {'fo:font-size':
+                                            '{0}pt'.format(size),
+                                            'fo:font-weight': 'bold'})
             if level % 2 == 0:
                 levelTextElem.set('fo:font-style', 'italic')
-            addOdfElement('text:outline-level-style', outlineStyleElem,
-                          {'text:level': '{0}'.format(level),
-                           'style:num-format': ''})
+            _addOdfElement('text:outline-level-style', outlineStyleElem,
+                           {'text:level': '{0}'.format(level),
+                            'style:num-format': ''})
         stylesElem.append(outlineStyleElem)
-        autoStyleElem = addOdfElement('office:automatic-styles', styleRoot)
-        pageLayElem = addOdfElement('style:page-layout', autoStyleElem,
-                                    {'style:name': 'pm1'})
-        addOdfElement('style:page-layout-properties', pageLayElem,
-                      {'fo:margin-bottom': '0.75in',
-                       'fo:margin-left': '0.75in',
-                       'fo:margin-right': '0.75in', 'fo:margin-top': '0.75in',
-                       'fo:page-height': '11in', 'fo:page-width': '8.5in',
-                       'style:print-orientation': 'portrait'})
-        masterStyleElem = addOdfElement('office:master-styles', styleRoot)
-        addOdfElement('style:master-page', masterStyleElem,
-                      {'style:name': 'Standard',
-                       'style:page-layout-name': 'pm1'})
+        autoStyleElem = _addOdfElement('office:automatic-styles', styleRoot)
+        pageLayElem = _addOdfElement('style:page-layout', autoStyleElem,
+                                     {'style:name': 'pm1'})
+        _addOdfElement('style:page-layout-properties', pageLayElem,
+                       {'fo:margin-bottom': '0.75in',
+                        'fo:margin-left': '0.75in',
+                        'fo:margin-right': '0.75in', 'fo:margin-top': '0.75in',
+                        'fo:page-height': '11in', 'fo:page-width': '8.5in',
+                        'style:print-orientation': 'portrait'})
+        masterStyleElem = _addOdfElement('office:master-styles', styleRoot)
+        _addOdfElement('style:master-page', masterStyleElem,
+                       {'style:name': 'Standard',
+                        'style:page-layout-name': 'pm1'})
 
         with zipfile.ZipFile(str(pathObj), 'w',
                              zipfile.ZIP_DEFLATED) as odfZip:
@@ -775,6 +788,108 @@ class ExportControl:
         return True
 
 
+def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
+                   addVersion=True, extraFormats=True, addChildren=True):
+    """Return an Element object with the XML for this node's branch.
+
+    Arguments:
+        node -- the root node to save
+        structRef -- a ref to the tree structure
+        idDict -- a dict of new IDs to old IDs
+        skipTypeFormats -- a set of node format types not included in XML
+        addVersion -- if True, add TreeLine version string
+        extraFormats -- if True, includes unused format info
+        addChildren -- if True, include descendant data
+    """
+    if skipTypeFormats == None:
+        skipTypeFormats = set()
+    nodeFormat = node.formatRef
+    addFormat = nodeFormat.name not in skipTypeFormats
+    element = ElementTree.Element(nodeFormat.name, {'item':'y'})
+    # add line feeds to make output somewhat readable
+    element.tail = '\n'
+    element.text = '\n'
+    if addVersion and __version__:
+        element.set('tlversion', __version__)
+    element.set('uniqueid', idDict[node.uId])
+    if addFormat:
+        element.attrib.update(nodeFormat.xmlAttr())
+        skipTypeFormats.add(nodeFormat.name)
+    for field in nodeFormat.fields():
+        text = node.data.get(field.name, '')
+        if text or addFormat:
+            fieldElement = ElementTree.SubElement(element, field.name)
+            fieldElement.tail = '\n'
+            fieldElement.text = text
+            # linkCount = self.modelRef.linkRefCollect.linkCount(self,
+                                                               # field.name)
+            # if linkCount:
+                # fieldElement.attrib['linkcount'] = repr(linkCount)
+            if addFormat:
+                fieldElement.attrib.update(field.xmlAttr())
+                if field is nodeFormat.idField:
+                    fieldElement.attrib['idref'] = 'y'
+    if addChildren:
+        for child in node.childList:
+            element.append(_oldElementXml(child, structRef, idDict,
+                                          skipTypeFormats, False, False, True))
+    nodeFormats = []
+    if extraFormats:   # write format info for unused formats
+        nodeFormats = list(structRef.treeFormats.values())
+        if structRef.treeFormats.fileInfoFormat.fieldFormatModified:
+            nodeFormats.append(structRef.treeFormats.fileInfoFormat)
+    for nodeFormat in nodeFormats:
+        if nodeFormat.name not in skipTypeFormats:
+            formatElement = ElementTree.SubElement(element,
+                                                   nodeFormat.name,
+                                                   {'item':'n'})
+            formatElement.tail = '\n'
+            formatElement.attrib.update(nodeFormat.xmlAttr())
+            for field in nodeFormat.fields():
+                fieldElement = ElementTree.SubElement(formatElement,
+                                                      field.name)
+                fieldElement.tail = '\n'
+                fieldElement.attrib.update(field.xmlAttr())
+                if field is nodeFormat.idField:
+                    fieldElement.attrib['idref'] = 'y'
+    return element
+
+
+_idReplaceCharsRe = re.compile(r'[^a-zA-Z0-9_-]+')
+
+def _setOldUniqueId(idDict, node):
+    """Set an old TreeLine unique ID for this node amd add to dict.
+
+    Arguments:
+        idDict -- a dict of old IDs to new IDs.
+        node -- the node to give an old ID
+    """
+    nodeFormat = node.formatRef
+    idField = next(iter(nodeFormat.fieldDict.values()))
+    uId = idField.outputText(node, True, nodeFormat.formatHtml)
+    uId = uId.strip().split('\n', 1)[0]
+    maxLength = 50
+    if len(uId) > maxLength:
+        pos = uId.rfind(' ', maxLength // 2, maxLength + 1)
+        if pos < 0:
+            pos = maxLength
+        uId = uId[:pos]
+    uId = uId.replace(' ', '_').lower()
+    uId = _idReplaceCharsRe.sub('', uId)
+    if not uId:
+        uId = 'id_1'
+    elif not 'a' <= uId <= 'z':
+        uId = 'id_' + uId
+    if uId in idDict:
+        if uId == 'id_1':
+            uId = 'id'
+        i = 1
+        while uId + '_' + repr(i) in idDict:
+            I += 1
+        uId = uId + '_' + repr(i)
+    idDict[uId] = node.uId
+
+
 def _addElemToZip(destZip, rootElem, fileName):
     """Adds ElelemnetTree root elements to the given zip file.
 
@@ -789,7 +904,7 @@ def _addElemToZip(destZip, rootElem, fileName):
         destZip.writestr(fileName, output.getvalue())
 
 
-def addOdfElement(name, parent=None, attr=None):
+def _addOdfElement(name, parent=None, attr=None):
     """Shortcut function to add elements to the ElementTree.
 
     Converts names and attr keys from short version (with ':') to the full URI.

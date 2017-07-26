@@ -83,7 +83,7 @@ class PrintData:
         """Adjust line spacing & indent size based on font & indent factor.
         """
         self.lineSpacing = QFontMetrics(self.mainFont,
-                                              self.printer).lineSpacing()
+                                        self.printer).lineSpacing()
         self.indentSize = self.indentFactor * self.lineSpacing
 
     def fileData(self):
@@ -91,31 +91,30 @@ class PrintData:
         """
         data = {}
         if not self.drawLines:
-            data['printlines'] = 'n'
+            data['printlines'] = False
         if not self.widowControl:
-            data['printwidowcontrol'] = 'n'
+            data['printwidowcontrol'] = False
         if self.indentFactor != 2.0:
-            data['printindentfactor'] = repr(self.indentFactor)
+            data['printindentfactor'] = self.indentFactor
         pageSizeId = self.pageLayout.pageSize().id()
         if pageSizeId == QPageSize.Custom:
             paperWidth, paperHeight = self.roundedPaperSize()
-            data['printpaperwidth'] = repr(paperWidth)
-            data['printpaperheight'] = repr(paperHeight)
+            data['printpaperwidth'] = paperWidth
+            data['printpaperheight'] = paperHeight
         elif pageSizeId != QPageSize.Letter:
             data['printpapersize'] = self.paperSizeName(pageSizeId)
         if self.pageLayout.orientation() != QPageLayout.Portrait:
-            data['printportrait'] = 'n'
+            data['printportrait'] = False
         if self.roundedMargins() != (_defaultMargin,) * 4:
-            data['printmargins'] = ' '.join([repr(margin) for margin in
-                                              self.roundedMargins()])
+            data['printmargins'] = list(self.roundedMargins())
         if self.headerMargin != _defaultHeaderPos:
-            data['printheadermargin'] = repr(self.headerMargin)
+            data['printheadermargin'] = self.headerMargin
         if self.footerMargin != _defaultHeaderPos:
-            data['printfootermargin'] = repr(self.footerMargin)
+            data['printfootermargin'] = self.footerMargin
         if self.numColumns > 1:
-            data['printnumcolumns'] = repr(self.numColumns)
+            data['printnumcolumns'] = self.numColumns
         if self.columnSpacing != _defaultColumnSpace:
-            data['printcolumnspace'] = repr(self.columnSpacing)
+            data['printcolumnspace'] = self.columnSpacing
         if self.headerText:
             data['printheadertext'] = self.headerText
         if self.footerText:
@@ -131,36 +130,28 @@ class PrintData:
             data -- a dictionary of stored non-default settings
         """
         self.setDefaults()   # necessary for undo/redo
-        if data.get('printlines', '').startswith('n'):
-            self.drawLines = False
-        if data.get('printwidowcontrol', '').startswith('n'):
-            self.widowControl = False
-        if 'printindentfactor' in data:
-            self.indentFactor = float(data['printindentfactor'])
+        self.drawLines = data.get('printlines', True)
+        self.widowControl = data.get('printwidowcontrol', True)
+        self.indentFactor = data.get('printindentfactor', 2.0)
         if 'printpapersize' in data:
             self.pageLayout.setPageSize(QPageSize(getattr(QPageSize,
                                                   data['printpapersize'])))
             self.pageLayout.setMargins(QMarginsF(*(_defaultMargin,) * 4))
         if 'printpaperwidth' in data and 'printpaperheight' in data:
-            width =  float(data['printpaperwidth'])
-            height = float(data['printpaperheight'])
+            width =  data['printpaperwidth']
+            height = data['printpaperheight']
             self.pageLayout.setPageSize(QPageSize(QSizeF(width, height),
                                         QPageSize.Inch))
             self.pageLayout.setMargins(QMarginsF(*(_defaultMargin,) * 4))
-        if data.get('printportrait', '').startswith('n'):
+        if not data.get('printportrait', True):
             self.pageLayout.setOrientation(QPageLayout.Landscape)
         if 'printmargins' in data:
-            margins = [float(margin) for margin in
-                       data['printmargins'].split()]
+            margins = data['printmargins']
             self.pageLayout.setMargins(QMarginsF(*margins))
-        if 'printheadermargin' in data:
-            self.headerMargin = float(data['printheadermargin'])
-        if 'printfootermargin' in data:
-            self.footerMargin = float(data['printfootermargin'])
-        if 'printnumcolumns' in data:
-            self.numColumns = int(data['printnumcolumns'])
-        if 'printcolumnspace' in data:
-            self.columnSpacing = float(data['printcolumnspace'])
+        self.headerMargin = data.get('printheadermargin', _defaultHeaderPos)
+        self.footerMargin = data.get('printfootermargin', _defaultHeaderPos)
+        self.numColumns = data.get('printnumcolumns', 1)
+        self.columnSpacing = data.get('printcolumnspace', _defaultColumnSpace)
         self.headerText = data.get('printheadertext', '')
         self.footerText = data.get('printfootertext', '')
         if 'printfont' in data:
