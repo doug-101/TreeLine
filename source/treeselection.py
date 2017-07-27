@@ -78,11 +78,15 @@ class TreeSelection(QItemSelectionModel):
 
     def currentSpot(self):
         """Return the current tree spot.
+
+        Can raise AttributeError if no spot is current.
         """
         return self.currentIndex().internalPointer()
 
     def currentNode(self):
         """Return the current tree node.
+
+        Can raise AttributeError if no node is current.
         """
         return self.currentSpot().nodeRef
 
@@ -132,6 +136,17 @@ class TreeSelection(QItemSelectionModel):
         except KeyError:
             return False
         return True
+
+    def setCurrentSpot(self, spot):
+        """Set the current spot.
+
+        Arguments:
+            spot -- the spot to make current
+        """
+        self.blockSignals(True)
+        self.setCurrentIndex(spot.index(self.modelRef),
+                             QItemSelectionModel.Current)
+        self.blockSignals(False)
 
     def copySelectedNodes(self):
         """Copy these node branches to the clipboard.

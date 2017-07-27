@@ -430,7 +430,7 @@ class ImportControl:
                            if lineKeyRe.match(key)])
         if lineNums[0] == 0:
             del lineNums[0]
-        attrib['outputlines'] = [[attrib['line{0}'.format(keyNum)]] for
+        attrib['outputlines'] = [attrib['line{0}'.format(keyNum)] for
                                  keyNum in lineNums]
         if self.treeLineImportVersion < [1, 9]:  # for very old TL versions
             attrib['spacebetween'] = not (self.treeLineRootAttrib.

@@ -406,6 +406,9 @@ class TreeMainControl(QObject):
         structure = importControl.interactiveImport()
         if structure:
             self.createLocalControl(importControl.pathObj, structure)
+            if importControl.treeLineRootAttrib:
+                self.activeControl.printData.readData(importControl.
+                                                      treeLineRootAttrib)
             self.activeControl.imported = True
 
     def fileQuit(self):

@@ -51,17 +51,19 @@ _odfNamespace = {'fo':
 class ExportControl:
     """Control to do file exports for tree branches and nodes.
     """
-    def __init__(self, structure, selectedNodes, defaultPathObj=''):
+    def __init__(self, structure, selectedNodes, defaultPathObj, printData):
         """Initialize export control object.
 
         Arguments:
             structure -- the tree structure ref for exporting the entire tree
             selectedNodes -- the selection for exporting partial trees
             defaultPathObj -- path object to use as file dialog default
+            printData -- a ref to print data for old treeline exports
         """
         self.structure = structure
         self.selectedNodes = selectedNodes
         self.defaultPathObj = defaultPathObj
+        self.printData = printData
 
     def interactiveExport(self):
         """Prompt the user for types, options, filename & proceed with export.
@@ -514,6 +516,10 @@ class ExportControl:
         idDict = {i[1]: i[0] for i in idDict.items()}  # reverse (new id keys)
         rootElement = _oldElementXml(self.structure.childList[0],
                                      self.structure, idDict)
+        if __version__:
+            rootElement.set('tlversion', __version__)
+        rootElement.attrib.update(_convertOldPrintData(self.printData.
+                                                       fileData()))
         elementTree = ElementTree.ElementTree(rootElement)
         elementTree.write(str(pathObj), 'utf-8', True)
         return True
@@ -789,7 +795,7 @@ class ExportControl:
 
 
 def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
-                   addVersion=True, extraFormats=True, addChildren=True):
+                   extraFormats=True, addChildren=True):
     """Return an Element object with the XML for this node's branch.
 
     Arguments:
@@ -797,7 +803,6 @@ def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
         structRef -- a ref to the tree structure
         idDict -- a dict of new IDs to old IDs
         skipTypeFormats -- a set of node format types not included in XML
-        addVersion -- if True, add TreeLine version string
         extraFormats -- if True, includes unused format info
         addChildren -- if True, include descendant data
     """
@@ -809,30 +814,36 @@ def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
     # add line feeds to make output somewhat readable
     element.tail = '\n'
     element.text = '\n'
-    if addVersion and __version__:
-        element.set('tlversion', __version__)
     element.set('uniqueid', idDict[node.uId])
     if addFormat:
-        element.attrib.update(nodeFormat.xmlAttr())
+        element.attrib.update(_convertOldNodeFormat(nodeFormat.storeFormat()))
         skipTypeFormats.add(nodeFormat.name)
+    firstField = True
     for field in nodeFormat.fields():
         text = node.data.get(field.name, '')
         if text or addFormat:
             fieldElement = ElementTree.SubElement(element, field.name)
             fieldElement.tail = '\n'
+            if field.typeName in ('Date', 'DateTime'):
+                text = text.replace('-', '/')
+            if (field.typeName in ('Time', 'DateTime') and
+                text.endswith('.000000')):
+                text = text[:-7]
             fieldElement.text = text
             # linkCount = self.modelRef.linkRefCollect.linkCount(self,
                                                                # field.name)
             # if linkCount:
                 # fieldElement.attrib['linkcount'] = repr(linkCount)
             if addFormat:
-                fieldElement.attrib.update(field.xmlAttr())
-                if field is nodeFormat.idField:
+                fieldElement.attrib.update(_convertOldFieldFormat(field.
+                                                                 formatData()))
+                if firstField:
                     fieldElement.attrib['idref'] = 'y'
+        firstField = False
     if addChildren:
         for child in node.childList:
             element.append(_oldElementXml(child, structRef, idDict,
-                                          skipTypeFormats, False, False, True))
+                                          skipTypeFormats, False, True))
     nodeFormats = []
     if extraFormats:   # write format info for unused formats
         nodeFormats = list(structRef.treeFormats.values())
@@ -844,16 +855,19 @@ def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
                                                    nodeFormat.name,
                                                    {'item':'n'})
             formatElement.tail = '\n'
-            formatElement.attrib.update(nodeFormat.xmlAttr())
+            formatElement.attrib.update(_convertOldNodeFormat(nodeFormat.
+                                                              storeFormat()))
+            firstField = True
             for field in nodeFormat.fields():
                 fieldElement = ElementTree.SubElement(formatElement,
                                                       field.name)
                 fieldElement.tail = '\n'
-                fieldElement.attrib.update(field.xmlAttr())
-                if field is nodeFormat.idField:
+                fieldElement.attrib.update(_convertOldFieldFormat(field.
+                                                                 formatData()))
+                if firstField:
                     fieldElement.attrib['idref'] = 'y'
+                    firstField = False
     return element
-
 
 _idReplaceCharsRe = re.compile(r'[^a-zA-Z0-9_-]+')
 
@@ -885,13 +899,89 @@ def _setOldUniqueId(idDict, node):
             uId = 'id'
         i = 1
         while uId + '_' + repr(i) in idDict:
-            I += 1
+            i += 1
         uId = uId + '_' + repr(i)
     idDict[uId] = node.uId
 
+def _convertOldNodeFormat(attrib):
+    """Return old XML node format attributes from current data.
+
+    Arguments:
+        attrib -- current node format data attributes
+    """
+    if 'spacebetween' in attrib and not attrib['spacebetween']:
+        attrib['spacebetween'] = 'n'
+    for key in ('formathtml', 'bullets', 'tables'):
+        if key in attrib and attrib[key]:
+            attrib[key] = 'y'
+    attrib['line0'] = attrib.get('titleline', '')
+    for i, line in enumerate(attrib['outputlines'], 1):
+        attrib['line' + repr(i)] = line
+    return attrib
+
+def _convertOldFieldFormat(attrib):
+    """Return old XML field format attributes from current data.
+
+    Arguments:
+        attrib -- current field format data attributes
+    """
+    if 'fieldtype' in attrib:
+        attrib['type'] = attrib['fieldtype']
+    for key in ('lines', 'sortkeynum'):
+        if key in attrib:
+            attrib[key] = repr(attrib[key])
+    if 'sortkeyfwd' in attrib and not attrib['sortkeyfwd']:
+        attrib['sortkeydir'] = 'r'
+    if 'evalhtml' in attrib:
+        attrib['evalhtml'] = 'y' if attrib['evalhtml'] else 'n'
+    if attrib['type'] in ('Date', 'Time', 'DateTime'):
+        fieldFormat = attrib.get('format', '')
+        if fieldFormat:
+            fieldFormat = fieldFormat.replace('%A', 'dddd')
+            fieldFormat = fieldFormat.replace('%a', 'ddd')
+            fieldFormat = fieldFormat.replace('%d', 'dd')
+            fieldFormat = fieldFormat.replace('%-d', 'd')
+            fieldFormat = fieldFormat.replace('%B', 'MMMM')
+            fieldFormat = fieldFormat.replace('%b', 'MMM')
+            fieldFormat = fieldFormat.replace('%m', 'MM')
+            fieldFormat = fieldFormat.replace('%-m', 'M')
+            fieldFormat = fieldFormat.replace('%Y', 'yyyy')
+            fieldFormat = fieldFormat.replace('%y', 'yy')
+            fieldFormat = fieldFormat.replace('%H', 'HH')
+            fieldFormat = fieldFormat.replace('%-H', 'H')
+            fieldFormat = fieldFormat.replace('%I', 'hh')
+            fieldFormat = fieldFormat.replace('%-I', 'h')
+            fieldFormat = fieldFormat.replace('%M', 'mm')
+            fieldFormat = fieldFormat.replace('%-M', 'm')
+            fieldFormat = fieldFormat.replace('%S', 'ss')
+            fieldFormat = fieldFormat.replace('%-S', 's')
+            fieldFormat = fieldFormat.replace('%f', 'zzz')
+            fieldFormat = fieldFormat.replace('%p', 'AP')
+            attrib['format'] = fieldFormat
+    return attrib
+
+def _convertOldPrintData(attrib):
+    """Return old XML print data attributes from current print data.
+
+    Arguments:
+        attrib -- current print data attributes
+    """
+    for key in ('printlines', 'printwidowcontrol', 'printportrait'):
+        if key in attrib and not attrib[key]:
+            attrib[key] = 'n'
+    for key in ('printindentfactor', 'printpaperwidth', 'printpaperheight',
+                'printheadermargin', 'printfootermargin', 'printcolumnspace',
+                'printnumcolumns'):
+        if key in attrib:
+            attrib[key] = repr(attrib[key])
+    if 'printmargins' in attrib:
+        attrib['printmargins'] = ' '.join([repr(margin) for margin in
+                                           attrib['printmargins']])
+    return attrib
+
 
 def _addElemToZip(destZip, rootElem, fileName):
-    """Adds ElelemnetTree root elements to the given zip file.
+    """Adds ElementTree root elements to the given zip file.
 
     Arguments:
         destZip -- the destination zip file

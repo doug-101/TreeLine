@@ -98,6 +98,10 @@ class TreeLocalControl(QObject):
             else:
                 oldControl.controlClosed.emit(oldControl)
             window.resetTreeModel(self.model)
+            # set first spot current to match cases with a new window
+            window.treeView.selectionModel().setCurrentSpot(self.structure.
+                                                            childList[0].
+                                                            spotByNumber(0))
             self.setWindowSignals(window, True)
             window.updateActions(self.allActions)
             self.windowList.append(window)
@@ -634,7 +638,7 @@ class TreeLocalControl(QObject):
                                               self.currentSelectionModel().
                                               selectedNodes(),
                                               globalref.mainControl.
-                                              defaultPathObj())
+                                              defaultPathObj(), self.printData)
         try:
             exportControl.interactiveExport()
         except IOError:

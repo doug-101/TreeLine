@@ -120,8 +120,12 @@ class ConfigDialog(QDialog):
         """
         if forceUpdate or (ConfigDialog.currentTypeName not in
                            ConfigDialog.formatsRef):
-            ConfigDialog.currentTypeName = (self.selectionModel.currentNode().
-                                            formatRef.name)
+            try:
+                ConfigDialog.currentTypeName = (self.selectionModel.
+                                                currentNode().formatRef.name)
+            except AttributeError:   # no current node
+                ConfigDialog.currentTypeName = (ConfigDialog.treeStruct.
+                                                childList[0].formatRef.name)
         if forceUpdate or (ConfigDialog.currentFieldName not in
                            ConfigDialog.formatsRef[ConfigDialog.
                            currentTypeName].fieldNames()):

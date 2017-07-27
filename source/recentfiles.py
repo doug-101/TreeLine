@@ -108,15 +108,19 @@ class RecentFileItem:
         if self.stateTime == 0 or fileModTime > self.stateTime:
             return    # file modified externally
         treeView = localControl.activeWindow.treeView
-        for spotId in self.openSpots:
-            treeView.expandSpot(localControl.structure.spotById(spotId))
-        if self.scrollPos:
-            treeView.scrollToSpot(localControl.structure.
-                                  spotById(self.scrollPos))
-        if self.selectSpots:
-            treeView.selectionModel().selectSpots([localControl.structure.
-                                                   spotById(spotId) for spotId
-                                                   in self.selectSpots])
+        try:
+            for spotId in self.openSpots:
+                treeView.expandSpot(localControl.structure.spotById(spotId))
+            if self.scrollPos:
+                treeView.scrollToSpot(localControl.structure.
+                                      spotById(self.scrollPos))
+            if self.selectSpots:
+                treeView.selectionModel().selectSpots([localControl.structure.
+                                                       spotById(spotId) for
+                                                       spotId in
+                                                       self.selectSpots])
+        except KeyError:   # for old TreeLine import (spotIds don't match)
+            pass
 
     def __eq__(self, other):
         """Test for equality between RecentFileItems and paths.
@@ -232,7 +236,7 @@ class RecentFileList(list):
         """
         try:
             item = self[self.index(localControl.filePathObj)]
-        except ValueError:
+        except (ValueError, TypeError):
             return
         item.recordTreeState(localControl)
 
