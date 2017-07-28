@@ -15,6 +15,7 @@
 import os
 import pathlib
 import re
+import json
 import copy
 import io
 import zipfile
@@ -24,8 +25,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFontInfo
 from PyQt5.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QDialog,
                              QFileDialog, QGroupBox, QHBoxLayout, QLabel,
-                             QRadioButton, QSpinBox, QVBoxLayout, QWizard,
-                             QWizardPage)
+                             QMessageBox, QRadioButton, QSpinBox, QVBoxLayout,
+                             QWizard, QWizardPage)
 import treestructure
 import treenode
 import treeformats
@@ -101,6 +102,7 @@ class ExportControl:
         """
         filters = ';;'.join((globalref.fileFilters[defaultExt],
                              globalref.fileFilters['all']))
+        defaultExt = defaultExt[:4]
         if self.defaultPathObj.name:
             self.defaultPathObj = self.defaultPathObj.with_suffix('.' +
                                                                   defaultExt)
@@ -498,7 +500,11 @@ class ExportControl:
             self.structure = treestructure.TreeStructure(topNodes=self.
                                                          selectedNodes,
                                                          addSpots=False)
+        addDescend = ExportDialog.exportWhat != ExportDialog.selectNode
+        addChildren = addDescend
         if len(self.structure.childList) > 1:
+            if not addDescend:
+                addChildren = True
             rootType = nodeformat.NodeFormat(treeformats.defaultTypeName,
                                              self.structure.treeFormats,
                                              addDefaultField=True)
@@ -509,13 +515,14 @@ class ExportControl:
             self.structure.addNodeDictRef(root)
             root.childList = self.structure.childList
             self.structure.childList = [root]
-        addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
         idDict = {}
         for node in self.structure.childList[0].descendantGen():
             _setOldUniqueId(idDict, node)
         idDict = {i[1]: i[0] for i in idDict.items()}  # reverse (new id keys)
         rootElement = _oldElementXml(self.structure.childList[0],
-                                     self.structure, idDict)
+                                     self.structure, idDict,
+                                     addChildren=addChildren,
+                                     addDescend=addDescend)
         if __version__:
             rootElement.set('tlversion', __version__)
         rootElement.attrib.update(_convertOldPrintData(self.printData.
@@ -534,32 +541,24 @@ class ExportControl:
         """
         if not pathObj:
             pathObj = self.getFileName(_('TreeLine - Export TreeLine Subtree'),
-                                       'trln')
+                                       'trlnsave')
             if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = self.structure.childList
-        addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
-        if len(self.selectedNodes) > 1:
-            modelRef = self.selectedNodes[0].modelRef
-            dummyFormat = modelRef.formats.addDummyRootType()
-            root = treenode.TreeNode(None, dummyFormat.name, modelRef)
-            name = self.defaultPathObj.stem
-            if not name:
-                name = treemodel.defaultRootName
-            root.setTitle(name)
-            for node in self.selectedNodes:
-                root.childList.append(copy.copy(node))
-                root.childList[-1].parent = root
-        else:
-            root = self.selectedNodes[0]
-        rootElement = root.elementXml(addChildren=addBranches)
-        rootElement.attrib.update(globalref.mainControl.activeControl.
-                                  printData.xmlAttr())
-        elementTree = ElementTree.ElementTree(rootElement)
-        elementTree.write(str(pathObj), 'utf-8', True)
-        root.modelRef.formats.removeDummyRootType()
+        self.structure = treestructure.TreeStructure(topNodes=self.
+                                                     selectedNodes,
+                                                     addSpots=False)
+        fileData = self.structure.fileData()
+        fileData['properties'].update(self.printData.fileData())
+        if ExportDialog.exportWhat == ExportDialog.selectNode:
+            topNodeIds = set([node.uId for node in self.structure.childList])
+            nodeData = [data for data in fileData['nodes'] if data['uid'] in
+                        topNodeIds]
+            for data in nodeData:
+                data['children'] = []
+            fileData['nodes'] = nodeData
+        with pathObj.open('w', encoding='utf-8', newline='\n') as f:
+            json.dump(fileData, f, indent=3, sort_keys=True)
         return True
 
     def exportXmlGeneric(self, pathObj=None):
@@ -797,7 +796,7 @@ class ExportControl:
 _linkRe = re.compile(r'<a [^>]*href="#(.*?)"[^>]*>.*?</a>', re.I | re.S)
 
 def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
-                   extraFormats=True, addChildren=True):
+                   extraFormats=True, addChildren=True, addDescend=True):
     """Return an Element object with the XML for this node's branch.
 
     Arguments:
@@ -806,7 +805,8 @@ def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
         idDict -- a dict of new IDs to old IDs
         skipTypeFormats -- a set of node format types not included in XML
         extraFormats -- if True, includes unused format info
-        addChildren -- if True, include descendant data
+        addChildren -- if True, include data for the first level of children
+        addDescend -- if True, add lower descendant nodes
     """
     if skipTypeFormats == None:
         skipTypeFormats = set()
@@ -854,7 +854,8 @@ def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
     if addChildren:
         for child in node.childList:
             element.append(_oldElementXml(child, structRef, idDict,
-                                          skipTypeFormats, False, True))
+                                          skipTypeFormats, False,
+                                          addChildren=addDescend))
     nodeFormats = []
     if extraFormats:   # write format info for unused formats
         nodeFormats = list(structRef.treeFormats.values())
@@ -1286,7 +1287,18 @@ class ExportDialogOptionPage(QWizardPage):
                               self.selectionAvail)
         num = 0
         while not self.whatButtons.checkedButton().isEnabled():
-            self.whatButtons.button(num).setChecked(True)
+            try:
+                self.whatButtons.button(num).setChecked(True)
+            except AttributeError:
+                QMessageBox.warning(self, 'TreeLine',
+                                    _('Must select nodes prior to export'))
+                parent = self.parent()
+                while parent:
+                    try:
+                        parent.reject()
+                        return
+                    except AttributeError:
+                        parent = parent.parent()
             num += 1
 
         if (subtype in ExportDialog.enableRootNode and
