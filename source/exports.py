@@ -794,6 +794,8 @@ class ExportControl:
         return True
 
 
+_linkRe = re.compile(r'<a [^>]*href="#(.*?)"[^>]*>.*?</a>', re.I | re.S)
+
 def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
                    extraFormats=True, addChildren=True):
     """Return an Element object with the XML for this node's branch.
@@ -829,11 +831,20 @@ def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
             if (field.typeName in ('Time', 'DateTime') and
                 text.endswith('.000000')):
                 text = text[:-7]
+            linkCount = 0
+            startPos = 0
+            while True:
+                match = _linkRe.search(text, startPos)
+                if not match:
+                    break
+                uId = idDict.get(match.group(1), '')
+                if uId:
+                    text = text[:match.start(1)] + uId + text[match.end(1):]
+                    linkCount += 1
+                startPos = match.start(1)
+            if linkCount:
+                fieldElement.attrib['linkcount'] = repr(linkCount)
             fieldElement.text = text
-            # linkCount = self.modelRef.linkRefCollect.linkCount(self,
-                                                               # field.name)
-            # if linkCount:
-                # fieldElement.attrib['linkcount'] = repr(linkCount)
             if addFormat:
                 fieldElement.attrib.update(_convertOldFieldFormat(field.
                                                                  formatData()))
@@ -915,8 +926,12 @@ def _convertOldNodeFormat(attrib):
         if key in attrib and attrib[key]:
             attrib[key] = 'y'
     attrib['line0'] = attrib.get('titleline', '')
+    del attrib['titleline']
     for i, line in enumerate(attrib['outputlines'], 1):
         attrib['line' + repr(i)] = line
+    del attrib['outputlines']
+    del attrib['formatname']
+    del attrib['fields']
     return attrib
 
 def _convertOldFieldFormat(attrib):
@@ -927,6 +942,7 @@ def _convertOldFieldFormat(attrib):
     """
     if 'fieldtype' in attrib:
         attrib['type'] = attrib['fieldtype']
+        del attrib['fieldtype']
     for key in ('lines', 'sortkeynum'):
         if key in attrib:
             attrib[key] = repr(attrib[key])
@@ -958,6 +974,7 @@ def _convertOldFieldFormat(attrib):
             fieldFormat = fieldFormat.replace('%f', 'zzz')
             fieldFormat = fieldFormat.replace('%p', 'AP')
             attrib['format'] = fieldFormat
+    del attrib['fieldname']
     return attrib
 
 def _convertOldPrintData(attrib):
