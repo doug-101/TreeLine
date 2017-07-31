@@ -12,7 +12,7 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-import os
+import os.path
 import pathlib
 import re
 import json
@@ -48,6 +48,8 @@ _odfNamespace = {'fo':
                  'text': 'urn:oasis:names:tc:opendocument:xmlns:text:1.0',
                  'manifest':
                  'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0'}
+_linkRe = re.compile(r'<a [^>]*href="#(.*?)"[^>]*>.*?</a>', re.I | re.S)
+_idReplaceCharsRe = re.compile(r'[^a-zA-Z0-9_-]+')
 
 class ExportControl:
     """Control to do file exports for tree branches and nodes.
@@ -134,17 +136,18 @@ class ExportControl:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedNodes = self.structure.childList
-        outputGroup = treeoutput.OutputGroup(self.selectedNodes,
-                                             ExportDialog.includeRoot,
+        spots = [node.spotByNumber(0) for node in self.selectedNodes]
+        outputGroup = treeoutput.OutputGroup(spots, ExportDialog.includeRoot,
                                              ExportDialog.exportWhat !=
                                              ExportDialog.selectNode,
-                                             ExportDialog.openOnly, True)
+                                             ExportDialog.openOnly)
+        outputGroup.addAnchors()
         outputGroup.addBlanksBetween()
         outputGroup.addIndents()
         outputGroup.addSiblingPrefixes()
         outGroups = outputGroup.splitColumns(ExportDialog.numColumns)
         htmlTitle = pathObj.stem
-        indent = globalref.genOptions.getValue('IndentOffset')
+        indent = globalref.genOptions['IndentOffset']
         lines = ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 '
                  'Transitional//EN">', '<html>', '<head>',
                  '<meta http-equiv="Content-Type" content="text/html; '
@@ -188,15 +191,15 @@ class ExportControl:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedNodes = self.structure.childList
-        outputGroup = treeoutput.OutputGroup(self.selectedNodes,
-                                             ExportDialog.includeRoot, True,
-                                             ExportDialog.openOnly, True,
-                                             ExportDialog.navPaneLevels)
+        spots = [node.spotByNumber(0) for node in self.selectedNodes]
+        outputGroup = treeoutput.OutputGroup(spots, ExportDialog.includeRoot,
+                                             True, ExportDialog.openOnly)
+        outputGroup.addAnchors(ExportDialog.navPaneLevels)
         outputGroup.addBlanksBetween()
         outputGroup.addIndents()
         outputGroup.addSiblingPrefixes()
         htmlTitle = pathObj.stem
-        indent = globalref.genOptions.getValue('IndentOffset')
+        indent = globalref.genOptions['IndentOffset']
         lines = ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 '
                  'Transitional//EN">', '<html>', '<head>',
                  '<meta http-equiv="Content-Type" content="text/html; '
@@ -217,20 +220,23 @@ class ExportControl:
                  '--></style>',
                  '</head>', '<body>', '<div id="sidebar">']
         prevLevel = 0
-        for parent in self.selectedNodes:
-            for node, level in parent.levelDescendantGen(ExportDialog.
-                                                         includeRoot,
-                                                         ExportDialog.
-                                                         navPaneLevels,
-                                                         ExportDialog.
-                                                         openOnly):
+        treeView = globalref.mainControl.activeControl.activeWindow.treeView
+        for parentSpot in spots:
+            for spot, level in parentSpot.levelSpotDescendantGen(treeView,
+                                                                 ExportDialog.
+                                                                 includeRoot,
+                                                                 ExportDialog.
+                                                                 navPaneLevels,
+                                                                 ExportDialog.
+                                                                 openOnly):
                 if level > prevLevel:
                     lines.append('<div>')
                 while level < prevLevel:
                     lines.append('</div>')
                     prevLevel -= 1
+                node = spot.nodeRef
                 lines.append('&bull; <a href="#{0}">{1}</a><br />'.
-                             format(node.uniqueId, node.title()))
+                             format(node.uId, node.title()))
                 prevLevel = level
         while level > 0:
             lines.append('</div>')
@@ -272,7 +278,7 @@ class ExportControl:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         oldDir = os.getcwd()
         os.chdir(str(pathObj))
-        indent = globalref.genOptions.getValue('IndentOffset')
+        indent = globalref.genOptions['IndentOffset']
         cssLines = ['#sidebar {',
                     '   width: 16em;',
                     '   float: left;',
@@ -286,23 +292,25 @@ class ExportControl:
                     '}']
         with open('default.css', 'w', encoding='utf-8') as f:
             f.writelines([(line + '\n') for line in cssLines])
-        if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = self.structure.childList
-        if len(self.selectedNodes) > 1:
-            modelRef = self.selectedNodes[0].modelRef
-            dummyFormat = modelRef.formats.addDummyRootType()
-            root = treenode.TreeNode(None, dummyFormat.name, modelRef)
-            name = self.defaultPathObj.stem
-            if not name:
-                name = treemodel.defaultRootName
-            root.setTitle(name)
-            for node in self.selectedNodes:
-                root.childList.append(copy.copy(node))
-                root.childList[-1].parent = root
-        else:
-            root = self.selectedNodes[0]
-        root.exportHtmlPage()
-        root.modelRef.formats.removeDummyRootType()
+        if ExportDialog.exportWhat != ExportDialog.entireTree:
+            self.structure = treestructure.TreeStructure(topNodes=self.
+                                                         selectedNodes,
+                                                         addSpots=False)
+        if len(self.structure.childList) > 1:
+            rootType = nodeformat.NodeFormat(treeformats.defaultTypeName,
+                                             self.structure.treeFormats,
+                                             addDefaultField=True)
+            self.structure.treeFormats.addTypeIfMissing(rootType)
+            root = treenode.TreeNode(self.structure.
+                                     treeFormats[treeformats.defaultTypeName])
+            root.setTitle(treestructure.defaultRootTitle)
+            self.structure.addNodeDictRef(root)
+            root.childList = self.structure.childList
+            self.structure.childList = [root]
+        pathDict = {}
+        _setHtmlDirectories(self.structure.childList[0], pathDict, pathObj,
+                            set())
+        _writeHtmlPage(self.structure.childList[0], None, None, pathDict)
         os.chdir(oldDir)
         return True
 
@@ -496,7 +504,7 @@ class ExportControl:
             if not pathObj:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        if not ExportDialog.exportWhat == ExportDialog.entireTree:
+        if ExportDialog.exportWhat != ExportDialog.entireTree:
             self.structure = treestructure.TreeStructure(topNodes=self.
                                                          selectedNodes,
                                                          addSpots=False)
@@ -793,7 +801,138 @@ class ExportControl:
         return True
 
 
-_linkRe = re.compile(r'<a [^>]*href="#(.*?)"[^>]*>.*?</a>', re.I | re.S)
+def _setHtmlDirectories(node, pathDict, parentPath, siblingNames):
+    """Recursively create path obj for node and add to the path dict by uId.
+
+    Arguments:
+        node -- the node to create a path object for
+        pathDict -- the dict of paths by uId for adding an entry
+        parentPath -- the path of the parent node
+        siblingNames -- set of already used sibling names
+    """
+    name = node.title()
+    maxLength = 32
+    if len(name) > maxLength:
+        pos = name.rfind(' ', maxLength // 2, maxLength + 1)
+        if pos < 0:
+            pos = maxLength
+        name = name[:pos]
+    name = name.replace(' ', '_')
+    name = _idReplaceCharsRe.sub('', name)
+    if not name:
+        name = 'id'
+    elif not 'a' <= name.lower() <= 'z':
+        name = 'id_' + name
+    origName = name
+    i = 1
+    while name in siblingNames:
+        name = origName + '_' + repr(i)
+        i += 1
+    siblingNames.add(name)
+    pathObj = parentPath / name
+    pathDict[node.uId] = pathObj.with_suffix('.html')
+    siblings = set()
+    for child in node.childList:
+        _setHtmlDirectories(child, pathDict, pathObj, siblings)
+
+def _writeHtmlPage(node, parent, grandparent, pathDict, level=0):
+    """Write web pages with navigation for this node and descendents.
+
+    Arguments:
+        node -- the node to write the page for
+        parent -- the parent node (or None)
+        grandparent -- the grandparent node (or None)
+        pathDict  -- the dict of paths by uId
+        level -- indicates the depth and how far up the css file is
+    """
+    lines = ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">',
+             '<html>', '<head>',
+             '<meta http-equiv="Content-Type" content="text/html; '
+             'charset=utf-8">',
+             '<link rel="stylesheet" type="text/css" '
+             'href="{0}default.css" />'.format('../' * level),
+             '<title>{0}</title>'.format(node.title()),
+             '</head>', '<body>', '<div id="sidebar">']
+    nodeDir = str(pathDict[node.uId].parent)
+    uncleList = grandparent.childList if level > 1 else [parent]
+    for uncle in uncleList:
+        if uncle:
+            relPath = os.path.relpath(str(pathDict[uncle.uId]), nodeDir)
+            lines.append('&bull; <a href="{0}">{1}</a><br />'.
+                         format(relPath, uncle.title()))
+        if uncle is parent:
+            siblingList = parent.childList if level > 0 else [node]
+            if siblingList:
+                lines.append('<div>')
+                for sibling in siblingList:
+                    if sibling is node:
+                        lines.append('&bull; <b>{0}</b><br />'.
+                                     format(node.title()))
+                        if node.childList:
+                            lines.append('<div>')
+                            for child in node.childList:
+                                relPath = os.path.relpath(str(pathDict[child.
+                                                                       uId]),
+                                                          nodeDir)
+                                lines.append('&bull; <a href="{0}">{1}</a>'
+                                             '<br />'.
+                                             format(relPath, child.title()))
+                            lines.append('</div>')
+                    else:
+                        relPath = os.path.relpath(str(pathDict[sibling.uId]),
+                                                  nodeDir)
+                        lines.append('&bull; <a href="{0}">{1}</a><br />'.
+                                     format(relPath, sibling.title()))
+                lines.append('</div>')
+    lines.extend(['</div>', '<div id="content">'])
+    outputLines = [line + '<br />' for line in node.output()]
+    if node.formatRef.siblingPrefix:
+        outputLines[0] = node.formatRef.siblingPrefix + outputLines[0]
+    if node.formatRef.siblingSuffix:
+        outputLines[-1] += node.formatRef.siblingSuffix
+    # newLines = []
+    # global _exportHtmlLevel
+    # _exportHtmlLevel = level
+    # for line in outputLines:
+        # line = _htmlLinkRe.sub(self.localLinkReplace, line)
+        # line = _imgLinkRe.sub(self.localLinkReplace, line)
+        # newLines.append(line)
+    # outputLines = newLines
+    # for linkSet in (self.modelRef.linkRefCollect.nodeRefDict.
+                    # get(self, {}).values()):
+        # nodePath = ''
+        # nodeParent = self.parent
+        # while nodeParent:
+            # nodePath = os.path.join(nodeParent.uniqueId, nodePath)
+            # nodeParent = nodeParent.parent
+        # for linkRef in linkSet:
+            # targetNode = self.modelRef.nodeIdDict[linkRef.targetId]
+            # targetPath = targetNode.uniqueId + '.html'
+            # targetParent = targetNode.parent
+            # while targetParent:
+                # targetPath = os.path.join(targetParent.uniqueId,
+                                          # targetPath)
+                # targetParent = targetParent.parent
+            # targetPath = os.path.relpath(targetPath, nodePath)
+            # newLines = []
+            # for line in outputLines:
+                # newLines.append(re.sub(r'<a href="#{0}">'.
+                                       # format(targetNode.uniqueId),
+                                       # '<a href="{0}">'.format(targetPath),
+                                       # line))
+            # outputLines = newLines
+    lines.extend(outputLines)
+    lines.extend(['</div>', '</body>', '</html>'])
+    with pathDict[node.uId].open('w', encoding='utf-8') as f:
+        f.writelines([(line + '\n') for line in lines])
+    if node.childList:
+        dirObj = pathDict[node.uId].with_suffix('')
+        if not dirObj.is_dir():
+            dirObj.mkdir(0o755)
+        os.chdir(str(dirObj))
+        for child in node.childList:
+            _writeHtmlPage(child, node, parent, pathDict, level + 1)
+        os.chdir('..')
 
 def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
                    extraFormats=True, addChildren=True, addDescend=True):
@@ -880,8 +1019,6 @@ def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
                     fieldElement.attrib['idref'] = 'y'
                     firstField = False
     return element
-
-_idReplaceCharsRe = re.compile(r'[^a-zA-Z0-9_-]+')
 
 def _setOldUniqueId(idDict, node):
     """Set an old TreeLine unique ID for this node amd add to dict.
@@ -1235,7 +1372,7 @@ class ExportDialogOptionPage(QWizardPage):
         optionBox = QGroupBox(_('Other Options'))
         topLayout.addWidget(optionBox)
         optionLayout = QVBoxLayout(optionBox)
-        self.rootButton = QCheckBox(_('&Include root node'))
+        self.rootButton = QCheckBox(_('&Include root nodes'))
         optionLayout.addWidget(self.rootButton)
         self.rootButton.setChecked(ExportDialog.includeRoot)
         self.rootButton.toggled.connect(self.setIncludeRoot)

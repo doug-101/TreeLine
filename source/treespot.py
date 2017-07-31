@@ -12,6 +12,7 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
+import sys
 import operator
 
 
@@ -94,6 +95,32 @@ class TreeSpot:
                 yield childSpot
                 for spot in childSpot.expandedSpotDescendantGen(treeView):
                     yield spot
+
+    def levelSpotDescendantGen(self, treeView, includeRoot=True, maxLevel=None,
+                               openOnly=False, initLevel=0):
+        """Return generator with (spot, level) tuples for this branch.
+
+        Arguments:
+            treeView -- a ref to the treeview, requiired to check if open
+            includeRoot -- if True, the root spot is included
+            maxLevel -- the max number of levels to return (no limit if none)
+            openOnly -- if True, only include children open in the given view
+            initLevel -- the level number to start with
+        """
+        if maxLevel == None:
+            maxLevel = sys.maxsize
+        if includeRoot:
+            yield (self, initLevel)
+            initLevel += 1
+        if initLevel < maxLevel and (not openOnly or
+                                     treeView.isSpotExpanded(self)):
+            for childSpot in self.childSpots():
+                for spot, level in childSpot.levelSpotDescendantGen(treeView,
+                                                                    True,
+                                                                    maxLevel,
+                                                                    openOnly,
+                                                                    initLevel):
+                    yield (spot, level)
 
     def childSpots(self):
         """Return a list of immediate child  spots.

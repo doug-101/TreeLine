@@ -12,10 +12,13 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
+import re
 import itertools
 import copy
 from PyQt5.QtGui import QTextDocument
 import globalref
+
+_linkRe = re.compile(r'<a [^>]*href="#(.*?)"[^>]*>.*?</a>', re.I | re.S)
 
 
 class OutputItem:
@@ -23,14 +26,12 @@ class OutputItem:
 
     Stores text lines and original indent level.
     """
-    def __init__(self, node, level, addAnchor=False, forceAnchor=False):
+    def __init__(self, node, level):
         """Convert the node into an output item.
 
         Arguments:
             node -- the tree node to convert
             level -- the node's original indent level
-            addAnchor -- if true, add an ID anchor if node is a link target
-            forceAnchor -- if true, add an ID anchor in any case
         """
         nodeFormat = node.formatRef
         if not nodeFormat.useTables:
@@ -46,6 +47,7 @@ class OutputItem:
             # remove <br /> extra space for bullets
             self.textLines[-1] = self.textLines[-1][:-6]
         self.level = level
+        self.uId = node.uId
         # following variables used by printdata only:
         height = 0
         self.pageNum = 0
@@ -93,6 +95,28 @@ class OutputItem:
         """
         if self.siblingSuffix:
             self.textLines[-1] += self.siblingSuffix
+
+    def addAnchor(self):
+        """Add a link anchor to this item.
+        """
+        self.textLines[0] = '<a id="{0}" />{1}'.format(self.uId,
+                                                       self.textLines[0])
+
+    def intLinkIds(self):
+        """Return a set of uIDs from any internal links in this item.
+        """
+        linkIds = set()
+        for line in self.textLines:
+            startPos = 0
+            while True:
+                match = _linkRe.search(line, startPos)
+                if not match:
+                    break
+                uId = match.group(1)
+                if uId:
+                    linkIds.add(uId)
+                startPos = match.start(1)
+        return linkIds
 
     def numLines(self):
         """Return the number of text lines in the item.
@@ -202,7 +226,7 @@ class OutputGroup(list):
     Modifies the output text for use in views, html and printing.
     """
     def __init__(self, spotList, includeRoot=True, includeDescend=False,
-                 openOnly=False, addAnchors=False, extraAnchorLevels=0):
+                 openOnly=False):
         """Convert the node iter list into a list of output items.
 
         Arguments:
@@ -210,37 +234,28 @@ class OutputGroup(list):
             includeRoot -- if True, include the nodes in nodeList
             includeDescend -- if True, include children, grandchildren, etc.
             openOnly -- if true, ignore collapsed children in the main treeView
-            addAnchors -- if true, add ID anchors to nodes used as link targets
-            extraAnchorLevels -- add extra anchors if the level < this
         """
         super().__init__()
         for spot in spotList:
             level = -1
             if includeRoot:
                 level = 0
-                self.append(OutputItem(spot.nodeRef, level, addAnchors,
-                                       level < extraAnchorLevels))
+                self.append(OutputItem(spot.nodeRef, level))
             if includeDescend:
-                self.addChildren(spot, level, openOnly, addAnchors,
-                                 extraAnchorLevels)
+                self.addChildren(spot, level, openOnly)
 
-    def addChildren(self, spot, level, openOnly=False, addAnchors=False,
-                    extraAnchorLevels=0):
+    def addChildren(self, spot, level, openOnly=False):
         """Recursively add OutputItems for descendants of the given spot.
 
         Arguments:
             spot -- the parent tree spot
             level -- the parent node's original indent level
-            addAnchors - if true, add ID anchors to nodes used as link targets
-            extraAnchorLevels -- add extra anchors if the level < this
         """
         treeView = globalref.mainControl.activeControl.activeWindow.treeView
         if not openOnly or treeView.isSpotExpanded(spot):
             for child in spot.childSpots():
-                self.append(OutputItem(child.nodeRef, level + 1, addAnchors,
-                                       level + 1 < extraAnchorLevels))
-                self.addChildren(child, level + 1, openOnly, addAnchors,
-                                 extraAnchorLevels)
+                self.append(OutputItem(child.nodeRef, level + 1))
+                self.addChildren(child, level + 1, openOnly)
 
     def addIndents(self):
         """Add nested <div> elements to define indentations in the output.
@@ -270,6 +285,19 @@ class OutputGroup(list):
         for item, nextItem in zip(self, self[1:]):
             if item.addSpace or nextItem.addSpace:
                 item.textLines[-1] += '<br />'
+
+    def addAnchors(self, extraLevels=0):
+        """Add anchors to items that are targets and to low level items.
+
+        Arguments:
+            extraLevels -- force adding anchors if level < this
+        """
+        linkIds = set()
+        for item in self:
+            linkIds.update(item.intLinkIds())
+        for item in self:
+            if item.uId in linkIds or item.level < extraLevels:
+                item.addAnchor()
 
     def hasPrefixes(self):
         """Return True if sibling prefixes or suffixes are found.
