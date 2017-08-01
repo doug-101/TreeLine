@@ -93,8 +93,8 @@ class OutputView(QTextBrowser):
                 super().setSource(url)
         else:
             if urltools.isRelative(name):    # check for relative path
-                defaultPath = globalref.mainControl.defaultFilePath(True)
-                name = urltools.toAbsolute(name, defaultPath)
+                defaultPath = globalref.mainControl.defaultPathObj(True)
+                name = urltools.toAbsolute(name, str(defaultPath))
             dataeditors.openExtUrl(name)
 
     def hasSelectedText(self):

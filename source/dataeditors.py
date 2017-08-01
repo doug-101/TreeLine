@@ -773,8 +773,8 @@ class RichTextEditor(HtmlTextEditor):
                     selectModel.selectNodeById(address[1:])
                 else:     # check for relative path
                     if urltools.isRelative(address):
-                        defaultPath = (globalref.mainControl.
-                                       defaultFilePath(True))
+                        defaultPath = str(globalref.mainControl.
+                                          defaultPathObj(True))
                         address = urltools.toAbsolute(address, defaultPath)
                     openExtUrl(address)
             event.accept()
@@ -1437,8 +1437,8 @@ class ExtLinkEditor(ComboEditor):
                 address = text.strip()
             if address:
                 if urltools.isRelative(address):
-                    defaultPath = globalref.mainControl.defaultFilePath(True)
-                    address = urltools.toAbsolute(address, defaultPath)
+                    defaultPath = globalref.mainControl.defaultPathObj(True)
+                    address = urltools.toAbsolute(address, str(defaultPath))
                 openExtUrl(address)
 
     def openFolder(self):
@@ -1453,8 +1453,8 @@ class ExtLinkEditor(ComboEditor):
                 address = text.strip()
             if address and urltools.extractScheme(address) in ('', 'file'):
                 if urltools.isRelative(address):
-                    defaultPath = globalref.mainControl.defaultFilePath(True)
-                    address = urltools.toAbsolute(address, defaultPath)
+                    defaultPath = globalref.mainControl.defaultPathObj(True)
+                    address = urltools.toAbsolute(address, str(defaultPath))
                 address = os.path.dirname(address)
                 openExtUrl(address)
 
@@ -1689,12 +1689,12 @@ class ExtLinkDialog(QDialog):
         """Update file path based on a change in the absolute/relative control.
         """
         absolute = self.absoluteButton.isChecked()
-        defaultPath = globalref.mainControl.defaultFilePath(True)
+        defaultPath = globalref.mainControl.defaultPathObj(True)
         address = self.addressEdit.text().strip()
         if absolute:
-            address = urltools.toAbsolute(address, defaultPath)
+            address = urltools.toAbsolute(address, str(defaultPath))
         else:
-            address = urltools.toRelative(address, defaultPath)
+            address = urltools.toRelative(address, str(defaultPath))
         self.addressEdit.setText(address)
         self.contentsChanged.emit()
 
@@ -1712,7 +1712,7 @@ class ExtLinkDialog(QDialog):
 
         Adjust based on absolute or relative path settings.
         """
-        refPath = globalref.mainControl.defaultFilePath(True)
+        refPath = str(globalref.mainControl.defaultPathObj(True))
         defaultPath = refPath
         oldAddress = self.addressEdit.text().strip()
         oldScheme = urltools.extractScheme(oldAddress)
@@ -2076,8 +2076,8 @@ class PictureLinkEditor(ComboEditor):
         address = self.currentText()
         if address:
             if urltools.isRelative(address):
-                defaultPath = globalref.mainControl.defaultFilePath(True)
-                address = urltools.toAbsolute(address, defaultPath)
+                defaultPath = globalref.mainControl.defaultPathObj(True)
+                address = urltools.toAbsolute(address, str(defaultPath))
             openExtUrl(address)
 
     def addDroppedUrl(self, urlText):
@@ -2212,12 +2212,12 @@ class PictureLinkDialog(QDialog):
         """Update path based on a change in the absolute/relative control.
         """
         absolute = self.absoluteButton.isChecked()
-        defaultPath = globalref.mainControl.defaultFilePath(True)
+        defaultPath = globalref.mainControl.defaultPathObj(True)
         address = self.addressEdit.text().strip()
         if absolute:
-            address = urltools.toAbsolute(address, defaultPath, False)
+            address = urltools.toAbsolute(address, str(defaultPath), False)
         else:
-            address = urltools.toRelative(address, defaultPath)
+            address = urltools.toRelative(address, str(defaultPath))
         self.addressEdit.setText(address)
         self.updateThumbnail()
         self.contentsChanged.emit()
@@ -2227,7 +2227,7 @@ class PictureLinkDialog(QDialog):
         """
         address = self.addressEdit.text().strip()
         if urltools.isRelative(address):
-            refPath = globalref.mainControl.defaultFilePath(True)
+            refPath = globalref.mainControl.defaultPathObj(True)
             address = urltools.toAbsolute(address, refPath, False)
         pixmap = QPixmap(address)
         if pixmap.isNull():
@@ -2243,7 +2243,7 @@ class PictureLinkDialog(QDialog):
 
         Adjust based on absolute or relative path settings.
         """
-        refPath = globalref.mainControl.defaultFilePath(True)
+        refPath = str(globalref.mainControl.defaultPathObj(True))
         defaultPath = refPath
         oldAddress = self.addressEdit.text().strip()
         if oldAddress:

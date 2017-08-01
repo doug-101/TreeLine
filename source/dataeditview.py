@@ -633,9 +633,9 @@ class DataEditView(QTableWidget):
                         else:     # check for relative path
                             if urltools.isRelative(address):
                                 defaultPath = (globalref.mainControl.
-                                               defaultFilePath(True))
+                                               defaultPathObj(True))
                                 address = urltools.toAbsolute(address,
-                                                              defaultPath)
+                                                              str(defaultPath))
                             dataeditors.openExtUrl(address)
             event.accept()
         else:

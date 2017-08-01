@@ -565,7 +565,7 @@ class PrintData:
         """
         filters = ';;'.join((globalref.fileFilters['pdf'],
                              globalref.fileFilters['all']))
-        defaultFilePath = globalref.mainControl.defaultFilePath()
+        defaultFilePath = str(globalref.mainControl.defaultPathObj())
         defaultFilePath = os.path.splitext(defaultFilePath)[0]
         if os.path.basename(defaultFilePath):
             defaultFilePath = '{0}.{1}'.format(defaultFilePath, 'pdf')
