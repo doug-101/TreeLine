@@ -336,7 +336,7 @@ class ExportControl:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         oldDir = os.getcwd()
         os.chdir(str(pathObj))
-        if ExportDialog.exportWhat == ExportDialog.entireTree:
+        if ExportDialog.exportWhat != ExportDialog.entireTree:
             self.structure = treestructure.TreeStructure(topNodes=self.
                                                          selectedNodes,
                                                          addSpots=False)
@@ -354,7 +354,10 @@ class ExportControl:
             self.structure.addNodeDictRef(root)
             root.childList = self.structure.childList
             self.structure.childList = [root]
-        root.exportHtmlTable()
+        pathDict = {}
+        _setHtmlDirectories(self.structure.childList[0], pathDict, pathObj,
+                            set(), False)
+        _writeHtmlTable(self.structure.childList[0], None, pathDict)
         os.chdir(oldDir)
         return False
 
@@ -806,7 +809,8 @@ class ExportControl:
         return True
 
 
-def _setHtmlDirectories(node, pathDict, parentPath, siblingNames):
+def _setHtmlDirectories(node, pathDict, parentPath, siblingNames,
+                        addSuffix=True):
     """Recursively create path obj for node and add to the path dict by uId.
 
     Arguments:
@@ -814,6 +818,7 @@ def _setHtmlDirectories(node, pathDict, parentPath, siblingNames):
         pathDict -- the dict of paths by uId for adding an entry
         parentPath -- the path of the parent node
         siblingNames -- set of already used sibling names
+        addSuffix -- add '.html' suffix to file names if True
     """
     name = node.title()
     maxLength = 32
@@ -835,10 +840,12 @@ def _setHtmlDirectories(node, pathDict, parentPath, siblingNames):
         i += 1
     siblingNames.add(name)
     pathObj = parentPath / name
-    pathDict[node.uId] = pathObj.with_suffix('.html')
+    if addSuffix:
+        pathObj = pathObj.with_suffix('.html')
+    pathDict[node.uId] = pathObj
     siblings = set()
     for child in node.childList:
-        _setHtmlDirectories(child, pathDict, pathObj, siblings)
+        _setHtmlDirectories(child, pathDict, pathObj, siblings, addSuffix)
 
 def _writeHtmlPage(node, parent, grandparent, pathDict, level=0):
     """Write web pages with navigation for this node and descendents.
@@ -937,81 +944,84 @@ def _writeHtmlPage(node, parent, grandparent, pathDict, level=0):
             _writeHtmlPage(child, node, parent, pathDict, level + 1)
         os.chdir('..')
 
-def exportHtmlTable(self, parentTitle=None, level=1):
+def _writeHtmlTable(node, parent, pathDict, level=1):
     """Write web pages with tables for child data to nested directories.
 
     Arguments:
-        parentTitle -- the title of the parent page, used in a go-up link
+        node -- the node to write the page for
+        parent -- the parent node (or None)
+        pathDict  -- the dict of paths by uId
         level -- the depth and how far up local links should point
     """
-    if not self.childList:
+    if not node.childList:
         return
-    if not os.access(self.uniqueId, os.R_OK):
-        os.mkdir(self.uniqueId, 0o755)
-    os.chdir(self.uniqueId)
-    title = self.title()
-    lines = ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 '
-             'Transitional//EN">', '<html>', '<head>',
+    dirObj = pathDict[node.uId]
+    if not dirObj.is_dir():
+        dirObj.mkdir(0o755)
+    os.chdir(str(dirObj))
+    title = node.title()
+    lines = ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">',
+             '<html>', '<head>',
              '<meta http-equiv="Content-Type" content="text/html; '
              'charset=utf-8">', '<title>{0}</title>'.format(title),
              '</head>', '<body>']
-    if exports.ExportDialog.addHeader:
+    if ExportDialog.addHeader:
         headerText = (globalref.mainControl.activeControl.printData.
                       formatHeaderFooter(True))
         if headerText:
             lines.append(headerText)
     lines.append('<h1 align="center">{0}</h1>'.format(title))
-    if parentTitle:
-        lines.append('<p align="center">{0}<a href="../index.html">{1}'
-                     '</a></p>'.format('Parent: ', parentTitle))
+    if parent:
+        lines.append('<p align="center">{0}: <a href="../index.html">{1}'
+                     '</a></p>'.format(_('Parent'), parent.title()))
     lines.extend(['<table cellpadding="10">', '<tr>'])
     lines.extend(['<th><u>{0}</u></th>'.format(name) for name in
-                  self.childList[0].nodeFormat().fieldNames()])
+                  node.childList[0].formatRef.fieldNames()])
     lines.append('</tr><tr>')
-    nodePath = self.uniqueId   # used for internal link relative paths
-    nodeParent = self.parent
-    while nodeParent:
-        nodePath = os.path.join(nodeParent.uniqueId, nodePath)
-        nodeParent = nodeParent.parent
-    for child in self.childList:
+    for child in node.childList:
         cellList = [field.outputText(child, False, True) for field in
-                    child.nodeFormat().fields()]
-        newList = []
-        global _exportHtmlLevel
-        _exportHtmlLevel = level
-        for cell in cellList:
-            cell = _htmlLinkRe.sub(self.localLinkReplace, cell)
-            cell = _imgLinkRe.sub(self.localLinkReplace, cell)
-            newList.append(cell)
-        cellList = newList
+                    child.formatRef.fields()]
+        for i in range(len(cellList)):
+            startPos = 0
+            while True:
+                match = _genLinkRe.search(cellList[i], startPos)
+                if not match:
+                    break
+                addr = match.group(1)
+                if addr.startswith('#'):
+                    pathObj = pathDict.get(addr[1:], None)
+                    if pathObj:
+                        name = pathObj.stem
+                        pathObj = pathObj / '..' / 'index.html'
+                        relPath = os.path.relpath(str(pathObj),  str(dirObj))
+                        relPath += '#' + name
+                        cellList[i] = (cellList[i][:match.start(1)] +
+                                       relPath + cellList[i][match.end(1):])
+                elif urltools.isRelative(addr):
+                    cellList[i] = (cellList[i][:match.start(1)] +
+                                   '../' * level + addr +
+                                   cellList[i][match.end(1):])
+                startPos = match.start(1)
+            startPos = 0
+            while True:
+                match = _imgLinkRe.search(cellList[i], startPos)
+                if not match:
+                    break
+                addr = match.group(1)
+                if not addr.startswith('#') and urltools.isRelative(addr):
+                    cellList[i] = (cellList[i][:match.start(1)] +
+                                   '../' * level + addr +
+                                   cellList[i][match.end(1):])
+                startPos = match.start(1)
         if child.childList:
             cellList[0] = ('<a href="{0}/index.html">{1}</a>'.
-                           format(child.uniqueId, cellList[0]))
-        if child.uniqueId in self.modelRef.linkRefCollect.targetIdDict:
-            cellList[0] = '<a id="{0}" />{1}'.format(child.uniqueId,
-                                                     cellList[0])
-        for linkSet in (self.modelRef.linkRefCollect.nodeRefDict.
-                        get(child, {}).values()):
-            for linkRef in linkSet:
-                targetNode = self.modelRef.nodeIdDict[linkRef.targetId]
-                targetPath = 'index.html#{0}'.format(targetNode.uniqueId)
-                targetParent = targetNode.parent
-                while targetParent:
-                    targetPath = os.path.join(targetParent.uniqueId,
-                                              targetPath)
-                    targetParent = targetParent.parent
-                targetPath = os.path.relpath(targetPath, nodePath)
-                fieldNum = (child.nodeFormat().fieldNames().
-                            index(linkRef.fieldName))
-                cellList[fieldNum] = re.sub(r'<a href="#{0}">'.
-                                            format(targetNode.uniqueId),
-                                            '<a href="{0}">'.
-                                            format(targetPath),
-                                            cellList[fieldNum])
+                           format(pathDict[child.uId].stem, cellList[0]))
+        cellList[0] = '<a id="{0}" />{1}'.format(pathDict[child.uId].stem,
+                                                 cellList[0])
         lines.extend(['<td>{0}</td>'.format(cell) for cell in cellList])
         lines.append('</tr><tr>')
     lines.extend(['</tr>', '</table>'])
-    if exports.ExportDialog.addHeader:
+    if ExportDialog.addHeader:
         footerText = (globalref.mainControl.activeControl.printData.
                       formatHeaderFooter(False))
         if footerText:
@@ -1019,8 +1029,8 @@ def exportHtmlTable(self, parentTitle=None, level=1):
     lines.extend(['</body>', '</html>'])
     with open('index.html', 'w', encoding='utf-8') as f:
         f.writelines([(line + '\n') for line in lines])
-    for child in self.childList:
-        child.exportHtmlTable(title, level + 1)
+    for child in node.childList:
+        _writeHtmlTable(child, node, pathDict, level + 1)
     os.chdir('..')
 
 def _oldElementXml(node, structRef, idDict, skipTypeFormats=None,
