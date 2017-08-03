@@ -32,6 +32,7 @@ import treenode
 import treeformats
 import nodeformat
 import treeoutput
+import imports
 import urltools
 import globalref
 try:
@@ -380,13 +381,15 @@ class ExportControl:
         if ExportDialog.exportWhat == ExportDialog.selectNode:
             lines = [node.title() for node in self.selectedNodes]
         else:
+            treeView = (globalref.mainControl.activeControl.activeWindow.
+                        treeView)
             lines = []
-            initLevel = 0 if ExportDialog.includeRoot else -1
-            for node in self.selectedNodes:
-                text = node.exportTitleText(initLevel, ExportDialog.openOnly)
-                if not ExportDialog.includeRoot:
-                    del text[0]
-                lines.extend(text)
+            for rootNode in self.selectedNodes:
+                rootSpot = rootNode.spotByNumber(0)
+                for spot, level in rootSpot.levelSpotDescendantGen(treeView,
+                                                  ExportDialog.includeRoot,
+                                                  None, ExportDialog.openOnly):
+                    lines.append('\t' * level + spot.nodeRef.title())
         with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
             f.writelines([(line + '\n') for line in lines])
         return True
@@ -408,16 +411,21 @@ class ExportControl:
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedNodes = self.structure.childList
         lines = []
-        for root in self.selectedNodes:
-            if ExportDialog.includeRoot:
-                lines.extend(root.formatOutput(True))
-                if root.nodeFormat().spaceBetween:
+        if ExportDialog.exportWhat == ExportDialog.selectNode:
+            for rootNode in self.selectedNodes:
+                lines.extend(rootNode.output(True))
+                if rootNode.formatRef.spaceBetween:
                     lines.append('')
-            if not ExportDialog.exportWhat == ExportDialog.selectNode:
-                for node in  (root.
-                              selectiveDescendantGen(ExportDialog.openOnly)):
-                    lines.extend(node.formatOutput(True))
-                    if node.nodeFormat().spaceBetween:
+        else:
+            treeView = (globalref.mainControl.activeControl.activeWindow.
+                        treeView)
+            for rootNode in self.selectedNodes:
+                rootSpot = rootNode.spotByNumber(0)
+                for spot, level in rootSpot.levelSpotDescendantGen(treeView,
+                                                  ExportDialog.includeRoot,
+                                                  None, ExportDialog.openOnly):
+                    lines.extend(spot.nodeRef.output(True))
+                    if spot.nodeRef.formatRef.spaceBetween:
                         lines.append('')
         with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
             f.writelines([(line + '\n') for line in lines])
@@ -443,15 +451,15 @@ class ExportControl:
             nodeList = []
             for node in self.selectedNodes:
                 nodeList.extend(node.childList)
-        typeList = []
+        types = set()
         headings = []
         for node in nodeList:
-            nodeFormat = node.nodeFormat()
-            if nodeFormat not in typeList:
+            nodeFormat = node.formatRef
+            if nodeFormat not in types:
                 for fieldName in nodeFormat.fieldNames():
                     if fieldName not in headings:
                         headings.append(fieldName)
-                typeList.append(nodeFormat)
+                types.add(nodeFormat)
         lines = [headings]
         for node in nodeList:
             lines.append([node.data.get(head, '') for head in headings])
@@ -481,15 +489,15 @@ class ExportControl:
             nodeList = []
             for node in self.selectedNodes:
                 nodeList.extend(node.childList)
-        typeList = []
+        types = set()
         headings = []
         for node in nodeList:
-            nodeFormat = node.nodeFormat()
-            if nodeFormat not in typeList:
+            nodeFormat = node.formatRef
+            if nodeFormat not in types:
                 for fieldName in nodeFormat.fieldNames():
                     if fieldName not in headings:
                         headings.append(fieldName)
-                typeList.append(nodeFormat)
+                types.add(nodeFormat)
         lines = ['\t'.join(headings)]
         for node in nodeList:
             lines.append('\t'.join([node.data.get(head, '') for head in
@@ -597,9 +605,9 @@ class ExportControl:
         if len(self.selectedNodes) > 1:
             rootElement = ElementTree.Element(treeformat.defaultTypeName)
             for node in self.selectedNodes:
-                rootElement.append(node.exportGenericXml(addBranches))
+                rootElement.append(_createGenericXml(node, addBranches))
         else:
-            rootElement = self.selectedNodes[0].exportGenericXml(addBranches)
+            rootElement = _createGenericXml(self.selectedNodes[0], addBranches)
         elementTree = ElementTree.ElementTree(rootElement)
         elementTree.write(str(pathObj),  'utf-8', True)
         return True
@@ -642,7 +650,7 @@ class ExportControl:
         contentTextElem = _addOdfElement('office:text', contentBodyElem)
         maxLevel = 0
         for node in self.selectedNodes:
-            level = node.exportOdf(contentTextElem, addBranches)
+            level = _addOdfText(node, contentTextElem, addBranches)
             maxLevel = max(level, maxLevel)
 
         manifestRoot = _addOdfElement('manifest:manifest')
@@ -1234,6 +1242,32 @@ def _convertOldPrintData(attrib):
     return attrib
 
 
+def _createGenericXml(node, addChildren=True):
+    """Return an ElementTree element with generic XML from this branch.
+
+    Called recursively for children if addChildren is True.
+    Arguments:
+        addChildren -- add branch if True
+    """
+    nodeFormat = node.formatRef
+    element = ElementTree.Element(nodeFormat.name)
+    element.tail = '\n'
+    for fieldName in nodeFormat.fieldNames():
+        text = node.data.get(fieldName, '')
+        if text and fieldName != imports.genericXmlTextFieldName:
+            element.set(fieldName, text)
+    if imports.genericXmlTextFieldName in nodeFormat.fieldDict:
+        text = node.data.get(imports.genericXmlTextFieldName, '')
+        if text:
+            element.text = text
+    if addChildren and node.childList:
+        if not text:
+            element.text = '\n'
+        for child in node.childList:
+            element.append(_createGenericXml(child))
+    return element
+
+
 def _addElemToZip(destZip, rootElem, fileName):
     """Adds ElementTree root elements to the given zip file.
 
@@ -1246,7 +1280,6 @@ def _addElemToZip(destZip, rootElem, fileName):
     with io.BytesIO() as output:
         elemTree.write(output, 'utf-8', True)
         destZip.writestr(fileName, output.getvalue())
-
 
 def _addOdfElement(name, parent=None, attr=None):
     """Shortcut function to add elements to the ElementTree.
@@ -1273,6 +1306,101 @@ def _addOdfElement(name, parent=None, attr=None):
     if parent is not None:
         parent.append(elem)
     return elem
+
+def _addOdfText(node, parentElem, addChildren=True, level=1, maxLevel=1):
+    """Add heading and text elements to the parent element tree element.
+
+    Called recursively for children if addChildren is True.
+    Returns the maximum indent level used for this branch.
+    Arguments:
+        parentElem -- the parent element tree element to add to
+        addChildren -- add branch if True
+        level -- the current tree indent level
+        maxLevel -- the previous max indent level
+    """
+    headElem = _addOdfElement('text:h', parentElem,
+                              {'text:outline-level': '{0}'.format(level),
+                               'text:style-name':
+                               'Heading_20_{0}'.format(level)})
+    headElem.text = node.title()
+    output = node.output(True)
+    if output and output[0] == node.title():
+        del output[0]      # remove first line if same as title
+    for line in output:
+        textElem = _addOdfElement('text:p', parentElem,
+                                  {'text:outline-level': '{0}'.format(level),
+                                   'text:style-name': 'Text_20_body'})
+        textElem.text = line
+    if addChildren and node.childList:
+        for child in node.childList:
+            childlevel = _addOdfText(child, parentElem, True, level + 1,
+                                     maxLevel)
+            maxLevel = max(childlevel, maxLevel)
+    else:
+        maxLevel = max(level, maxLevel)
+    return maxLevel
+
+def exportHtmlBookmarks(self, addChildren=True):
+    """Return a text list ith descendant bookmarks in Mozilla format.
+
+    Called recursively for children if addChildren is True.
+    Arguments:
+        addChildren -- add branch if True
+    """
+    title = self.title()
+    if not self.childList:
+        nodeFormat = self.nodeFormat()
+        field = nodeFormat.findLinkField()
+        if field:
+            linkMatch = fieldformat.linkRegExp.search(self.data.
+                                                      get(field.name, ''))
+            if linkMatch:
+                link = linkMatch.group(1)
+                return ['<dt><a href="{0}">{1}</a>'.format(link, title)]
+        elif (len(nodeFormat.fieldDict) == 1 and not
+              self.data.get(nodeFormat.fieldNames()[0], '')):
+            return ['<hr>']
+    result = ['<dt><h3>{0}</h3>'.format(title)]
+    if addChildren:
+        result.append('<dl><p>')
+        for child in self.childList:
+            result.extend(child.exportHtmlBookmarks())
+        result.append('</dl><p>')
+    return result
+
+def exportXbel(self, addChildren=True):
+    """Return an ElementTree element with XBEL bookmarks from this branch.
+
+    Called recursively for children if addChildren is True.
+    Arguments:
+        addChildren -- add branch if True
+    """
+    titleElem = ElementTree.Element('title')
+    titleElem.text = self.title()
+    if not self.childList:
+        nodeFormat = self.nodeFormat()
+        field = nodeFormat.findLinkField()
+        if field:
+            linkMatch = fieldformat.linkRegExp.search(self.data.
+                                                      get(field.name, ''))
+            if linkMatch:
+                link = linkMatch.group(1)
+                element = ElementTree.Element('bookmark', {'href': link})
+                element.append(titleElem)
+                element.tail = '\n'
+                return element
+        elif (len(nodeFormat.fieldDict) == 1 and not
+              self.data.get(nodeFormat.fieldNames()[0], '')):
+            element = ElementTree.Element('separator')
+            element.tail = '\n'
+            return element
+    element = ElementTree.Element('folder')
+    element.append(titleElem)
+    element.tail = '\n'
+    if addChildren:
+        for child in self.childList:
+            element.append(child.exportXbel())
+    return element
 
 
 class ExportDialog(QWizard):
