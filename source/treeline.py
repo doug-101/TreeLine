@@ -25,6 +25,7 @@ translationPath = 'translations'
 
 import sys
 import pathlib
+import os.path
 import argparse
 import locale
 import builtins
@@ -52,7 +53,9 @@ if __name__ == '__main__':
     parser.add_argument('fileList', nargs='*', metavar='filename',
                         help='input filename(s) to load')
     args = parser.parse_args()
-    pathObjects = [pathlib.Path(path) for path in args.fileList]
+    # use abspath() - pathlib's resolve() replaces drive letters with map names
+    pathObjects = [pathlib.Path(os.path.abspath(path)) for path in
+                   args.fileList]
 
     import globalref
     globalref.localTextEncoding = locale.getpreferredencoding()

@@ -120,7 +120,7 @@ class TreeMainControl(QObject):
         qApp.focusChanged.connect(self.updateActionsAvail)
         if pathObjects:
             for pathObj in pathObjects:
-                self.openFile(pathObj.resolve(), True)
+                self.openFile(pathObj, True)
         else:
             self.createLocalControl()
 
@@ -136,7 +136,7 @@ class TreeMainControl(QObject):
                 paths = ast.literal_eval(data)
                 if paths:
                     for path in paths:
-                        self.openFile(pathlib.Path(path).resolve(), True)
+                        self.openFile(pathlib.Path(path), True)
                 else:
                     self.activeControl.activeWindow.activateAndRaise()
             except(SyntaxError, ValueError, TypeError):
@@ -220,6 +220,7 @@ class TreeMainControl(QObject):
                     self.recentFiles.addItem(pathObj)
                     if globalref.genOptions['SaveTreeStates']:
                         self.recentFiles.retrieveTreeState(self.activeControl)
+                    self.activeControl.imported = True
                     QApplication.restoreOverrideCursor()
                 else:
                     QApplication.restoreOverrideCursor()

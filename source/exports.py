@@ -31,6 +31,7 @@ import treestructure
 import treenode
 import treeformats
 import nodeformat
+import fieldformat
 import treeoutput
 import imports
 import urltools
@@ -778,7 +779,7 @@ class ExportControl:
                  'charset=utf-8">', '<title>{0}</title>'.format(title),
                  '<h1>{0}</h1>'.format(title)]
         for node in self.selectedNodes:
-            lines.extend(node.exportHtmlBookmarks(addBranches))
+            lines.extend(_exportHtmlBookmarks(node, addBranches))
         with pathObj.open('w', encoding='utf-8') as f:
             f.writelines([(line + '\n') for line in lines])
         return True
@@ -809,7 +810,7 @@ class ExportControl:
         titleElem.text = title
         rootElem.append(titleElem)
         for node in self.selectedNodes:
-            rootElem.append(node.exportXbel(addBranches))
+            rootElem.append(_exportXbel(node, addBranches))
         elementTree = ElementTree.ElementTree(rootElem)
         with pathObj.open('wb') as f:
             f.write(b'<!DOCTYPE xbel>\n')
@@ -1247,6 +1248,7 @@ def _createGenericXml(node, addChildren=True):
 
     Called recursively for children if addChildren is True.
     Arguments:
+        node -- the node to export
         addChildren -- add branch if True
     """
     nodeFormat = node.formatRef
@@ -1313,6 +1315,7 @@ def _addOdfText(node, parentElem, addChildren=True, level=1, maxLevel=1):
     Called recursively for children if addChildren is True.
     Returns the maximum indent level used for this branch.
     Arguments:
+        node -- the node to export
         parentElem -- the parent element tree element to add to
         addChildren -- add branch if True
         level -- the current tree indent level
@@ -1340,48 +1343,50 @@ def _addOdfText(node, parentElem, addChildren=True, level=1, maxLevel=1):
         maxLevel = max(level, maxLevel)
     return maxLevel
 
-def exportHtmlBookmarks(self, addChildren=True):
+def _exportHtmlBookmarks(node, addChildren=True):
     """Return a text list ith descendant bookmarks in Mozilla format.
 
     Called recursively for children if addChildren is True.
     Arguments:
+        node -- the node to export
         addChildren -- add branch if True
     """
-    title = self.title()
-    if not self.childList:
-        nodeFormat = self.nodeFormat()
-        field = nodeFormat.findLinkField()
+    title = node.title()
+    if not node.childList:
+        nodeFormat = node.formatRef
+        field = _findLinkField(nodeFormat)
         if field:
-            linkMatch = fieldformat.linkRegExp.search(self.data.
+            linkMatch = fieldformat.linkRegExp.search(node.data.
                                                       get(field.name, ''))
             if linkMatch:
                 link = linkMatch.group(1)
                 return ['<dt><a href="{0}">{1}</a>'.format(link, title)]
         elif (len(nodeFormat.fieldDict) == 1 and not
-              self.data.get(nodeFormat.fieldNames()[0], '')):
+              node.data.get(nodeFormat.fieldNames()[0], '')):
             return ['<hr>']
     result = ['<dt><h3>{0}</h3>'.format(title)]
     if addChildren:
         result.append('<dl><p>')
-        for child in self.childList:
-            result.extend(child.exportHtmlBookmarks())
+        for child in node.childList:
+            result.extend(_exportHtmlBookmarks(child))
         result.append('</dl><p>')
     return result
 
-def exportXbel(self, addChildren=True):
+def _exportXbel(node, addChildren=True):
     """Return an ElementTree element with XBEL bookmarks from this branch.
 
     Called recursively for children if addChildren is True.
     Arguments:
+        node -- the node to export
         addChildren -- add branch if True
     """
     titleElem = ElementTree.Element('title')
-    titleElem.text = self.title()
-    if not self.childList:
-        nodeFormat = self.nodeFormat()
-        field = nodeFormat.findLinkField()
+    titleElem.text = node.title()
+    if not node.childList:
+        nodeFormat = node.formatRef
+        field = _findLinkField(nodeFormat)
         if field:
-            linkMatch = fieldformat.linkRegExp.search(self.data.
+            linkMatch = fieldformat.linkRegExp.search(node.data.
                                                       get(field.name, ''))
             if linkMatch:
                 link = linkMatch.group(1)
@@ -1390,7 +1395,7 @@ def exportXbel(self, addChildren=True):
                 element.tail = '\n'
                 return element
         elif (len(nodeFormat.fieldDict) == 1 and not
-              self.data.get(nodeFormat.fieldNames()[0], '')):
+              node.data.get(nodeFormat.fieldNames()[0], '')):
             element = ElementTree.Element('separator')
             element.tail = '\n'
             return element
@@ -1398,9 +1403,27 @@ def exportXbel(self, addChildren=True):
     element.append(titleElem)
     element.tail = '\n'
     if addChildren:
-        for child in self.childList:
-            element.append(child.exportXbel())
+        for child in node.childList:
+            element.append(_exportXbel(child))
     return element
+
+def _findLinkField(nodeFormat):
+    """Return the field most likely to contain a bookmark URL.
+
+    Return None if there are no matches.
+    Arguments:
+        nodeFormat -- the format to find a field in
+    """
+    availFields = [field for field in nodeFormat.fieldDict.values() if
+                   field.typeName == 'ExternalLink']
+    if not availFields:
+        return None
+    bestFields = [field for field in availFields if
+                  field.name.lower() ==
+                  imports.bookmarkLinkFieldName.lower()]
+    if bestFields:
+        return bestFields[0]
+    return availFields[0]
 
 
 class ExportDialog(QWizard):
