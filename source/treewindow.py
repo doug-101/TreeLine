@@ -396,6 +396,7 @@ class TreeWindow(QMainWindow):
         self.fileMenu.addAction(self.allActions['FileSave'])
         self.fileMenu.addAction(self.allActions['FileSaveAs'])
         self.fileMenu.addAction(self.allActions['FileExport'])
+        self.fileMenu.addAction(self.allActions['FileProperties'])
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.allActions['FilePrintSetup'])
         self.fileMenu.addAction(self.allActions['FilePrintPreview'])

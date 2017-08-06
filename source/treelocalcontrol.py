@@ -16,12 +16,13 @@ import pathlib
 import json
 import os
 from PyQt5.QtCore import QObject, Qt, pyqtSignal
-from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QFileDialog,
-                             QMenu, QMessageBox)
+from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
+                             QFileDialog, QMenu, QMessageBox)
 import treestructure
 import treemodel
 import treewindow
 import exports
+import miscdialogs
 import printdata
 import undo
 import globalref
@@ -49,6 +50,7 @@ class TreeLocalControl(QObject):
         """
         super().__init__(parent)
         self.printData = printdata.PrintData(self)
+        self.spellCheckLang = ''
         self.allActions = allActions.copy()
         self.setupActions()
         self.filePathObj = (pathlib.Path(fileObj.name) if
@@ -63,6 +65,7 @@ class TreeLocalControl(QObject):
                     fileData = json.load(f)
             self.structure = treestructure.TreeStructure(fileData)
             self.printData.readData(fileData['properties'])
+            self.spellCheckLang = fileData['properties'].get('spellchk', '')
         else:
             self.structure = treestructure.TreeStructure(addDefaults=True)
         fileInfoFormat = self.structure.treeFormats.fileInfoFormat
@@ -349,6 +352,11 @@ class TreeLocalControl(QObject):
         fileExportAct.triggered.connect(self.fileExport)
         localActions['FileExport'] = fileExportAct
 
+        filePropertiesAct = QAction(_('Prop&erties...'), self,
+            statusTip=_('Set file parameters like compression and encryption'))
+        filePropertiesAct.triggered.connect(self.fileProperties)
+        localActions['FileProperties'] = filePropertiesAct
+
         filePrintSetupAct = QAction(_('P&rint Setup...'), self,
               statusTip=_('Set margins, page size and other printing options'))
         filePrintSetupAct.triggered.connect(self.printData.printSetup)
@@ -580,6 +588,8 @@ class TreeLocalControl(QObject):
             savePathObj = pathlib.Path(str(savePathObj) + '~')
         fileData = self.structure.fileData()
         fileData['properties'].update(self.printData.fileData())
+        if self.spellCheckLang:
+            fileData['properties']['spellchk'] = self.spellCheckLang
         try:
             with savePathObj.open('w', encoding='utf-8', newline='\n') as f:
                 json.dump(fileData, f, indent=3, sort_keys=True)
@@ -645,6 +655,16 @@ class TreeLocalControl(QObject):
             QApplication.restoreOverrideCursor()
             QMessageBox.warning(self.activeWindow, 'TreeLine',
                                 _('Error - could not write to file'))
+
+    def fileProperties(self):
+        """Show dialog to set file parameters like compression and encryption.
+        """
+        # origZeroBlanks = self.model.mathZeroBlanks
+        dialog = miscdialogs.FilePropertiesDialog(self, self.activeWindow)
+        if dialog.exec_() == QDialog.Accepted:
+            self.setModified()
+            # if self.model.mathZeroBlanks != origZeroBlanks:
+                # self.updateAll(False)
 
     def editUndo(self):
         """Undo the previous action and update the views.

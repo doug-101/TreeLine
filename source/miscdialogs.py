@@ -22,6 +22,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
                              QPushButton, QRadioButton, QScrollArea, QSpinBox,
                              QTabWidget, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget)
+import undo
 import globalref
 
 
@@ -89,6 +90,161 @@ class RadioChoiceDialog(QDialog):
         """Return the value of the selected button.
         """
         return self.buttonGroup.checkedButton().returnValue
+
+
+class FilePropertiesDialog(QDialog):
+    """Dialog for setting file parameters like compression and encryption.
+    """
+    def __init__(self, localControl, parent=None):
+        """Create the file properties dialog.
+
+        Arguments:
+            localControl -- a reference to the file's local control
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.localControl = localControl
+        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
+                            Qt.WindowCloseButtonHint)
+        self.setWindowTitle(_('File Properties'))
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+
+        groupBox = QGroupBox(_('File Storage'))
+        topLayout.addWidget(groupBox)
+        groupLayout = QVBoxLayout(groupBox)
+        self.compressCheck = QCheckBox(_('&Use file compression'))
+        self.compressCheck.setChecked(localControl.compressed)
+        groupLayout.addWidget(self.compressCheck)
+        self.encryptCheck = QCheckBox(_('Use file &encryption'))
+        self.encryptCheck.setChecked(localControl.encrypted)
+        groupLayout.addWidget(self.encryptCheck)
+
+        groupBox = QGroupBox(_('Spell Check'))
+        topLayout.addWidget(groupBox)
+        groupLayout = QHBoxLayout(groupBox)
+        label = QLabel(_('Language code or\ndictionary (optional)'))
+        groupLayout.addWidget(label)
+        self.spellCheckEdit = QLineEdit()
+        self.spellCheckEdit.setText(self.localControl.spellCheckLang)
+        groupLayout.addWidget(self.spellCheckEdit)
+
+        groupBox = QGroupBox(_('Math Fields'))
+        topLayout.addWidget(groupBox)
+        groupLayout = QVBoxLayout(groupBox)
+        self.zeroBlanks = QCheckBox(_('&Treat blank fields as zeros'))
+        self.zeroBlanks.setChecked(localControl.structure.mathZeroBlanks)
+        groupLayout.addWidget(self.zeroBlanks)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch(0)
+        okButton = QPushButton(_('&OK'))
+        ctrlLayout.addWidget(okButton)
+        okButton.clicked.connect(self.accept)
+        cancelButton = QPushButton(_('&Cancel'))
+        ctrlLayout.addWidget(cancelButton)
+        cancelButton.clicked.connect(self.reject)
+
+    def accept(self):
+        """Store the results.
+        """
+        if (self.localControl.compressed != self.compressCheck.isChecked() or
+            self.localControl.encrypted != self.encryptCheck.isChecked() or
+            self.localControl.spellCheckLang != self.spellCheckEdit.text() or
+            self.localControl.structure.mathZeroBlanks !=
+            self.zeroBlanks.isChecked()):
+            undo.ParamUndo(self.localControl.structure.undoList,
+                           [(self.localControl, 'compressed'),
+                            (self.localControl, 'encrypted'),
+                            (self.localControl, 'spellCheckLang'),
+                            (self.localControl.structure, 'mathZeroBlanks')])
+            self.localControl.compressed = self.compressCheck.isChecked()
+            self.localControl.encrypted = self.encryptCheck.isChecked()
+            self.localControl.spellCheckLang = self.spellCheckEdit.text()
+            self.localControl.structure.mathZeroBlanks = (self.zeroBlanks.
+                                                          isChecked())
+            super().accept()
+        else:
+            super().reject()
+
+
+class PasswordDialog(QDialog):
+    """Dialog for password entry and optional re-entry.
+    """
+    remember = True
+    def __init__(self, retype=True, fileLabel='', parent=None):
+        """Create the password dialog.
+
+        Arguments:
+            retype -- require a 2nd password entry if True
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
+                            Qt.WindowCloseButtonHint)
+        self.setWindowTitle(_('Encrypted File Password'))
+        self.password = ''
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        if fileLabel:
+            prompt = _('Type Password for "{0}":').format(fileLabel)
+        else:
+            prompt = _('Type Password:')
+        self.editors = [self.addEditor(prompt, topLayout)]
+        self.editors[0].setFocus()
+        if retype:
+            self.editors.append(self.addEditor(_('Re-Type Password:'),
+                                               topLayout))
+            self.editors[0].returnPressed.connect(self.editors[1].setFocus)
+        self.editors[-1].returnPressed.connect(self.accept)
+        self.rememberCheck = QCheckBox(_('Remember password during this '
+                                               'session'))
+        self.rememberCheck.setChecked(PasswordDialog.remember)
+        topLayout.addWidget(self.rememberCheck)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch(0)
+        okButton = QPushButton(_('&OK'))
+        okButton.setAutoDefault(False)
+        ctrlLayout.addWidget(okButton)
+        okButton.clicked.connect(self.accept)
+        cancelButton = QPushButton(_('&Cancel'))
+        cancelButton.setAutoDefault(False)
+        ctrlLayout.addWidget(cancelButton)
+        cancelButton.clicked.connect(self.reject)
+
+    def addEditor(self, labelText, layout):
+        """Add a password editor to this dialog and return it.
+
+        Arguments:
+            labelText -- the text for the label
+            layout -- the layout to append it
+        """
+        label = QLabel(labelText)
+        layout.addWidget(label)
+        editor = QLineEdit()
+        editor.setEchoMode(QLineEdit.Password)
+        layout.addWidget(editor)
+        return editor
+
+    def accept(self):
+        """Check for valid password and store the result.
+        """
+        self.password = self.editors[0].text()
+        PasswordDialog.remember = self.rememberCheck.isChecked()
+        if not self.password:
+            QMessageBox.warning(self, 'TreeLine',
+                                  _('Zero-length passwords are not permitted'))
+        elif len(self.editors) > 1 and self.editors[1].text() != self.password:
+             QMessageBox.warning(self, 'TreeLine',
+                                       _('Re-typed password did not match'))
+        else:
+            super().accept()
+        for editor in self.editors:
+            editor.clear()
+        self.editors[0].setFocus()
 
 
 FindScope = enum.IntEnum('FindScope', 'fullData titlesOnly')

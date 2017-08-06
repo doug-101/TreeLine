@@ -48,6 +48,7 @@ class TreeStructure(treenode.TreeNode):
         self.undoList = None
         self.redoList = None
         self.configDialogFormats = None
+        self.mathZeroBlanks = True
         if fileData:
             self.treeFormats = treeformats.TreeFormats(fileData['formats'])
             for nodeInfo in fileData['nodes']:
@@ -59,6 +60,8 @@ class TreeStructure(treenode.TreeNode):
             for uId in fileData['properties']['topnodes']:
                 node = self.nodeDict[uId]
                 self.childList.append(node)
+            if 'zeroblanks' in fileData['properties']:
+                self.mathZeroBlanks = fileData['properties']['zeroblanks']
             if addSpots:
                 self.generateSpots(None)
         elif topNodes:
@@ -91,6 +94,8 @@ class TreeStructure(treenode.TreeNode):
                           key=operator.itemgetter('uid'))
         topNodeIds = [node.uId for node in self.childList]
         properties = {'tlversion': __version__, 'topnodes': topNodeIds}
+        if not self.mathZeroBlanks:
+            fileData['properties']['zeroblanks'] = False
         fileData = {'formats': formats, 'nodes': nodeList,
                     'properties': properties}
         return fileData
