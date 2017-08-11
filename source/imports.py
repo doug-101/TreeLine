@@ -303,9 +303,26 @@ class ImportControl:
         try:
             tree.parse(str(self.pathObj))
         except ElementTree.ParseError:
-            return None
-        if not tree.getroot().get('item') == 'y':
-            return None
+            tree = None
+        if not tree or not tree.getroot().get('item') == 'y':
+            fileObj = self.pathObj.open('rb')
+            # decompress before decrypt to support TreeLine 1.4 and earlier
+            fileObj, compressed = globalref.mainControl.decompressFile(fileObj)
+            fileObj, encrypted = globalref.mainControl.decryptFile(fileObj)
+            if not fileObj:
+                return None
+            if encrypted and not compressed:
+                fileObj, compressed = (globalref.mainControl.
+                                       decompressFile(fileObj))
+            if compressed or encrypted:
+                tree = ElementTree.ElementTree()
+                try:
+                    tree.parse(fileObj)
+                except ElementTree.ParseError:
+                    tree = None
+            fileObj.close()
+            if not tree or not tree.getroot().get('item') == 'y':
+                return None
         version = tree.getroot().get('tlversion', '').split('.')
         try:
             self.treeLineImportVersion = [int(i) for i in version]

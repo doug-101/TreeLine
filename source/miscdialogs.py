@@ -178,6 +178,7 @@ class PasswordDialog(QDialog):
 
         Arguments:
             retype -- require a 2nd password entry if True
+            fileLabel -- file name to show if given
             parent -- the parent window
         """
         super().__init__(parent)

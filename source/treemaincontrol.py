@@ -15,6 +15,9 @@
 import sys
 import pathlib
 import ast
+import io
+import gzip
+import zlib
 from PyQt5.QtCore import QIODevice, QObject, Qt
 from PyQt5.QtNetwork import QLocalServer, QLocalSocket
 from PyQt5.QtWidgets import (QAction, QApplication, QDialog, QFileDialog,
@@ -24,6 +27,7 @@ import treelocalcontrol
 import options
 import optiondefaults
 import recentfiles
+import p3
 import icondict
 import imports
 import configdialog
@@ -40,6 +44,8 @@ except ImportError:
     iconPath = None
     templatePath = None
     samplePath = None
+
+encryptPrefix = b'>>TL+enc'
 
 
 class TreeMainControl(QObject):
@@ -59,6 +65,7 @@ class TreeMainControl(QObject):
         self.activeControl = None
         self.configDialog = None
         self.findTextDialog = None
+        self.passwords = {}
         globalref.mainControl = self
         self.allActions = {}
         try:
@@ -194,43 +201,132 @@ class TreeMainControl(QObject):
             control = match[0]
             control.activeWindow.activateAndRaise()
             self.updateLocalControlRef(control)
-        elif (not checkModified or forceNewWindow or
-              globalref.genOptions['OpenNewWindow'] or
-              self.activeControl.checkSaveChanges()):
-            try:
-                QApplication.setOverrideCursor(Qt.WaitCursor)
-                self.createLocalControl(pathObj, None, forceNewWindow)
-                self.recentFiles.addItem(pathObj)
-                if globalref.genOptions['SaveTreeStates']:
-                    self.recentFiles.retrieveTreeState(self.activeControl)
+            return
+        if checkModified and not (forceNewWindow or
+                                  globalref.genOptions['OpenNewWindow'] or
+                                  self.activeControl.checkSaveChanges()):
+            return
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        try:
+            self.createLocalControl(pathObj, None, forceNewWindow)
+            self.recentFiles.addItem(pathObj)
+            if globalref.genOptions['SaveTreeStates']:
+                self.recentFiles.retrieveTreeState(self.activeControl)
+            QApplication.restoreOverrideCursor()
+        except IOError:
+            QApplication.restoreOverrideCursor()
+            QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
+                                _('Error - could not read file {0}').
+                                format(str(pathObj)))
+            self.recentFiles.removeItem(pathObj)
+        except (ValueError, KeyError, TypeError):
+            fileObj = pathObj.open('rb')
+            fileObj, encrypted = self.decryptFile(fileObj)
+            if not fileObj:
+                if not self.localControls:
+                    self.createLocalControl()
                 QApplication.restoreOverrideCursor()
-            except IOError:
-                QApplication.restoreOverrideCursor()
-                QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
-                                    _('Error - could not read file {0}').
-                                    format(str(pathObj)))
-                self.recentFiles.removeItem(pathObj)
-            except (ValueError, KeyError, TypeError):
-                importControl = imports.ImportControl(pathObj)
-                structure = importControl.importOldTreeLine()
-                if structure:
-                    self.createLocalControl(pathObj, structure, forceNewWindow)
-                    self.activeControl.printData.readData(importControl.
-                                                          treeLineRootAttrib)
+                return
+            fileObj, compressed = self.decompressFile(fileObj)
+            if compressed or encrypted:
+                try:
+                    textFileObj = io.TextIOWrapper(fileObj, encoding='utf-8')
+                    self.createLocalControl(textFileObj, None, forceNewWindow)
+                    fileObj.close()
+                    textFileObj.close()
                     self.recentFiles.addItem(pathObj)
                     if globalref.genOptions['SaveTreeStates']:
                         self.recentFiles.retrieveTreeState(self.activeControl)
+                    self.activeControl.compressed = compressed
+                    self.activeControl.encrypted = encrypted
+                    QApplication.restoreOverrideCursor()
+                    return
+                except (ValueError, KeyError, TypeError):
+                    pass
+            fileObj.close()
+            importControl = imports.ImportControl(pathObj)
+            structure = importControl.importOldTreeLine()
+            if structure:
+                self.createLocalControl(pathObj, structure, forceNewWindow)
+                self.activeControl.printData.readData(importControl.
+                                                      treeLineRootAttrib)
+                self.recentFiles.addItem(pathObj)
+                if globalref.genOptions['SaveTreeStates']:
+                    self.recentFiles.retrieveTreeState(self.activeControl)
+                self.activeControl.imported = True
+                QApplication.restoreOverrideCursor()
+                return
+            QApplication.restoreOverrideCursor()
+            if importOnFail:
+                importControl = imports.ImportControl(pathObj)
+                structure = importControl.interactiveImport(True)
+                if structure:
+                    self.createLocalControl(pathObj, structure, forceNewWindow)
                     self.activeControl.imported = True
-                    QApplication.restoreOverrideCursor()
-                else:
-                    QApplication.restoreOverrideCursor()
-                    QMessageBox.warning(QApplication.activeWindow(),
-                                        'TreeLine',
-                                        _('Error - invalid TreeLine file {0}').
-                                        format(str(pathObj)))
-                    self.recentFiles.removeItem(pathObj)
-            if not self.localControls:
-                self.createLocalControl()
+                    return
+            else:
+                QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
+                                    _('Error - invalid TreeLine file {0}').
+                                    format(str(pathObj)))
+                self.recentFiles.removeItem(pathObj)
+        if not self.localControls:
+            self.createLocalControl()
+
+    def decryptFile(self, fileObj):
+        """Check for encryption and decrypt the fileObj if needed.
+
+        Return a tuple of the file object and True if it was encrypted.
+        Return None for the file object if the user cancels.
+        Arguments:
+            fileObj -- the file object to check and decrypt
+        """
+        if fileObj.read(len(encryptPrefix)) != encryptPrefix:
+            fileObj.seek(0)
+            return (fileObj, False)
+        while True:
+            pathObj = pathlib.Path(fileObj.name)
+            password = self.passwords.get(pathObj, '')
+            if not password:
+                QApplication.restoreOverrideCursor()
+                dialog = miscdialogs.PasswordDialog(False, pathObj.name,
+                                                    QApplication.
+                                                    activeWindow())
+                if dialog.exec_() != QDialog.Accepted:
+                    fileObj.close()
+                    return (None, True)
+                QApplication.setOverrideCursor(Qt.WaitCursor)
+                password = dialog.password
+                if miscdialogs.PasswordDialog.remember:
+                    self.passwords[pathObj] = password
+            try:
+                text = p3.p3_decrypt(fileObj.read(), password.encode())
+                fileIO = io.BytesIO(text)
+                fileIO.name = fileObj.name
+                fileObj.close()
+                return (fileIO, True)
+            except p3.CryptError:
+                try:
+                    del self.passwords[pathObj]
+                except KeyError:
+                    pass
+
+    def decompressFile(self, fileObj):
+        """Check for compression and decompress the fileObj if needed.
+
+        Return a tuple of the file object and True if it was compressed.
+        Arguments:
+            fileObj -- the file object to check and decompress
+        """
+        prefix = fileObj.read(2)
+        fileObj.seek(0)
+        if prefix != b'\037\213':
+            return (fileObj, False)
+        try:
+            newFileObj = gzip.GzipFile(fileobj=fileObj)
+        except zlib.error:
+            return (fileObj, False)
+        newFileObj.name = fileObj.name
+        return (newFileObj, True)
 
     def createLocalControl(self, pathObj=None, treeStruct=None,
                            forceNewWindow=False):
@@ -238,7 +334,7 @@ class TreeMainControl(QObject):
 
         Use an imported structure if given or open the file if path is given.
         Arguments:
-            pathObj -- the path object for the control to open
+            pathObj -- the path object or file object for the control to open
             treeStruct -- the imported structure to use
             forceNewWindow -- if True, use a new window regardless of option
         """

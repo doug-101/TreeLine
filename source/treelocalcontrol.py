@@ -15,9 +15,11 @@
 import pathlib
 import json
 import os
+import gzip
 from PyQt5.QtCore import QObject, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
                              QFileDialog, QMenu, QMessageBox)
+import treemaincontrol
 import treestructure
 import treemodel
 import treewindow
@@ -25,6 +27,7 @@ import exports
 import miscdialogs
 import printdata
 import undo
+import p3
 import globalref
 
 
@@ -590,24 +593,54 @@ class TreeLocalControl(QObject):
         fileData['properties'].update(self.printData.fileData())
         if self.spellCheckLang:
             fileData['properties']['spellchk'] = self.spellCheckLang
-        try:
-            with savePathObj.open('w', encoding='utf-8', newline='\n') as f:
-                json.dump(fileData, f, indent=3, sort_keys=True)
-        except IOError:
-            QApplication.restoreOverrideCursor()
-            QMessageBox.warning(self.activeWindow, 'TreeLine',
-                                _('Error - could not write to {}').
-                                format(str(savePathObj)))
+        if not self.compressed and not self.encrypted:
+            try:
+                with savePathObj.open('w', encoding='utf-8',
+                                      newline='\n') as f:
+                    json.dump(fileData, f, indent=3, sort_keys=True)
+            except IOError:
+                QApplication.restoreOverrideCursor()
+                QMessageBox.warning(self.activeWindow, 'TreeLine',
+                                    _('Error - could not write to {}').
+                                    format(str(savePathObj)))
+                return
         else:
-            QApplication.restoreOverrideCursor()
-            if not backupFile:
-                fileInfoFormat = self.structure.treeFormats.fileInfoFormat
-                fileInfoFormat.updateFileInfo(self.filePathObj,
-                                              self.structure.fileInfoNode)
-                self.setModified(False)
-                self.imported = False
-                self.activeWindow.statusBar().showMessage(_('File saved'),
-                                                          3000)
+            data = json.dumps(fileData, indent=3, sort_keys=True).encode()
+            if self.compressed:
+                data = gzip.compress(data)
+            if self.encrypted:
+                password = (globalref.mainControl.passwords.
+                            get(self.filePathObj, ''))
+                if not password:
+                    QApplication.restoreOverrideCursor()
+                    dialog = miscdialogs.PasswordDialog(True, '',
+                                                        self.activeWindow)
+                    if dialog.exec_() != QDialog.Accepted:
+                        return
+                    QApplication.setOverrideCursor(Qt.WaitCursor)
+                    password = dialog.password
+                    if miscdialogs.PasswordDialog.remember:
+                        globalref.mainControl.passwords[self.
+                                                        filePathObj] = password
+                data = (treemaincontrol.encryptPrefix +
+                        p3.p3_encrypt(data, password.encode()))
+            try:
+                with savePathObj.open('wb') as f:
+                    f.write(data)
+            except IOError:
+                QApplication.restoreOverrideCursor()
+                QMessageBox.warning(self.activeWindow, 'TreeLine',
+                                    _('Error - could not write to {}').
+                                    format(str(savePathObj)))
+                return
+        QApplication.restoreOverrideCursor()
+        if not backupFile:
+            fileInfoFormat = self.structure.treeFormats.fileInfoFormat
+            fileInfoFormat.updateFileInfo(self.filePathObj,
+                                          self.structure.fileInfoNode)
+            self.setModified(False)
+            self.imported = False
+            self.activeWindow.statusBar().showMessage(_('File saved'), 3000)
 
     def fileSaveAs(self):
         """Prompt for a new file name and save the file.
@@ -632,6 +665,11 @@ class TreeLocalControl(QObject):
             self.filePathObj = pathlib.Path(newPath)
             if not self.filePathObj.suffix:
                 self.filePathObj.with_suffix('.trln')
+            if selectFilter != initFilter:
+                self.compressed = (selectFilter ==
+                                   globalref.fileFilters['trlngz'])
+                self.encrypted = (selectFilter ==
+                                  globalref.fileFilters['trlnenc'])
             self.fileSave()
             if not self.modified:
                 globalref.mainControl.recentFiles.addItem(self.filePathObj)
