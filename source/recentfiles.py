@@ -101,12 +101,13 @@ class RecentFileItem:
     def restoreTreeState(self, localControl):
         """Restore the tree state of this item.
 
+        Return True if the state was restored.
         Arguments:
             localControl -- the control to set state
         """
         fileModTime = self.pathObj.stat().st_mtime
         if self.stateTime == 0 or fileModTime > self.stateTime:
-            return    # file modified externally
+            return False   # file modified externally
         treeView = localControl.activeWindow.treeView
         try:
             for spotId in self.openSpots:
@@ -119,8 +120,9 @@ class RecentFileItem:
                                                        spotById(spotId) for
                                                        spotId in
                                                        self.selectSpots])
+            return True
         except KeyError:   # for old TreeLine import (spotIds don't match)
-            pass
+            return False
 
     def __eq__(self, other):
         """Test for equality between RecentFileItems and paths.
@@ -243,11 +245,12 @@ class RecentFileList(list):
     def retrieveTreeState(self, localControl):
         """Restore the saved tree state of the item matching the localControl.
 
+        Return True if the state was restored.
         Arguments:
             localControl -- the control to restore state
         """
         try:
             item = self[self.index(localControl.filePathObj)]
         except ValueError:
-            return
-        item.restoreTreeState(localControl)
+            return False
+        return item.restoreTreeState(localControl)

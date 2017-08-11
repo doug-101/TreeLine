@@ -247,6 +247,17 @@ class TreeLocalControl(QObject):
             self.modified = modified
             self.allActions['FileSave'].setEnabled(modified)
 
+    def expandRootNodes(self, maxNum=5):
+        """Expand root node if there are fewer than the maximum.
+
+        Arguments:
+            maxNum -- only expand if there are fewer root nodes than this.
+        """
+        if len(self.structure.childList) < maxNum:
+            treeView = self.activeWindow.treeView
+            for node in self.structure.childList:
+                treeView.expandSpot(node.spotByNumber(0))
+
     def currentSelectionModel(self):
         """Return the current tree's selection model.
         """

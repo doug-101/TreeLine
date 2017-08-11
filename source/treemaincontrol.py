@@ -210,8 +210,9 @@ class TreeMainControl(QObject):
         try:
             self.createLocalControl(pathObj, None, forceNewWindow)
             self.recentFiles.addItem(pathObj)
-            if globalref.genOptions['SaveTreeStates']:
-                self.recentFiles.retrieveTreeState(self.activeControl)
+            if not (globalref.genOptions['SaveTreeStates'] and
+                    self.recentFiles.retrieveTreeState(self.activeControl)):
+                self.activeControl.expandRootNodes()
             QApplication.restoreOverrideCursor()
         except IOError:
             QApplication.restoreOverrideCursor()
@@ -235,8 +236,10 @@ class TreeMainControl(QObject):
                     fileObj.close()
                     textFileObj.close()
                     self.recentFiles.addItem(pathObj)
-                    if globalref.genOptions['SaveTreeStates']:
-                        self.recentFiles.retrieveTreeState(self.activeControl)
+                    if not (globalref.genOptions['SaveTreeStates'] and
+                            self.recentFiles.retrieveTreeState(self.
+                                                               activeControl)):
+                        self.activeControl.expandRootNodes()
                     self.activeControl.compressed = compressed
                     self.activeControl.encrypted = encrypted
                     QApplication.restoreOverrideCursor()
@@ -251,8 +254,7 @@ class TreeMainControl(QObject):
                 self.activeControl.printData.readData(importControl.
                                                       treeLineRootAttrib)
                 self.recentFiles.addItem(pathObj)
-                if globalref.genOptions['SaveTreeStates']:
-                    self.recentFiles.retrieveTreeState(self.activeControl)
+                self.activeControl.expandRootNodes()
                 self.activeControl.imported = True
                 QApplication.restoreOverrideCursor()
                 return
