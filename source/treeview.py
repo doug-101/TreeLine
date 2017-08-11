@@ -136,6 +136,19 @@ class TreeView(QTreeView):
         self.scrollTo(spot.index(self.model()),
                       QAbstractItemView.PositionAtTop)
 
+    def scrollTo(self, index, hint=QAbstractItemView.EnsureVisible):
+        """Scroll the view to make node at index visible.
+
+        Overriden to stop autoScroll from horizontally jumping when selecting
+        nodes.
+        Arguments:
+            index -- the node to be made visible
+            hint -- where the visible item should be
+        """
+        horizPos = self.horizontalScrollBar().value()
+        super().scrollTo(index, hint)
+        self.horizontalScrollBar().setValue(horizPos)
+
     def endEditing(self):
         """Stop the editing of any item being renamed.
         """
