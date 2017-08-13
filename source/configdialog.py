@@ -481,7 +481,7 @@ class TypeConfigPage(ConfigPage):
 
         # advanced widgets
         outputSepBox = QGroupBox(_('Combination && Child List Output '
-                                         '&Separator'))
+                                   '&Separator'))
         topLayout.addWidget(outputSepBox, 2, 1)
         self.advancedWidgets.append(outputSepBox)
         outputSepLayout = QVBoxLayout(outputSepBox)
@@ -569,7 +569,7 @@ class TypeConfigPage(ConfigPage):
         self.htmlButton.setEnabled(not currentFormat.useBullets and
                                    not currentFormat.useTables)
 
-        # self.outputSepEdit.setText(currentFormat.outputSeparator)
+        self.outputSepEdit.setText(currentFormat.outputSeparator)
 
         # self.idFieldCombo.blockSignals(True)
         # self.idFieldCombo.clear()
@@ -688,7 +688,7 @@ class TypeConfigPage(ConfigPage):
         currentFormat.childType = self.childCombo.currentText()
         if currentFormat.childType == _noTypeSetName:
             currentFormat.childType = ''
-        # currentFormat.outputSeparator = self.outputSepEdit.text()
+        currentFormat.outputSeparator = self.outputSepEdit.text()
         # oldIdField = currentFormat.idField
         # prevGenericType = currentFormat.genericType
         # currentFormat.genericType = self.genericCombo.currentText()

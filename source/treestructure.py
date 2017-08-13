@@ -147,6 +147,12 @@ class TreeStructure(treenode.TreeNode):
             else:
                 node.removeInvalidSpotRefs(False)
 
+    def rootSpots(self):
+        """Return a list of spots from root nodes.
+        """
+        (topSpot, ) = self.spotRefs
+        return topSpot.childSpots()
+
     def spotById(self, spotId):
         """Return a spot based on a spot ID string.
 

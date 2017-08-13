@@ -255,8 +255,8 @@ class TreeLocalControl(QObject):
         """
         if len(self.structure.childList) < maxNum:
             treeView = self.activeWindow.treeView
-            for node in self.structure.childList:
-                treeView.expandSpot(node.spotByNumber(0))
+            for spot in self.structure.rootSpots():
+                treeView.expandSpot(spot)
 
     def currentSelectionModel(self):
         """Return the current tree's selection model.
@@ -694,8 +694,7 @@ class TreeLocalControl(QObject):
         """Export the file in various other formats.
         """
         exportControl = exports.ExportControl(self.structure,
-                                              self.currentSelectionModel().
-                                              selectedNodes(),
+                                              self.currentSelectionModel(),
                                               globalref.mainControl.
                                               defaultPathObj(), self.printData)
         try:
@@ -991,7 +990,7 @@ class TreeLocalControl(QObject):
                 spot = spot.prevTreeSpot(True)
             if spot is currentSpot:
                 return False
-            if spot.nodeRef.wordSearch(wordList, titlesOnly):
+            if spot.nodeRef.wordSearch(wordList, titlesOnly, spot):
                 self.currentSelectionModel().selectSpots([spot], True, True)
                 rightView = self.activeWindow.rightParentView()
                 if rightView:
@@ -1017,7 +1016,7 @@ class TreeLocalControl(QObject):
                 spot = spot.prevTreeSpot(True)
             if spot is currentSpot:
                 return False
-            if spot.nodeRef.regExpSearch(regExpList, titlesOnly):
+            if spot.nodeRef.regExpSearch(regExpList, titlesOnly, spot):
                 self.currentSelectionModel().selectSpots([spot], True, True)
                 rightView = self.activeWindow.rightParentView()
                 if rightView:

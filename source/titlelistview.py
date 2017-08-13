@@ -51,25 +51,27 @@ class TitleListView(QTextEdit):
 
         Avoids update if view is not visible or has zero height or width.
         """
-        selNodes = self.treeView.selectionModel().selectedNodes()
+        selSpots = self.treeView.selectionModel().selectedSpots()
         if self.isChildView:
-            if len(selNodes) > 1 or self.hideChildView:
+            if len(selSpots) > 1 or self.hideChildView:
                 self.hide()
                 return
-            if not selNodes:
+            if not selSpots:
                 # use top node childList from tree structure
-                selNodes = [globalref.mainControl.activeControl.structure]
-        elif not selNodes:
+                selSpots = [globalref.mainControl.activeControl.structure.
+                            spotByNumber(0)]
+        elif not selSpots:
             self.hide()
             return
         self.show()
         if not self.isVisible() or self.height() == 0 or self.width() == 0:
             return
         if self.isChildView:
-            selNodes = selNodes[0].childList
+            selSpots = selSpots[0].childSpots()
         self.blockSignals(True)
-        if selNodes:
-            self.setPlainText('\n'.join(node.title() for node in selNodes))
+        if selSpots:
+            self.setPlainText('\n'.join(spot.nodeRef.title(spot) for spot in
+                                        selSpots))
         else:
             self.clear()
         self.blockSignals(False)
@@ -79,15 +81,17 @@ class TitleListView(QTextEdit):
         """
         textList = [' '.join(text.split()) for text in self.toPlainText().
                     split('\n') if text.strip()]
-        selNodes = self.treeView.selectionModel().selectedNodes()
+        selSpots = self.treeView.selectionModel().selectedSpots()
         treeStructure = globalref.mainControl.activeControl.structure
         if self.isChildView:
-            parent = selNodes[0] if selNodes else treeStructure
-            selNodes = parent.childList
-        if len(selNodes) == len(textList):
+            parent = selSpots[0].nodeRef if selSpots else treeStructure
+            selSpots = [globalref.mainControl.activeControl.structure.
+                        spotByNumber(0)]
+        if len(selSpots) == len(textList):
             # collect changes first to skip false clone changes
-            changes = [(node, text) for node, text in zip(selNodes, textList)
-                       if node.title() != text]
+            changes = [(spot.nodeRef, text) for spot, text in
+                       zip(selSpots, textList)
+                       if spot.nodeRef.title(spot) != text]
             for node, text in changes:
                 undoObj = undo.DataUndo(treeStructure.undoList, node, True)
                 if node.setTitle(text):

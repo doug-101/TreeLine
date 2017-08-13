@@ -1918,6 +1918,157 @@ class RegularExpressionField(HtmlTextField):
         raise ValueError
 
 
+class AncestorLevelField(TextField):
+    """Placeholder format for ref. to ancestor fields at specific levels.
+    """
+    typeName = 'AncestorLevel'
+    def __init__(self, name, ancestorLevel=1):
+        """Initialize a field format placeholder type.
+
+        Arguments:
+            name -- the field name string
+            ancestorLevel -- the number of generations to go back
+        """
+        super().__init__(name, {})
+        self.ancestorLevel = ancestorLevel
+
+    def outputText(self, node, titleMode, formatHtml):
+        """Return formatted output text for this field in this node.
+
+        Finds the appropriate ancestor node to get the field text.
+        Arguments:
+            node -- the tree node to start from
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        for num in range(self.ancestorLevel):
+            node = node.parent
+            if not node:
+                return ''
+        try:
+            field = node.nodeFormat().fieldDict[self.name]
+        except KeyError:
+            return ''
+        return field.outputText(node, titleMode, formatHtml)
+
+    def sepName(self):
+        """Return the name enclosed with {* *} separators
+        """
+        return '{{*{0}{1}*}}'.format(self.ancestorLevel * '*', self.name)
+
+
+class AnyAncestorField(TextField):
+    """Placeholder format for ref. to matching ancestor fields at any level.
+    """
+    typeName = 'AnyAncestor'
+    def __init__(self, name):
+        """Initialize a field format placeholder type.
+
+        Arguments:
+            name -- the field name string
+        """
+        super().__init__(name, {})
+
+    def outputText(self, node, titleMode, formatHtml):
+        """Return formatted output text for this field in this node.
+
+        Finds the appropriate ancestor node to get the field text.
+        Arguments:
+            node -- the tree node to start from
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        while node.parent:
+            node = node.parent
+            try:
+                field = node.nodeFormat().fieldDict[self.name]
+            except KeyError:
+                pass
+            else:
+                return field.outputText(node, titleMode, formatHtml)
+        return ''
+
+    def sepName(self):
+        """Return the name enclosed with {* *} separators
+        """
+        return '{{*?{0}*}}'.format(self.name)
+
+
+class ChildListField(TextField):
+    """Placeholder format for ref. to matching ancestor fields at any level.
+    """
+    typeName = 'ChildList'
+    def __init__(self, name):
+        """Initialize a field format placeholder type.
+
+        Arguments:
+            name -- the field name string
+        """
+        super().__init__(name, {})
+
+    def outputText(self, node, titleMode, formatHtml):
+        """Return formatted output text for this field in this node.
+
+        Returns a joined list of matching child field data.
+        Arguments:
+            node -- the tree node to start from
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        result = []
+        for child in node.childList:
+            try:
+                field = child.nodeFormat().fieldDict[self.name]
+            except KeyError:
+                pass
+            else:
+                result.append(field.outputText(child, titleMode, formatHtml))
+        outputSep = node.nodeFormat().outputSeparator
+        return outputSep.join(result)
+
+    def sepName(self):
+        """Return the name enclosed with {* *} separators
+        """
+        return '{{*&{0}*}}'.format(self.name)
+
+
+class DescendantCountField(TextField):
+    """Placeholder format for count of descendants at a given level.
+    """
+    typeName = 'DescendantCount'
+    def __init__(self, name, descendantLevel=1):
+        """Initialize a field format placeholder type.
+
+        Arguments:
+            name -- the field name string
+            descendantLevel -- the level to descend to
+        """
+        super().__init__(name, {})
+        self.descendantLevel = descendantLevel
+
+    def outputText(self, node, titleMode, formatHtml):
+        """Return formatted output text for this field in this node.
+
+        Returns a count of descendants at the approriate level.
+        Arguments:
+            node -- the tree node to start from
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        newNodes = [node]
+        for i in range(self.descendantLevel):
+            prevNodes = newNodes
+            newNodes= []
+            for child in prevNodes:
+                newNodes.extend(child.childList)
+        return repr(len(newNodes))
+
+    def sepName(self):
+        """Return the name enclosed with {* *} separators
+        """
+        return '{{*#{0}*}}'.format(self.name)
+
+
 ####  Utility Functions  ####
 
 _stripTagRe = re.compile('<.*?>')

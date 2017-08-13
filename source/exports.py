@@ -59,17 +59,18 @@ _idReplaceCharsRe = re.compile(r'[^a-zA-Z0-9_-]+')
 class ExportControl:
     """Control to do file exports for tree branches and nodes.
     """
-    def __init__(self, structure, selectedNodes, defaultPathObj, printData):
+    def __init__(self, structure, selectionModel, defaultPathObj, printData):
         """Initialize export control object.
 
         Arguments:
             structure -- the tree structure ref for exporting the entire tree
-            selectedNodes -- the selection for exporting partial trees
+            selectionModel -- the selection model for partial exports
             defaultPathObj -- path object to use as file dialog default
             printData -- a ref to print data for old treeline exports
         """
         self.structure = structure
-        self.selectedNodes = selectedNodes
+        self.selectedSpots = selectionModel.selectedSpots()
+        self.selectedNodes = selectionModel.selectedNodes()
         self.defaultPathObj = defaultPathObj
         self.printData = printData
 
@@ -140,9 +141,9 @@ class ExportControl:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = self.structure.childList
-        spots = [node.spotByNumber(0) for node in self.selectedNodes]
-        outputGroup = treeoutput.OutputGroup(spots, ExportDialog.includeRoot,
+            self.selectedSpots = self.structure.rootSpots()
+        outputGroup = treeoutput.OutputGroup(self.selectedSpots,
+                                             ExportDialog.includeRoot,
                                              ExportDialog.exportWhat !=
                                              ExportDialog.selectNode,
                                              ExportDialog.openOnly)
@@ -195,9 +196,9 @@ class ExportControl:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = self.structure.childList
-        spots = [node.spotByNumber(0) for node in self.selectedNodes]
-        outputGroup = treeoutput.OutputGroup(spots, ExportDialog.includeRoot,
+            self.selectedSpots = self.structure.rootSpots()
+        outputGroup = treeoutput.OutputGroup(self.selectedSpots,
+                                             ExportDialog.includeRoot,
                                              True, ExportDialog.openOnly)
         outputGroup.addAnchors(ExportDialog.navPaneLevels)
         outputGroup.addBlanksBetween()
@@ -226,7 +227,7 @@ class ExportControl:
                  '</head>', '<body>', '<div id="sidebar">']
         prevLevel = 0
         treeView = globalref.mainControl.activeControl.activeWindow.treeView
-        for parentSpot in spots:
+        for parentSpot in self.selectedSpots:
             for spot, level in parentSpot.levelSpotDescendantGen(treeView,
                                                                  ExportDialog.
                                                                  includeRoot,
@@ -241,7 +242,7 @@ class ExportControl:
                     prevLevel -= 1
                 node = spot.nodeRef
                 lines.append('&bull; <a href="#{0}">{1}</a><br />'.
-                             format(node.uId, node.title()))
+                             format(node.uId, node.title(spot)))
                 prevLevel = level
         while level > 0:
             lines.append('</div>')
@@ -378,19 +379,18 @@ class ExportControl:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = self.structure.childList
+            self.selectedSpots = self.structure.rootSpots()
         if ExportDialog.exportWhat == ExportDialog.selectNode:
-            lines = [node.title() for node in self.selectedNodes]
+            lines = [spot.nodeRef.title(spot) for spot in self.selectedSpots]
         else:
             treeView = (globalref.mainControl.activeControl.activeWindow.
                         treeView)
             lines = []
-            for rootNode in self.selectedNodes:
-                rootSpot = rootNode.spotByNumber(0)
+            for rootSpot in self.selectedSpots:
                 for spot, level in rootSpot.levelSpotDescendantGen(treeView,
                                                   ExportDialog.includeRoot,
                                                   None, ExportDialog.openOnly):
-                    lines.append('\t' * level + spot.nodeRef.title())
+                    lines.append('\t' * level + spot.nodeRef.title(spot))
         with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
             f.writelines([(line + '\n') for line in lines])
         return True

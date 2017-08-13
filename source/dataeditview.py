@@ -31,17 +31,18 @@ class DataEditCell(QTableWidgetItem):
     """Class override for data edit view cells.
     Used for the cells with editable content.
     """
-    def __init__(self, node, field, titleCellRef, typeCellRef):
+    def __init__(self, spot, field, titleCellRef, typeCellRef):
         """Initialize the editable cells in the data edit view.
 
         Arguments:
-            node -- the node referenced by this cell
+            spot -- the spot referenced by this cell
             field -- the field object referenced by this cell
             titleCellRef -- the title cell to update based on data changes
             typeCellRef -- the format type cell to update based on type changes
         """
         super().__init__()
-        self.node = node
+        self.spot = spot
+        self.node = spot.nodeRef
         self.field = field
         self.titleCellRef = titleCellRef
         self.typeCellRef = typeCellRef
@@ -230,7 +231,7 @@ class DataEditDelegate(QStyledItemDelegate):
                 except ValueError:
                     editor.setErrorFlag()
                 self.parent().nodeModified.emit(cell.node)
-                cell.titleCellRef.setText(cell.node.title())
+                cell.titleCellRef.setText(cell.node.title(cell.spot))
                 cell.typeCellRef.setText(cell.node.formatRef.name)
                 # linkRefCollect = cell.node.modelRef.linkRefCollect
                 # if (hasattr(editor, 'addedIntLinkFlag') and
@@ -354,46 +355,48 @@ class DataEditView(QTableWidget):
 
         Avoids update if view is not visible or has zero height or width.
         """
-        selNodes = self.treeView.selectionModel().selectedNodes()
+        selSpots = self.treeView.selectionModel().selectedSpots()
         if self.isChildView:
-            if (len(selNodes) > 1 or self.hideChildView or
-                (selNodes and not selNodes[0].childList)):
+            if (len(selSpots) > 1 or self.hideChildView or
+                (selSpots and not selSpots[0].nodeRef.childList)):
                 self.hide()
                 return
-            if not selNodes:
+            if not selSpots:
                 # use top node childList from tree structure
-                selNodes = [globalref.mainControl.activeControl.structure]
-        elif not selNodes:
+                selSpots = [globalref.mainControl.activeControl.structure.
+                            spotByNumber(0)]
+        elif not selSpots:
             self.hide()
             return
         self.show()
         if not self.isVisible() or self.height() == 0 or self.width() == 0:
             return
         if self.isChildView:
-            selNodes = selNodes[0].childList
+            selSpots = selSpots[0].childSpots()
         self.clear()
-        if selNodes:
+        if selSpots:
             self.hide() # 2nd update very slow if shown during update
             self.setRowCount(100000)
             rowNum = -2
-            for node in selNodes:
-                rowNum = self.addNodeData(node, rowNum + 2)
+            for spot in selSpots:
+                rowNum = self.addNodeData(spot, rowNum + 2)
             self.setRowCount(rowNum + 1)
             self.adjustSizes()
             self.show()
 
-    def addNodeData(self, node, startRow):
+    def addNodeData(self, spot, startRow):
         """Populate the view with the data from the given node.
 
         Returns the last row number used.
         Arguments:
-            node -- the node to add
+            spot -- the spot to add
             startRow -- the row offset
         """
+        node = spot.nodeRef
         formatName = node.formatRef.name
         typeCell = self.createInactiveCell(formatName)
         self.setItem(startRow, 0, typeCell)
-        titleCell = self.createInactiveCell(node.title())
+        titleCell = self.createInactiveCell(node.title(spot))
         self.setItem(startRow, 1, titleCell)
         fields = node.formatRef.fields()
         if not globalref.genOptions['EditNumbering']:
@@ -406,7 +409,7 @@ class DataEditView(QTableWidget):
             self.setItem(row, 0, self.createInactiveCell(field.name,
                                                          Qt.AlignRight |
                                                          Qt.AlignVCenter))
-            self.setItem(row, 1, DataEditCell(node, field, titleCell,
+            self.setItem(row, 1, DataEditCell(spot, field, titleCell,
                                               typeCell))
         self.setItem(row + 1, 0, self.createInactiveCell(''))
         self.setItem(row + 1, 1, self.createInactiveCell(''))
@@ -417,14 +420,20 @@ class DataEditView(QTableWidget):
         """
         if not self.isVisible() or self.height() == 0 or self.width() == 0:
             return
-        selNodes = self.treeView.selectionModel().selectedNodes()
+        selSpots = self.treeView.selectionModel().selectedSpots()
         if self.isChildView:
-            selNodes = selNodes[0].childList
+            if not selSpots:
+                # use top node childList from tree structure
+                selSpots = [globalref.mainControl.activeControl.structure.
+                            spotByNumber(0)]
+            selSpots = selSpots[0].childSpots()
+        elif not selSpots:
+            return
         rowNum = -2
-        for node in selNodes:
-            rowNum = self.refreshNodeData(node, rowNum + 2)
+        for spot in selSpots:
+            rowNum = self.refreshNodeData(spot, rowNum + 2)
 
-    def refreshNodeData(self, node, startRow):
+    def refreshNodeData(self, spot, startRow):
         """Refresh the data in active cells for this node.
 
         Returns the last row number used.
@@ -432,7 +441,8 @@ class DataEditView(QTableWidget):
             node -- the node to add
             startRow -- the row offset
         """
-        self.item(startRow, 1).setText(node.title())
+        node = spot.nodeRef
+        self.item(startRow, 1).setText(node.title(spot))
         fields = node.nodeFormat().fields()
         if not globalref.genOptions['EditNumbering']:
             fields = [field for field in fields

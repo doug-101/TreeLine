@@ -123,7 +123,7 @@ class TreeSpot:
                     yield (spot, level)
 
     def childSpots(self):
-        """Return a list of immediate child  spots.
+        """Return a list of immediate child spots.
         """
         return [childNode.matchedSpot(self) for childNode in
                 self.nodeRef.childList]

@@ -168,8 +168,12 @@ class TreeNode:
                     'data': self.data, 'children': children}
         return fileData
 
-    def title(self):
+    def title(self, spotRef=None):
         """Return the title string for this node.
+
+        If spotRef not given, ancestor fields assume first spot
+        Arguments:
+            spotRef -- optional, used for ancestor field refs
         """
         return self.formatRef.formatTitle(self)
 
@@ -222,14 +226,15 @@ class TreeNode:
                 self.data[field.name] = editorText
             raise ValueError
 
-    def wordSearch(self, wordList, titleOnly=False):
+    def wordSearch(self, wordList, titleOnly=False, spotRef=None):
         """Return True if all words in wordlist are found in this node's data.
 
         Arguments:
             wordList -- a list of words or phrases to find
             titleOnly -- search only in the title text if True
+            spotRef -- an optional spot reference for ancestor field refs
         """
-        dataStr = self.title().lower()
+        dataStr = self.title(spotRef).lower()
         if not titleOnly:
             # join with null char so phrase matches don't cross borders
             dataStr = '{0}\0{1}'.format(dataStr,
@@ -239,14 +244,15 @@ class TreeNode:
                 return False
         return True
 
-    def regExpSearch(self, regExpList, titleOnly=False):
+    def regExpSearch(self, regExpList, titleOnly=False, spotRef=None):
         """Return True if the regular expression is found in this node's data.
 
         Arguments:
             regExpList -- a list of regular expression objects to find
             titleOnly -- search only in the title text if True
+            spotRef -- an optional spot reference for ancestor field refs
         """
-        dataStr = self.title()
+        dataStr = self.title(spotRef)
         if not titleOnly:
             # join with null char so phrase matches don't cross borders
             dataStr = '{0}\0{1}'.format(dataStr, '\0'.join(self.data.values()))

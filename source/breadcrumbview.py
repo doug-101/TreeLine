@@ -30,7 +30,7 @@ class CrumbItem(QTableWidgetItem):
         Arguments:
             spotRef -- ref to the associated spot item
         """
-        super().__init__(spotRef.nodeRef.title())
+        super().__init__(spotRef.nodeRef.title(spotRef))
         self.spot = spotRef
         self.selectedSpot = False
         self.setTextAlignment(Qt.AlignCenter)
