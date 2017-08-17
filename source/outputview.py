@@ -55,7 +55,7 @@ class OutputView(QTextBrowser):
             if not selSpots:
                 # use top node childList from tree structure
                 selSpots = [globalref.mainControl.activeControl.structure.
-                            spotByNumber(0)]
+                            structSpot()]
         elif not selSpots:
             self.hide()
             return

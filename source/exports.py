@@ -303,6 +303,9 @@ class ExportControl:
                                                          selectedNodes,
                                                          addSpots=False)
         if len(self.structure.childList) > 1:
+            self.structure = treestructure.TreeStructure(topNodes=self.
+                                                         structure.childList,
+                                                         addSpots=False)
             rootType = nodeformat.NodeFormat(treeformats.defaultTypeName,
                                              self.structure.treeFormats,
                                              addDefaultField=True)
@@ -344,6 +347,9 @@ class ExportControl:
                                                          selectedNodes,
                                                          addSpots=False)
         if len(self.structure.childList) > 1:
+            self.structure = treestructure.TreeStructure(topNodes=self.
+                                                         structure.childList,
+                                                         addSpots=False)
             rootType = nodeformat.NodeFormat(treeformats.defaultTypeName,
                                              self.structure.treeFormats,
                                              addDefaultField=True)
@@ -410,22 +416,21 @@ class ExportControl:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = self.structure.childList
+            self.selectedSpots = self.structure.rootSpots()
         lines = []
         if ExportDialog.exportWhat == ExportDialog.selectNode:
-            for rootNode in self.selectedNodes:
-                lines.extend(rootNode.output(True))
-                if rootNode.formatRef.spaceBetween:
+            for rootSpot in self.selectedSpots:
+                lines.extend(rootSpot.nodeRef.output(True, False, rootSpot))
+                if rootSpot.nodeRef.formatRef.spaceBetween:
                     lines.append('')
         else:
             treeView = (globalref.mainControl.activeControl.activeWindow.
                         treeView)
-            for rootNode in self.selectedNodes:
-                rootSpot = rootNode.spotByNumber(0)
+            for rootSpot in self.selectedSpots:
                 for spot, level in rootSpot.levelSpotDescendantGen(treeView,
                                                   ExportDialog.includeRoot,
                                                   None, ExportDialog.openOnly):
-                    lines.extend(spot.nodeRef.output(True))
+                    lines.extend(spot.nodeRef.output(True, False, spot))
                     if spot.nodeRef.formatRef.spaceBetween:
                         lines.append('')
         with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
@@ -530,6 +535,9 @@ class ExportControl:
         if len(self.structure.childList) > 1:
             if not addDescend:
                 addChildren = True
+            self.structure = treestructure.TreeStructure(topNodes=self.
+                                                         structure.childList,
+                                                         addSpots=False)
             rootType = nodeformat.NodeFormat(treeformats.defaultTypeName,
                                              self.structure.treeFormats,
                                              addDefaultField=True)
@@ -627,7 +635,7 @@ class ExportControl:
                 return False
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
-            self.selectedNodes = self.structure.childList
+            self.selectedSpots = self.structure.rootSpots()
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
         for prefix, uri in _odfNamespace.items():
             ElementTree.register_namespace(prefix, uri)
@@ -650,8 +658,8 @@ class ExportControl:
         contentBodyElem = _addOdfElement('office:body', contentRoot)
         contentTextElem = _addOdfElement('office:text', contentBodyElem)
         maxLevel = 0
-        for node in self.selectedNodes:
-            level = _addOdfText(node, contentTextElem, addBranches)
+        for spot in self.selectedSpots:
+            level = _addOdfText(spot, contentTextElem, addBranches)
             maxLevel = max(level, maxLevel)
 
         manifestRoot = _addOdfElement('manifest:manifest')
@@ -1309,13 +1317,13 @@ def _addOdfElement(name, parent=None, attr=None):
         parent.append(elem)
     return elem
 
-def _addOdfText(node, parentElem, addChildren=True, level=1, maxLevel=1):
+def _addOdfText(spot, parentElem, addChildren=True, level=1, maxLevel=1):
     """Add heading and text elements to the parent element tree element.
 
     Called recursively for children if addChildren is True.
     Returns the maximum indent level used for this branch.
     Arguments:
-        node -- the node to export
+        spot -- the spot to export
         parentElem -- the parent element tree element to add to
         addChildren -- add branch if True
         level -- the current tree indent level
@@ -1325,17 +1333,17 @@ def _addOdfText(node, parentElem, addChildren=True, level=1, maxLevel=1):
                               {'text:outline-level': '{0}'.format(level),
                                'text:style-name':
                                'Heading_20_{0}'.format(level)})
-    headElem.text = node.title()
-    output = node.output(True)
-    if output and output[0] == node.title():
+    headElem.text = spot.nodeRef.title(spot)
+    output = spot.nodeRef.output(True, False, spot)
+    if output and output[0] == spot.nodeRef.title(spot):
         del output[0]      # remove first line if same as title
     for line in output:
         textElem = _addOdfElement('text:p', parentElem,
                                   {'text:outline-level': '{0}'.format(level),
                                    'text:style-name': 'Text_20_body'})
         textElem.text = line
-    if addChildren and node.childList:
-        for child in node.childList:
+    if addChildren and spot.nodeRef.childList:
+        for child in spot.childSpots():
             childlevel = _addOdfText(child, parentElem, True, level + 1,
                                      maxLevel)
             maxLevel = max(childlevel, maxLevel)

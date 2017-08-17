@@ -106,8 +106,7 @@ class TreeLocalControl(QObject):
             window.resetTreeModel(self.model)
             # set first spot current to match cases with a new window
             window.treeView.selectionModel().setCurrentSpot(self.structure.
-                                                            childList[0].
-                                                            spotByNumber(0))
+                                                            rootSpots()[0])
             self.setWindowSignals(window, True)
             window.updateActions(self.allActions)
             self.windowList.append(window)

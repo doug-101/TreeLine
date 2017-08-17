@@ -95,7 +95,7 @@ class RecentFileItem:
         self.selectSpots = [spot.spotId() for spot in
                             treeView.selectionModel().selectedSpots()]
         self.openSpots = [spot.spotId() for spot in localControl.structure.
-                          spotByNumber(0).expandedSpotDescendantGen(treeView)]
+                          structSpot().expandedSpotDescendantGen(treeView)]
         self.openSpots = self.openSpots[:_maxOpenNodesStored]
 
     def restoreTreeState(self, localControl):

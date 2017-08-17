@@ -499,8 +499,7 @@ class TreeWindow(QMainWindow):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         selectedSpots = self.treeView.selectionModel().selectedSpots()
         if not selectedSpots:
-            selectedSpots = (self.treeView.model().treeStructure.
-                             spotByNumber(0).childSpots())
+            selectedSpots = self.treeView.model().treeStructure.rootSpots()
         for spot in selectedSpots:
             self.treeView.expandBranch(spot)
         QApplication.restoreOverrideCursor()
@@ -511,8 +510,7 @@ class TreeWindow(QMainWindow):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         selectedSpots = self.treeView.selectionModel().selectedSpots()
         if not selectedSpots:
-            selectedSpots = (self.treeView.model().treeStructure.
-                             spotByNumber(0).childSpots())
+            selectedSpots = self.treeView.model().treeStructure.rootSpots()
         for spot in selectedSpots:
             self.treeView.collapseBranch(spot)
         QApplication.restoreOverrideCursor()

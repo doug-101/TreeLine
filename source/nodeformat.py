@@ -28,6 +28,7 @@ _defaultOutputSeparator = ', '
 _fieldSplitRe = re.compile(r'({\*(?:\**|\?|!|&|#)[\w_\-.]+\*})')
 _fieldPartRe = re.compile(r'{\*(\**|\?|!|&|#)([\w_\-.]+)\*}')
 _endTagRe = re.compile(r'.*(<br[ /]*?>|<BR[ /]*?>|<hr[ /]*?>|<HR[ /]*?>)$')
+_levelFieldRe = re.compile(r'[^0-9]+([0-9]+)$')
 
 class NodeFormat:
     """Class to handle node format info
@@ -106,6 +107,8 @@ class NodeFormat:
             formatData['childtype'] = self.childType
         if self.iconName:
             formatData['icon'] = self.iconName
+        if self.outputSeparator != _defaultOutputSeparator:
+            formatData['outputsep'] = self.outputSeparator
         return formatData
 
     def copySettings(self, sourceFormat):
@@ -132,24 +135,27 @@ class NodeFormat:
         """
         return list(self.fieldDict.keys())
 
-    def formatTitle(self, node):
+    def formatTitle(self, node, spotRef=None):
         """Return a string with formatted title data.
 
         Arguments:
             node -- the node used to get data for fields
+            spotRef -- optional, used for ancestor field refs
         """
         line = ''.join([part.outputText(node, True, self.formatHtml)
                         if hasattr(part, 'outputText') else part
                         for part in self.titleLine])
         return line.strip().split('\n', 1)[0]   # truncate to 1st line
 
-    def formatOutput(self, node, plainText=False, keepBlanks=False):
+    def formatOutput(self, node, plainText=False, keepBlanks=False,
+                     spotRef=None):
         """Return a list of formatted text output lines.
 
         Arguments:
             node -- the node used to get data for fields
             plainText -- if True, remove HTML markup from fields and formats
             keepBlanks -- if True, keep lines with empty fields
+            spotRef -- optional, used for ancestor field refs
         """
         result = []
         for lineData in self.outputLines:
@@ -295,6 +301,19 @@ class NodeFormat:
             try:
                 if not modifier:
                     return self.fieldDict[fieldName]
+                elif modifier == '*' * len(modifier):
+                    return fieldformat.AncestorLevelField(fieldName,
+                                                          len(modifier))
+                elif modifier == '?':
+                    return fieldformat.AnyAncestorField(fieldName)
+                elif modifier == '&':
+                    return fieldformat.ChildListField(fieldName)
+                elif modifier == '#':
+                    match = _levelFieldRe.match(fieldName)
+                    if match and match.group(1) != '0':
+                        level = int(match.group(1))
+                        return fieldformat.DescendantCountField(fieldName,
+                                                                level)
                 elif modifier == '!':
                     return (self.parentFormats.fileInfoFormat.
                             fieldDict[fieldName])
@@ -528,3 +547,18 @@ class FileInfoFormat(NodeFormat):
                 if altField.suffix:
                     field.suffix = altField.suffix
                     self.fieldFormatModified = True
+
+
+class DescendantCountFormat(NodeFormat):
+    """Placeholder format for child count fields.
+
+    Should not show up in main format type list.
+    """
+    countFieldName = 'Level'
+    def __init__(self):
+        super().__init__('CountFormat', None)
+        for level in range(3):
+            name = '{0}{1}'.format(DescendantCountFormat.countFieldName,
+                                   level + 1)
+            field = fieldformat.DescendantCountField(name, level + 1)
+            self.fieldDict[name] = field

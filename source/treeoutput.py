@@ -26,18 +26,20 @@ class OutputItem:
 
     Stores text lines and original indent level.
     """
-    def __init__(self, node, level):
-        """Convert the node into an output item.
+    def __init__(self, spot, level):
+        """Convert the spot's node into an output item.
 
         Arguments:
-            node -- the tree node to convert
+            spot -- the tree spot to convert
             level -- the node's original indent level
         """
+        node = spot.nodeRef
         nodeFormat = node.formatRef
         if not nodeFormat.useTables:
-            self.textLines = [line + '<br />' for line in node.output()]
+            self.textLines = [line + '<br />' for line in
+                              node.output(spotRef=spot)]
         else:
-            self.textLines = node.output(keepBlanks=True)
+            self.textLines = node.output(keepBlanks=True, spotRef=spot)
         if not self.textLines:
             self.textLines = ['']
         self.addSpace = nodeFormat.spaceBetween
@@ -240,7 +242,7 @@ class OutputGroup(list):
             level = -1
             if includeRoot:
                 level = 0
-                self.append(OutputItem(spot.nodeRef, level))
+                self.append(OutputItem(spot, level))
             if includeDescend:
                 self.addChildren(spot, level, openOnly)
 
@@ -254,7 +256,7 @@ class OutputGroup(list):
         treeView = globalref.mainControl.activeControl.activeWindow.treeView
         if not openOnly or treeView.isSpotExpanded(spot):
             for child in spot.childSpots():
-                self.append(OutputItem(child.nodeRef, level + 1))
+                self.append(OutputItem(child, level + 1))
                 self.addChildren(child, level + 1, openOnly)
 
     def addIndents(self):

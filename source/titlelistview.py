@@ -59,7 +59,7 @@ class TitleListView(QTextEdit):
             if not selSpots:
                 # use top node childList from tree structure
                 selSpots = [globalref.mainControl.activeControl.structure.
-                            spotByNumber(0)]
+                            structSpot()]
         elif not selSpots:
             self.hide()
             return
@@ -86,7 +86,7 @@ class TitleListView(QTextEdit):
         if self.isChildView:
             parent = selSpots[0].nodeRef if selSpots else treeStructure
             selSpots = [globalref.mainControl.activeControl.structure.
-                        spotByNumber(0)]
+                        structSpot()]
         if len(selSpots) == len(textList):
             # collect changes first to skip false clone changes
             changes = [(spot.nodeRef, text) for spot, text in

@@ -364,7 +364,7 @@ class DataEditView(QTableWidget):
             if not selSpots:
                 # use top node childList from tree structure
                 selSpots = [globalref.mainControl.activeControl.structure.
-                            spotByNumber(0)]
+                            structSpot()]
         elif not selSpots:
             self.hide()
             return
@@ -425,7 +425,7 @@ class DataEditView(QTableWidget):
             if not selSpots:
                 # use top node childList from tree structure
                 selSpots = [globalref.mainControl.activeControl.structure.
-                            spotByNumber(0)]
+                            structSpot()]
             selSpots = selSpots[0].childSpots()
         elif not selSpots:
             return
@@ -498,13 +498,14 @@ class DataEditView(QTableWidget):
         charFormat = QTextCharFormat()
         charFormat.setBackground(backColor)
         charFormat.setForeground(foreColor)
-        node = self.treeView.selectionModel().selectedNodes()[0]
+        spot = self.treeView.selectionModel().selectedSpots()[0]
         if wordList is None:
             wordList = []
         if regExpList is None:
             regExpList = []
         for regExp in regExpList:
-            for match in regExp.finditer('\n'.join(node.output())):
+            for match in regExp.finditer('\n'.join(spot.nodeRef.
+                                                   output(spotRef=spot))):
                 matchText = match.group().lower()
                 if matchText not in wordList:
                     wordList.append(matchText)

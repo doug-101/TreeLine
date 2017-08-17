@@ -103,13 +103,14 @@ class TextField:
         """
         self.format = format
 
-    def outputText(self, node, titleMode, formatHtml):
+    def outputText(self, node, titleMode, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Arguments:
             node -- the tree item storing the data
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
+            spotRef -- optional, used for ancestor field refs
         """
         if self.useFileInfo and node.spotRefs:
             # get file info node if not already the file info node
@@ -1293,7 +1294,7 @@ class CombinationField(ChoiceField):
         self.choices = set(self.choiceList)
         self.outputSep = ''
 
-    def outputText(self, node, titleMode, formatHtml):
+    def outputText(self, node, titleMode, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Sets output separator prior to calling base class methods.
@@ -1301,9 +1302,10 @@ class CombinationField(ChoiceField):
             node -- the tree item storing the data
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
+            spotRef -- optional, used for ancestor field refs
         """
         self.outputSep = node.formatRef.outputSeparator
-        return super().outputText(node, titleMode, formatHtml)
+        return super().outputText(node, titleMode, formatHtml, spotRef)
 
     def formatOutput(self, storedText, titleMode, formatHtml):
         """Return formatted output text from stored text for this field.
@@ -1415,7 +1417,7 @@ class AutoCombinationField(CombinationField):
         self.choices = set()
         self.outputSep = ''
 
-    def outputText(self, node, titleMode, formatHtml):
+    def outputText(self, node, titleMode, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Sets output separator prior to calling base class methods.
@@ -1423,9 +1425,10 @@ class AutoCombinationField(CombinationField):
             node -- the tree item storing the data
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
+            spotRef -- optional, used for ancestor field refs
         """
         self.outputSep = node.formatRef.outputSeparator
-        return super().outputText(node, titleMode, formatHtml)
+        return super().outputText(node, titleMode, formatHtml, spotRef)
 
     def formatOutput(self, storedText, titleMode, formatHtml):
         """Return formatted output text from stored text for this field.
@@ -1932,7 +1935,7 @@ class AncestorLevelField(TextField):
         super().__init__(name, {})
         self.ancestorLevel = ancestorLevel
 
-    def outputText(self, node, titleMode, formatHtml):
+    def outputText(self, node, titleMode, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Finds the appropriate ancestor node to get the field text.
@@ -1940,16 +1943,20 @@ class AncestorLevelField(TextField):
             node -- the tree node to start from
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
+            spotRef -- optional, used for ancestor field refs
         """
+        if not spotRef:
+            spotRef = node.spotByNumber(0)
         for num in range(self.ancestorLevel):
-            node = node.parent
-            if not node:
+            spotRef = spotRef.parentSpot
+            if not spotRef:
                 return ''
         try:
-            field = node.nodeFormat().fieldDict[self.name]
+            field = spotRef.nodeRef.formatRef.fieldDict[self.name]
         except KeyError:
             return ''
-        return field.outputText(node, titleMode, formatHtml)
+        return field.outputText(spotRef.nodeRef, titleMode, formatHtml,
+                                spotRef)
 
     def sepName(self):
         """Return the name enclosed with {* *} separators
@@ -1969,7 +1976,7 @@ class AnyAncestorField(TextField):
         """
         super().__init__(name, {})
 
-    def outputText(self, node, titleMode, formatHtml):
+    def outputText(self, node, titleMode, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Finds the appropriate ancestor node to get the field text.
@@ -1977,15 +1984,19 @@ class AnyAncestorField(TextField):
             node -- the tree node to start from
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
+            spotRef -- optional, used for ancestor field refs
         """
-        while node.parent:
-            node = node.parent
+        if not spotRef:
+            spotRef = node.spotByNumber(0)
+        while spotRef.parentSpot:
+            spotRef = spotRef.parentSpot
             try:
-                field = node.nodeFormat().fieldDict[self.name]
+                field = spotRef.nodeRef.formatRef.fieldDict[self.name]
             except KeyError:
                 pass
             else:
-                return field.outputText(node, titleMode, formatHtml)
+                return field.outputText(spotRef.nodeRef, titleMode, formatHtml,
+                                        spotRef)
         return ''
 
     def sepName(self):
@@ -2006,7 +2017,7 @@ class ChildListField(TextField):
         """
         super().__init__(name, {})
 
-    def outputText(self, node, titleMode, formatHtml):
+    def outputText(self, node, titleMode, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Returns a joined list of matching child field data.
@@ -2014,16 +2025,18 @@ class ChildListField(TextField):
             node -- the tree node to start from
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
+            spotRef -- optional, used for ancestor field refs
         """
         result = []
         for child in node.childList:
             try:
-                field = child.nodeFormat().fieldDict[self.name]
+                field = child.formatRef.fieldDict[self.name]
             except KeyError:
                 pass
             else:
-                result.append(field.outputText(child, titleMode, formatHtml))
-        outputSep = node.nodeFormat().outputSeparator
+                result.append(field.outputText(child, titleMode, formatHtml,
+                                               spotRef))
+        outputSep = node.formatRef.outputSeparator
         return outputSep.join(result)
 
     def sepName(self):
@@ -2046,7 +2059,7 @@ class DescendantCountField(TextField):
         super().__init__(name, {})
         self.descendantLevel = descendantLevel
 
-    def outputText(self, node, titleMode, formatHtml):
+    def outputText(self, node, titleMode, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Returns a count of descendants at the approriate level.
@@ -2054,11 +2067,12 @@ class DescendantCountField(TextField):
             node -- the tree node to start from
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
+            spotRef -- optional, used for ancestor field refs
         """
         newNodes = [node]
         for i in range(self.descendantLevel):
             prevNodes = newNodes
-            newNodes= []
+            newNodes = []
             for child in prevNodes:
                 newNodes.extend(child.childList)
         return repr(len(newNodes))

@@ -171,11 +171,11 @@ class TreeNode:
     def title(self, spotRef=None):
         """Return the title string for this node.
 
-        If spotRef not given, ancestor fields assume first spot
+        If spotRef not given, ancestor fields assume first spot.
         Arguments:
             spotRef -- optional, used for ancestor field refs
         """
-        return self.formatRef.formatTitle(self)
+        return self.formatRef.formatTitle(self, spotRef)
 
     def setTitle(self, title):
         """Change this node's data based on a new title string.
@@ -186,14 +186,17 @@ class TreeNode:
             return False
         return self.formatRef.extractTitleData(title, self.data)
 
-    def output(self, plainText=False, keepBlanks=False):
+    def output(self, plainText=False, keepBlanks=False, spotRef=None):
         """Return a list of formatted text output lines.
 
+        If spotRef not given, ancestor fields assume first spot.
         Arguments:
             plainText -- if True, remove HTML markup from fields and formats
             keepBlanks -- if True, keep lines with empty fields
+            spotRef -- optional, used for ancestor field refs
         """
-        return self.formatRef.formatOutput(self, plainText, keepBlanks)
+        return self.formatRef.formatOutput(self, plainText, keepBlanks,
+                                           spotRef)
 
     def changeDataType(self, formatRef):
         """Change this node's data type to the given name.

@@ -202,13 +202,12 @@ class PrintData:
         """Load data to be printed and set page info.
         """
         if self.printWhat == PrintScope.entireTree:
-            selSpots = self.localControl.structure.spotByNumber(0).childSpots()
+            selSpots = self.localControl.structure.rootSpots()
         else:
             selSpots = (self.localControl.currentSelectionModel().
                         selectedSpots())
             if not selSpots:
-                selSpots = (self.localControl.structure.spotByNumber(0).
-                            childSpots())
+                selSpots = self.localControl.structure.rootSpots()
         self.outputGroup = treeoutput.OutputGroup(selSpots, self.includeRoot,
                                                   self.printWhat !=
                                                   PrintScope.selectNode,
