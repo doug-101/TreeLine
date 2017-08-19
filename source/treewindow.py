@@ -168,16 +168,22 @@ class TreeWindow(QMainWindow):
         self.treeView.scheduleDelayedItemsLayout()
         self.breadcrumbView.updateContents()
 
-    def updateRightViews(self):
+    def updateRightViews(self, *args, outputOnly=False):
         """Update all right-hand views and breadcrumb view.
+
+        Arguments:
+            *args -- dummy arguments to collect args from signals
+            outputOnly -- only update output views (not edit views)
         """
         if globalref.mainControl.activeControl:
             self.rightTabActList[self.rightTabs.
                                  currentIndex()].setChecked(True)
             self.breadcrumbView.updateContents()
             splitter = self.rightTabs.currentWidget()
-            for i in range(2):
-                splitter.widget(i).updateContents()
+            if not outputOnly or isinstance(splitter.widget(0),
+                                            outputview.OutputView):
+                for i in range(2):
+                    splitter.widget(i).updateContents()
 
     def updateCommandsAvail(self):
         """Set window commands available based on node selections.

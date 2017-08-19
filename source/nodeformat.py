@@ -22,6 +22,7 @@ import xml.sax.saxutils
 if not sys.platform.startswith('win'):
     import pwd
 import fieldformat
+import conditional
 
 
 defaultFieldName = _('Name')
@@ -86,6 +87,10 @@ class NodeFormat:
         self.useTables = formatData.get('tables', False)
         self.childType = formatData.get('childtype', '')
         self.genericType = formatData.get('generic', '')
+        if 'condition' in formatData:
+            self.conditional = conditional.Conditional(formatData['condition'])
+        else:
+            self.conditional = None
         self.iconName = formatData.get('icon', '')
         self.outputSeparator = formatData.get('outputsep',
                                               _defaultOutputSeparator)
@@ -110,6 +115,9 @@ class NodeFormat:
             formatData['childtype'] = self.childType
         if self.genericType:
             formatData['generic'] = self.genericType
+        if self.conditional:
+            print('storing conditional')
+            formatData['condition'] = self.conditional.conditionStr()
         if self.iconName:
             formatData['icon'] = self.iconName
         if self.outputSeparator != _defaultOutputSeparator:

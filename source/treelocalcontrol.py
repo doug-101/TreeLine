@@ -141,6 +141,8 @@ class TreeLocalControl(QObject):
             node -- the node to be updated
             setModified -- if True, set the modified flag for this file
         """
+        if node.setConditionalType(self.structure):
+            self.activeWindow.updateRightViews(outputOnly=True)
         for window in self.windowList:
             window.updateTreeNode(node)
         if setModified:
@@ -154,9 +156,14 @@ class TreeLocalControl(QObject):
             setModified -- if True, set the modified flag for this file
         """
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        typeChanges = 0
+        if self.structure.treeFormats.conditionalTypes:
+            for node in self.structure.childList:
+                typeChanges += node.setDescendantConditionalTypes(self.
+                                                                  structure)
         for window in self.windowList:
             window.updateTree()
-            if window != self.activeWindow:
+            if window != self.activeWindow or typeChanges:
                 window.updateRightViews()
         if setModified:
             self.setModified()
@@ -180,6 +187,9 @@ class TreeLocalControl(QObject):
             setModified -- if True, set the modified flag for this file
         """
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        if self.structure.treeFormats.conditionalTypes:
+            for node in self.structure.childList:
+                node.setDescendantConditionalTypes(self.structure)
         for window in self.windowList:
             window.updateTree()
             window.updateRightViews()
@@ -674,7 +684,7 @@ class TreeLocalControl(QObject):
         if newPath:
             self.filePathObj = pathlib.Path(newPath)
             if not self.filePathObj.suffix:
-                self.filePathObj.with_suffix('.trln')
+                self.filePathObj = self.filePathObj.with_suffix('.trln')
             if selectFilter != initFilter:
                 self.compressed = (selectFilter ==
                                    globalref.fileFilters['trlngz'])

@@ -27,7 +27,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
 import nodeformat
 import fieldformat
 import icondict
-# import conditional
+import conditional
 # import matheval
 import globalref
 
@@ -411,7 +411,7 @@ class TypeListPage(ConfigPage):
                 nodeType.childType = ''
             if nodeType.genericType == ConfigDialog.currentTypeName:
                 nodeType.genericType = ''
-                # nodeType.conditional = conditional.Conditional()
+                nodeType.conditional = None
         ConfigDialog.formatsRef.updateDerivedRefs()
         ConfigDialog.currentTypeName = ConfigDialog.formatsRef.typeNames()[0]
         ConfigDialog.currentFieldName = ConfigDialog.formatsRef[ConfigDialog.
@@ -494,7 +494,7 @@ class TypeConfigPage(ConfigPage):
         genericLayout = QVBoxLayout(genericBox)
         self.genericCombo = QComboBox()
         genericLayout.addWidget(self.genericCombo)
-        # self.genericCombo.currentIndexChanged.connect(self.setConditionAvail)
+        self.genericCombo.currentIndexChanged.connect(self.setConditionAvail)
         self.genericCombo.currentIndexChanged.connect(self.mainDialogRef.
                                                       setModified)
 
@@ -571,7 +571,7 @@ class TypeConfigPage(ConfigPage):
             generic = 0
         self.genericCombo.setCurrentIndex(generic)
         self.genericCombo.blockSignals(False)
-        # self.setConditionAvail()
+        self.setConditionAvail()
 
     def changeIcon(self):
         """Show the change icon dialog based on a button press.
@@ -639,6 +639,8 @@ class TypeConfigPage(ConfigPage):
             dialog.setCondition(currentFormat.conditional)
         if dialog.exec_() == QDialog.Accepted:
             currentFormat.conditional = dialog.conditional()
+            if not currentFormat.conditional:
+                currentFormat.conditional = None
             ConfigDialog.formatsRef.updateDerivedRefs()
             self.mainDialogRef.setModified()
             self.updateContent()
@@ -838,7 +840,7 @@ class FieldListPage(ConfigPage):
                 field.name = dlg.text
                 nodeFormat.fieldDict[field.name] = field
                 nodeFormat.reorderFields(fieldList)
-                # nodeFormat.conditional.renameFields(oldName, field.name)
+                nodeFormat.conditional.renameFields(oldName, field.name)
                 # savedConditions = {}
                 # for name, text in nodeFormat.savedConditionText.items():
                     # condition = conditional.Conditional(text, nodeFormat.name)

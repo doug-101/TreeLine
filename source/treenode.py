@@ -211,6 +211,54 @@ class TreeNode:
         if not formatRef.formatTitle(self):
             formatRef.extractTitleData(origTitle, self.data)
 
+    def setConditionalType(self, treeStructure):
+        """Set self to type based on auto conditional settings.
+
+        Return True if type is changed.
+        Arguments:
+            treeStructure -- a ref to the tree structure
+        """
+        if self.formatRef not in treeStructure.treeFormats.conditionalTypes:
+            return False
+        if self.formatRef.genericType:
+            genericFormat = treeStructure.treeFormats[self.formatRef.
+                                                      genericType]
+        else:
+            genericFormat = self.formatRef
+        formatList = [genericFormat] + genericFormat.derivedTypes
+        formatList.remove(self.formatRef)
+        formatList.insert(0, self.formatRef)   # reorder to give priority
+        neutralResult = None
+        newType = None
+        for typeFormat in formatList:
+            if typeFormat.conditional:
+                if typeFormat.conditional.evaluate(self):
+                    newType = typeFormat
+                    break
+            elif not neutralResult:
+                neutralResult = typeFormat
+        if not newType and neutralResult:
+            newType = neutralResult
+        if newType and newType is not self.formatRef:
+            self.changeDataType(newType)
+            return True
+        return False
+
+    def setDescendantConditionalTypes(self, treeStructure):
+        """Set auto conditional types for self and all descendants.
+
+        Return number of changes made.
+        Arguments:
+            treeStructure -- a ref to the tree structure
+        """
+        if not treeStructure.treeFormats.conditionalTypes:
+            return 0
+        changes = 0
+        for node in self.descendantGen():
+            if node.setConditionalType(treeStructure):
+                changes += 1
+        return changes
+
     def setData(self, field, editorText):
         """Set the data entry for the given field to editorText.
 

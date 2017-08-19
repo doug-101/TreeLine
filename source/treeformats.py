@@ -115,10 +115,10 @@ class TreeFormats(dict):
         self.conditionalTypes = set()
         for typeFormat in self.values():
             typeFormat.derivedTypes = []
-            # if typeFormat.conditional:
-                # self.conditionalTypes.add(typeFormat)
-                # if typeFormat.genericType:
-                    # self.conditionalTypes.add(self[typeFormat.genericType])
+            if typeFormat.conditional:
+                self.conditionalTypes.add(typeFormat)
+                if typeFormat.genericType:
+                    self.conditionalTypes.add(self[typeFormat.genericType])
         for typeFormat in self.values():
             if typeFormat.genericType:
                 genericType = self[typeFormat.genericType]
@@ -127,5 +127,5 @@ class TreeFormats(dict):
                     self.conditionalTypes.add(typeFormat)
         for typeFormat in self.values():
             if not typeFormat.genericType and not typeFormat.derivedTypes:
-                # typeFormat.conditional = conditional.Conditional()
+                typeFormat.conditional = None
                 self.conditionalTypes.discard(typeFormat)
