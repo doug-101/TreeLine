@@ -349,6 +349,7 @@ class ImportControl:
                 startPos = match.start(1)
             node.data[fieldName] = text
         structure.generateSpots(None)
+        structure.treeFormats.updateDerivedRefs()
         for nodeFormat in structure.treeFormats.values():
             nodeFormat.updateLineParsing()
             if nodeFormat.useBullets:

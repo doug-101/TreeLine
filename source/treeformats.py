@@ -37,11 +37,13 @@ class TreeFormats(dict):
         self.typeRenameDict = {}
         # nested dict for fields renamed, keys are type name then orig field
         self.fieldRenameDict = {}
+        self.conditionalTypes = set()
         self.fileInfoFormat = nodeformat.FileInfoFormat(self)
         if formatList:
             for formatData in formatList:
                 name = formatData['formatname']
                 self[name] = nodeformat.NodeFormat(name, self, formatData)
+            self.updateDerivedRefs()
         if nodeformat.FileInfoFormat.typeName in self:
             self.fileInfoFormat.duplicateFileInfo(self[nodeformat.
                                                        FileInfoFormat.
@@ -106,3 +108,24 @@ class TreeFormats(dict):
             typeFormat -- the node format to add
         """
         self.setdefault(typeFormat.name, typeFormat)
+
+    def updateDerivedRefs(self):
+        """Update derived type lists (in generics) & the conditional type set.
+        """
+        self.conditionalTypes = set()
+        for typeFormat in self.values():
+            typeFormat.derivedTypes = []
+            # if typeFormat.conditional:
+                # self.conditionalTypes.add(typeFormat)
+                # if typeFormat.genericType:
+                    # self.conditionalTypes.add(self[typeFormat.genericType])
+        for typeFormat in self.values():
+            if typeFormat.genericType:
+                genericType = self[typeFormat.genericType]
+                genericType.derivedTypes.append(typeFormat)
+                if genericType in self.conditionalTypes:
+                    self.conditionalTypes.add(typeFormat)
+        for typeFormat in self.values():
+            if not typeFormat.genericType and not typeFormat.derivedTypes:
+                # typeFormat.conditional = conditional.Conditional()
+                self.conditionalTypes.discard(typeFormat)

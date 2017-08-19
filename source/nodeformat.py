@@ -16,6 +16,7 @@ import re
 import collections
 import os.path
 import sys
+import copy
 import datetime
 import xml.sax.saxutils
 if not sys.platform.startswith('win'):
@@ -51,6 +52,7 @@ class NodeFormat:
         self.readFormat(formatData)
         self.siblingPrefix = ''
         self.siblingSuffix = ''
+        self.derivedTypes = []
         self.origOutputLines = [] # lines without bullet or table modifications
         if addDefaultField:
             self.addFieldIfNew(defaultFieldName)
@@ -83,6 +85,7 @@ class NodeFormat:
         self.useBullets = formatData.get('bullets', False)
         self.useTables = formatData.get('tables', False)
         self.childType = formatData.get('childtype', '')
+        self.genericType = formatData.get('generic', '')
         self.iconName = formatData.get('icon', '')
         self.outputSeparator = formatData.get('outputsep',
                                               _defaultOutputSeparator)
@@ -105,6 +108,8 @@ class NodeFormat:
             formatData['tables'] = True
         if self.childType:
             formatData['childtype'] = self.childType
+        if self.genericType:
+            formatData['generic'] = self.genericType
         if self.iconName:
             formatData['icon'] = self.iconName
         if self.outputSeparator != _defaultOutputSeparator:
@@ -415,6 +420,35 @@ class NodeFormat:
         except ValueError:
             return False
         return True
+
+    def updateDerivedTypes(self):
+        """Update derived types after changes to this generic type.
+        """
+        for derivedType in self.derivedTypes:
+            derivedType.updateFromGeneric(self)
+
+    def updateFromGeneric(self, genericType=None, formatsRef=None):
+        """Update fields and field types to match a generic type.
+
+        Does nothing if self is not a derived type.
+        Must provide either the genericType or a formatsRef.
+        Arguments:
+            genericType -- the type to update from
+            formatsRef -- the tree formats dict to update from
+        """
+        if not self.genericType:
+            return
+        if not genericType:
+            genericType = formatsRef[self.genericType]
+        newFields = collections.OrderedDict()
+        for field in genericType.fieldDict.values():
+            fieldMatch = self.fieldDict.get(field.name, None)
+            if fieldMatch and field.typeName == fieldMatch.typeName:
+                newFields[field.name] = fieldMatch
+            else:
+                newFields[field.name] = copy.deepcopy(field)
+        self.fieldDict = newFields
+        self.updateLineParsing()
 
     def addBullets(self):
         """Add bullet HTML tags to sibling prefix, suffix and output lines.
