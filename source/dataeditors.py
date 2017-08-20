@@ -2227,7 +2227,7 @@ class PictureLinkDialog(QDialog):
         """
         address = self.addressEdit.text().strip()
         if urltools.isRelative(address):
-            refPath = globalref.mainControl.defaultPathObj(True)
+            refPath = str(globalref.mainControl.defaultPathObj(True))
             address = urltools.toAbsolute(address, refPath, False)
         pixmap = QPixmap(address)
         if pixmap.isNull():

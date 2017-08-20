@@ -25,13 +25,14 @@ fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
               N_('Number'), N_('Date'), N_('Time'), N_('DateTime'),
               N_('Boolean'), N_('Choice'), N_('AutoChoice'), N_('Combination'),
               N_('AutoCombination'), N_('ExternalLink'), N_('InternalLink'),
-              N_('RegularExpression')]
+              N_('Picture'), N_('RegularExpression')]
 _errorStr = '#####'
 _dateStampString = _('Now')
 _timeStampString = _('Now')
 _multipleSpaceRegEx = re.compile(r' {2,}')
 linkRegExp = re.compile(r'<a [^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.I | re.S)
 linkSeparateNameRegExp = re.compile(r'(.*) \[(.*)\]\s*$')
+_imageRegExp = re.compile(r'<img [^>]*src="([^"]+)"[^>]*>', re.I | re.S)
 
 
 class TextField:
@@ -1827,6 +1828,98 @@ class InternalLinkField(ExternalLinkField):
         if not name:
             name = _errorStr
         return 'LinkTo: {0} [{1}]'.format(_errorStr, name)
+
+
+class PictureField(HtmlTextField):
+    """Class to handle a field containing various types of external HTML links.
+
+    Protocol choices include http, https, file, mailto.
+    Stores data as HTML tags, shows in editors as "protocol:address [name]".
+    """
+    typeName = 'Picture'
+    evalHtmlDefault = False
+    editorClassName = 'PictureLinkEditor'
+
+    def __init__(self, name, attrs=None):
+        """Initialize a field format type.
+
+        Arguments:
+            name -- the field name string
+            attrs -- the attributes that define this field's format
+        """
+        super().__init__(name, attrs)
+
+    def formatOutput(self, storedText, titleMode, formatHtml):
+        """Return formatted output text from stored text for this field.
+
+        Arguments:
+            storedText -- the source text to format
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        if titleMode:
+            linkMatch = _imageRegExp.search(storedText)
+            if linkMatch:
+                address = linkMatch.group(1)
+                storedText = address.strip()
+        return super().formatOutput(storedText, titleMode, formatHtml)
+
+    def formatEditorText(self, storedText):
+        """Return text formatted for use in the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            storedText -- the source text to format
+        """
+        if not storedText:
+            return ''
+        linkMatch = _imageRegExp.search(storedText)
+        if not linkMatch:
+            raise ValueError
+        return linkMatch.group(1)
+
+    def storedText(self, editorText):
+        """Return new text to be stored based on text from the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        editorText = editorText.strip()
+        if not editorText:
+            return ''
+        nameMatch = linkSeparateNameRegExp.match(editorText)
+        if nameMatch:
+            address, name = nameMatch.groups()
+        else:
+            address = editorText
+            name = urltools.shortName(address)
+        return '<img src="{0}" />'.format(editorText)
+
+    def compareValue(self, node):
+        """Return a value for comparison to other nodes and for sorting.
+
+        Returns lowercase text for text fields or numbers for non-text fields.
+        Link fields use stored link format
+        Arguments:
+            node -- the tree item storing the data
+        """
+        storedText = node.data.get(self.name, '')
+        if not storedText:
+            return ''
+        linkMatch = _imageRegExp.search(storedText)
+        if not linkMatch:
+            return storedText
+        return linkMatch.group(1).lower()
+
+    def sortKey(self, node):
+        """Return a tuple with field type and comparison values for sorting.
+
+        Allows different types to be sorted.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return ('60_link', self.compareValue(node))
 
 
 class RegularExpressionField(HtmlTextField):

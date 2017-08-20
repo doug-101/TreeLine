@@ -41,6 +41,10 @@
             {
                "fieldname": "AutoCombo",
                "fieldtype": "AutoCombination"
+            },
+            {
+               "fieldname": "Pic",
+               "fieldtype": "Picture"
             }
          ],
          "formatname": "DEFAULT",
@@ -52,7 +56,8 @@
             "{*ExtLink*}",
             "{*IntLink*}",
             "{*AutoChoice*}",
-            "{*AutoCombo*}"
+            "{*AutoCombo*}",
+            "{*Pic*}"
          ],
          "titleline": "{*Name*}"
       }
@@ -119,6 +124,7 @@
             "ExtLink": "<a href=\"http://google.com\">Google</a>",
             "IntLink": "<a href=\"#5dc9f57a0d6711e780c13417ebd53aeb\">Third Node</a>",
             "Name": "First Node",
+            "Pic": "<img src=\"/home/doug/hg/treeline/rewrite/icons/tree/bulb.png\" />",
             "Time": "14:02:22.000000"
          },
          "format": "DEFAULT",
@@ -173,7 +179,8 @@
             "be2adcb8108711e7b96b3417ebd53aeb"
          ],
          "data": {
-            "Name": "Next Branch"
+            "Name": "Next Branch",
+            "Pic": ""
          },
          "format": "DEFAULT",
          "uid": "b832a776108711e7b9643417ebd53aeb"
