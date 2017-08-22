@@ -452,6 +452,8 @@ class TreeWindow(QMainWindow):
         # add the action to activate the shortcut key
         self.addAction(self.allActions['DataNodeType'])
         dataMenu.addAction(self.allActions['DataConfigType'])
+        dataMenu.addSeparator()
+        dataMenu.addAction(self.allActions['DataNumbering'])
 
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
         toolsMenu.addAction(self.allActions['ToolsFindText'])

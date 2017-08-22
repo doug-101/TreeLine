@@ -64,6 +64,7 @@ class TreeMainControl(QObject):
         self.localControls = []
         self.activeControl = None
         self.configDialog = None
+        self.numberingDialog = None
         self.findTextDialog = None
         self.passwords = {}
         globalref.mainControl = self
@@ -436,6 +437,12 @@ class TreeMainControl(QObject):
         dataConfigAct.triggered.connect(self.dataConfigDialog)
         self.allActions['DataConfigType'] = dataConfigAct
 
+        dataNumberingAct = QAction(_('Update &Numbering...'), self,
+                                   statusTip=_('Update node numbering fields'),
+                                   checkable=True)
+        dataNumberingAct.triggered.connect(self.dataNumberingDialog)
+        self.allActions['DataNumbering'] = dataNumberingAct
+
         toolsFindTextAct = QAction(_('&Find Text...'), self,
                                 statusTip=_('Find text in node titles & data'),
                                 checkable=True)
@@ -531,6 +538,24 @@ class TreeMainControl(QObject):
             self.configDialog.show()
         else:
             self.configDialog.close()
+
+    def dataNumberingDialog(self, show):
+        """Show or hide the non-modal update node numbering dialog.
+
+        Arguments:
+            show -- true if dialog should be shown, false to hide it
+        """
+        if show:
+            if not self.numberingDialog:
+                self.numberingDialog = miscdialogs.NumberingDialog()
+                dataNumberingAct = self.allActions['DataNumbering']
+                self.numberingDialog.dialogShown.connect(dataNumberingAct.
+                                                         setChecked)
+            self.numberingDialog.show()
+            if not self.numberingDialog.checkForNumberingFields():
+                self.numberingDialog.close()
+        else:
+            self.numberingDialog.close()
 
     def toolsFindTextDialog(self, show):
         """Show or hide the non-modal find text dialog.

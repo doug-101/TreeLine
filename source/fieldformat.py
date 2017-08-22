@@ -18,14 +18,15 @@ import datetime
 import xml.sax.saxutils as saxutils
 import gennumber
 import genboolean
+import numbering
 import urltools
 import globalref
 
 fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
-              N_('Number'), N_('Date'), N_('Time'), N_('DateTime'),
-              N_('Boolean'), N_('Choice'), N_('AutoChoice'), N_('Combination'),
-              N_('AutoCombination'), N_('ExternalLink'), N_('InternalLink'),
-              N_('Picture'), N_('RegularExpression')]
+              N_('Number'), N_('Numbering'), N_('Date'), N_('Time'),
+              N_('DateTime'), N_('Boolean'), N_('Choice'), N_('AutoChoice'),
+              N_('Combination'), N_('AutoCombination'), N_('ExternalLink'),
+              N_('InternalLink'), N_('Picture'), N_('RegularExpression')]
 _errorStr = '#####'
 _dateStampString = _('Now')
 _timeStampString = _('Now')
@@ -517,6 +518,126 @@ class NumberField(HtmlTextField):
             return gennumber.GenNumber(value).num
         except ValueError:
             return 0
+
+
+class NumberingField(HtmlTextField):
+    """Class to handle formats for hierarchical node numbering.
+
+    Stores options and format strings for a node numbering field type.
+    Provides methods to return formatted node numbers.
+    """
+    typeName = 'Numbering'
+    defaultFormat = '1..'
+    evalHtmlDefault = False
+    editorClassName = 'LineEditor'
+    formatHelpMenuList = [(_('Number\t1'), '1'),
+                          (_('Capital Letter\tA'), 'A'),
+                          (_('Small Letter\ta'), 'a'),
+                          (_('Capital Roman Numeral\tI'), 'I'),
+                          (_('Small Roman Numeral\ti'), 'i'),
+                          ('', ''),
+                          (_('Level Separator\t/'), '/'),
+                          (_('Section Separator\t.'), '.'),
+                          ('', ''),
+                          (_('"/" Character\t//'), '//'),
+                          (_('"." Character\t..'), '..'),
+                          ('', ''),
+                          (_('Outline Example\tI../A../1../a)/i)'),
+                           'I../A../1../a)/i)'),
+                          (_('Section Example\t1.1.1.1'), '1.1.1.1')]
+
+    def __init__(self, name, attrs=None):
+        """Initialize a field format type.
+
+        Arguments:
+            name -- the field name string
+            attrs -- the attributes that define this field's format
+        """
+        self.numFormat = None
+        super().__init__(name, attrs)
+
+    def setFormat(self, format):
+        """Set the format string and initialize as required.
+
+        Arguments:
+            format -- the new format string
+        """
+        self.numFormat = numbering.NumberingGroup(format)
+        super().setFormat(format)
+
+    def formatOutput(self, storedText, titleMode, formatHtml):
+        """Return formatted output text from stored text for this field.
+
+        Arguments:
+            storedText -- the source text to format
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        try:
+            text = self.numFormat.numString(storedText)
+        except ValueError:
+            text = _errorStr
+        return super().formatOutput(text, titleMode, formatHtml)
+
+    def formatEditorText(self, storedText):
+        """Return text formatted for use in the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            storedText -- the source text to format
+        """
+        if storedText:
+            checkData = [int(num) for num in storedText.split('.')]
+        return storedText
+
+    def storedText(self, editorText):
+        """Return new text to be stored based on text from the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            editorText -- the new text entered into the editor
+        """
+        if editorText:
+            checkData = [int(num) for num in editorText.split('.')]
+        return editorText
+
+    def compareValue(self, node):
+        """Return a value for comparison to other nodes and for sorting.
+
+        Returns lowercase text for text fields or numbers for non-text fields.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        storedText = node.data.get(self.name, '')
+        if storedText:
+            try:
+                return [int(num) for num in editorText.split('.')]
+            except ValueError:
+                pass
+        return [0]
+
+    def sortKey(self, node):
+        """Return a tuple with field type and comparison values for sorting.
+
+        Allows different types to be sorted.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return ('10_numbering', self.compareValue(node))
+
+    def adjustedCompareValue(self, value):
+        """Return value adjusted like the compareValue for use in conditionals.
+
+        Number version converts to a numeric value.
+        Arguments:
+            value -- the comparison value to adjust
+        """
+        if value:
+            try:
+                return [int(num) for num in value.split('.')]
+            except ValueError:
+                pass
+        return [0]
 
 
 class DateField(HtmlTextField):

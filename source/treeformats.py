@@ -129,3 +129,14 @@ class TreeFormats(dict):
             if not typeFormat.genericType and not typeFormat.derivedTypes:
                 typeFormat.conditional = None
                 self.conditionalTypes.discard(typeFormat)
+
+    def numberingFieldDict(self):
+        """Return a dict of numbering field names by node format name.
+        """
+        result = {}
+        for typeFormat in self.values():
+            numberingFields = typeFormat.numberingFieldList()
+            if numberingFields:
+                result[typeFormat.name] = numberingFields
+        return result
+

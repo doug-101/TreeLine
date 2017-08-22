@@ -14,6 +14,7 @@
 
 import enum
 import re
+import sys
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
                              QCheckBox, QComboBox, QDialog, QGridLayout,
@@ -434,6 +435,155 @@ class FindFilterDialog(QDialog):
         window.treeStack.setCurrentWidget(window.treeView)
         self.updateAvail()
         globalref.mainControl.currentStatusBar().clearMessage()
+
+    def closeEvent(self, event):
+        """Signal that the dialog is closing.
+
+        Arguments:
+            event -- the close event
+        """
+        self.dialogShown.emit(False)
+
+
+NumberingScope = enum.IntEnum('NumberingScope',
+                              'fullTree selectBranch selectChildren')
+NumberingNoField = enum.IntEnum('NumberingNoField',
+                            'ignoreNoField restartAfterNoField reserveNoField')
+
+class NumberingDialog(QDialog):
+    """Dialog for updating node nuumbering fields.
+    """
+    dialogShown = pyqtSignal(bool)
+    def __init__(self, parent=None):
+        """Initialize the numbering dialog.
+
+        Arguments:
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setAttribute(Qt.WA_QuitOnClose, False)
+        self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
+        self.setWindowTitle(_('Update Node Numbering'))
+
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        whatBox = QGroupBox(_('What to Update'))
+        topLayout.addWidget(whatBox)
+        whatLayout = QVBoxLayout(whatBox)
+        self.whatButtons = QButtonGroup(self)
+        button = QRadioButton(_('&Entire tree'))
+        self.whatButtons.addButton(button, NumberingScope.fullTree)
+        whatLayout.addWidget(button)
+        button = QRadioButton(_('Selected &branches'))
+        self.whatButtons.addButton(button, NumberingScope.selectBranch)
+        whatLayout.addWidget(button)
+        button = QRadioButton(_('&Selection\'s children'))
+        self.whatButtons.addButton(button, NumberingScope.selectChildren)
+        whatLayout.addWidget(button)
+        self.whatButtons.button(NumberingScope.fullTree).setChecked(True)
+
+        rootBox = QGroupBox(_('Root Node'))
+        topLayout.addWidget(rootBox)
+        rootLayout = QVBoxLayout(rootBox)
+        self.rootCheck = QCheckBox(_('Include top-level nodes'))
+        rootLayout.addWidget(self.rootCheck)
+        self.rootCheck.setChecked(True)
+
+        noFieldBox = QGroupBox(_('Handling Nodes without Numbering '
+                                       'Fields'))
+        topLayout.addWidget(noFieldBox)
+        noFieldLayout =  QVBoxLayout(noFieldBox)
+        self.noFieldButtons = QButtonGroup(self)
+        button = QRadioButton(_('&Ignore and skip'))
+        self.noFieldButtons.addButton(button, NumberingNoField.ignoreNoField)
+        noFieldLayout.addWidget(button)
+        button = QRadioButton(_('&Restart numbers for next siblings'))
+        self.noFieldButtons.addButton(button,
+                                      NumberingNoField.restartAfterNoField)
+        noFieldLayout.addWidget(button)
+        button = QRadioButton(_('Reserve &numbers'))
+        self.noFieldButtons.addButton(button, NumberingNoField.reserveNoField)
+        noFieldLayout.addWidget(button)
+        self.noFieldButtons.button(NumberingNoField.
+                                   ignoreNoField).setChecked(True)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch()
+        okButton = QPushButton(_('&OK'))
+        ctrlLayout.addWidget(okButton)
+        okButton.clicked.connect(self.numberAndClose)
+        applyButton = QPushButton(_('&Apply'))
+        ctrlLayout.addWidget(applyButton)
+        applyButton.clicked.connect(self.updateNumbering)
+        closeButton = QPushButton(_('&Close'))
+        ctrlLayout.addWidget(closeButton)
+        closeButton.clicked.connect(self.close)
+        self.updateCommandsAvail()
+
+    def updateCommandsAvail(self):
+        """Set branch numbering available based on tree selections.
+        """
+        selNodes = globalref.mainControl.activeControl.currentSelectionModel()
+        hasChild = False
+        for node in selNodes.selectedNodes():
+            if node.childList:
+                hasChild = True
+        self.whatButtons.button(NumberingScope.
+                                selectChildren).setEnabled(hasChild)
+        if not self.whatButtons.checkedButton().isEnabled():
+            self.whatButtons.button(NumberingScope.fullTree).setChecked(True)
+
+    def checkForNumberingFields(self):
+        """Check that the tree formats have numbering formats.
+
+        Return a dict of numbering field names by node format name.
+        If not found, warn user.
+        """
+        fieldDict = (globalref.mainControl.activeControl.structure.treeFormats.
+                     numberingFieldDict())
+        if not fieldDict:
+            QMessageBox.warning(self, _('TreeLine Numbering'),
+                             _('No numbering fields were found in data types'))
+        return fieldDict
+
+    def updateNumbering(self):
+        """Perform the numbering update operation.
+        """
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        fieldDict = self.checkForNumberingFields()
+        if fieldDict:
+            control = globalref.mainControl.activeControl
+            selNodes = control.currentSelectionModel().selectedNodes()
+            if (self.whatButtons.checkedId() == NumberingScope.fullTree or
+                len(selNodes) == 0):
+                selNodes = control.structure.childList
+            undo.BranchUndo(control.structure.undoList, selNodes)
+            reserveNums = (self.noFieldButtons.checkedId() ==
+                           NumberingNoField.reserveNoField)
+            restartSetting = (self.noFieldButtons.checkedId() ==
+                              NumberingNoField.restartAfterNoField)
+            includeRoot = self.rootCheck.isChecked()
+            if self.whatButtons.checkedId() == NumberingScope.selectChildren:
+                levelLimit = 2
+            else:
+                levelLimit = sys.maxsize
+            startNum = [1]
+            completedClones = set()
+            for node in selNodes:
+                node.updateNumbering(fieldDict, startNum, levelLimit,
+                                     completedClones, includeRoot,
+                                     reserveNums, restartSetting)
+                if not restartSetting:
+                    startNum[0] += 1
+            control.updateAll()
+        QApplication.restoreOverrideCursor()
+
+    def numberAndClose(self):
+        """Perform the numbering update operation and close the dialog.
+        """
+        self.updateNumbering()
+        self.close()
 
     def closeEvent(self, event):
         """Signal that the dialog is closing.

@@ -509,6 +509,12 @@ class NodeFormat:
             self.updateLineParsing()
         self.origOutputLines = []
 
+    def numberingFieldList(self):
+        """Return a list of numbering field names.
+        """
+        return [field.name for field in self.fieldDict.values() if
+                field.typeName == 'Numbering']
+
 
 class FileInfoFormat(NodeFormat):
     """Node format class to store and update special file info fields.

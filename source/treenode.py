@@ -447,6 +447,41 @@ class TreeNode:
                 return -1 < level <= initLevel
         return True
 
+    def updateNumbering(self, fieldDict, currentSequence, levelLimit,
+                        completedClones, includeRoot=True, reserveNums=True,
+                        restartSetting=False):
+        """Add auto incremented numbering to fields by type in the dict.
+
+        Arguments:
+            fieldDict -- numbering field name lists stored by type name
+            currentSequence -- a list of int for the current numbering sequence
+            levelLimit -- the number of child levels to include
+            completedClones -- set of clone nodes already numbered
+            includeRoot -- if Ture, number the current node
+            reserveNums -- if true, increment number even without num field
+            restartSetting -- if true, restart numbering after a no-field gap
+        """
+        childSequence = currentSequence[:]
+        if includeRoot:
+            for fieldName in fieldDict.get(self.formatRef.name, []):
+                self.data[fieldName] = '.'.join((repr(num) for num in
+                                                 currentSequence))
+            if self.formatRef.name in fieldDict or reserveNums:
+                childSequence += [1]
+            if len(self.spotRefs) > 1:
+                completedClones.add(self.uId)
+        if levelLimit > 0:
+            for child in self.childList:
+                if len(child.spotRefs) > 1 and child.uId in completedClones:
+                    return
+                child.updateNumbering(fieldDict, childSequence, levelLimit - 1,
+                                      completedClones, True, reserveNums,
+                                      restartSetting)
+                if child.formatRef.name in fieldDict or reserveNums:
+                    childSequence[-1] += 1
+                if restartSetting and child.formatRef.name not in fieldDict:
+                    childSequence[-1] = 1
+
     def exportTitleText(self, level=0):
         """Return a list of tabbed title lines for this node and descendants.
 
