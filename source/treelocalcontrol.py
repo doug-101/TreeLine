@@ -26,6 +26,7 @@ import treewindow
 import exports
 import miscdialogs
 import printdata
+import matheval
 import undo
 import p3
 import globalref
@@ -143,6 +144,11 @@ class TreeLocalControl(QObject):
         """
         if node.setConditionalType(self.structure):
             self.activeWindow.updateRightViews(outputOnly=True)
+        if (self.structure.treeFormats.mathFieldRefDict and
+            node.updateNodeMathFields(self.structure.treeFormats)):
+            self.activeWindow.updateRightViews(outputOnly=True)
+            if globalref.genOptions.getValue('ShowMath'):
+                self.activeWindow.refreshDataEditViews()
         for window in self.windowList:
             window.updateTreeNode(node)
         if setModified:
@@ -161,6 +167,7 @@ class TreeLocalControl(QObject):
             for node in self.structure.childList:
                 typeChanges += node.setDescendantConditionalTypes(self.
                                                                   structure)
+        self.updateAllMathFields()
         for window in self.windowList:
             window.updateTree()
             if window != self.activeWindow or typeChanges:
@@ -190,6 +197,7 @@ class TreeLocalControl(QObject):
         if self.structure.treeFormats.conditionalTypes:
             for node in self.structure.childList:
                 node.setDescendantConditionalTypes(self.structure)
+        self.updateAllMathFields()
         for window in self.windowList:
             window.updateTree()
             window.updateRightViews()
@@ -197,6 +205,27 @@ class TreeLocalControl(QObject):
         if setModified:
             self.setModified()
         QApplication.restoreOverrideCursor()
+
+    def updateAllMathFields(self):
+        """Recalculate all math fields in the entire tree.
+        """
+        for eqnRefDict in self.structure.treeFormats.mathLevelList:
+            if list(eqnRefDict.values())[0][0].evalDirection != (matheval.
+                                                                 EvalDir.
+                                                                 upward):
+                for child in self.structure.childList:
+                    for node in child.descendantGen():
+                        for eqnRef in eqnRefDict.get(node.formatName, []):
+                            node.data[eqnRef.eqnField.name] = (eqnRef.eqnField.
+                                                           equationValue(node))
+            else:
+                spot = self.structure.structSpot.lastDescendantSpot()
+                while spot:
+                    node = spot.nodeRef
+                    for eqnRef in eqnRefDict.get(node.formatName, []):
+                        node.data[eqnRef.eqnField.name] = (eqnRef.eqnField.
+                                                           equationValue(node))
+                    spot = spot.prevTreeSpot()
 
     def updateCommandsAvail(self):
         """Set commands available based on node selections.

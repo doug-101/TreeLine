@@ -184,6 +184,7 @@ class TreeStructure(treenode.TreeNode):
 
         Also updates all nodes for changed type and field names.
         """
+        self.configDialogFormats.updateMathFieldRefs()
         if addUndo:
             undo.FormatUndo(self.undoList, self.treeFormats,
                             self.configDialogFormats)
@@ -199,6 +200,14 @@ class TreeStructure(treenode.TreeNode):
                         del node.data[oldName]
                 node.data.update(tmpDataDict)
             self.configDialogFormats.fieldRenameDict = {}
+        if self.treeFormats.emptiedMathDict:
+            for node in self.nodeDict.values():
+                for fieldName in self.treeFormats.emptiedMathDict.get(node.
+                                                                     formatRef.
+                                                                     name,
+                                                                     set()):
+                    node.data.pop(fieldName, None)
+            self.formats.emptiedMathDict = {}
 
     def usesType(self, typeName):
         """Return true if any nodes use the give node format type.

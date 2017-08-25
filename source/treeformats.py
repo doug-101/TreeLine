@@ -15,6 +15,7 @@
 import operator
 import copy
 import nodeformat
+import matheval
 
 
 defaultTypeName = _('DEFAULT')
@@ -38,6 +39,12 @@ class TreeFormats(dict):
         # nested dict for fields renamed, keys are type name then orig field
         self.fieldRenameDict = {}
         self.conditionalTypes = set()
+        # set of math field names with deleted equations, keys are type names
+        self.emptiedMathDict = {}
+        self.mathFieldRefDict = {}
+        # list of math eval levels, each is a dict by type name with lists of
+        # equation fields
+        self.mathLevelList = []
         self.fileInfoFormat = nodeformat.FileInfoFormat(self)
         if formatList:
             for formatData in formatList:
@@ -129,6 +136,46 @@ class TreeFormats(dict):
             if not typeFormat.genericType and not typeFormat.derivedTypes:
                 typeFormat.conditional = None
                 self.conditionalTypes.discard(typeFormat)
+
+    def updateMathFieldRefs(self):
+        """Update refs used to cycle thru math field evaluations.
+        """
+        self.mathFieldRefDict = {}
+        allRecursiveRefs = []
+        recursiveRefDict = {}
+        matheval.RecursiveEqnRef.recursiveRefDict = recursiveRefDict
+        for typeFormat in self.values():
+            for field in typeFormat.fields():
+                if field.typeName == 'Math' and field.equation:
+                    recursiveRef = matheval.RecursiveEqnRef(typeFormat.name,
+                                                            field)
+                    allRecursiveRefs.append(recursiveRef)
+                    recursiveRefDict.setdefault(field.name,
+                                                []).append(recursiveRef)
+                    for fieldRef in field.equation.fieldRefs:
+                        fieldRef.eqnNodeTypeName = typeFormat.name
+                        fieldRef.eqnFieldName = field.name
+                        self.mathFieldRefDict.setdefault(fieldRef.fieldName,
+                                                         []).append(fieldRef)
+        if not allRecursiveRefs:
+            return
+        for ref in allRecursiveRefs:
+            ref.setPriorities()
+        allRecursiveRefs.sort()
+        self.mathLevelList = [{allRecursiveRefs[0].eqnTypeName:
+                               [allRecursiveRefs[0]]}]
+        for prevRef, currRef in zip(allRecursiveRefs, allRecursiveRefs[1:]):
+            if currRef.evalSequence == prevRef.evalSequence:
+                if prevRef.evalDirection == matheval.EvalDir.optional:
+                    prevRef.evalDirection = currRef.evalDirection
+                elif currRef.evalDirection == matheval.EvalDir.optional:
+                    currRef.evalDirection = prevRef.evalDirection
+                if currRef.evalDirection != prevRef.evalDirection:
+                    self.mathLevelList.append({})
+            else:
+                self.mathLevelList.append({})
+            self.mathLevelList[-1].setdefault(currRef.eqnTypeName,
+                                              []).append(currRef)
 
     def numberingFieldDict(self):
         """Return a dict of numbering field names by node format name.

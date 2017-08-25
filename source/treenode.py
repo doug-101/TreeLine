@@ -447,6 +447,41 @@ class TreeNode:
                 return -1 < level <= initLevel
         return True
 
+    def updateNodeMathFields(self, treeFormats):
+        """Recalculate math fields that depend on this node and so on.
+
+        Return True if any data was changed.
+        Arguments:
+            treeFormats -- a ref to all of the formats
+        """
+        changed = False
+        for field in self.formatRef.fields():
+            for fieldRef in treeFormats.mathFieldRefDict.get(field.name, []):
+                for node in fieldRef.dependentEqnNodes(self):
+                    if node.recalcMathField(fieldRef.eqnFieldName,
+                                            treeFormats):
+                        changed = True
+        return changed
+
+    def recalcMathField(self, eqnFieldName, treeFormats):
+        """Recalculate a math field, if changed, recalc depending math fields.
+
+        Return True if any data was changed.
+        Arguments:
+            eqnFieldName -- the equation field in this node to update
+            treeFormats -- a ref to all of the formats
+        """
+        changed = False
+        oldValue = self.data.get(eqnFieldName, '')
+        newValue = self.formatRef.fieldDict[eqnFieldName].equationValue(self)
+        if newValue != oldValue:
+            self.data[eqnFieldName] = newValue
+            changed = True
+            for fieldRef in treeFormats.mathFieldRefDict.get(eqnFieldName, []):
+                for node in fieldRef.dependentEqnNodes(self):
+                    node.recalcMathField(fieldRef.eqnFieldName, treeFormats)
+        return changed
+
     def updateNumbering(self, fieldDict, currentSequence, levelLimit,
                         completedClones, includeRoot=True, reserveNums=True,
                         restartSetting=False):

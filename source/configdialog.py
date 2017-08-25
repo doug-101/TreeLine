@@ -28,7 +28,7 @@ import nodeformat
 import fieldformat
 import icondict
 import conditional
-# import matheval
+import matheval
 import globalref
 
 
@@ -186,13 +186,12 @@ class ConfigDialog(QDialog):
         """
         self.tabs.currentWidget().readChanges()
         if ConfigDialog.formatsRef.configModified:
-            ConfigDialog.treeStruct.applyConfigDialogFormats()
-            # try:
-                # ConfigDialog.treeStruct.applyConfigDialogFormats()
-            # except matheval.CircularMathError:
-                # QMessageBox.warning(self, 'TreeLine',
-                       # _('Error - circular reference in math field equations'))
-                # return False
+            try:
+                ConfigDialog.treeStruct.applyConfigDialogFormats()
+            except matheval.CircularMathError:
+                QMessageBox.warning(self, 'TreeLine',
+                       _('Error - circular reference in math field equations'))
+                return False
             self.setModified(modified=False)
             self.localControl.updateAll()
         return True
@@ -1024,7 +1023,7 @@ class FieldConfigPage(ConfigPage):
 
         self.formatBox.setEnabled(currentField.defaultFormat != '')
         if (hasattr(currentField, 'resultType') and
-            currentField.resultType == fieldformat.textResult):
+            currentField.resultType == fieldformat.MathResult.text):
             self.formatBox.setEnabled(False)
         self.formatEdit.setText(currentField.format)
 
@@ -2089,7 +2088,7 @@ class MathEquationDialog(QDialog):
         resultTypeLayout.addWidget(self.resultTypeCombo)
         self.resultTypeCombo.addItems([_(str) for str in _mathResultTypes])
         results = [s.split(' ', 1)[0].lower() for s in _mathResultTypes]
-        resultStr = fieldformat.mathResultStr[self.field.resultType]
+        resultStr = self.field.resultType.name
         self.resultTypeCombo.setCurrentIndex(results.index(resultStr))
 
         operBox = QGroupBox(_('Operations'))
@@ -2173,10 +2172,9 @@ class MathEquationDialog(QDialog):
                 if (hasattr(field, 'mathValue') and field.showInDialog
                     and (self.refLevelFlag or field != self.field)):
                     QTreeWidgetItem(self.fieldListBox,
-                                          [field.name, _(field.typeName)])
+                                    [field.name, _(field.typeName)])
         else:
-            QTreeWidgetItem(self.fieldListBox,
-                                  ['Count', 'Number of Children'])
+            QTreeWidgetItem(self.fieldListBox, ['Count', 'Number of Children'])
         if self.fieldListBox.topLevelItemCount():
             selectItem = self.fieldListBox.topLevelItem(0)
             self.fieldListBox.setCurrentItem(selectItem)
@@ -2299,7 +2297,7 @@ class MathEquationDialog(QDialog):
                 eqn.validate()
             except ValueError as err:
                 QMessageBox.warning(self, 'TreeLine',
-                                          _('Equation error: {}').format(err))
+                                    _('Equation error: {}').format(err))
                 return
             self.typeFormats.emptiedMathDict.setdefault(self.nodeFormat.name,
                                                 set()).discard(self.field.name)
@@ -2311,5 +2309,5 @@ class MathEquationDialog(QDialog):
             self.field.equation = None
         resultStr = (_mathResultTypes[self.resultTypeCombo.currentIndex()].
                      split(' ', 1)[0].lower())
-        self.field.changeResultType(fieldformat.mathResultVar[resultStr])
+        self.field.changeResultType(fieldformat.MathResult[resultStr])
         super().accept()

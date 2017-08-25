@@ -14,22 +14,29 @@
 
 import re
 import sys
+import enum
 import datetime
 import xml.sax.saxutils as saxutils
 import gennumber
 import genboolean
 import numbering
+import matheval
 import urltools
 import globalref
 
 fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
-              N_('Number'), N_('Numbering'), N_('Date'), N_('Time'),
-              N_('DateTime'), N_('Boolean'), N_('Choice'), N_('AutoChoice'),
-              N_('Combination'), N_('AutoCombination'), N_('ExternalLink'),
-              N_('InternalLink'), N_('Picture'), N_('RegularExpression')]
+              N_('Number'), N_('Math'), N_('Numbering'),
+              N_('Date'), N_('Time'), N_('DateTime'), N_('Boolean'),
+              N_('Choice'), N_('AutoChoice'), N_('Combination'),
+              N_('AutoCombination'), N_('ExternalLink'), N_('InternalLink'),
+              N_('Picture'), N_('RegularExpression')]
 _errorStr = '#####'
 _dateStampString = _('Now')
 _timeStampString = _('Now')
+MathResult = enum.Enum('MathResult', 'numeric date time boolean text')
+_mathResultBlank = {MathResult.numeric: 0, MathResult.date: 0,
+                    MathResult.time: 0, MathResult.boolean: False,
+                    MathResult.text: ''}
 _multipleSpaceRegEx = re.compile(r' {2,}')
 linkRegExp = re.compile(r'<a [^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.I | re.S)
 linkSeparateNameRegExp = re.compile(r'(.*) \[(.*)\]\s*$')
@@ -520,6 +527,182 @@ class NumberField(HtmlTextField):
             return 0
 
 
+class MathField(NumberField):
+    """Class to handle a math calculation field type.
+
+    Stores options and format strings for a math field type.
+    Provides methods to return formatted data.
+    """
+    typeName = 'Math'
+    editorClassName = 'ReadOnlyEditor'
+    def __init__(self, name, formatData=None):
+        """Initialize a field format type.
+
+        Arguments:
+            name -- the field name string
+            formatData -- the attributes that define this field's format
+        """
+        super().__init__(name, formatData)
+        self.equation = None
+        self.resultType = MathResult[formatData.get('resulttype', 'numeric')]
+        equationText = formatData.get('eqn', '').strip()
+        if equationText:
+            self.equation = matheval.MathEquation(equationText)
+            try:
+                self.equation.validate()
+            except ValueError:
+                self.equation = None
+
+    def formatData(self):
+        """Return a dictionary of this field's attributes.
+
+        Add the math equation to the standard XML output.
+        """
+        formatData = super().formatData()
+        if self.equation:
+            formatData['eqn'] = self.equation.equationText()
+        if self.resultType != MathResult.numeric:
+            formatData['resulttype'] = self.resultType.name
+        return formatData
+
+    def setFormat(self, format):
+        """Set the format string and initialize as required.
+
+        Arguments:
+            format -- the new format string
+        """
+        if not hasattr(self, 'equation'):
+            self.equation = None
+            self.resultType = MathResult.numeric
+        super().setFormat(format)
+
+    def formatOutput(self, storedText, titleMode, formatHtml):
+        """Return formatted output text from stored text for this field.
+
+        Arguments:
+            storedText -- the source text to format
+            titleMode -- if True, removes all HTML markup for tree title use
+            formatHtml -- if False, escapes HTML from prefix & suffix
+        """
+        text = storedText
+        if self.resultType == MathResult.numeric:
+            return super().formatOutput(text, titleMode, formatHtml)
+        if self.resultType == MathResult.date:
+            try:
+                date = datetime.datetime.strptime(text,
+                                                  DateField.isoFormat).date()
+                text = date.strftime(adjOutDateFormat(self.format))
+            except ValueError:
+                text = _errorStr
+        elif self.resultType == MathResult.time:
+            try:
+                time = datetime.datetime.strptime(text,
+                                                  TimeField.isoFormat).time()
+                text = time.strftime(adjOutDateFormat(self.format))
+            except ValueError:
+                text = _errorStr
+        elif self.resultType == MathResult.boolean:
+            try:
+                text =  genboolean.GenBoolean(text).boolStr(self.format)
+            except ValueError:
+                text = _errorStr
+        return HtmlTextField.formatOutput(self, text, titleMode, formatHtml)
+
+    def formatEditorText(self, storedText):
+        """Return text formatted for use in the data editor.
+
+        Raises a ValueError if the data does not match the format.
+        Arguments:
+            storedText -- the source text to format
+        """
+        if not storedText:
+            return ''
+        if self.resultType == MathResult.numeric:
+            return super().formatEditorText(storedText)
+        if self.resultType == MathResult.date:
+            date = datetime.datetime.strptime(storedText,
+                                              DateField.isoFormat).date()
+            editorFormat = adjOutDateFormat(globalref.
+                                            genOptions['EditDateFormat'])
+            return date.strftime(editorFormat)
+        elif self.resultType == MathResult.time:
+            time = datetime.datetime.strptime(storedText,
+                                              TimeField.isoFormat).time()
+            editorFormat = adjOutDateFormat(globalref.
+                                            genOptions['EditTimeFormat'])
+            return time.strftime(editorFormat)
+        elif self.resultType == MathResult.boolean:
+            return genboolean.GenBoolean(storedText).boolStr(self.format)
+        else:
+            return storedText
+        raise ValueError
+
+    def equationText(self):
+        """Return the current equation text.
+        """
+        if self.equation:
+            return self.equation.equationText()
+        return ''
+
+    def equationValue(self, node):
+        """Return a text value from the result of the equation.
+
+        Returns the '#####' error string for illegal math operations.
+        Arguments:
+            node -- the tree item with this equation
+        """
+        if self.equation:
+            try:
+                num = self.equation.equationValue(node,
+                                             _mathResultBlank[self.resultType])
+            except ValueError:
+                return _errorStr
+            if num == None:
+                return ''
+            if self.resultType in (MathResult.numeric, MathResult.boolean,
+                                   MathResult.text):
+                return str(num)
+            elif self.resultType == MathResult.date:
+                date = DateField.refDate + datetime.timedelta(days=num)
+                return date.strftime(DateField.isoFormat)
+            else:
+                time = TimeField.refTime + datetime.timedelta(seconds=num)
+                return time.strftime(TimeField.isoFormat)
+        return ''
+
+    def changeResultType(self, resultType):
+        """Change the result type and reset the output format.
+
+        Arguments:
+            resultType -- the new result type
+        """
+        if resultType != self.resultType:
+            self.resultType = resultType
+            if resultType == MathResult.numeric:
+                self.setFormat(self.defaultFormat)
+            elif resultType == MathResult.date:
+                self.setFormat(DateField.defaultFormat)
+            elif resultType == MathResult.time:
+                self.setFormat(TimeField.defaultFormat)
+            elif resultType == MathResult.boolean:
+                self.setFormat(BooleanField.defaultFormat)
+            else:
+                self.setFormat('')
+
+    def getFormatHelpMenuList(self):
+        """Return the list of descriptions and keys for the format help menu.
+        """
+        if self.resultType == MathResult.numeric:
+            return self.formatHelpMenuList
+        if self.resultType == MathResult.date:
+            return DateField.formatHelpMenuList
+        if self.resultType == MathResult.time:
+            return TimeField.formatHelpMenuList
+        if self.resultType == MathResult.boolean:
+            return BooleanField.formatHelpMenuList
+        return []
+
+
 class NumberingField(HtmlTextField):
     """Class to handle formats for hierarchical node numbering.
 
@@ -546,15 +729,15 @@ class NumberingField(HtmlTextField):
                            'I../A../1../a)/i)'),
                           (_('Section Example\t1.1.1.1'), '1.1.1.1')]
 
-    def __init__(self, name, attrs=None):
+    def __init__(self, name, formatData=None):
         """Initialize a field format type.
 
         Arguments:
             name -- the field name string
-            attrs -- the attributes that define this field's format
+            formatData -- the attributes that define this field's format
         """
         self.numFormat = None
-        super().__init__(name, attrs)
+        super().__init__(name, formatData)
 
     def setFormat(self, format):
         """Set the format string and initialize as required.
@@ -836,14 +1019,14 @@ class TimeField(HtmlTextField):
                           (_('Second (2 digits)\t%S'), '%S'), ('', ''),
                           (_('Microseconds (6 digits)\t%f'), '%f'), ('', ''),
                           (_('AM/PM\t%p'), '%p')]
-    def __init__(self, name, attrs=None):
+    def __init__(self, name, formatData=None):
         """Initialize a field format type.
 
         Arguments:
             name -- the field name string
-            attrs -- the attributes that define this field's format
+            formatData -- the attributes that define this field's format
         """
-        super().__init__(name, attrs)
+        super().__init__(name, formatData)
 
     def formatOutput(self, storedText, titleMode, formatHtml):
         """Return formatted output text from stored text for this field.
@@ -1330,14 +1513,14 @@ class AutoChoiceField(HtmlTextField):
     editorClassName = 'ComboEditor'
     numChoiceColumns = 1
     autoAddChoices = True
-    def __init__(self, name, attrs=None):
+    def __init__(self, name, formatData=None):
         """Initialize a field format type.
 
         Arguments:
             name -- the field name string
-            attrs -- the attributes that define this field's format
+            formatData -- the attributes that define this field's format
         """
-        super().__init__(name, attrs)
+        super().__init__(name, formatData)
         self.choices = set()
 
     def formatEditorText(self, storedText):
@@ -1528,14 +1711,14 @@ class AutoCombinationField(CombinationField):
     autoAddChoices = True
     defaultFormat = ''
     formatHelpMenuList = []
-    def __init__(self, name, attrs=None):
+    def __init__(self, name, formatData=None):
         """Initialize a field format type.
 
         Arguments:
             name -- the field name string
-            attrs -- the attributes that define this field's format
+            formatData -- the attributes that define this field's format
         """
-        super().__init__(name, attrs)
+        super().__init__(name, formatData)
         self.choices = set()
         self.outputSep = ''
 
@@ -1760,14 +1943,14 @@ class ExternalLinkField(HtmlTextField):
     evalHtmlDefault = False
     editorClassName = 'ExtLinkEditor'
 
-    def __init__(self, name, attrs=None):
+    def __init__(self, name, formatData=None):
         """Initialize a field format type.
 
         Arguments:
             name -- the field name string
-            attrs -- the attributes that define this field's format
+            formatData -- the attributes that define this field's format
         """
-        super().__init__(name, attrs)
+        super().__init__(name, formatData)
 
     def addressAndName(self, storedText):
         """Return the link title and the name from the given stored link.
@@ -1867,14 +2050,14 @@ class InternalLinkField(ExternalLinkField):
     typeName = 'InternalLink'
     editorClassName = 'IntLinkEditor'
 
-    def __init__(self, name, attrs=None):
+    def __init__(self, name, formatData=None):
         """Initialize a field format type.
 
         Arguments:
             name -- the field name string
-            attrs -- the attributes that define this field's format
+            formatData -- the attributes that define this field's format
         """
-        super().__init__(name, attrs)
+        super().__init__(name, formatData)
 
     def editorText(self, node):
         """Return text formatted for use in the data editor.
@@ -1961,14 +2144,14 @@ class PictureField(HtmlTextField):
     evalHtmlDefault = False
     editorClassName = 'PictureLinkEditor'
 
-    def __init__(self, name, attrs=None):
+    def __init__(self, name, formatData=None):
         """Initialize a field format type.
 
         Arguments:
             name -- the field name string
-            attrs -- the attributes that define this field's format
+            formatData -- the attributes that define this field's format
         """
-        super().__init__(name, attrs)
+        super().__init__(name, formatData)
 
     def formatOutput(self, storedText, titleMode, formatHtml):
         """Return formatted output text from stored text for this field.
