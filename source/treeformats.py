@@ -51,6 +51,7 @@ class TreeFormats(dict):
                 name = formatData['formatname']
                 self[name] = nodeformat.NodeFormat(name, self, formatData)
             self.updateDerivedRefs()
+            self.updateMathFieldRefs()
         if nodeformat.FileInfoFormat.typeName in self:
             self.fileInfoFormat.duplicateFileInfo(self[nodeformat.
                                                        FileInfoFormat.

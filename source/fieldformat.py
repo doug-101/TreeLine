@@ -33,8 +33,8 @@ fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
 _errorStr = '#####'
 _dateStampString = _('Now')
 _timeStampString = _('Now')
-MathResult = enum.Enum('MathResult', 'numeric date time boolean text')
-_mathResultBlank = {MathResult.numeric: 0, MathResult.date: 0,
+MathResult = enum.Enum('MathResult', 'number date time boolean text')
+_mathResultBlank = {MathResult.number: 0, MathResult.date: 0,
                     MathResult.time: 0, MathResult.boolean: False,
                     MathResult.text: ''}
 _multipleSpaceRegEx = re.compile(r' {2,}')
@@ -56,6 +56,7 @@ class TextField:
     fixEvalHtmlSetting = True
     defaultNumLines = 1
     editorClassName = 'RichTextEditor'
+    sortTypeStr = '80_text'
     formatHelpMenuList = []
     def __init__(self, name, formatData=None):
         """Initialize a field format type.
@@ -235,17 +236,7 @@ class TextField:
             node -- the tree item storing the data
         """
         storedText = node.data.get(self.name, '')
-        storedText = removeMarkup(storedText)
-        return storedText.lower()
-
-    def sortKey(self, node):
-        """Return a tuple with field type and comparison value for sorting.
-
-        Allows different types to be sorted.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        return ('80_text', self.compareValue(node))
+        return self.adjustedCompareValue(storedText)
 
     def adjustedCompareValue(self, value):
         """Return value adjusted like the compareValue for use in conditionals.
@@ -256,6 +247,15 @@ class TextField:
         """
         value = removeMarkup(value)
         return value.lower()
+
+    def sortKey(self, node):
+        """Return a tuple with field type and comparison value for sorting.
+
+        Allows different types to be sorted.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return (self.sortTypeStr, self.compareValue(node))
 
     def changeType(self, newType):
         """Change this field's type to newType with a default format.
@@ -416,6 +416,7 @@ class NumberField(HtmlTextField):
     defaultFormat = '#.##'
     evalHtmlDefault = False
     editorClassName = 'LineEditor'
+    sortTypeStr = '20_num'
     formatHelpMenuList = [(_('Optional Digit\t#'), '#'),
                           (_('Required Digit\t0'), '0'),
                           (_('Digit or Space (external)\t<space>'), ' '),
@@ -492,28 +493,6 @@ class NumberField(HtmlTextField):
             return gennumber.GenNumber(storedText).num
         return 0 if zeroBlanks else None
 
-    def compareValue(self, node):
-        """Return a value for comparison to other nodes and for sorting.
-
-        Returns lowercase text for text fields or numbers for non-text fields.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        storedText = node.data.get(self.name, '')
-        try:
-            return gennumber.GenNumber(storedText).num
-        except ValueError:
-            return 0
-
-    def sortKey(self, node):
-        """Return a tuple with field type and comparison values for sorting.
-
-        Allows different types to be sorted.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        return ('20_num', self.compareValue(node))
-
     def adjustedCompareValue(self, value):
         """Return value adjusted like the compareValue for use in conditionals.
 
@@ -527,13 +506,15 @@ class NumberField(HtmlTextField):
             return 0
 
 
-class MathField(NumberField):
+class MathField(HtmlTextField):
     """Class to handle a math calculation field type.
 
     Stores options and format strings for a math field type.
     Provides methods to return formatted data.
     """
     typeName = 'Math'
+    defaultFormat = '#.##'
+    evalHtmlDefault = False
     editorClassName = 'ReadOnlyEditor'
     def __init__(self, name, formatData=None):
         """Initialize a field format type.
@@ -544,7 +525,7 @@ class MathField(NumberField):
         """
         super().__init__(name, formatData)
         self.equation = None
-        self.resultType = MathResult[formatData.get('resulttype', 'numeric')]
+        self.resultType = MathResult[formatData.get('resulttype', 'number')]
         equationText = formatData.get('eqn', '').strip()
         if equationText:
             self.equation = matheval.MathEquation(equationText)
@@ -561,7 +542,7 @@ class MathField(NumberField):
         formatData = super().formatData()
         if self.equation:
             formatData['eqn'] = self.equation.equationText()
-        if self.resultType != MathResult.numeric:
+        if self.resultType != MathResult.number:
             formatData['resulttype'] = self.resultType.name
         return formatData
 
@@ -573,7 +554,7 @@ class MathField(NumberField):
         """
         if not hasattr(self, 'equation'):
             self.equation = None
-            self.resultType = MathResult.numeric
+            self.resultType = MathResult.number
         super().setFormat(format)
 
     def formatOutput(self, storedText, titleMode, formatHtml):
@@ -585,28 +566,22 @@ class MathField(NumberField):
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         text = storedText
-        if self.resultType == MathResult.numeric:
-            return super().formatOutput(text, titleMode, formatHtml)
-        if self.resultType == MathResult.date:
-            try:
+        try:
+            if self.resultType == MathResult.number:
+                text = gennumber.GenNumber(text).numStr(self.format)
+            elif self.resultType == MathResult.date:
                 date = datetime.datetime.strptime(text,
                                                   DateField.isoFormat).date()
                 text = date.strftime(adjOutDateFormat(self.format))
-            except ValueError:
-                text = _errorStr
-        elif self.resultType == MathResult.time:
-            try:
+            elif self.resultType == MathResult.time:
                 time = datetime.datetime.strptime(text,
                                                   TimeField.isoFormat).time()
                 text = time.strftime(adjOutDateFormat(self.format))
-            except ValueError:
-                text = _errorStr
-        elif self.resultType == MathResult.boolean:
-            try:
+            elif self.resultType == MathResult.boolean:
                 text =  genboolean.GenBoolean(text).boolStr(self.format)
-            except ValueError:
-                text = _errorStr
-        return HtmlTextField.formatOutput(self, text, titleMode, formatHtml)
+        except ValueError:
+            text = _errorStr
+        return super().formatOutput(text, titleMode, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -617,25 +592,23 @@ class MathField(NumberField):
         """
         if not storedText:
             return ''
-        if self.resultType == MathResult.numeric:
-            return super().formatEditorText(storedText)
+        if self.resultType == MathResult.number:
+            return gennumber.GenNumber(storedText).numStr(self.format)
         if self.resultType == MathResult.date:
             date = datetime.datetime.strptime(storedText,
                                               DateField.isoFormat).date()
             editorFormat = adjOutDateFormat(globalref.
                                             genOptions['EditDateFormat'])
             return date.strftime(editorFormat)
-        elif self.resultType == MathResult.time:
+        if self.resultType == MathResult.time:
             time = datetime.datetime.strptime(storedText,
                                               TimeField.isoFormat).time()
             editorFormat = adjOutDateFormat(globalref.
                                             genOptions['EditTimeFormat'])
             return time.strftime(editorFormat)
-        elif self.resultType == MathResult.boolean:
+        if self.resultType == MathResult.boolean:
             return genboolean.GenBoolean(storedText).boolStr(self.format)
-        else:
-            return storedText
-        raise ValueError
+        return storedText
 
     def equationText(self):
         """Return the current equation text.
@@ -659,16 +632,19 @@ class MathField(NumberField):
                 return _errorStr
             if num == None:
                 return ''
-            if self.resultType in (MathResult.numeric, MathResult.boolean,
-                                   MathResult.text):
-                return str(num)
-            elif self.resultType == MathResult.date:
+            if self.resultType == MathResult.date:
                 date = DateField.refDate + datetime.timedelta(days=num)
                 return date.strftime(DateField.isoFormat)
-            else:
+            if self.resultType == MathResult.time:
                 time = TimeField.refTime + datetime.timedelta(seconds=num)
                 return time.strftime(TimeField.isoFormat)
+            return str(num)
         return ''
+
+    def resultClass(self):
+        """Return the result type's field class.
+        """
+        return globals()[self.resultType.name.capitalize() + 'Field']
 
     def changeResultType(self, resultType):
         """Change the result type and reset the output format.
@@ -678,29 +654,71 @@ class MathField(NumberField):
         """
         if resultType != self.resultType:
             self.resultType = resultType
-            if resultType == MathResult.numeric:
-                self.setFormat(self.defaultFormat)
-            elif resultType == MathResult.date:
-                self.setFormat(DateField.defaultFormat)
-            elif resultType == MathResult.time:
-                self.setFormat(TimeField.defaultFormat)
-            elif resultType == MathResult.boolean:
-                self.setFormat(BooleanField.defaultFormat)
-            else:
-                self.setFormat('')
+            self.setFormat(self.resultClass().defaultFormat)
+
+    def mathValue(self, node, zeroBlanks=True):
+        """Return a numeric value to be used in math field equations.
+
+        Return None if blank and not zeroBlanks,
+        raise a ValueError if it isn't valid.
+        Arguments:
+            node -- the tree item storing the data
+            zeroBlanks -- replace blank field values with zeros if True
+        """
+        storedText = node.data.get(self.name, '')
+        if storedText:
+            if self.resultType == MathResult.number:
+                return gennumber.GenNumber(storedText).num
+            if self.resultType == MathResult.date:
+                date = datetime.datetime.strptime(storedText,
+                                                  DateField.isoFormat).date()
+                return (date - DateField.refDate).days
+            if self.resultType == MathResult.time:
+                time = datetime.datetime.strptime(storedText,
+                                                  TimeField.isoFormat).time()
+                return (time - TimeField.refTime).seconds
+            if self.resultType == MathResult.boolean:
+                return  genboolean.GenBoolean(storedText).value
+            return removeMarkup(storedText)
+        return _mathResultBlank[self.resultType] if zeroBlanks else None
+
+    def adjustedCompareValue(self, value):
+        """Return value adjusted like the compareValue for use in conditionals.
+
+        Number version converts to a numeric value.
+        Arguments:
+            value -- the comparison value to adjust
+        """
+        try:
+            if self.resultType == MathResult.number:
+                return gennumber.GenNumber(value).num
+            if self.resultType == MathResult.date:
+                date = datetime.datetime.strptime(value,
+                                                  DateField.isoFormat).date()
+                return date.strftime(DateField.isoFormat)
+            if self.resultType == MathResult.time:
+                time = datetime.datetime.strptime(value,
+                                                  TimeField.isoFormat).time()
+                return time.strftime(TimeField.isoFormat)
+            if self.resultType == MathResult.boolean:
+                return  genboolean.GenBoolean(value).value
+            return value.lower()
+        except ValueError:
+            return 0
+
+    def sortKey(self, node):
+        """Return a tuple with field type and comparison value for sorting.
+
+        Allows different types to be sorted.
+        Arguments:
+            node -- the tree item storing the data
+        """
+        return (self.resultClass().sortTypeStr, self.compareValue(node))
 
     def getFormatHelpMenuList(self):
         """Return the list of descriptions and keys for the format help menu.
         """
-        if self.resultType == MathResult.numeric:
-            return self.formatHelpMenuList
-        if self.resultType == MathResult.date:
-            return DateField.formatHelpMenuList
-        if self.resultType == MathResult.time:
-            return TimeField.formatHelpMenuList
-        if self.resultType == MathResult.boolean:
-            return BooleanField.formatHelpMenuList
-        return []
+        return self.resultClass().formatHelpMenuList
 
 
 class NumberingField(HtmlTextField):
@@ -713,6 +731,7 @@ class NumberingField(HtmlTextField):
     defaultFormat = '1..'
     evalHtmlDefault = False
     editorClassName = 'LineEditor'
+    sortTypeStr = '10_numbering'
     formatHelpMenuList = [(_('Number\t1'), '1'),
                           (_('Capital Letter\tA'), 'A'),
                           (_('Small Letter\ta'), 'a'),
@@ -784,30 +803,6 @@ class NumberingField(HtmlTextField):
             checkData = [int(num) for num in editorText.split('.')]
         return editorText
 
-    def compareValue(self, node):
-        """Return a value for comparison to other nodes and for sorting.
-
-        Returns lowercase text for text fields or numbers for non-text fields.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        storedText = node.data.get(self.name, '')
-        if storedText:
-            try:
-                return [int(num) for num in editorText.split('.')]
-            except ValueError:
-                pass
-        return [0]
-
-    def sortKey(self, node):
-        """Return a tuple with field type and comparison values for sorting.
-
-        Allows different types to be sorted.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        return ('10_numbering', self.compareValue(node))
-
     def adjustedCompareValue(self, value):
         """Return value adjusted like the compareValue for use in conditionals.
 
@@ -835,6 +830,7 @@ class DateField(HtmlTextField):
     evalHtmlDefault = False
     editorClassName = 'DateEditor'
     refDate = datetime.date(1970, 1, 1)
+    sortTypeStr = '40_date'
     formatHelpMenuList = [(_('Day (1 or 2 digits)\t%-d'), '%-d'),
                           (_('Day (2 digits)\t%d'), '%d'), ('', ''),
                           (_('Weekday Abbreviation\t%a'), '%a'),
@@ -967,15 +963,6 @@ class DateField(HtmlTextField):
         """
         return node.data.get(self.name, '')
 
-    def sortKey(self, node):
-        """Return a tuple with field type and comparison values for sorting.
-
-        Allows different types to be sorted.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        return ('40_date', self.compareValue(node))
-
     def adjustedCompareValue(self, value):
         """Return value adjusted like the compareValue for use in conditionals.
 
@@ -1009,6 +996,7 @@ class TimeField(HtmlTextField):
     numChoiceColumns = 2
     autoAddChoices = False
     refTime = datetime.time()
+    sortTypeStr = '50_time'
     formatHelpMenuList = [(_('Hour (0-23, 1 or 2 digits)\t%-H'), '%-H'),
                           (_('Hour (00-23, 2 digits)\t%H'), '%H'),
                           (_('Hour (1-12, 1 or 2 digits)\t%-I'), '%-I'),
@@ -1166,15 +1154,6 @@ class TimeField(HtmlTextField):
         """
         return node.data.get(self.name, '')
 
-    def sortKey(self, node):
-        """Return a tuple with field type and comparison values for sorting.
-
-        Allows different types to be sorted.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        return ('50_time', self.compareValue(node))
-
     def adjustedCompareValue(self, value):
         """Return value adjusted like the compareValue for use in conditionals.
 
@@ -1206,6 +1185,7 @@ class DateTimeField(HtmlTextField):
     evalHtmlDefault = False
     editorClassName = 'DateTimeEditor'
     refDateTime = datetime.datetime(1970, 1, 1)
+    sortTypeStr ='45_datetime'
     formatHelpMenuList = [(_('Day (1 or 2 digits)\t%-d'), '%-d'),
                           (_('Day (2 digits)\t%d'), '%d'), ('', ''),
                           (_('Weekday Abbreviation\t%a'), '%a'),
@@ -1367,15 +1347,6 @@ class DateTimeField(HtmlTextField):
             node -- the tree item storing the data
         """
         return node.data.get(self.name, '')
-
-    def sortKey(self, node):
-        """Return a tuple with field type and comparison values for sorting.
-
-        Allows different types to be sorted.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        return ('45_datetime', self.compareValue(node))
 
     def adjustedCompareValue(self, value):
         """Return value adjusted like the compareValue for use in conditionals.
@@ -1826,6 +1797,7 @@ class BooleanField(ChoiceField):
     defaultFormat = _('yes/no')
     evalHtmlDefault = False
     fixEvalHtmlSetting = True
+    sortTypeStr ='30_bool'
     formatHelpMenuList = [(_('true/false'), 'true/false'),
                           (_('T/F'), 'T/F'), ('', ''),
                           (_('yes/no'), 'yes/no'),
@@ -1908,15 +1880,6 @@ class BooleanField(ChoiceField):
         except ValueError:
             return False
 
-    def sortKey(self, node):
-        """Return a tuple with field type and comparison values for sorting.
-
-        Allows different types to be sorted.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        return ('30_bool', self.compareValue(node))
-
     def adjustedCompareValue(self, value):
         """Return value adjusted like the compareValue for use in conditionals.
 
@@ -1942,6 +1905,7 @@ class ExternalLinkField(HtmlTextField):
     typeName = 'ExternalLink'
     evalHtmlDefault = False
     editorClassName = 'ExtLinkEditor'
+    sortTypeStr ='60_link'
 
     def __init__(self, name, formatData=None):
         """Initialize a field format type.
@@ -2015,31 +1979,20 @@ class ExternalLinkField(HtmlTextField):
             raise ValueError
         return '<a href="{0}">{1}</a>'.format(address.strip(), name.strip())
 
-    def compareValue(self, node):
-        """Return a value for comparison to other nodes and for sorting.
+    def adjustedCompareValue(self, value):
+        """Return value adjusted like the compareValue for use in conditionals.
 
-        Returns lowercase text for text fields or numbers for non-text fields.
         Link fields use link address.
         Arguments:
-            node -- the tree item storing the data
+            value -- the comparison value to adjust
         """
-        storedText = node.data.get(self.name, '')
-        if not storedText:
+        if not value:
             return ''
         try:
-            address, name = self.addressAndName(storedText)
+            address, name = self.addressAndName(value)
         except ValueError:
-            return storedText
+            return value.lower()
         return address.lstrip('#').lower()
-
-    def sortKey(self, node):
-        """Return a tuple with field type and comparison values for sorting.
-
-        Allows different types to be sorted.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        return ('60_link', self.compareValue(node))
 
 
 class InternalLinkField(ExternalLinkField):
@@ -2143,6 +2096,7 @@ class PictureField(HtmlTextField):
     typeName = 'Picture'
     evalHtmlDefault = False
     editorClassName = 'PictureLinkEditor'
+    sortTypeStr ='60_link'
 
     def __init__(self, name, formatData=None):
         """Initialize a field format type.
@@ -2200,30 +2154,19 @@ class PictureField(HtmlTextField):
             name = urltools.shortName(address)
         return '<img src="{0}" />'.format(editorText)
 
-    def compareValue(self, node):
-        """Return a value for comparison to other nodes and for sorting.
+    def adjustedCompareValue(self, value):
+        """Return value adjusted like the compareValue for use in conditionals.
 
-        Returns lowercase text for text fields or numbers for non-text fields.
-        Link fields use stored link format
+        Link fields use link address.
         Arguments:
-            node -- the tree item storing the data
+            value -- the comparison value to adjust
         """
-        storedText = node.data.get(self.name, '')
-        if not storedText:
+        if not value:
             return ''
-        linkMatch = _imageRegExp.search(storedText)
+        linkMatch = _imageRegExp.search(value)
         if not linkMatch:
-            return storedText
+            return value.lower()
         return linkMatch.group(1).lower()
-
-    def sortKey(self, node):
-        """Return a tuple with field type and comparison values for sorting.
-
-        Allows different types to be sorted.
-        Arguments:
-            node -- the tree item storing the data
-        """
-        return ('60_link', self.compareValue(node))
 
 
 class RegularExpressionField(HtmlTextField):

@@ -1967,7 +1967,7 @@ _mathRefLevels = [_('Self Reference'), _('Parent Reference'),
                   _('Root Reference'), _('Child Reference'), _('Child Count')]
 # _mathRefLevelFlags  correspond to _mathRefLevels
 _mathRefLevelFlags = ['', '*', '$', '&', '#']
-_mathResultTypes = [N_('Numeric Result'), N_('Date Result'), N_('Time Result'),
+_mathResultTypes = [N_('Number Result'), N_('Date Result'), N_('Time Result'),
                     N_('Boolean Result'), N_('Text Result')]
 _operatorTypes = [_('Arithmetic Operators'), _('Comparison Operators'),
                   _('Text Operators')]

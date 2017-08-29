@@ -147,7 +147,7 @@ class TreeLocalControl(QObject):
         if (self.structure.treeFormats.mathFieldRefDict and
             node.updateNodeMathFields(self.structure.treeFormats)):
             self.activeWindow.updateRightViews(outputOnly=True)
-            if globalref.genOptions.getValue('ShowMath'):
+            if globalref.genOptions['ShowMath']:
                 self.activeWindow.refreshDataEditViews()
         for window in self.windowList:
             window.updateTreeNode(node)
@@ -215,14 +215,14 @@ class TreeLocalControl(QObject):
                                                                  upward):
                 for child in self.structure.childList:
                     for node in child.descendantGen():
-                        for eqnRef in eqnRefDict.get(node.formatName, []):
+                        for eqnRef in eqnRefDict.get(node.formatRef.name, []):
                             node.data[eqnRef.eqnField.name] = (eqnRef.eqnField.
                                                            equationValue(node))
             else:
                 spot = self.structure.structSpot.lastDescendantSpot()
                 while spot:
                     node = spot.nodeRef
-                    for eqnRef in eqnRefDict.get(node.formatName, []):
+                    for eqnRef in eqnRefDict.get(node.formatRef.name, []):
                         node.data[eqnRef.eqnField.name] = (eqnRef.eqnField.
                                                            equationValue(node))
                     spot = spot.prevTreeSpot()

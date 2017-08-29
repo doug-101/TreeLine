@@ -184,11 +184,11 @@ class TreeStructure(treenode.TreeNode):
 
         Also updates all nodes for changed type and field names.
         """
-        self.configDialogFormats.updateMathFieldRefs()
         if addUndo:
             undo.FormatUndo(self.undoList, self.treeFormats,
                             self.configDialogFormats)
         self.treeFormats.copySettings(self.configDialogFormats)
+        self.treeFormats.updateMathFieldRefs()
         if self.configDialogFormats.fieldRenameDict:
             for node in self.nodeDict.values():
                 fieldRenameDict = (self.configDialogFormats.fieldRenameDict.

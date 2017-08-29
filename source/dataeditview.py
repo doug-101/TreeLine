@@ -443,7 +443,7 @@ class DataEditView(QTableWidget):
         """
         node = spot.nodeRef
         self.item(startRow, 1).setText(node.title(spot))
-        fields = node.nodeFormat().fields()
+        fields = node.formatRef.fields()
         if not globalref.genOptions['EditNumbering']:
             fields = [field for field in fields
                       if field.typeName != 'Numbering']
@@ -452,7 +452,7 @@ class DataEditView(QTableWidget):
                       if field.typeName != 'Math']
         for row, field in enumerate(fields, startRow + 1):
             cell = self.item(row, 1)
-            if not cell.isSelected() or not self.hasFocus():
+            if not cell.isSelected():
                 cell.updateText()
         return row
 

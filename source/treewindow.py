@@ -185,6 +185,14 @@ class TreeWindow(QMainWindow):
                 for i in range(2):
                     splitter.widget(i).updateContents()
 
+    def refreshDataEditViews(self):
+        """Refresh the data in non-selected cells in curreent data edit views.
+        """
+        splitter = self.rightTabs.currentWidget()
+        if isinstance(splitter.widget(0), dataeditview.DataEditView):
+            for i in range(2):
+                splitter.widget(i).updateUnselectedCells()
+
     def updateCommandsAvail(self):
         """Set window commands available based on node selections.
         """
