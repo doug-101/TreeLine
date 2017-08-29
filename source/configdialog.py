@@ -839,7 +839,8 @@ class FieldListPage(ConfigPage):
                 field.name = dlg.text
                 nodeFormat.fieldDict[field.name] = field
                 nodeFormat.reorderFields(fieldList)
-                nodeFormat.conditional.renameFields(oldName, field.name)
+                if nodeFormat.conditional:
+                    nodeFormat.conditional.renameFields(oldName, field.name)
                 # savedConditions = {}
                 # for name, text in nodeFormat.savedConditionText.items():
                     # condition = conditional.Conditional(text, nodeFormat.name)

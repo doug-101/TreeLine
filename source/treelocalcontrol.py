@@ -219,7 +219,7 @@ class TreeLocalControl(QObject):
                             node.data[eqnRef.eqnField.name] = (eqnRef.eqnField.
                                                            equationValue(node))
             else:
-                spot = self.structure.structSpot.lastDescendantSpot()
+                spot = self.structure.structSpot().lastDescendantSpot()
                 while spot:
                     node = spot.nodeRef
                     for eqnRef in eqnRefDict.get(node.formatRef.name, []):

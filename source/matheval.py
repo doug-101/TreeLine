@@ -321,7 +321,7 @@ class EquationParentRef(EquationFieldRef):
             zeroValue -- the value to use for blanks
         """
         node = eqnNode.spotByNumber(0).parentSpot.nodeRef
-        if not node:
+        if not node.formatRef:
             return zeroValue if zeroBlanks else None
         try:
             return (node.formatRef.fieldDict[self.fieldName].
@@ -415,7 +415,7 @@ class EquationChildRef(EquationFieldRef):
             refNode -- the node containing the referenced field
         """
         node = refNode.spotByNumber(0).parentSpot.nodeRef
-        if node and node.formatRef.name == self.eqnNodeTypeName:
+        if node.formatRef and node.formatRef.name == self.eqnNodeTypeName:
             return [node]
         return []
 
