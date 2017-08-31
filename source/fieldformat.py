@@ -608,6 +608,8 @@ class MathField(HtmlTextField):
             return time.strftime(editorFormat)
         if self.resultType == MathResult.boolean:
             return genboolean.GenBoolean(storedText).boolStr(self.format)
+        if storedText == _errorStr:
+            raise ValueError
         return storedText
 
     def equationText(self):
@@ -636,7 +638,10 @@ class MathField(HtmlTextField):
                 date = DateField.refDate + datetime.timedelta(days=num)
                 return date.strftime(DateField.isoFormat)
             if self.resultType == MathResult.time:
-                time = TimeField.refTime + datetime.timedelta(seconds=num)
+                dateTime = datetime.datetime.combine(DateField.refDate,
+                                                     TimeField.refTime)
+                dateTime = dateTime + datetime.timedelta(seconds=num)
+                time = dateTime.time()
                 return time.strftime(TimeField.isoFormat)
             return str(num)
         return ''
@@ -1141,7 +1146,10 @@ class TimeField(HtmlTextField):
         if storedText:
             time = datetime.datetime.strptime(storedText,
                                               TimeField.isoFormat).time()
-            return (time - TimeField.refTime).seconds
+            dateTime = datetime.datetime.combine(DateField.refDate, time)
+            refDateTime = datetime.datetime.combine(DateField.refDate,
+                                                    TimeField.refTime)
+            return (dateTime - refDateTime).seconds
         return 0 if zeroBlanks else None
 
     def compareValue(self, node):

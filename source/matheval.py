@@ -223,7 +223,7 @@ class MathEquation:
         eqn = self.formattedEqnText.format(*inputs)
         try:
             return eval(eqn)
-        except (TypeError, ZeroDivisionError) as err:
+        except Exception as err:
             raise ValueError(err)
 
     def parseEquation(self, eqnText):
