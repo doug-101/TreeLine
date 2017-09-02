@@ -487,7 +487,7 @@ class ConditionDialog(QDialog):
         """Set filter button status based on active window changes.
         """
         window = globalref.mainControl.activeControl.activeWindow
-        if window.isFiltering():
+        if window.treeFilterView:
             filterView = window.treeFilterView
             conditional = filterView.conditionalFilter
             self.setCondition(conditional, conditional.origNodeFormatName)

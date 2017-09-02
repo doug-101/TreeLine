@@ -14,10 +14,12 @@
 
 from PyQt5.QtCore import QEvent, QPoint, Qt, pyqtSignal
 from PyQt5.QtGui import QContextMenuEvent, QKeySequence
-from PyQt5.QtWidgets import (QAbstractItemView, QHeaderView, QMenu,
+from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QHeaderView,
+                             QLabel, QListWidget, QListWidgetItem, QMenu,
                              QStyledItemDelegate, QTreeView)
 import treeselection
 import treenode
+import miscdialogs
 import globalref
 
 
@@ -296,3 +298,287 @@ class TreeEditDelegate(QStyledItemDelegate):
             self.parent().shortcutEntered.emit(key)
             return True
         return super().eventFilter(editor, event)
+
+
+class TreeFilterViewItem(QListWidgetItem):
+    """Item container for the flat list of filtered nodes.
+    """
+    def __init__(self, spot, viewParent=None):
+        """Initialize the list view item.
+
+        Arguments:
+            spot -- the spot to reference for content
+            viewParent -- the parent list view
+        """
+        super().__init__(viewParent)
+        self.spot = spot
+        self.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEditable |
+                      Qt.ItemIsEnabled)
+        self.update()
+
+    def update(self):
+        """Update title and icon from the stored node.
+        """
+        node = self.spot.nodeRef
+        self.setText(node.title())
+        if globalref.genOptions['ShowTreeIcons']:
+            self.setIcon(globalref.treeIcons.getIcon(node.formatRef.iconName,
+                                                     True))
+
+
+class TreeFilterView(QListWidget):
+    """View to show flat list of filtered nodes.
+    """
+    skippedMouseSelect = pyqtSignal(treenode.TreeNode)
+    shortcutEntered = pyqtSignal(QKeySequence)
+    def __init__(self, treeViewRef, allActions, parent=None):
+        """Initialize the list view.
+
+        Arguments:
+            treeViewRef -- a ref to the tree view for data
+            allActions -- a dictionary of control actions for popup menus
+            parent -- the parent main window
+        """
+        super().__init__(parent)
+        self.structure = treeViewRef.model().treeStructure
+        self.selectionModel = treeViewRef.selectionModel()
+        self.treeModel = treeViewRef.model()
+        self.allActions = allActions
+        self.menu = None
+        self.noMouseSelectMode = False
+        self.drivingSelectionChange = False
+        self.conditionalFilter = None
+        self.messageLabel = None
+        self.filterWhat = miscdialogs.FindScope.fullData
+        self.filterHow = miscdialogs.FindType.keyWords
+        self.filterStr = ''
+        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setItemDelegate(TreeEditDelegate(self))
+        if globalref.genOptions['ClickRename']:
+            self.setEditTriggers(QAbstractItemView.SelectedClicked)
+        else:
+            self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.itemSelectionChanged.connect(self.updateSelectionModel)
+        self.itemChanged.connect(self.changeTitle)
+
+    def updateItem(self, node):
+        """Update the item corresponding to the given node.
+
+        Arguments:
+            node -- the node to be updated
+        """
+        for row in range(self.count()):
+            if self.item(row).spot.nodeRef == node:
+                self.blockSignals(True)
+                self.item(row).update()
+                self.blockSignals(False)
+                return
+
+    def updateContents(self):
+        """Update filtered contents from current structure and filter criteria.
+        """
+        if self.conditionalFilter:
+            self.conditionalUpdate()
+            return
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        if self.filterHow == miscdialogs.FindType.regExp:
+            criteria = [re.compile(self.filterStr)]
+            useRegExpFilter = True
+        elif self.filterHow == miscdialogs.FindType.fullWords:
+            criteria = []
+            for word in self.filterStr.lower().split():
+                criteria.append(re.compile(r'(?i)\b{}\b'.
+                                           format(re.escape(word))))
+            useRegExpFilter = True
+        elif self.filterHow == miscdialogs.FindType.keyWords:
+            criteria = self.filterStr.lower().split()
+            useRegExpFilter = False
+        else:         # full phrase
+            criteria = [self.filterStr.lower().strip()]
+            useRegExpFilter = False
+        titlesOnly = self.filterWhat == miscdialogs.FindScope.titlesOnly
+        self.blockSignals(True)
+        self.clear()
+        if useRegExpFilter:
+            for rootSpot in self.structure.rootSpots():
+                for spot in rootSpot.spotDescendantGen():
+                    if spot.nodeRef.regExpSearch(criteria, titlesOnly):
+                        item = TreeFilterViewItem(spot, self)
+        else:
+            for rootSpot in self.structure.rootSpots():
+                for spot in rootSpot.spotDescendantGen():
+                    if spot.nodeRef.wordSearch(criteria, titlesOnly):
+                        item = TreeFilterViewItem(spot, self)
+        self.blockSignals(False)
+        self.selectItems(self.selectionModel.selectedSpots(), True)
+        if self.count() and not self.selectedItems():
+            self.item(0).setSelected(True)
+        message = _('Filtering by "{0}", found {1} nodes').format(self.
+                                                                  filterStr,
+                                                                  self.count())
+        self.messageLabel = QLabel(message)
+        globalref.mainControl.currentStatusBar().addWidget(self.messageLabel)
+        QApplication.restoreOverrideCursor()
+
+    def conditionalUpdate(self):
+        """Update filtered contents from structure and conditional criteria.
+        """
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        self.blockSignals(True)
+        self.clear()
+        for rootSpot in self.structure.rootSpots():
+            for spot in rootSpot.spotDescendantGen():
+                if self.conditionalFilter.evaluate(spot.nodeRef):
+                    item = TreeFilterViewItem(node, self)
+        self.blockSignals(False)
+        self.selectItems(self.selectionModel.selectedSpots(), True)
+        if self.count() and not self.selectedItems():
+            self.item(0).setSelected(True)
+        message = _('Conditional filtering, found {0} nodes').format(self.
+                                                                     count())
+        globalref.mainControl.currentStatusBar().showMessage(message)
+        QApplication.restoreOverrideCursor()
+
+    def selectItems(self, spots, signalModel=False):
+        """Select items matching given nodes if in filtered view.
+
+        Arguments:
+            spots -- the spot list to select
+            signalModel -- signal to update the tree selection model if True
+        """
+        selectSpots = set(spots)
+        if not signalModel:
+            self.blockSignals(True)
+        for item in self.selectedItems():
+            item.setSelected(False)
+        for row in range(self.count()):
+            if self.item(row).spot in selectSpots:
+                self.item(row).setSelected(True)
+                self.setCurrentItem(self.item(row))
+        self.blockSignals(False)
+
+    def updateFromSelectionModel(self):
+        """Select items selected in the tree selection model.
+
+        Called from a signal that the tree selection model is changing.
+        """
+        if self.count() and not self.drivingSelectionChange:
+            self.selectItems(self.selectionModel.selectedSpots())
+
+    def updateSelectionModel(self):
+        """Change the selection model based on a filter list selection signal.
+        """
+        self.drivingSelectionChange = True
+        self.selectionModel.selectSpots([item.spot for item in
+                                         self.selectedItems()])
+        self.drivingSelectionChange = False
+
+    def changeTitle(self, item):
+        """Update the node title in the model based on an edit signal.
+
+        Reset to the node text if invalid.
+        Arguments:
+            item -- the filter view item that changed
+        """
+        if not self.treeModel.setData(item.spot.index(self.treeModel),
+                                      item.text()):
+            self.blockSignals(True)
+            item.setText(item.node.title())
+            self.blockSignals(False)
+
+    def nextPrevSpot(self, spot, forward=True):
+        """Return the next or previous spot in this filter list view.
+
+        Wraps around ends.  Return None if view doesn't have spot.
+        Arguments:
+            spot -- the starting spot
+            forward -- next if True, previous if False
+        """
+        for row in range(self.count()):
+            if self.item(row).spot == spot:
+                if forward:
+                    row += 1
+                    if row >= self.count():
+                        row = 0
+                else:
+                    row -= 1
+                    if row < 0:
+                        row = self.count() - 1
+                return self.item(row).spot
+        return None
+
+    def contextMenu(self):
+        """Return the context menu, creating it if necessary.
+        """
+        if not self.menu:
+            self.menu = QMenu(self)
+            self.menu.addAction(self.allActions['EditCut'])
+            self.menu.addAction(self.allActions['EditCopy'])
+            self.menu.addAction(self.allActions['NodeRename'])
+            self.menu.addSeparator()
+            self.menu.addAction(self.allActions['NodeDelete'])
+            self.menu.addSeparator()
+            self.menu.addMenu(self.allActions['DataNodeType'].parent())
+        return self.menu
+
+    def contextMenuEvent(self, event):
+        """Show popup context menu on mouse click or menu key.
+
+        Arguments:
+            event -- the context menu event
+        """
+        if event.reason() == QContextMenuEvent.Mouse:
+            clickedItem = self.itemAt(event.pos())
+            if not clickedItem:
+                event.ignore()
+                return
+            if clickedItem.spot not in self.selectionModel.selectedSpots():
+                self.selectionModel().selectSpots(clickedItem.spot)
+            pos = event.globalPos()
+        else:       # shown for menu key or other reason
+            selectList = self.selectedItems()
+            if not selectList:
+                event.ignore()
+                return
+            currentItem = self.currentItem()
+            if currentItem in selectList:
+                selectList.insert(0, currentItem)
+            posList = []
+            for item in selectList:
+                rect = self.visualItemRect(item)
+                pt = QPoint(rect.center().x(), rect.bottom())
+                if self.rect().contains(pt):
+                    posList.append(pt)
+            if not posList:
+                self.scrollTo(self.indexFromItem(selectList[0]))
+                rect = self.visualItemRect(selectList[0])
+                posList = [QPoint(rect.center().x(), rect.bottom())]
+            pos = self.mapToGlobal(posList[0])
+        self.contextMenu().popup(pos)
+        event.accept()
+
+    def toggleNoMouseSelectMode(self, active=True):
+        """Set noMouseSelectMode to active or inactive.
+
+        noMouseSelectMode will not change selection on mouse click,
+        it will just signal the clicked node for use in links, etc.
+        Arguments:
+            active -- if True, activate noMouseSelectMode
+        """
+        self.noMouseSelectMode = active
+
+    def mousePressEvent(self, event):
+        """Skip unselecting click on blank spaces.
+
+        Arguments:
+            event -- the mouse click event
+        """
+        clickedItem = self.itemAt(event.pos())
+        if not clickedItem:
+            event.ignore()
+            return
+        if self.noMouseSelectMode:
+            self.skippedMouseSelect.emit(clickedItem.spot.nodeRef)
+            event.ignore()
+            return
+        super().mousePressEvent(event)

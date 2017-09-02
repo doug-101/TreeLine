@@ -17,7 +17,7 @@ import base64
 from PyQt5.QtCore import QEvent, QRect, QSize, Qt, pyqtSignal
 from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QMainWindow,
-                             QSplitter, QStatusBar, QTabWidget, QWidget)
+                             QSplitter, QStackedWidget, QStatusBar, QTabWidget)
 import treeview
 import breadcrumbview
 import outputview
@@ -70,10 +70,13 @@ class TreeWindow(QMainWindow):
 
         self.treeSplitter = QSplitter()
         self.breadcrumbSplitter.addWidget(self.treeSplitter)
-        self.treeSplitter.addWidget(self.treeView)
+        self.treeStack = QStackedWidget()
+        self.treeSplitter.addWidget(self.treeStack)
+        self.treeStack.addWidget(self.treeView)
         self.treeView.shortcutEntered.connect(self.execShortcut)
         self.treeView.selectionModel().selectionChanged.connect(self.
                                                               updateRightViews)
+        self.treeFilterView = None
 
         self.rightTabs = QTabWidget()
         self.treeSplitter.addWidget(self.rightTabs)
@@ -231,6 +234,36 @@ class TreeWindow(QMainWindow):
         else:
             caption = '- TreeLine'
         self.setWindowTitle(caption)
+
+    def filterView(self):
+        """Create, show and return a filter view.
+        """
+        self.removeFilterView()
+        self.treeFilterView = treeview.TreeFilterView(self.treeView,
+                                                      self.allActions)
+        self.treeFilterView.shortcutEntered.connect(self.execShortcut)
+        self.treeView.selectionModel().selectionChanged.connect(self.
+                                                      treeFilterView.
+                                                      updateFromSelectionModel)
+        for i in range(2):
+            editView = self.editorSplitter.widget(i)
+            editView.inLinkSelectMode.connect(self.treeFilterView.
+                                              toggleNoMouseSelectMode)
+            self.treeFilterView.skippedMouseSelect.connect(editView.
+                                                          internalLinkSelected)
+        self.treeStack.addWidget(self.treeFilterView)
+        self.treeStack.setCurrentWidget(self.treeFilterView)
+        return self.treeFilterView
+
+    def removeFilterView(self):
+        """Hide and delete the current filter view.
+        """
+        if self.treeFilterView:
+            self.treeStack.removeWidget(self.treeFilterView)
+            globalref.mainControl.currentStatusBar().removeWidget(self.
+                                                                treeFilterView.
+                                                                messageLabel)
+        self.treeFilterView = None
 
     def rightParentView(self):
         """Return the current right-hand parent view if visible (or None).
@@ -465,6 +498,8 @@ class TreeWindow(QMainWindow):
 
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
         toolsMenu.addAction(self.allActions['ToolsFindText'])
+        toolsMenu.addSeparator()
+        toolsMenu.addAction(self.allActions['ToolsFilterText'])
         toolsMenu.addSeparator()
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
 

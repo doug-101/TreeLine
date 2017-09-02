@@ -66,6 +66,7 @@ class TreeMainControl(QObject):
         self.configDialog = None
         self.numberingDialog = None
         self.findTextDialog = None
+        self.filterTextDialog = None
         self.passwords = {}
         globalref.mainControl = self
         self.allActions = {}
@@ -449,6 +450,12 @@ class TreeMainControl(QObject):
         toolsFindTextAct.triggered.connect(self.toolsFindTextDialog)
         self.allActions['ToolsFindText'] = toolsFindTextAct
 
+        toolsFilterTextAct = QAction(_('&Text Filter...'), self,
+                         statusTip=_('Filter nodes to only show text matches'),
+                         checkable=True)
+        toolsFilterTextAct.triggered.connect(self.toolsFilterTextDialog)
+        self.allActions['ToolsFilterText'] = toolsFilterTextAct
+
         toolsGenOptionsAct = QAction(_('&General Options...'), self,
                              statusTip=_('Set user preferences for all files'))
         toolsGenOptionsAct.triggered.connect(self.toolsGenOptions)
@@ -573,6 +580,23 @@ class TreeMainControl(QObject):
             self.findTextDialog.show()
         else:
             self.findTextDialog.close()
+
+    def toolsFilterTextDialog(self, show):
+        """Show or hide the non-modal filter text dialog.
+
+        Arguments:
+            show -- true if dialog should be shown
+        """
+        if show:
+            if not self.filterTextDialog:
+                self.filterTextDialog = miscdialogs.FindFilterDialog(True)
+                toolsFilterTextAct = self.allActions['ToolsFilterText']
+                self.filterTextDialog.dialogShown.connect(toolsFilterTextAct.
+                                                          setChecked)
+            self.filterTextDialog.selectAllText()
+            self.filterTextDialog.show()
+        else:
+            self.filterTextDialog.close()
 
     def toolsGenOptions(self):
         """Set general user preferences for all files.

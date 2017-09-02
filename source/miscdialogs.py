@@ -357,13 +357,13 @@ class FindFilterDialog(QDialog):
             self.resultLabel.setText('')
         else:
             window = globalref.mainControl.activeControl.activeWindow
-            if fileChange and window.isFiltering():
+            if fileChange and window.treeFilterView:
                 filterView = window.treeFilterView
                 self.textEntry.setText(filterView.filterStr)
                 self.whatButtons.button(filterView.filterWhat).setChecked(True)
                 self.howButtons.button(filterView.filterHow).setChecked(True)
             self.filterButton.setEnabled(hasEntry)
-            self.endFilterButton.setEnabled(window.isFiltering())
+            self.endFilterButton.setEnabled(window.treeFilterView != None)
 
     def find(self, forward=True):
         """Find another match in the indicated direction.
@@ -419,22 +419,19 @@ class FindFilterDialog(QDialog):
                 QMessageBox.warning(self, 'TreeLine',
                                        _('Error - invalid regular expression'))
                 return
-        window = globalref.mainControl.activeControl.activeWindow
-        filterView = window.treeFilterView
+        filterView = (globalref.mainControl.activeControl.activeWindow.
+                      filterView())
         filterView.filterWhat = self.whatButtons.checkedId()
         filterView.filterHow = self.howButtons.checkedId()
         filterView.filterStr = self.textEntry.text()
         filterView.updateContents()
-        window.treeStack.setCurrentWidget(filterView)
         self.updateAvail()
 
     def endFilter(self):
         """Stop filtering nodes.
         """
-        window = globalref.mainControl.activeControl.activeWindow
-        window.treeStack.setCurrentWidget(window.treeView)
+        globalref.mainControl.activeControl.activeWindow.removeFilterView()
         self.updateAvail()
-        globalref.mainControl.currentStatusBar().clearMessage()
 
     def closeEvent(self, event):
         """Signal that the dialog is closing.

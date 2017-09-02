@@ -151,6 +151,8 @@ class TreeLocalControl(QObject):
                 self.activeWindow.refreshDataEditViews()
         for window in self.windowList:
             window.updateTreeNode(node)
+            if window.treeFilterView:
+                window.treeFilterView.updateItem(node)
         if setModified:
             self.setModified()
 
@@ -172,6 +174,8 @@ class TreeLocalControl(QObject):
             window.updateTree()
             if window != self.activeWindow or typeChanges:
                 window.updateRightViews()
+            if window.treeFilterView:
+                window.treeFilterView.updateContents()
         if setModified:
             self.setModified()
         QApplication.restoreOverrideCursor()
@@ -200,6 +204,8 @@ class TreeLocalControl(QObject):
         self.updateAllMathFields()
         for window in self.windowList:
             window.updateTree()
+            if window.treeFilterView:
+                window.treeFilterView.updateContents()
             window.updateRightViews()
         self.updateCommandsAvail()
         if setModified:
@@ -213,10 +219,9 @@ class TreeLocalControl(QObject):
             if list(eqnRefDict.values())[0][0].evalDirection != (matheval.
                                                                  EvalDir.
                                                                  upward):
-                for child in self.structure.childList:
-                    for node in child.descendantGen():
-                        for eqnRef in eqnRefDict.get(node.formatRef.name, []):
-                            node.data[eqnRef.eqnField.name] = (eqnRef.eqnField.
+                for node in self.structure.descendantGen():
+                    for eqnRef in eqnRefDict.get(node.formatRef.name, []):
+                        node.data[eqnRef.eqnField.name] = (eqnRef.eqnField.
                                                            equationValue(node))
             else:
                 spot = self.structure.structSpot().lastDescendantSpot()
@@ -267,6 +272,16 @@ class TreeLocalControl(QObject):
         self.allActions['NodeMoveFirst'].setEnabled(hasPrevSibling)
         self.allActions['NodeMoveLast'].setEnabled(hasNextSibling)
         self.allActions['DataNodeType'].parent().setEnabled(len(selSpots) > 0)
+        if self.activeWindow.treeFilterView:
+            self.allActions['NodeInsertBefore'].setEnabled(False)
+            self.allActions['NodeInsertAfter'].setEnabled(False)
+            self.allActions['NodeAddChild'].setEnabled(False)
+            self.allActions['NodeIndent'].setEnabled(False)
+            self.allActions['NodeUnindent'].setEnabled(False)
+            self.allActions['NodeMoveUp'].setEnabled(False)
+            self.allActions['NodeMoveDown'].setEnabled(False)
+            self.allActions['NodeMoveFirst'].setEnabled(False)
+            self.allActions['NodeMoveLast'].setEnabled(False)
         self.activeWindow.updateCommandsAvail()
 
     def updateWindowCaptions(self):
@@ -857,9 +872,14 @@ class TreeLocalControl(QObject):
     def nodeRename(self):
         """Start the rename editor in the selected tree node.
         """
-        self.activeWindow.treeView.endEditing()
-        self.activeWindow.treeView.edit(self.currentSelectionModel().
-                                        currentIndex())
+        if self.activeWindow.treeFilterView:
+            self.activeWindow.treeFilterView.editItem(self.activeWindow.
+                                                      treeFilterView.
+                                                      currentItem())
+        else:
+            self.activeWindow.treeView.endEditing()
+            self.activeWindow.treeView.edit(self.currentSelectionModel().
+                                            currentIndex())
 
     def nodeAddChild(self):
         """Add new child to selected parent.
@@ -1022,10 +1042,14 @@ class TreeLocalControl(QObject):
         currentSpot = self.currentSelectionModel().currentSpot()
         spot = currentSpot
         while True:
-            if forward:
-                spot = spot.nextTreeSpot(True)
+            if self.activeWindow.treeFilterView:
+                spot = self.activeWindow.treeFilterView.nextPrevSpot(spot,
+                                                                     forward)
             else:
-                spot = spot.prevTreeSpot(True)
+                if forward:
+                    spot = spot.nextTreeSpot(True)
+                else:
+                    spot = spot.prevTreeSpot(True)
             if spot is currentSpot:
                 return False
             if spot.nodeRef.wordSearch(wordList, titlesOnly, spot):
@@ -1048,10 +1072,14 @@ class TreeLocalControl(QObject):
         currentSpot = self.currentSelectionModel().currentSpot()
         spot = currentSpot
         while True:
-            if forward:
-                spot = spot.nextTreeSpot(True)
+            if self.activeWindow.treeFilterView:
+                spot = self.activeWindow.treeFilterView.nextPrevSpot(spot,
+                                                                     forward)
             else:
-                spot = spot.prevTreeSpot(True)
+                if forward:
+                    spot = spot.nextTreeSpot(True)
+                else:
+                    spot = spot.prevTreeSpot(True)
             if spot is currentSpot:
                 return False
             if spot.nodeRef.regExpSearch(regExpList, titlesOnly, spot):

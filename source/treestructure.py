@@ -169,6 +169,15 @@ class TreeStructure(treenode.TreeNode):
         nodeId, spotNum = spotId.split(':', 1)
         return self.nodeDict[nodeId].spotByNumber(int(spotNum))
 
+    def descendantGen(self):
+        """Return a generator to step through all nodes in tree order.
+
+        Override from TreeNode to exclude self.
+        """
+        for child in self.childList:
+            for node in child.descendantGen():
+                yield node
+
     def getConfigDialogFormats(self, forceReset=False):
         """Return duplicate formats for use in the config dialog.
 
