@@ -569,19 +569,17 @@ class ConditionDialog(QDialog):
         """Start filtering nodes.
         """
         window = globalref.mainControl.activeControl.activeWindow
-        filterView = window.treeFilterView
+        filterView = window.filterView()
         filterView.conditionalFilter = self.conditional()
         filterView.updateContents()
-        window.treeStack.setCurrentWidget(filterView)
         self.endFilterButton.setEnabled(True)
 
     def endFilter(self):
         """Stop filtering nodes.
         """
         window = globalref.mainControl.activeControl.activeWindow
-        window.treeStack.setCurrentWidget(window.treeView)
+        window.removeFilterView()
         self.endFilterButton.setEnabled(False)
-        globalref.mainControl.currentStatusBar().clearMessage()
 
     def closeEvent(self, event):
         """Signal that the dialog is closing.

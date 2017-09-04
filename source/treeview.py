@@ -429,14 +429,15 @@ class TreeFilterView(QListWidget):
         for rootSpot in self.structure.rootSpots():
             for spot in rootSpot.spotDescendantGen():
                 if self.conditionalFilter.evaluate(spot.nodeRef):
-                    item = TreeFilterViewItem(node, self)
+                    item = TreeFilterViewItem(spot, self)
         self.blockSignals(False)
         self.selectItems(self.selectionModel.selectedSpots(), True)
         if self.count() and not self.selectedItems():
             self.item(0).setSelected(True)
         message = _('Conditional filtering, found {0} nodes').format(self.
                                                                      count())
-        globalref.mainControl.currentStatusBar().showMessage(message)
+        self.messageLabel = QLabel(message)
+        globalref.mainControl.currentStatusBar().addWidget(self.messageLabel)
         QApplication.restoreOverrideCursor()
 
     def selectItems(self, spots, signalModel=False):
