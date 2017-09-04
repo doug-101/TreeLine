@@ -1089,6 +1089,32 @@ class TreeLocalControl(QObject):
                     rightView.highlightSearch(regExpList=regExpList)
                 return True
 
+    def findNodesByCondition(self, conditional, forward=True):
+        """Search for and select nodes that match the regular exp criteria.
+
+        Called from the conditional find dialog.
+        Returns True if found, otherwise False.
+        Arguments:
+            conditional -- the Conditional object to be evaluated
+            forward -- next if True, previous if False
+        """
+        currentSpot = self.currentSelectionModel().currentSpot()
+        spot = currentSpot
+        while True:
+            if self.activeWindow.treeFilterView:
+                spot = self.activeWindow.treeFilterView.nextPrevSpot(spot,
+                                                                     forward)
+            else:
+                if forward:
+                    spot = spot.nextTreeSpot(True)
+                else:
+                    spot = spot.prevTreeSpot(True)
+            if spot is currentSpot:
+                return False
+            if conditional.evaluate(spot.nodeRef):
+                self.currentSelectionModel().selectSpots([spot], True, True)
+                return True
+
     def windowNew(self, checked=False, offset=30):
         """Open a new window for this file.
 

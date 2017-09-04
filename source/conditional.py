@@ -56,7 +56,8 @@ class Conditional:
         self.nodeFormatNames = set()
         if nodeFormatName:
             self.nodeFormatNames.add(nodeFormatName)
-            nodeFormats = globalref.mainControl.activeControl.model.formats
+            nodeFormats = (globalref.mainControl.activeControl.structure.
+                           treeFormats)
             for nodeType in nodeFormats[nodeFormatName].derivedTypes:
                 self.nodeFormatNames.add(nodeType.name)
 
@@ -67,7 +68,7 @@ class Conditional:
             node -- the node to check for a field match
         """
         if (self.nodeFormatNames and
-            node.formatName not in self.nodeFormatNames):
+            node.formatRef.name not in self.nodeFormatNames):
             return False
         result = True
         for conditon in self.conditionLines:
@@ -410,7 +411,7 @@ class ConditionDialog(QDialog):
         """
         if not origTypeName:
             origTypeName = self.typeCombo.currentText()
-        nodeFormats = globalref.mainControl.activeControl.model.formats
+        nodeFormats = globalref.mainControl.activeControl.structure.treeFormats
         self.typeCombo.blockSignals(True)
         self.typeCombo.clear()
         self.typeCombo.addItem(_allTypeEntry)
@@ -425,7 +426,6 @@ class ConditionDialog(QDialog):
                     self.endFilter()
                 self.clearRules()
         self.typeCombo.blockSignals(False)
-        # self.retrieveButton.setEnabled(len(nodeFormats.savedConditions()) > 0)
         self.updateDataType()
 
     def updateDataType(self):
@@ -434,7 +434,7 @@ class ConditionDialog(QDialog):
         typeName = self.typeCombo.currentText()
         if not typeName:
             return
-        nodeFormats = globalref.mainControl.activeControl.model.formats
+        nodeFormats = globalref.mainControl.activeControl.structure.treeFormats
         if typeName == _allTypeEntry:
             fieldNameSet = set()
             for typeFormat in nodeFormats.values():
@@ -458,8 +458,8 @@ class ConditionDialog(QDialog):
         if self.saveListBox.count():
             selNum = self.saveListBox.currentRow()
         self.saveListBox.clear()
-        modelRef = globalref.mainControl.activeControl.model
-        savedRules = modelRef.formats.savedConditions()
+        nodeFormats = globalref.mainControl.activeControl.structure.treeFormats
+        savedRules = nodeFormats.savedConditions()
         ruleNames = sorted(list(savedRules.keys()))
         if ruleNames:
             self.saveListBox.addItems(ruleNames)
@@ -498,8 +498,8 @@ class ConditionDialog(QDialog):
     def loadSavedRule(self):
         """Load the current saved rule into the dialog.
         """
-        modelRef = globalref.mainControl.activeControl.model
-        savedRules = modelRef.formats.savedConditions()
+        nodeFormats = globalref.mainControl.activeControl.structure.treeFormats
+        savedRules = nodeFormats.savedConditions()
         ruleName = self.saveListBox.currentItem().text()
         conditional = savedRules[ruleName]
         self.setCondition(conditional, conditional.origNodeFormatName)
@@ -509,14 +509,14 @@ class ConditionDialog(QDialog):
         """
         name = self.saveNameEdit.text()
         self.saveNameEdit.setText('')
-        modelRef = globalref.mainControl.activeControl.model
-        undo.FormatUndo(modelRef.undoList, modelRef.formats,
+        treeStructure = globalref.mainControl.activeControl.structure
+        undo.FormatUndo(treeStructure.undoList, treeStructure.treeFormats,
                         treeformats.TreeFormats())
         typeName = self.typeCombo.currentText()
         if typeName == _allTypeEntry:
-            nodeFormat = modelRef.formats
+            nodeFormat = treeStructure.treeFormats
         else:
-            nodeFormat = modelRef.formats[typeName]
+            nodeFormat = treeStructure.treeFormats[typeName]
         nodeFormat.savedConditionText[name] = (self.conditional().
                                                conditionStr())
         self.loadSavedNames(True)
@@ -527,11 +527,11 @@ class ConditionDialog(QDialog):
     def deleteRule(self):
         """Remove the current saved rule.
         """
-        modelRef = globalref.mainControl.activeControl.model
-        nodeFormats = modelRef.formats
-        undo.FormatUndo(modelRef.undoList, nodeFormats,
+        treeStructure = globalref.mainControl.activeControl.structure
+        nodeFormats = treeStructure.treeFormats
+        undo.FormatUndo(treeStructure.undoList, nodeFormats,
                         treeformats.TreeFormats())
-        savedRules = modelRef.formats.savedConditions()
+        savedRules = nodeFormats.savedConditions()
         ruleName = self.saveListBox.currentItem().text()
         conditional = savedRules[ruleName]
         if conditional.origNodeFormatName:

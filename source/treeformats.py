@@ -16,6 +16,7 @@ import operator
 import copy
 import nodeformat
 import matheval
+import conditional
 
 
 defaultTypeName = _('DEFAULT')
@@ -45,6 +46,8 @@ class TreeFormats(dict):
         # list of math eval levels, each is a dict by type name with lists of
         # equation fields
         self.mathLevelList = []
+        # for saving all-type find/filter conditionals
+        self.savedConditionText = {}
         self.fileInfoFormat = nodeformat.FileInfoFormat(self)
         if formatList:
             for formatData in formatList:
@@ -70,6 +73,26 @@ class TreeFormats(dict):
             formats.append(self.fileInfoFormat)
         return sorted([nodeFormat.storeFormat() for nodeFormat in formats],
                       key=operator.itemgetter('formatname'))
+
+    def loadGlobalSavedConditions(self, propertyDict):
+        """Load all-type saved conditionals from property dict.
+
+        Arguments:
+            propertyDict -- a JSON property dict
+        """
+        for key in propertyDict.keys():
+            if key.startswith('glob-cond-'):
+                self.savedConditionText[key[10:]] = propertyDict[key]
+
+    def storeGlobalSavedConditions(self, propertyDict):
+        """Save all-type saved conditionals to property dict.
+
+        Arguments:
+            propertyDict -- a JSON property dict
+        """
+        for key, text in self.savedConditionText.items():
+            propertyDict['glob-cond-' + key] = text
+        return propertyDict
 
     def copySettings(self, sourceFormats):
         """Copy all settings from other type formats to these formats.
@@ -188,3 +211,17 @@ class TreeFormats(dict):
                 result[typeFormat.name] = numberingFields
         return result
 
+    def savedConditions(self):
+        """Return a dictionary with saved Conditonals from all type formats.
+        """
+        savedConditions = {}
+        # all-type conditions
+        for name, text in self.savedConditionText.items():
+            cond = conditional.Conditional(text)
+            savedConditions[name] = cond
+        # specific type conditions
+        for typeFormat in self.values():
+            for name, text in typeFormat.savedConditionText.items():
+                cond = conditional.Conditional(text, typeFormat.name)
+                savedConditions[name] = cond
+        return savedConditions

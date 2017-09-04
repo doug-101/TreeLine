@@ -498,8 +498,11 @@ class TreeWindow(QMainWindow):
 
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
         toolsMenu.addAction(self.allActions['ToolsFindText'])
+        toolsMenu.addAction(self.allActions['ToolsFindCondition'])
+        toolsMenu.addAction(self.allActions['ToolsFindReplace'])
         toolsMenu.addSeparator()
         toolsMenu.addAction(self.allActions['ToolsFilterText'])
+        toolsMenu.addAction(self.allActions['ToolsFilterCondition'])
         toolsMenu.addSeparator()
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
 

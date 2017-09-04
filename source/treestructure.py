@@ -51,6 +51,7 @@ class TreeStructure(treenode.TreeNode):
         self.mathZeroBlanks = True
         if fileData:
             self.treeFormats = treeformats.TreeFormats(fileData['formats'])
+            self.treeFormats.loadGlobalSavedConditions(fileData['properties'])
             for nodeInfo in fileData['nodes']:
                 formatRef = self.treeFormats[nodeInfo['format']]
                 node = treenode.TreeNode(formatRef, nodeInfo)
@@ -94,6 +95,7 @@ class TreeStructure(treenode.TreeNode):
                           key=operator.itemgetter('uid'))
         topNodeIds = [node.uId for node in self.childList]
         properties = {'tlversion': __version__, 'topnodes': topNodeIds}
+        self.treeFormats.storeGlobalSavedConditions(properties)
         if not self.mathZeroBlanks:
             fileData['properties']['zeroblanks'] = False
         fileData = {'formats': formats, 'nodes': nodeList,

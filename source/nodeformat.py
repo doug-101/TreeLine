@@ -50,6 +50,7 @@ class NodeFormat:
         """
         self.name = name
         self.parentFormats = parentFormats
+        self.savedConditionText = {}
         self.readFormat(formatData)
         self.siblingPrefix = ''
         self.siblingSuffix = ''
@@ -94,6 +95,9 @@ class NodeFormat:
         self.iconName = formatData.get('icon', '')
         self.outputSeparator = formatData.get('outputsep',
                                               _defaultOutputSeparator)
+        for key in formatData.keys():
+            if key.startswith('cond-'):
+                self.savedConditionText[key[5:]] = formatData[key]
 
     def storeFormat(self):
         """Return JSON format data for this format.
@@ -122,6 +126,8 @@ class NodeFormat:
             formatData['icon'] = self.iconName
         if self.outputSeparator != _defaultOutputSeparator:
             formatData['outputsep'] = self.outputSeparator
+        for key, text in self.savedConditionText.items():
+            formatData['cond-' + key] = text
         return formatData
 
     def copySettings(self, sourceFormat):

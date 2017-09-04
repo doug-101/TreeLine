@@ -32,6 +32,7 @@ import icondict
 import imports
 import configdialog
 import miscdialogs
+import conditional
 try:
     from __main__ import __version__, __author__
 except ImportError:
@@ -66,7 +67,10 @@ class TreeMainControl(QObject):
         self.configDialog = None
         self.numberingDialog = None
         self.findTextDialog = None
+        self.findConditionDialog = None
+        self.findReplaceDialog = None
         self.filterTextDialog = None
+        self.filterConditionDialog = None
         self.passwords = {}
         globalref.mainControl = self
         self.allActions = {}
@@ -450,11 +454,31 @@ class TreeMainControl(QObject):
         toolsFindTextAct.triggered.connect(self.toolsFindTextDialog)
         self.allActions['ToolsFindText'] = toolsFindTextAct
 
+        toolsFindConditionAct = QAction(_('&Conditional Find...'), self,
+                             statusTip=_('Use field conditions to find nodes'),
+                             checkable=True)
+        toolsFindConditionAct.triggered.connect(self.toolsFindConditionDialog)
+        self.allActions['ToolsFindCondition'] = toolsFindConditionAct
+
+        toolsFindReplaceAct = QAction(_('Find and &Replace...'), self,
+                              statusTip=_('Replace text strings in node data'),
+                              checkable=True)
+        toolsFindReplaceAct.triggered.connect(self.toolsFindReplaceDialog)
+        self.allActions['ToolsFindReplace'] = toolsFindReplaceAct
+
         toolsFilterTextAct = QAction(_('&Text Filter...'), self,
                          statusTip=_('Filter nodes to only show text matches'),
                          checkable=True)
         toolsFilterTextAct.triggered.connect(self.toolsFilterTextDialog)
         self.allActions['ToolsFilterText'] = toolsFilterTextAct
+
+        toolsFilterConditionAct = QAction(_('C&onditional Filter...'),
+                           self,
+                           statusTip=_('Use field conditions to filter nodes'),
+                           checkable=True)
+        toolsFilterConditionAct.triggered.connect(self.
+                                                  toolsFilterConditionDialog)
+        self.allActions['ToolsFilterCondition'] = toolsFilterConditionAct
 
         toolsGenOptionsAct = QAction(_('&General Options...'), self,
                              statusTip=_('Set user preferences for all files'))
@@ -572,7 +596,7 @@ class TreeMainControl(QObject):
         """
         if show:
             if not self.findTextDialog:
-                self.findTextDialog = (miscdialogs.FindFilterDialog())
+                self.findTextDialog = miscdialogs.FindFilterDialog()
                 toolsFindTextAct = self.allActions['ToolsFindText']
                 self.findTextDialog.dialogShown.connect(toolsFindTextAct.
                                                         setChecked)
@@ -580,6 +604,45 @@ class TreeMainControl(QObject):
             self.findTextDialog.show()
         else:
             self.findTextDialog.close()
+
+    def toolsFindConditionDialog(self, show):
+        """Show or hide the non-modal conditional find dialog.
+
+        Arguments:
+            show -- true if dialog should be shown
+        """
+        if show:
+            if not self.findConditionDialog:
+                dialogType = conditional.ConditionDialog.findDialog
+                self.findConditionDialog = (conditional.
+                                            ConditionDialog(dialogType,
+                                                        _('Conditional Find')))
+                toolsFindConditionAct = self.allActions['ToolsFindCondition']
+                (self.findConditionDialog.dialogShown.
+                 connect(toolsFindConditionAct.setChecked))
+            else:
+                self.findConditionDialog.loadTypeNames()
+            self.findConditionDialog.show()
+        else:
+            self.findConditionDialog.close()
+
+    def toolsFindReplaceDialog(self, show):
+        """Show or hide the non-modal find and replace text dialog.
+
+        Arguments:
+            show -- true if dialog should be shown
+        """
+        if show:
+            if not self.findReplaceDialog:
+                self.findReplaceDialog = miscdialogs.FindReplaceDialog()
+                toolsFindReplaceAct = self.allActions['ToolsFindReplace']
+                self.findReplaceDialog.dialogShown.connect(toolsFindReplaceAct.
+                                                           setChecked)
+            else:
+                self.findReplaceDialog.loadTypeNames()
+            self.findReplaceDialog.show()
+        else:
+            self.findReplaceDialog.close()
 
     def toolsFilterTextDialog(self, show):
         """Show or hide the non-modal filter text dialog.
@@ -597,6 +660,28 @@ class TreeMainControl(QObject):
             self.filterTextDialog.show()
         else:
             self.filterTextDialog.close()
+
+    def toolsFilterConditionDialog(self, show):
+        """Show or hide the non-modal conditional filter dialog.
+
+        Arguments:
+            show -- true if dialog should be shown
+        """
+        if show:
+            if not self.filterConditionDialog:
+                dialogType = conditional.ConditionDialog.filterDialog
+                self.filterConditionDialog = (conditional.
+                                              ConditionDialog(dialogType,
+                                                      _('Conditional Filter')))
+                toolsFilterConditionAct = (self.
+                                        allActions[_('ToolsFilterCondition')])
+                (self.filterConditionDialog.dialogShown.
+                 connect(toolsFilterConditionAct.setChecked))
+            else:
+                self.filterConditionDialog.loadTypeNames()
+            self.filterConditionDialog.show()
+        else:
+            self.filterConditionDialog.close()
 
     def toolsGenOptions(self):
         """Set general user preferences for all files.
