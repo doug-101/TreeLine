@@ -13,6 +13,7 @@
 #******************************************************************************
 
 import re
+import enum
 from PyQt5.QtCore import QSize, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QComboBox, QDialog, QGroupBox, QHBoxLayout,
                              QLabel, QLineEdit, QListWidget, QPushButton,
@@ -195,6 +196,9 @@ class StringOps(str):
         return False
 
 
+FindDialogType = enum.Enum('FindDialogType',
+                           'typeDialog findDialog filterDialog')
+
 class ConditionDialog(QDialog):
     """Dialog for defining field condition tests.
 
@@ -202,7 +206,6 @@ class ConditionDialog(QDialog):
     (nonmodal) and for filtering by condition (nonmodal).
     """
     dialogShown = pyqtSignal(bool)
-    typeDialog, findDialog, filterDialog = range(3)
     def __init__(self, dialogType, caption, nodeFormat=None, parent=None):
         """Create the conditional dialog.
 
@@ -225,7 +228,7 @@ class ConditionDialog(QDialog):
             self.fieldNames = nodeFormat.fieldNames()
         topLayout = QVBoxLayout(self)
 
-        if dialogType == ConditionDialog.typeDialog:
+        if dialogType == FindDialogType.typeDialog:
             self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
                                 Qt.WindowCloseButtonHint)
         else:
@@ -252,7 +255,7 @@ class ConditionDialog(QDialog):
         self.removeButton.clicked.connect(self.removeRule)
         upCtrlLayout.addStretch()
 
-        if dialogType == ConditionDialog.typeDialog:
+        if dialogType == FindDialogType.typeDialog:
             okButton = QPushButton(_('&OK'))
             upCtrlLayout.addWidget(okButton)
             okButton.clicked.connect(self.accept)
@@ -288,12 +291,12 @@ class ConditionDialog(QDialog):
             self.delSavedButton.clicked.connect(self.deleteRule)
             saveButtonLayout.addStretch()
 
-            if dialogType == ConditionDialog.findDialog:
+            if dialogType == FindDialogType.findDialog:
                 self.resultLabel = QLabel()
                 topLayout.addWidget(self.resultLabel)
             lowCtrlLayout = QHBoxLayout()
             topLayout.addLayout(lowCtrlLayout)
-            if dialogType == ConditionDialog.findDialog:
+            if dialogType == FindDialogType.findDialog:
                 previousButton = QPushButton(_('Find &Previous'))
                 lowCtrlLayout.addWidget(previousButton)
                 previousButton.clicked.connect(self.findPrevious)
@@ -349,7 +352,7 @@ class ConditionDialog(QDialog):
                 del self.combiningBoxes[-1]
             self.ruleList[-1].hide()
             del self.ruleList[-1]
-            if self.dialogType == ConditionDialog.typeDialog:
+            if self.dialogType == FindDialogType.typeDialog:
                 self.removeButton.setEnabled(len(self.ruleList) > 0)
             else:
                 self.removeButton.setEnabled(len(self.ruleList) > 1)

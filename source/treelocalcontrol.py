@@ -1115,6 +1115,127 @@ class TreeLocalControl(QObject):
                 self.currentSelectionModel().selectSpots([spot], True, True)
                 return True
 
+    def findNodesForReplace(self, searchText='', regExpObj=None, typeName='',
+                            fieldName='', forward=True):
+        """Search for & select nodes that match the criteria prior to replace.
+
+        Called from the find replace dialog.
+        Returns True if found, otherwise False.
+        Arguments:
+            searchText -- the text to find in a non-regexp search
+            regExpObj -- the regular expression to find if searchText is blank
+            typeName -- if given, verify that this node matches this type
+            fieldName -- if given, only find matches under this type name
+            forward -- next if True, previous if False
+        """
+        currentNode = self.currentSelectionModel().currentNode()
+        lastFoundNode, currentNumMatches = self.findReplaceNodeRef
+        numMatches = currentNumMatches
+        if lastFoundNode is not currentNode:
+            numMatches = 0
+        node = currentNode
+        if not forward:
+            if numMatches == 0:
+                numMatches = -1   # find last one if backward
+            elif numMatches == 1:
+                numMatches = sys.maxsize   # no match if on first one
+            else:
+                numMatches -= 2
+        while True:
+            matchedField, numMatches, fieldPos = node.searchReplace(searchText,
+                                                                    regExpObj,
+                                                                    numMatches,
+                                                                    typeName,
+                                                                    fieldName)
+            if matchedField:
+                fieldNum = node.nodeFormat().fieldNames().index(matchedField)
+                self.currentSelectionModel().selectNode(node, True, True)
+                self.activeWindow.rightTabs.setCurrentWidget(self.activeWindow.
+                                                             editorSplitter)
+                dataView = self.activeWindow.rightParentView()
+                if dataView:
+                    dataView.highlightMatch(searchText, regExpObj, fieldNum,
+                                            fieldPos - 1)
+                self.findReplaceNodeRef = (node, numMatches)
+                return True
+            if self.activeWindow.isFiltering():
+                node = self.activeWindow.treeFilterView.nextPrevNode(node,
+                                                                     forward)
+            else:
+                if forward:
+                    node = node.nextTreeNode(True)
+                else:
+                    node = node.prevTreeNode(True)
+            if node is currentNode and currentNumMatches == 0:
+                self.findReplaceNodeRef = (None, 0)
+                return False
+            numMatches = 0 if forward else -1
+
+    def replaceInCurrentNode(self, searchText='', regExpObj=None, typeName='',
+                             fieldName='', replaceText=None):
+        """Replace the current match in the current node.
+
+        Called from the find replace dialog.
+        Returns True if replaced, otherwise False.
+        Arguments:
+            searchText -- the text to find in a non-regexp search
+            regExpObj -- the regular expression to find if searchText is blank
+            typeName -- if given, verify that this node matches this type
+            fieldName -- if given, only find matches under this type name
+            replaceText -- if not None, replace a match with this string
+        """
+        node = self.currentSelectionModel().currentNode()
+        lastFoundNode, numMatches = self.findReplaceNodeRef
+        if numMatches > 0:
+            numMatches -= 1
+        if lastFoundNode is not node:
+            numMatches = 0
+        dataUndo = undo.DataUndo(self.model.undoList, node)
+        matchedField, num1, num2 = node.searchReplace(searchText, regExpObj,
+                                                      numMatches, typeName,
+                                                      fieldName, replaceText)
+        if ((searchText and searchText in replaceText) or
+            (regExpObj and r'\g<0>' in replaceText) or
+            (regExpObj and regExpObj.pattern.startswith('(') and
+             regExpObj.pattern.endswith(')') and r'\1' in replaceText)):
+            numMatches += 1    # check for recursive matches
+        self.findReplaceNodeRef = (node, numMatches)
+        if matchedField:
+            self.updateTreeNode(node)
+            self.updateRightViews()
+            return True
+        self.model.undoList.removeLastUndo(dataUndo)
+        return False
+
+    def replaceAll(self, searchText='', regExpObj=None, typeName='',
+                   fieldName='', replaceText=None):
+        """Replace all matches in all nodes.
+
+        Called from the find replace dialog.
+        Returns number of matches replaced.
+        Arguments:
+            searchText -- the text to find in a non-regexp search
+            regExpObj -- the regular expression to find if searchText is blank
+            typeName -- if given, verify that this node matches this type
+            fieldName -- if given, only find matches under this type name
+            replaceText -- if not None, replace a match with this string
+        """
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        dataUndo = undo.BranchUndo(self.model.undoList, self.model.root)
+        totalMatches = 0
+        for node in self.model.root.descendantGen():
+            field, matchQty, num = node.searchReplace(searchText, regExpObj,
+                                                      0, typeName, fieldName,
+                                                      replaceText, True)
+            totalMatches += matchQty
+        self.findReplaceNodeRef = (None, 0)
+        if totalMatches > 0:
+            self.updateAll(True)
+        else:
+            self.model.undoList.removeLastUndo(dataUndo)
+        QApplication.restoreOverrideCursor()
+        return totalMatches
+
     def windowNew(self, checked=False, offset=30):
         """Open a new window for this file.
 

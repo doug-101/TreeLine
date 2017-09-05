@@ -613,7 +613,7 @@ class TreeMainControl(QObject):
         """
         if show:
             if not self.findConditionDialog:
-                dialogType = conditional.ConditionDialog.findDialog
+                dialogType = conditional.FindDialogType.findDialog
                 self.findConditionDialog = (conditional.
                                             ConditionDialog(dialogType,
                                                         _('Conditional Find')))
@@ -669,7 +669,7 @@ class TreeMainControl(QObject):
         """
         if show:
             if not self.filterConditionDialog:
-                dialogType = conditional.ConditionDialog.filterDialog
+                dialogType = conditional.FindDialogType.filterDialog
                 self.filterConditionDialog = (conditional.
                                               ConditionDialog(dialogType,
                                                       _('Conditional Filter')))

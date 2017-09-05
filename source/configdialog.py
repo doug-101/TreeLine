@@ -630,7 +630,7 @@ class TypeConfigPage(ConfigPage):
         """Show the dialog to create or modify conditional types.
         """
         currentFormat = ConfigDialog.formatsRef[ConfigDialog.currentTypeName]
-        dialog = conditional.ConditionDialog(conditional.ConditionDialog.
+        dialog = conditional.ConditionDialog(conditional.FindDialogType.
                                              typeDialog,
                                              _('Set Types Conditionally'),
                                              currentFormat)

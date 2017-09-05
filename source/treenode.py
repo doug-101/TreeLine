@@ -312,6 +312,83 @@ class TreeNode:
                 return False
         return True
 
+    def searchReplace(self, searchText='', regExpObj=None, skipMatches=0,
+                      typeName='', fieldName='', replaceText=None,
+                      replaceAll=False):
+        """Find the search text in the field data and optionally replace it.
+
+        Returns a tuple of the fieldName where found (empty string if not
+        found), the node match number and the field match number.
+        Returns the last match if skipMatches < 0 (not used with replace).
+        Arguments:
+            searchText -- the text to find in a non-regexp search
+            regExpObj -- the regular expression to find if searchText is blank
+            skipMatches -- number of already found matches to skip in this node
+            typeName -- if given, verify that this node matches this type
+            fieldName -- if given, only find matches under this type name
+            replaceText -- if not None, replace a match with this string
+            replaceAll -- if True, replace all matches (returns last fieldName)
+        """
+        if typeName and typeName != self.formatName:
+            return ('', 0, 0)
+        nodeFormat = self.nodeFormat()
+        fields = ([nodeFormat.fieldDict[fieldName]] if fieldName
+                  else nodeFormat.fields())
+        matchedFieldname = ''
+        findCount = 0
+        prevFieldFindCount = 0
+        for field in fields:
+            fieldText = field.editorText(self)
+            fieldFindCount = 0
+            pos = 0
+            while True:
+                if pos >= len(fieldText):
+                    break
+                if searchText:
+                    pos = fieldText.lower().find(searchText, pos)
+                else:
+                    match = regExpObj.search(fieldText, pos)
+                    pos = match.start() if match else -1
+                if pos < 0:
+                    break
+                findCount += 1
+                fieldFindCount += 1
+                prevFieldFindCount = fieldFindCount
+                matchLen = (len(searchText) if searchText
+                            else len(match.group()))
+                if findCount > skipMatches:
+                    matchedFieldname = field.name
+                    if replaceText is not None:
+                        replace = replaceText
+                        if not searchText:
+                            global _origBackrefMatch
+                            _origBackrefMatch = match
+                            for backrefRe in _replaceBackrefRe:
+                                replace = backrefRe.sub(self.replaceBackref,
+                                                        replace)
+                        fieldText = (fieldText[:pos] + replace +
+                                     fieldText[pos + matchLen:])
+                        try:
+                            self.setData(field, fieldText)
+                        except ValueError:
+                            pass
+                    if not replaceAll and skipMatches >= 0:
+                        return (field.name, findCount, fieldFindCount)
+                pos += matchLen
+        if not matchedFieldname:
+            findCount = prevFieldFindCount = 0
+        return (matchedFieldname, findCount, prevFieldFindCount)
+
+    @staticmethod
+    def replaceBackref(match):
+        """Return the re match group from _origBackrefMatch for replacement.
+
+        Used for reg exp backreference replacement.
+        Arguments:
+            match -- the backref match in the replacement string
+        """
+        return _origBackrefMatch.group(int(match.group(1)))
+
     def addNewChild(self, treeStructure, posRefNode=None, insertBefore=True,
                     newTitle=_('New')):
         """Add a new child node with this node as the parent.

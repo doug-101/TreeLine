@@ -442,6 +442,243 @@ class FindFilterDialog(QDialog):
         self.dialogShown.emit(False)
 
 
+FindReplaceType = enum.IntEnum('FindReplaceType', 'anyMatch fullWord regExp')
+
+class FindReplaceDialog(QDialog):
+    """Dialog for finding and replacing text in the node data.
+    """
+    dialogShown = pyqtSignal(bool)
+    def __init__(self, parent=None):
+        """Initialize the find and replace dialog.
+
+        Arguments:
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setAttribute(Qt.WA_QuitOnClose, False)
+        self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
+        self.setWindowTitle(_('Find and Replace'))
+
+        self.matchedNode = None
+        topLayout = QGridLayout(self)
+        self.setLayout(topLayout)
+
+        textBox = QGroupBox(_('&Search Text'))
+        topLayout.addWidget(textBox, 0, 0)
+        textLayout = QVBoxLayout(textBox)
+        self.textEntry = QLineEdit()
+        textLayout.addWidget(self.textEntry)
+        self.textEntry.textEdited.connect(self.updateAvail)
+        self.textEntry.textEdited.connect(self.clearMatch)
+
+        replaceBox = QGroupBox(_('Replacement &Text'))
+        topLayout.addWidget(replaceBox, 0, 1)
+        replaceLayout = QVBoxLayout(replaceBox)
+        self.replaceEntry = QLineEdit()
+        replaceLayout.addWidget(self.replaceEntry)
+
+        howBox = QGroupBox(_('How to Search'))
+        topLayout.addWidget(howBox, 1, 0, 2, 1)
+        howLayout = QVBoxLayout(howBox)
+        self.howButtons = QButtonGroup(self)
+        button = QRadioButton(_('Any &match'))
+        self.howButtons.addButton(button, FindReplaceType.anyMatch)
+        howLayout.addWidget(button)
+        button = QRadioButton(_('Full &words'))
+        self.howButtons.addButton(button, FindReplaceType.fullWord)
+        howLayout.addWidget(button)
+        button = QRadioButton(_('Re&gular expression'))
+        self.howButtons.addButton(button, FindReplaceType.regExp)
+        howLayout.addWidget(button)
+        self.howButtons.button(FindReplaceType.anyMatch).setChecked(True)
+        self.howButtons.buttonClicked.connect(self.clearMatch)
+
+        typeBox = QGroupBox(_('&Node Type'))
+        topLayout.addWidget(typeBox, 1, 1)
+        typeLayout = QVBoxLayout(typeBox)
+        self.typeCombo = QComboBox()
+        typeLayout.addWidget(self.typeCombo)
+        self.typeCombo.currentIndexChanged.connect(self.loadFieldNames)
+
+        fieldBox = QGroupBox(_('N&ode Fields'))
+        topLayout.addWidget(fieldBox, 2, 1)
+        fieldLayout = QVBoxLayout(fieldBox)
+        self.fieldCombo = QComboBox()
+        fieldLayout.addWidget(self.fieldCombo)
+        self.fieldCombo.currentIndexChanged.connect(self.clearMatch)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout, 3, 0, 1, 2)
+        self.previousButton = QPushButton(_('Find &Previous'))
+        ctrlLayout.addWidget(self.previousButton)
+        self.previousButton.clicked.connect(self.findPrevious)
+        self.nextButton = QPushButton(_('&Find Next'))
+        self.nextButton.setDefault(True)
+        ctrlLayout.addWidget(self.nextButton)
+        self.nextButton.clicked.connect(self.findNext)
+        self.replaceButton = QPushButton(_('&Replace'))
+        ctrlLayout.addWidget(self.replaceButton)
+        self.replaceButton.clicked.connect(self.replace)
+        self.replaceAllButton = QPushButton(_('Replace &All'))
+        ctrlLayout.addWidget(self.replaceAllButton)
+        self.replaceAllButton.clicked.connect(self.replaceAll)
+        closeButton = QPushButton(_('&Close'))
+        ctrlLayout.addWidget(closeButton)
+        closeButton.clicked.connect(self.close)
+
+        self.resultLabel = QLabel()
+        topLayout.addWidget(self.resultLabel, 4, 0, 1, 2)
+        self.loadTypeNames()
+        self.updateAvail()
+
+    def updateAvail(self):
+        """Set find & replace buttons available if search text & matches exist.
+        """
+        hasEntry = len(self.textEntry.text().strip()) > 0
+        self.previousButton.setEnabled(hasEntry)
+        self.nextButton.setEnabled(hasEntry)
+        match = bool(self.matchedNode and self.matchedNode is
+                     globalref.mainControl.activeControl.
+                     currentSelectionModel().currentNode())
+        self.replaceButton.setEnabled(match)
+        self.replaceAllButton.setEnabled(match)
+        self.resultLabel.setText('')
+
+    def clearMatch(self):
+        """Remove reference to matched node if search criteria changes.
+        """
+        self.matchedNode = None
+        self.updateAvail()
+
+    def loadTypeNames(self):
+        """Load format type names into combo box.
+        """
+        origTypeName = self.typeCombo.currentText()
+        nodeFormats = globalref.mainControl.activeControl.structure.treeFormats
+        self.typeCombo.blockSignals(True)
+        self.typeCombo.clear()
+        typeNames = nodeFormats.typeNames()
+        self.typeCombo.addItems([_('[All Types]')] + typeNames)
+        origPos = self.typeCombo.findText(origTypeName)
+        if origPos >= 0:
+            self.typeCombo.setCurrentIndex(origPos)
+        self.typeCombo.blockSignals(False)
+        self.loadFieldNames()
+
+    def loadFieldNames(self):
+        """Load field names into combo box.
+        """
+        origFieldName = self.fieldCombo.currentText()
+        nodeFormats = globalref.mainControl.activeControl.structure.treeFormats
+        typeName = self.typeCombo.currentText()
+        fieldNames = []
+        if typeName.startswith('['):
+            for typeName in nodeFormats.typeNames():
+                for fieldName in nodeFormats[typeName].fieldNames():
+                    if fieldName not in fieldNames:
+                        fieldNames.append(fieldName)
+        else:
+            fieldNames.extend(nodeFormats[typeName].fieldNames())
+        self.fieldCombo.clear()
+        self.fieldCombo.addItems([_('[All Fields]')] + fieldNames)
+        origPos = self.fieldCombo.findText(origFieldName)
+        if origPos >= 0:
+            self.fieldCombo.setCurrentIndex(origPos)
+        self.matchedNode = None
+        self.updateAvail()
+
+    def findParameters(self):
+        """Create search parameters based on the dialog settings.
+
+        Return a tuple of searchText, regExpObj, typeName, and fieldName.
+        """
+        text = self.textEntry.text()
+        searchText = ''
+        regExpObj = None
+        if self.howButtons.checkedId() == FindReplaceType.anyMatch:
+            searchText = text.lower().strip()
+        elif self.howButtons.checkedId() == FindReplaceType.fullWord:
+            regExpObj = re.compile(r'(?i)\b{}\b'.format(re.escape(text)))
+        else:
+            regExpObj = re.compile(text)
+        typeName = self.typeCombo.currentText()
+        if typeName.startswith('['):
+            typeName = ''
+        fieldName = self.fieldCombo.currentText()
+        if fieldName.startswith('['):
+            fieldName = ''
+        return (searchText, regExpObj, typeName, fieldName)
+
+    def find(self, forward=True):
+        """Find another match in the indicated direction.
+
+        Arguments:
+            forward -- next if True, previous if False
+        """
+        self.matchedNode = None
+        try:
+            searchText, regExpObj, typeName, fieldName = self.findParameters()
+        except re.error:
+            QMessageBox.warning(self, 'TreeLine',
+                                      _('Error - invalid regular expression'))
+            self.updateAvail()
+            return
+        control = globalref.mainControl.activeControl
+        if control.findNodesForReplace(searchText, regExpObj, typeName,
+                                       fieldName, forward):
+            self.matchedNode = control.currentSelectionModel().currentNode()
+            self.updateAvail()
+        else:
+            self.updateAvail()
+            self.resultLabel.setText(_('Search text "{0}" not found').
+                                     format(self.textEntry.text()))
+
+    def findPrevious(self):
+        """Find the previous match.
+        """
+        self.find(False)
+
+    def findNext(self):
+        """Find the next match.
+        """
+        self.find(True)
+
+    def replace(self):
+        """Replace the currently found text.
+        """
+        searchText, regExpObj, typeName, fieldName = self.findParameters()
+        replaceText = self.replaceEntry.text()
+        control = globalref.mainControl.activeControl
+        if control.replaceInCurrentNode(searchText, regExpObj, typeName,
+                                        fieldName, replaceText):
+            self.find()
+        else:
+            QMessageBox.warning(self, 'TreeLine',
+                                      _('Error - replacement failed'))
+            self.matchedNode = None
+            self.updateAvail()
+
+    def replaceAll(self):
+        """Replace all text matches.
+        """
+        searchText, regExpObj, typeName, fieldName = self.findParameters()
+        replaceText = self.replaceEntry.text()
+        control = globalref.mainControl.activeControl
+        qty = control.replaceAll(searchText, regExpObj, typeName, fieldName,
+                                 replaceText)
+        self.matchedNode = None
+        self.updateAvail()
+        self.resultLabel.setText(_('Replaced {0} matches').format(qty))
+
+    def closeEvent(self, event):
+        """Signal that the dialog is closing.
+
+        Arguments:
+            event -- the close event
+        """
+        self.dialogShown.emit(False)
+
+
 NumberingScope = enum.IntEnum('NumberingScope',
                               'fullTree selectBranch selectChildren')
 NumberingNoField = enum.IntEnum('NumberingNoField',
