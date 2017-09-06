@@ -12,9 +12,13 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
+import re
 import uuid
 import operator
 import treespot
+
+_replaceBackrefRe = (re.compile(r'\\(\d+)'), re.compile(r'\\g<(\d+)>'))
+_origBackrefMatch = None
 
 
 class TreeNode:
@@ -329,11 +333,10 @@ class TreeNode:
             replaceText -- if not None, replace a match with this string
             replaceAll -- if True, replace all matches (returns last fieldName)
         """
-        if typeName and typeName != self.formatName:
+        if typeName and typeName != self.formatRef.name:
             return ('', 0, 0)
-        nodeFormat = self.nodeFormat()
-        fields = ([nodeFormat.fieldDict[fieldName]] if fieldName
-                  else nodeFormat.fields())
+        fields = ([self.formatRef.fieldDict[fieldName]] if fieldName
+                  else self.formatRef.fields())
         matchedFieldname = ''
         findCount = 0
         prevFieldFindCount = 0

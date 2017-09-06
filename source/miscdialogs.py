@@ -459,7 +459,7 @@ class FindReplaceDialog(QDialog):
         self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
         self.setWindowTitle(_('Find and Replace'))
 
-        self.matchedNode = None
+        self.matchedSpot = None
         topLayout = QGridLayout(self)
         self.setLayout(topLayout)
 
@@ -537,9 +537,9 @@ class FindReplaceDialog(QDialog):
         hasEntry = len(self.textEntry.text().strip()) > 0
         self.previousButton.setEnabled(hasEntry)
         self.nextButton.setEnabled(hasEntry)
-        match = bool(self.matchedNode and self.matchedNode is
+        match = bool(self.matchedSpot and self.matchedSpot is
                      globalref.mainControl.activeControl.
-                     currentSelectionModel().currentNode())
+                     currentSelectionModel().currentSpot())
         self.replaceButton.setEnabled(match)
         self.replaceAllButton.setEnabled(match)
         self.resultLabel.setText('')
@@ -547,7 +547,7 @@ class FindReplaceDialog(QDialog):
     def clearMatch(self):
         """Remove reference to matched node if search criteria changes.
         """
-        self.matchedNode = None
+        self.matchedSpot = None
         self.updateAvail()
 
     def loadTypeNames(self):
@@ -584,7 +584,7 @@ class FindReplaceDialog(QDialog):
         origPos = self.fieldCombo.findText(origFieldName)
         if origPos >= 0:
             self.fieldCombo.setCurrentIndex(origPos)
-        self.matchedNode = None
+        self.matchedSpot = None
         self.updateAvail()
 
     def findParameters(self):
@@ -615,7 +615,7 @@ class FindReplaceDialog(QDialog):
         Arguments:
             forward -- next if True, previous if False
         """
-        self.matchedNode = None
+        self.matchedSpot = None
         try:
             searchText, regExpObj, typeName, fieldName = self.findParameters()
         except re.error:
@@ -626,7 +626,7 @@ class FindReplaceDialog(QDialog):
         control = globalref.mainControl.activeControl
         if control.findNodesForReplace(searchText, regExpObj, typeName,
                                        fieldName, forward):
-            self.matchedNode = control.currentSelectionModel().currentNode()
+            self.matchedSpot = control.currentSelectionModel().currentSpot()
             self.updateAvail()
         else:
             self.updateAvail()
@@ -655,7 +655,7 @@ class FindReplaceDialog(QDialog):
         else:
             QMessageBox.warning(self, 'TreeLine',
                                       _('Error - replacement failed'))
-            self.matchedNode = None
+            self.matchedSpot = None
             self.updateAvail()
 
     def replaceAll(self):
@@ -666,7 +666,7 @@ class FindReplaceDialog(QDialog):
         control = globalref.mainControl.activeControl
         qty = control.replaceAll(searchText, regExpObj, typeName, fieldName,
                                  replaceText)
-        self.matchedNode = None
+        self.matchedSpot = None
         self.updateAvail()
         self.resultLabel.setText(_('Replaced {0} matches').format(qty))
 

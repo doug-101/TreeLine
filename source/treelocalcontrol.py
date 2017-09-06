@@ -15,6 +15,7 @@
 import pathlib
 import json
 import os
+import sys
 import gzip
 from PyQt5.QtCore import QObject, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
@@ -84,6 +85,7 @@ class TreeLocalControl(QObject):
         self.encrypted = False
         self.windowList = []
         self.activeWindow = None
+        self.findReplaceSpotRef = (None, 0)
         QApplication.clipboard().dataChanged.connect(self.updateCommandsAvail)
         self.structure.undoList = undo.UndoRedoList(self.
                                                     allActions['EditUndo'],
@@ -1055,8 +1057,13 @@ class TreeLocalControl(QObject):
             if spot.nodeRef.wordSearch(wordList, titlesOnly, spot):
                 self.currentSelectionModel().selectSpots([spot], True, True)
                 rightView = self.activeWindow.rightParentView()
+                if not rightView:
+                    # view update required if (and only if) view is newly shown
+                    QApplication.processEvents()
+                    rightView = self.activeWindow.rightParentView()
                 if rightView:
                     rightView.highlightSearch(wordList=wordList)
+                    QApplication.processEvents()
                 return True
 
     def findNodesByRegExp(self, regExpList, titlesOnly=False, forward=True):
@@ -1085,6 +1092,10 @@ class TreeLocalControl(QObject):
             if spot.nodeRef.regExpSearch(regExpList, titlesOnly, spot):
                 self.currentSelectionModel().selectSpots([spot], True, True)
                 rightView = self.activeWindow.rightParentView()
+                if not rightView:
+                    # view update required if (and only if) view is newly shown
+                    QApplication.processEvents()
+                    rightView = self.activeWindow.rightParentView()
                 if rightView:
                     rightView.highlightSearch(regExpList=regExpList)
                 return True
@@ -1128,12 +1139,12 @@ class TreeLocalControl(QObject):
             fieldName -- if given, only find matches under this type name
             forward -- next if True, previous if False
         """
-        currentNode = self.currentSelectionModel().currentNode()
-        lastFoundNode, currentNumMatches = self.findReplaceNodeRef
+        currentSpot = self.currentSelectionModel().currentSpot()
+        lastFoundSpot, currentNumMatches = self.findReplaceSpotRef
         numMatches = currentNumMatches
-        if lastFoundNode is not currentNode:
+        if lastFoundSpot is not currentSpot:
             numMatches = 0
-        node = currentNode
+        spot = currentSpot
         if not forward:
             if numMatches == 0:
                 numMatches = -1   # find last one if backward
@@ -1142,32 +1153,38 @@ class TreeLocalControl(QObject):
             else:
                 numMatches -= 2
         while True:
-            matchedField, numMatches, fieldPos = node.searchReplace(searchText,
-                                                                    regExpObj,
-                                                                    numMatches,
-                                                                    typeName,
-                                                                    fieldName)
+            matchedField, numMatches, fieldPos = (spot.nodeRef.
+                                                  searchReplace(searchText,
+                                                                regExpObj,
+                                                                numMatches,
+                                                                typeName,
+                                                                fieldName))
             if matchedField:
-                fieldNum = node.nodeFormat().fieldNames().index(matchedField)
-                self.currentSelectionModel().selectNode(node, True, True)
+                fieldNum = (spot.nodeRef.formatRef.fieldNames().
+                            index(matchedField))
+                self.currentSelectionModel().selectSpots([spot], True, True)
                 self.activeWindow.rightTabs.setCurrentWidget(self.activeWindow.
                                                              editorSplitter)
                 dataView = self.activeWindow.rightParentView()
+                if not dataView:
+                    # view update required if (and only if) view is newly shown
+                    QApplication.processEvents()
+                    dataView = self.activeWindow.rightParentView()
                 if dataView:
                     dataView.highlightMatch(searchText, regExpObj, fieldNum,
                                             fieldPos - 1)
-                self.findReplaceNodeRef = (node, numMatches)
+                self.findReplaceSpotRef = (spot, numMatches)
                 return True
-            if self.activeWindow.isFiltering():
-                node = self.activeWindow.treeFilterView.nextPrevNode(node,
+            if self.activeWindow.treeFilterView:
+                node = self.activeWindow.treeFilterView.nextPrevSpot(spot,
                                                                      forward)
             else:
                 if forward:
-                    node = node.nextTreeNode(True)
+                    spot = spot.nextTreeSpot(True)
                 else:
-                    node = node.prevTreeNode(True)
-            if node is currentNode and currentNumMatches == 0:
-                self.findReplaceNodeRef = (None, 0)
+                    spot = spot.prevTreeSpot(True)
+            if spot is currentSpot and currentNumMatches == 0:
+                self.findReplaceSpotRef = (None, 0)
                 return False
             numMatches = 0 if forward else -1
 
@@ -1184,27 +1201,28 @@ class TreeLocalControl(QObject):
             fieldName -- if given, only find matches under this type name
             replaceText -- if not None, replace a match with this string
         """
-        node = self.currentSelectionModel().currentNode()
-        lastFoundNode, numMatches = self.findReplaceNodeRef
+        spot = self.currentSelectionModel().currentSpot()
+        lastFoundSpot, numMatches = self.findReplaceSpotRef
         if numMatches > 0:
             numMatches -= 1
-        if lastFoundNode is not node:
+        if lastFoundSpot is not spot:
             numMatches = 0
-        dataUndo = undo.DataUndo(self.model.undoList, node)
-        matchedField, num1, num2 = node.searchReplace(searchText, regExpObj,
-                                                      numMatches, typeName,
-                                                      fieldName, replaceText)
+        dataUndo = undo.DataUndo(self.structure.undoList, spot.nodeRef)
+        matchedField, num1, num2 = (spot.nodeRef.
+                                    searchReplace(searchText, regExpObj,
+                                                  numMatches, typeName,
+                                                  fieldName, replaceText))
         if ((searchText and searchText in replaceText) or
             (regExpObj and r'\g<0>' in replaceText) or
             (regExpObj and regExpObj.pattern.startswith('(') and
              regExpObj.pattern.endswith(')') and r'\1' in replaceText)):
             numMatches += 1    # check for recursive matches
-        self.findReplaceNodeRef = (node, numMatches)
+        self.findReplaceSpotRef = (spot, numMatches)
         if matchedField:
-            self.updateTreeNode(node)
+            self.updateTreeNode(spot.nodeRef)
             self.updateRightViews()
             return True
-        self.model.undoList.removeLastUndo(dataUndo)
+        self.structure.undoList.removeLastUndo(dataUndo)
         return False
 
     def replaceAll(self, searchText='', regExpObj=None, typeName='',
@@ -1221,18 +1239,19 @@ class TreeLocalControl(QObject):
             replaceText -- if not None, replace a match with this string
         """
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        dataUndo = undo.BranchUndo(self.model.undoList, self.model.root)
+        dataUndo = undo.BranchUndo(self.structure.undoList,
+                                   self.structure.childList)
         totalMatches = 0
-        for node in self.model.root.descendantGen():
+        for node in self.structure.nodeDict.values():
             field, matchQty, num = node.searchReplace(searchText, regExpObj,
                                                       0, typeName, fieldName,
                                                       replaceText, True)
             totalMatches += matchQty
-        self.findReplaceNodeRef = (None, 0)
+        self.findReplaceSpotRef = (None, 0)
         if totalMatches > 0:
             self.updateAll(True)
         else:
-            self.model.undoList.removeLastUndo(dataUndo)
+            self.structure.undoList.removeLastUndo(dataUndo)
         QApplication.restoreOverrideCursor()
         return totalMatches
 
