@@ -12,6 +12,7 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
+import unicodedata
 from PyQt5.QtCore import QEvent, QPoint, Qt, pyqtSignal
 from PyQt5.QtGui import QContextMenuEvent, QKeySequence
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QHeaderView,
@@ -41,6 +42,8 @@ class TreeView(QTreeView):
         super().__init__(parent)
         self.resetModel(model)
         self.allActions = allActions
+        self.incremSearchMode = False
+        self.incremSearchString = ''
         self.noMouseSelectMode = False
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
@@ -156,6 +159,55 @@ class TreeView(QTreeView):
         """
         self.closePersistentEditor(self.selectionModel().currentIndex())
 
+    def incremSearchStart(self):
+        """Start an incremental title search.
+        """
+        self.incremSearchMode = True
+        self.incremSearchString = ''
+        globalref.mainControl.currentStatusBar().showMessage(_('Search for:'))
+
+    def incremSearchRun(self):
+        """Perform an incremental title search.
+        """
+        msg = _('Search for: {0}').format(self.incremSearchString)
+        globalref.mainControl.currentStatusBar().showMessage(msg)
+        if (self.incremSearchString and not
+            self.selectionModel().selectTitleMatch(self.incremSearchString,
+                                                 True, True)):
+            msg = _('Search for: {0}  (not found)').format(self.
+                                                           incremSearchString)
+            globalref.mainControl.currentStatusBar().showMessage(msg)
+
+    def incremSearchNext(self):
+        """Go to the next match in an incremental title search.
+        """
+        if self.incremSearchString:
+            if self.selectionModel().selectTitleMatch(self.incremSearchString):
+                msg = _('Next: {0}').format(self.incremSearchString)
+            else:
+                msg = _('Next: {0}  (not found)').format(self.
+                                                         incremSearchString)
+            globalref.mainControl.currentStatusBar().showMessage(msg)
+
+    def incremSearchPrev(self):
+        """Go to the previous match in an incremental title search.
+        """
+        if self.incremSearchString:
+            if self.selectionModel().selectTitleMatch(self.incremSearchString,
+                                                      False):
+                msg = _('Next: {0}').format(self.incremSearchString)
+            else:
+                msg = _('Next: {0}  (not found)').format(self.
+                                                         incremSearchString)
+            globalref.mainControl.currentStatusBar().showMessage(msg)
+
+    def incremSearchStop(self):
+        """End an incremental title search.
+        """
+        self.incremSearchMode = False
+        self.incremSearchString = ''
+        globalref.mainControl.currentStatusBar().clearMessage()
+
     def contextMenu(self):
         """Return the context menu, creating it if necessary.
         """
@@ -216,30 +268,6 @@ class TreeView(QTreeView):
         self.contextMenu().popup(pos)
         event.accept()
 
-    def toggleNoMouseSelectMode(self, active=True):
-        """Set noMouseSelectMode to active or inactive.
-
-        noMouseSelectMode will not change selection on mouse click,
-        it will just signal the clicked node for use in links, etc.
-        Arguments:
-            active -- if True, activate noMouseSelectMode
-        """
-        self.noMouseSelectMode = active
-
-    def mousePressEvent(self, event):
-        """Skip unselecting click on blank spaces and if in noMouseSelectMode.
-
-        If in noMouseSelectMode, signal which node is under the mouse.
-        Arguments:
-            event -- the mouse click event
-        """
-        clickedSpot = self.indexAt(event.pos()).internalPointer()
-        if self.noMouseSelectMode and clickedSpot:
-            self.skippedMouseSelect.emit(clickedSpot.nodeRef)
-            event.ignore()
-            return
-        super().mousePressEvent(event)
-
     def dropEvent(self, event):
         """Event handler for view drop actions.
 
@@ -260,6 +288,62 @@ class TreeView(QTreeView):
             self.selectionModel().selectSpots([])
             self.scheduleDelayedItemsLayout()
         self.model().treeModified.emit(True)
+
+    def toggleNoMouseSelectMode(self, active=True):
+        """Set noMouseSelectMode to active or inactive.
+
+        noMouseSelectMode will not change selection on mouse click,
+        it will just signal the clicked node for use in links, etc.
+        Arguments:
+            active -- if True, activate noMouseSelectMode
+        """
+        self.noMouseSelectMode = active
+
+    def mousePressEvent(self, event):
+        """Skip unselecting click on blank spaces and if in noMouseSelectMode.
+
+        If in noMouseSelectMode, signal which node is under the mouse.
+        Arguments:
+            event -- the mouse click event
+        """
+        if self.incremSearchMode:
+            self.incremSearchStop()
+        clickedSpot = self.indexAt(event.pos()).internalPointer()
+        if self.noMouseSelectMode and clickedSpot:
+            self.skippedMouseSelect.emit(clickedSpot.nodeRef)
+            event.ignore()
+            return
+        super().mousePressEvent(event)
+
+    def keyPressEvent(self, event):
+        """Record characters if in incremental search mode.
+
+        Arguments:
+            event -- the key event
+        """
+        if self.incremSearchMode:
+            if event.key() in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Escape):
+                self.incremSearchStop()
+            elif event.key() == Qt.Key_Backspace and self.incremSearchString:
+                self.incremSearchString = self.incremSearchString[:-1]
+                self.incremSearchRun()
+            elif event.text() and unicodedata.category(event.text()) != 'Cc':
+                # unicode category excludes control characters
+                self.incremSearchString += event.text()
+                self.incremSearchRun()
+            event.accept()
+        else:
+            super().keyPressEvent(event)
+
+    def focusOutEvent(self, event):
+        """Stop incremental search on focus loss.
+
+        Arguments:
+            event -- the focus out event
+        """
+        if self.incremSearchMode:
+            self.incremSearchStop()
+        super().focusOutEvent(event)
 
 
 class TreeEditDelegate(QStyledItemDelegate):

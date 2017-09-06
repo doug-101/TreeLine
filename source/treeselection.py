@@ -219,3 +219,28 @@ class TreeSelection(QItemSelectionModel):
         """Update history after a selection change.
         """
         self.addToHistory(self.selectedSpots())
+
+    def selectTitleMatch(self, searchText, forward=True, includeCurrent=False):
+        """Select a node with a title matching the search text.
+
+        Returns True if found, otherwise False.
+        Arguments:
+            searchText -- the text to look for
+            forward -- next if True, previous if False
+            includeCurrent -- look in current node if True
+        """
+        searchText = searchText.lower()
+        currentSpot = self.currentSpot()
+        spot = currentSpot
+        while True:
+            if not includeCurrent:
+                if forward:
+                    spot = spot.nextTreeSpot(True)
+                else:
+                    spot = spot.prevTreeSpot(True)
+                if spot is currentSpot:
+                    return False
+            includeCurrent = False
+            if searchText in spot.nodeRef.title().lower():
+                self.selectSpots([spot], True, True)
+                return True

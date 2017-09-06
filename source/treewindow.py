@@ -388,6 +388,21 @@ class TreeWindow(QMainWindow):
         winCloseAct.triggered.connect(self.close)
         self.winActions['WinCloseWindow'] = winCloseAct
 
+        incremSearchStartAct = QAction(_('Start Incremental Search'), self)
+        incremSearchStartAct.triggered.connect(self.incremSearchStart)
+        self.addAction(incremSearchStartAct)
+        self.winActions['IncremSearchStart'] = incremSearchStartAct
+
+        incremSearchNextAct = QAction(_('Next Incremental Search'), self)
+        incremSearchNextAct.triggered.connect(self.incremSearchNext)
+        self.addAction(incremSearchNextAct)
+        self.winActions['IncremSearchNext'] = incremSearchNextAct
+
+        incremSearchPrevAct = QAction(_('Previous Incremental Search'), self)
+        incremSearchPrevAct.triggered.connect(self.incremSearchPrev)
+        self.addAction(incremSearchPrevAct)
+        self.winActions['IncremSearchPrev'] = incremSearchPrevAct
+
         for name, action in self.winActions.items():
             icon = globalref.toolIcons.getIcon(name.lower())
             if icon:
@@ -622,6 +637,25 @@ class TreeWindow(QMainWindow):
         """
         self.outputSplitter.widget(1).showDescendants = checked
         self.updateRightViews()
+
+    def incremSearchStart(self):
+        """Start an incremental title search.
+        """
+        if not self.treeFilterView:
+            self.treeView.setFocus()
+            self.treeView.incremSearchStart()
+
+    def incremSearchNext(self):
+        """Go to the next match in an incremental title search.
+        """
+        if not self.treeFilterView:
+            self.treeView.incremSearchNext()
+
+    def incremSearchPrev(self):
+        """Go to the previous match in an incremental title search.
+        """
+        if not self.treeFilterView:
+            self.treeView.incremSearchPrev()
 
     def loadRecentMenu(self):
         """Load recent file items to file menu before showing.
