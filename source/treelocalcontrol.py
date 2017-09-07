@@ -28,6 +28,7 @@ import exports
 import miscdialogs
 import printdata
 import matheval
+import spellcheck
 import undo
 import p3
 import globalref
@@ -628,6 +629,11 @@ class TreeLocalControl(QObject):
         formatClearFormatAct.setEnabled(False)
         localActions['FormatClearFormat'] = formatClearFormatAct
 
+        toolsSpellCheckAct = QAction(_('&Spell Check...'), self,
+                             statusTip=_('Spell check the tree\')s text data'))
+        toolsSpellCheckAct.triggered.connect(self.toolsSpellCheck)
+        localActions['ToolsSpellCheck'] = toolsSpellCheckAct
+
         winNewAct = QAction(_('&New Window'), self,
                             statusTip=_('Open a new window for the same file'))
         winNewAct.triggered.connect(self.windowNew)
@@ -1030,6 +1036,15 @@ class TreeLocalControl(QObject):
         """Show a type set menu at the current tree view item.
         """
         self.activeWindow.treeView.showTypeMenu(self.typeSubMenu)
+
+    def toolsSpellCheck(self):
+        """Spell check the tree text data.
+        """
+        try:
+            spellCheckOp = spellcheck.SpellCheckOperation(self)
+        except spellcheck.SpellCheckError:
+            return
+        spellCheckOp.spellCheck()
 
     def findNodesByWords(self, wordList, titlesOnly=False, forward=True):
         """Search for and select nodes that match the word list criteria.

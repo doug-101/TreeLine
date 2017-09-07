@@ -520,6 +520,8 @@ class TreeWindow(QMainWindow):
         toolsMenu.addAction(self.allActions['ToolsFilterText'])
         toolsMenu.addAction(self.allActions['ToolsFilterCondition'])
         toolsMenu.addSeparator()
+        toolsMenu.addAction(self.allActions['ToolsSpellCheck'])
+        toolsMenu.addSeparator()
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
 
         formatMenu = self.menuBar().addMenu(_('Fo&rmat'))
