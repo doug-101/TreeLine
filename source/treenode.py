@@ -15,6 +15,7 @@
 import re
 import uuid
 import operator
+import itertools
 import treespot
 
 _replaceBackrefRe = (re.compile(r'\\(\d+)'), re.compile(r'\\g<(\d+)>'))
@@ -526,6 +527,66 @@ class TreeNode:
             else:
                 return -1 < level <= initLevel
         return True
+
+    def fieldSortKey(self, level=0):
+        """Return a key used to sort by key fields.
+
+        Arguments:
+            level -- the sort key depth level for the current sort stage
+        """
+        if len(self.formatRef.sortFields) > level:
+            return self.formatRef.sortFields[level].sortKey(self)
+        return ('',)
+
+    def sortChildrenByField(self, recursive=True, forward=True):
+        """Sort child nodes by predefined field keys.
+
+        Arguments:
+            recursive -- continue to sort recursively if true
+            forward -- reverse the sort if false
+        """
+        formats = set([child.formatRef for child in self.childList])
+        maxDepth = 0
+        directions = []
+        for nodeFormat in formats:
+            if not nodeFormat.sortFields:
+                nodeFormat.loadSortFields()
+            maxDepth = max(maxDepth, len(nodeFormat.sortFields))
+            newDirections = [field.sortKeyForward for field in
+                             nodeFormat.sortFields]
+            directions = [sum(i) for i in itertools.zip_longest(directions,
+                                                                newDirections,
+                                                                fillvalue=
+                                                                False)]
+        if forward:
+            directions = [bool(direct) for direct in directions]
+        else:
+            directions = [not bool(direct) for direct in directions]
+        for level in range(maxDepth, 0, -1):
+            self.childList.sort(key = operator.methodcaller('fieldSortKey',
+                                                            level - 1),
+                                reverse = not directions[level - 1])
+        if recursive:
+            for child in self.childList:
+                child.sortChildrenByField(True, forward)
+
+    def titleSortKey(self):
+        """Return a key used to sort by titles.
+        """
+        return self.title().lower()
+
+    def sortChildrenByTitle(self, recursive=True, forward=True):
+        """Sort child nodes by titles.
+
+        Arguments:
+            recursive -- continue to sort recursively if true
+            forward -- reverse the sort if false
+        """
+        self.childList.sort(key = operator.methodcaller('titleSortKey'),
+                            reverse = not forward)
+        if recursive:
+            for child in self.childList:
+                child.sortChildrenByTitle(True, forward)
 
     def updateNodeMathFields(self, treeFormats):
         """Recalculate math fields that depend on this node and so on.

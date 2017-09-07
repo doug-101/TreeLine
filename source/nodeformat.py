@@ -17,6 +17,7 @@ import collections
 import os.path
 import sys
 import copy
+import operator
 import datetime
 import xml.sax.saxutils
 if not sys.platform.startswith('win'):
@@ -56,6 +57,7 @@ class NodeFormat:
         self.siblingSuffix = ''
         self.derivedTypes = []
         self.origOutputLines = [] # lines without bullet or table modifications
+        self.sortFields = []   # temporary storage while sorting
         if addDefaultField:
             self.addFieldIfNew(defaultFieldName)
             self.titleLine = ['{{*{0}*}}'.format(defaultFieldName)]
@@ -520,6 +522,17 @@ class NodeFormat:
         """
         return [field.name for field in self.fieldDict.values() if
                 field.typeName == 'Numbering']
+
+    def loadSortFields(self):
+        """Add sort fields to temporarily stored list.
+
+        Only used for efficiency while sorting.
+        """
+        self.sortFields = [field for field in self.fields() if
+                           field.sortKeyNum > 0]
+        self.sortFields.sort(key = operator.attrgetter('sortKeyNum'))
+        if not self.sortFields:
+            self.sortFields = [list(self.fields())[0]]
 
 
 class FileInfoFormat(NodeFormat):

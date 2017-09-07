@@ -679,6 +679,153 @@ class FindReplaceDialog(QDialog):
         self.dialogShown.emit(False)
 
 
+SortWhat = enum.IntEnum('SortWhat',
+                        'fullTree selectBranch selectChildren selectSiblings')
+SortMethod = enum.IntEnum('SortMethod', 'fieldSort titleSort')
+SortDirection = enum.IntEnum('SortDirection', 'forward reverse')
+
+class SortDialog(QDialog):
+    """Dialog for defining sort operations.
+    """
+    dialogShown = pyqtSignal(bool)
+    def __init__(self, parent=None):
+        """Initialize the sort dialog.
+
+        Arguments:
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setAttribute(Qt.WA_QuitOnClose, False)
+        self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
+        self.setWindowTitle(_('Sort Nodes'))
+
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        horizLayout = QHBoxLayout()
+        topLayout.addLayout(horizLayout)
+        whatBox = QGroupBox(_('What to Sort'))
+        horizLayout.addWidget(whatBox)
+        whatLayout = QVBoxLayout(whatBox)
+        self.whatButtons = QButtonGroup(self)
+        button = QRadioButton(_('&Entire tree'))
+        self.whatButtons.addButton(button, SortWhat.fullTree)
+        whatLayout.addWidget(button)
+        button = QRadioButton(_('Selected &branches'))
+        self.whatButtons.addButton(button, SortWhat.selectBranch)
+        whatLayout.addWidget(button)
+        button = QRadioButton(_('Selection\'s childre&n'))
+        self.whatButtons.addButton(button, SortWhat.selectChildren)
+        whatLayout.addWidget(button)
+        button = QRadioButton(_('Selection\'s &siblings'))
+        self.whatButtons.addButton(button, SortWhat.selectSiblings)
+        whatLayout.addWidget(button)
+        self.whatButtons.button(SortWhat.fullTree).setChecked(True)
+
+        vertLayout =  QVBoxLayout()
+        horizLayout.addLayout(vertLayout)
+        methodBox = QGroupBox(_('Sort Method'))
+        vertLayout.addWidget(methodBox)
+        methodLayout = QVBoxLayout(methodBox)
+        self.methodButtons = QButtonGroup(self)
+        button = QRadioButton(_('&Predefined Key Fields'))
+        self.methodButtons.addButton(button, SortMethod.fieldSort)
+        methodLayout.addWidget(button)
+        button = QRadioButton(_('Node &Titles'))
+        self.methodButtons.addButton(button, SortMethod.titleSort)
+        methodLayout.addWidget(button)
+        self.methodButtons.button(SortMethod.fieldSort).setChecked(True)
+
+        directionBox = QGroupBox(_('Sort Direction'))
+        vertLayout.addWidget(directionBox)
+        directionLayout =  QVBoxLayout(directionBox)
+        self.directionButtons = QButtonGroup(self)
+        button = QRadioButton(_('&Forward'))
+        self.directionButtons.addButton(button, SortDirection.forward)
+        directionLayout.addWidget(button)
+        button = QRadioButton(_('&Reverse'))
+        self.directionButtons.addButton(button, SortDirection.reverse)
+        directionLayout.addWidget(button)
+        self.directionButtons.button(SortDirection.forward).setChecked(True)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch()
+        okButton = QPushButton(_('&OK'))
+        ctrlLayout.addWidget(okButton)
+        okButton.clicked.connect(self.sortAndClose)
+        applyButton = QPushButton(_('&Apply'))
+        ctrlLayout.addWidget(applyButton)
+        applyButton.clicked.connect(self.sortNodes)
+        closeButton = QPushButton(_('&Close'))
+        ctrlLayout.addWidget(closeButton)
+        closeButton.clicked.connect(self.close)
+        self.updateCommandsAvail()
+
+    def updateCommandsAvail(self):
+        """Set what to sort options available based on tree selections.
+        """
+        selModel = globalref.mainControl.activeControl.currentSelectionModel()
+        hasChild = False
+        hasSibling = False
+        for spot in selModel.selectedSpots():
+            if spot.nodeRef.childList:
+                hasChild = True
+            if spot.parentSpot and len(spot.parentSpot.nodeRef.childList) > 1:
+                hasSibling = True
+        self.whatButtons.button(SortWhat.selectBranch).setEnabled(hasChild)
+        self.whatButtons.button(SortWhat.selectChildren).setEnabled(hasChild)
+        self.whatButtons.button(SortWhat.selectSiblings).setEnabled(hasSibling)
+        if not self.whatButtons.checkedButton().isEnabled():
+            self.whatButtons.button(SortWhat.fullTree).setChecked(True)
+
+    def sortNodes(self):
+        """Perform the sorting operation.
+        """
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        control = globalref.mainControl.activeControl
+        selSpots = control.currentSelectionModel().selectedSpots()
+        if self.whatButtons.checkedId() == SortWhat.fullTree:
+            selSpots = self.structure.rootSpots()
+        elif self.whatButtons.checkedId() == SortWhat.selectSiblings:
+            selSpots = [spot.parentSpot for spot in selSpots]
+        if self.whatButtons.checkedId() in (SortWhat.fullTree,
+                                            SortWhat.selectBranch):
+            rootSpots = selSpots[:]
+            selSpots = []
+            for root in rootSpots:
+                for spot in root.spotDescendantGen():
+                    if spot.nodeRef.childList:
+                        selSpots.append(spot)
+        undo.ChildListUndo(control.structure.undoList,
+                           [spot.nodeRef for spot in selSpots])
+        forward = self.directionButtons.checkedId() == SortDirection.forward
+        if self.methodButtons.checkedId() == SortMethod.fieldSort:
+            for spot in selSpots:
+                spot.nodeRef.sortChildrenByField(False, forward)
+            # reset temporary sort field storage
+            for nodeFormat in control.structure.treeFormats.values():
+                nodeFormat.sortFields = []
+        else:
+            for spot in selSpots:
+                spot.nodeRef.sortChildrenByTitle(False, forward)
+        control.updateAll()
+        QApplication.restoreOverrideCursor()
+
+    def sortAndClose(self):
+        """Perform the sorting operation and close the dialog.
+        """
+        self.sortNodes()
+        self.close()
+
+    def closeEvent(self, event):
+        """Signal that the dialog is closing.
+
+        Arguments:
+            event -- the close event
+        """
+        self.dialogShown.emit(False)
+
+
 NumberingScope = enum.IntEnum('NumberingScope',
                               'fullTree selectBranch selectChildren')
 NumberingNoField = enum.IntEnum('NumberingNoField',

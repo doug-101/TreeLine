@@ -509,6 +509,7 @@ class TreeWindow(QMainWindow):
         self.addAction(self.allActions['DataNodeType'])
         dataMenu.addAction(self.allActions['DataConfigType'])
         dataMenu.addSeparator()
+        dataMenu.addAction(self.allActions['DataSortNodes'])
         dataMenu.addAction(self.allActions['DataNumbering'])
 
         toolsMenu = self.menuBar().addMenu(_('&Tools'))

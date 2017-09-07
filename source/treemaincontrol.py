@@ -65,6 +65,7 @@ class TreeMainControl(QObject):
         self.localControls = []
         self.activeControl = None
         self.configDialog = None
+        self.sortDialog = None
         self.numberingDialog = None
         self.findTextDialog = None
         self.findConditionDialog = None
@@ -442,6 +443,12 @@ class TreeMainControl(QObject):
         dataConfigAct.triggered.connect(self.dataConfigDialog)
         self.allActions['DataConfigType'] = dataConfigAct
 
+        dataSortAct = QAction(_('Sor&t Nodes...'), self,
+                                    statusTip=_('Define node sort operations'),
+                                    checkable=True)
+        dataSortAct.triggered.connect(self.dataSortDialog)
+        self.allActions['DataSortNodes'] = dataSortAct
+
         dataNumberingAct = QAction(_('Update &Numbering...'), self,
                                    statusTip=_('Update node numbering fields'),
                                    checkable=True)
@@ -569,6 +576,21 @@ class TreeMainControl(QObject):
             self.configDialog.show()
         else:
             self.configDialog.close()
+
+    def dataSortDialog(self, show):
+        """Show or hide the non-modal data sort nodes dialog.
+
+        Arguments:
+            show -- true if dialog should be shown, false to hide it
+        """
+        if show:
+            if not self.sortDialog:
+                self.sortDialog = miscdialogs.SortDialog()
+                dataSortAct = self.allActions['DataSortNodes']
+                self.sortDialog.dialogShown.connect(dataSortAct.setChecked)
+            self.sortDialog.show()
+        else:
+            self.sortDialog.close()
 
     def dataNumberingDialog(self, show):
         """Show or hide the non-modal update node numbering dialog.
