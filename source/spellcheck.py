@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 
-#****************************************************************************
+#******************************************************************************
 # spellcheck.py, provides classes for spell check interfaces and dialogs,
 # including interfaces to aspell, ispell, hunspell.
 #
+# TreeLine, an information storage program
 # Copyright (C) 2017, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
 # version.  This program is distributed in the hope that it will be useful,
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
-#*****************************************************************************
+#******************************************************************************
 
 import re
 import sys
@@ -179,7 +180,7 @@ class SpellCheckOperation:
         """
         self.controlRef = controlRef
         self.selectModel = controlRef.currentSelectionModel()
-        self.currentNode = None
+        self.currentSpot = None
         self.currentField = ''
         self.lineNum = 0
         self.textLine = ''
@@ -222,8 +223,7 @@ class SpellCheckOperation:
                     else:
                         prompt = (_('TreeLine Spell Check Error\nMake sure '
                                     'aspell, ispell or hunspell is installed'))
-                        QMessageBox.warning(parentWidget, 'TreeLine',
-                                                  prompt)
+                        QMessageBox.warning(parentWidget, 'TreeLine', prompt)
                         raise
 
     def spellCheck(self):
@@ -234,21 +234,22 @@ class SpellCheckOperation:
                                             parentWidget)
         spellCheckDialog.misspellFound.connect(self.updateSelection)
         spellCheckDialog.changeRequest.connect(self.changeNode)
-        origBranches = self.selectModel.uniqueBranches()
+        origBranches = self.selectModel.selectedBranchSpots()
+        if not origBranches:
+            origBranches = self.controlRef.structure.rootSpots()
         result = (spellCheckDialog.
                   startSpellCheck(self.textLineGenerator(origBranches)))
-        self.selectModel.selectNodes(origBranches, expandParents = True)
-        if result and origBranches[0].parent:
-            prompt = (_('Finished checking the branch\n'
-                        'Continue from the root branch?'))
+        self.selectModel.selectSpots(origBranches, expandParents = True)
+        if result and origBranches[0].parentSpot.parentSpot:
+            prompt = _('Finished checking the branch\nContinue from the top?')
             ans = QMessageBox.information(parentWidget,
                                           _('TreeLine Spell Check'), prompt,
                                           QMessageBox.Yes | QMessageBox.No)
             if ans == QMessageBox.Yes:
-                generator = self.textLineGenerator([self.controlRef.model.
-                                                    root])
+                generator = self.textLineGenerator(self.controlRef.structure.
+                                                   rootSpots())
                 result = spellCheckDialog.startSpellCheck(generator)
-                self.selectModel.selectNodes(origBranches,
+                self.selectModel.selectSpots(origBranches,
                                              expandParents = True)
             else:
                 result = False
@@ -259,7 +260,7 @@ class SpellCheckOperation:
     def updateSelection(self):
         """Change the tree selection to the node with a misspelled word.
         """
-        self.selectModel.selectNode(self.currentNode, expandParents = True)
+        self.selectModel.selectSpots([self.currentSpot], expandParents = True)
 
     def changeNode(self, newTextLine):
         """Replace the current text line in the current node.
@@ -267,12 +268,12 @@ class SpellCheckOperation:
         Arguments:
             newTextLine -- the new text to use
         """
-        undo.DataUndo(self.currentNode.modelRef.undoList, self.currentNode)
-        textLines = (self.currentNode.data.get(self.currentField, '').
-                     split('\n'))
+        node = self.currentSpot.nodeRef
+        undo.DataUndo(self.controlRef.structure.undoList, node)
+        textLines = node.data.get(self.currentField, '').split('\n')
         textLines[self.lineNum] = newTextLine
-        self.currentNode.data[self.currentField] = '\n'.join(textLines)
-        self.controlRef.updateTreeNode(self.currentNode)
+        node.data[self.currentField] = '\n'.join(textLines)
+        self.controlRef.updateTreeNode(node)
 
     def textLineGenerator(self, branches):
         """Yield next line to be checked.
@@ -281,10 +282,10 @@ class SpellCheckOperation:
             branches -- a list of branch parent nodes to check.
         """
         for parent in branches:
-            for self.currentNode in parent.descendantGen():
-                for self.currentField in (self.currentNode.nodeFormat().
-                                          fieldNames()):
-                    text = self.currentNode.data.get(self.currentField, '')
+            for self.currentSpot in parent.spotDescendantGen():
+                node = self.currentSpot.nodeRef
+                for self.currentField in node.formatRef.fieldNames():
+                    text = node.data.get(self.currentField, '')
                     if text:
                         for self.lineNum, self.textLine in \
                                             enumerate(text.split('\n')):

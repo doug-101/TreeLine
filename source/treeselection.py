@@ -50,6 +50,16 @@ class TreeSelection(QItemSelectionModel):
         return treespotlist.TreeSpotList([index.internalPointer() for index in
                                           self.selectedIndexes()])
 
+    def selectedBranchSpots(self):
+        """Return a list of spots at the top of selected branches.
+
+        Remvoves any duplicate spots that are already covered by the branches.
+        """
+        spots = self.selectedSpots()
+        spotSet = set(spots)
+        return [spot for spot in spots if
+                spot.parentSpotSet().isdisjoint(spotSet)]
+
     def selectedNodes(self):
         """Return a list of the currently selected tree nodes.
 
@@ -66,12 +76,8 @@ class TreeSelection(QItemSelectionModel):
 
         Remvoves any duplicates that are already covered by the branches.
         """
-        spots = self.selectedSpots()
-        spotSet = set(spots)
-        branchSpots = [spot for spot in spots if
-                       spot.parentSpotSet().isdisjoint(spotSet)]
         tmpDict = collections.OrderedDict()
-        for spot in branchSpots:
+        for spot in self.selectedBranchSpots():
             node = spot.nodeRef
             tmpDict[node.uId] = node
         return list(tmpDict.values())

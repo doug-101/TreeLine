@@ -38,7 +38,7 @@ class TreeSpotList(list):
                 self.sort(key=operator.methodcaller('sortKey'))
 
     def relatedNodes(self):
-        """Return a list of nodes related tot hese spots.
+        """Return a list of nodes related to these spots.
 
         Removes any duplicate (cloned) nodes.
         """
