@@ -28,6 +28,7 @@ lang = ''
 
 fileFilters = {'trlnopen': '{} (*.trln *.trln.gz *.trl)'.
                            format(_('All TreeLine Files')),
+               'trlnv3': '{} (*.trln *.trln.gz)'.format(_('TreeLine Files')),
                'trlnsave': '{} (*.trln)'.format(_('TreeLine Files')),
                'trlngz': '{} (*.trln *.trln.gz)'.
                          format(_('TreeLine Files - Compressed')),

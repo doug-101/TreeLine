@@ -93,7 +93,7 @@ class ConfigDialog(QDialog):
         ctrlLayout.addWidget(cancelButton)
         cancelButton.clicked.connect(self.resetAndClose)
 
-    def setRefs(self, localControl, resetSelect=False):
+    def setRefs(self, localControl, resetSelect=False, forceCopy=False):
         """Set refs to model and formats, then update dialog data.
 
         Sets current type to current node's type if resetSelect or if invalid.
@@ -101,11 +101,12 @@ class ConfigDialog(QDialog):
         Arguments:
             localControl -- a reference to the local control
             resetSelect -- if True, forces reset of current selections
+            forceCopy -- if True, force making a new copy of formats
         """
         self.localControl = localControl
         ConfigDialog.treeStruct = localControl.structure
         ConfigDialog.formatsRef = (ConfigDialog.treeStruct.
-                                   getConfigDialogFormats())
+                                   getConfigDialogFormats(forceCopy))
         self.selectionModel = localControl.currentSelectionModel()
         self.updateSelections(resetSelect)
         self.setModified(modified=False)

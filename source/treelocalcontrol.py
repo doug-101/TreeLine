@@ -23,6 +23,7 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
 import treemaincontrol
 import treestructure
 import treemodel
+import treeformats
 import treewindow
 import exports
 import miscdialogs
@@ -574,6 +575,16 @@ class TreeLocalControl(QObject):
         typeContextMenuAct.triggered.connect(self.showTypeContextMenu)
         localActions['DataNodeType'] = typeContextMenuAct
 
+        dataCopyTypeAct = QAction(_('Copy Types from &File...'), self,
+              statusTip=_('Copy the configuration from another TreeLine file'))
+        dataCopyTypeAct.triggered.connect(self.dataCopyType)
+        localActions['DataCopyType'] = dataCopyTypeAct
+
+        toolsSpellCheckAct = QAction(_('&Spell Check...'), self,
+                             statusTip=_('Spell check the tree\')s text data'))
+        toolsSpellCheckAct.triggered.connect(self.toolsSpellCheck)
+        localActions['ToolsSpellCheck'] = toolsSpellCheckAct
+
         formatBoldAct = QAction(_('&Bold Font'), self,
                        statusTip=_('Set the current or selected font to bold'),
                        checkable=True)
@@ -628,11 +639,6 @@ class TreeLocalControl(QObject):
                       statusTip=_('Clear current or selected text formatting'))
         formatClearFormatAct.setEnabled(False)
         localActions['FormatClearFormat'] = formatClearFormatAct
-
-        toolsSpellCheckAct = QAction(_('&Spell Check...'), self,
-                             statusTip=_('Spell check the tree\')s text data'))
-        toolsSpellCheckAct.triggered.connect(self.toolsSpellCheck)
-        localActions['ToolsSpellCheck'] = toolsSpellCheckAct
 
         winNewAct = QAction(_('&New Window'), self,
                             statusTip=_('Open a new window for the same file'))
@@ -1036,6 +1042,58 @@ class TreeLocalControl(QObject):
         """Show a type set menu at the current tree view item.
         """
         self.activeWindow.treeView.showTypeMenu(self.typeSubMenu)
+
+    def dataCopyType(self):
+        """Copy the configuration from another TreeLine file.
+        """
+        filters = ';;'.join((globalref.fileFilters['trlnv3'],
+                             globalref.fileFilters['all']))
+        fileName, selectFilter = QFileDialog.getOpenFileName(self.activeWindow,
+                                       _('TreeLine - Open Configuration File'),
+                                       str(globalref.mainControl.
+                                           defaultPathObj(True)), filters)
+        if not fileName:
+            return
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        newStructure = None
+        try:
+            with open(fileName, 'r', encoding='utf-8') as f:
+                fileData = json.load(f)
+            newStructure = treestructure.TreeStructure(fileData,
+                                                       addSpots=False)
+        except IOError:
+            pass
+        except (ValueError, KeyError, TypeError):
+            fileObj = open(fileName, 'rb')
+            fileObj, encrypted = globalref.mainControl.decryptFile(fileObj)
+            if not fileObj:
+                QApplication.restoreOverrideCursor()
+                return
+            fileObj, compressed = globalref.mainControl.decompressFile(fileObj)
+            if compressed or encrypted:
+                try:
+                    textFileObj = io.TextIOWrapper(fileObj, encoding='utf-8')
+                    fileData = json.load(textFileObj)
+                    textFileObj.close()
+                    newStructure = treestructure.TreeStructure(fileData,
+                                                               addSpots=False)
+                except (ValueError, KeyError, TypeError):
+                    pass
+            fileObj.close()
+        if not newStructure:
+            QApplication.restoreOverrideCursor()
+            QMessageBox.warning(self.activeWindow, 'TreeLine',
+                                _('Error - could not read file {0}').
+                                format(fileName))
+            return
+        undo.FormatUndo(self.structure.undoList, self.structure.treeFormats,
+                        treeformats.TreeFormats())
+        for nodeFormat in newStructure.treeFormats.values():
+            self.structure.treeFormats.addTypeIfMissing(nodeFormat)
+        QApplication.restoreOverrideCursor()
+        self.updateAll()
+        if globalref.mainControl.configDialog:
+            globalref.mainControl.configDialog.setRefs(self, forceCopy=True)
 
     def toolsSpellCheck(self):
         """Spell check the tree text data.

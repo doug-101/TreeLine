@@ -508,6 +508,7 @@ class TreeWindow(QMainWindow):
         # add the action to activate the shortcut key
         self.addAction(self.allActions['DataNodeType'])
         dataMenu.addAction(self.allActions['DataConfigType'])
+        dataMenu.addAction(self.allActions['DataCopyType'])
         dataMenu.addSeparator()
         dataMenu.addAction(self.allActions['DataSortNodes'])
         dataMenu.addAction(self.allActions['DataNumbering'])
