@@ -523,8 +523,9 @@ class TreeMainControl(QObject):
                                                         searchPaths)
                 if dialog.exec_() == QDialog.Accepted:
                     self.createLocalControl(dialog.selectedPath())
-                    self.activeControl.filePath = ''
+                    self.activeControl.filePathObj = None
                     self.activeControl.updateWindowCaptions()
+                    self.activeControl.expandRootNodes()
             else:
                 self.createLocalControl()
 

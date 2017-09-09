@@ -15,6 +15,7 @@
 import enum
 import re
 import sys
+import operator
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
                              QCheckBox, QComboBox, QDialog, QGridLayout,
@@ -247,6 +248,140 @@ class PasswordDialog(QDialog):
         for editor in self.editors:
             editor.clear()
         self.editors[0].setFocus()
+
+
+class TemplateFileItem:
+    """Helper class to store template paths and info.
+    """
+    nameExp = re.compile(r'(\d+)([a-zA-Z]+?)_(.+)')
+    def __init__(self, pathObj):
+        """Initialize the path.
+
+        Arguments:
+            pathObj -- the full path object
+        """
+        self.pathObj = pathObj
+        self.number = sys.maxsize
+        self.name = ''
+        self.displayName = ''
+        self.langCode = ''
+        if pathObj:
+            self.name = pathObj.stem
+            match = TemplateFileItem.nameExp.match(self.name)
+            if match:
+                num, self.langCode, self.name = match.groups()
+                self.number = int(num)
+            self.displayName = self.name.replace('_', ' ')
+
+    def sortKey(self):
+        """Return a key for sorting the items by number then name.
+        """
+        return (self.number, self.displayName)
+
+    def __eq__(self, other):
+        """Comparison to detect equivalent items.
+
+        Arguments:
+            other -- the TemplateFileItem to compare
+        """
+        return (self.displayName == other.displayName and
+                self.langCode == other.langCode)
+
+    def __hash__(self):
+        """Return a hash code for use in sets and dictionaries.
+        """
+        return hash((self.langCode, self.displayName))
+
+
+class TemplateFileDialog(QDialog):
+    """Dialog for listing available template files.
+    """
+    def __init__(self, title, heading, searchPaths, addDefault=True,
+                 parent=None):
+        """Create the template dialog.
+
+        Arguments:
+            title -- the window title
+            heading -- the groupbox text
+            searchPaths -- list of path objects with available templates
+            addDefault -- if True, add a default (no path) entry
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
+                            Qt.WindowCloseButtonHint)
+        self.setWindowTitle(title)
+        self.templateItems = []
+        if addDefault:
+            item = TemplateFileItem(None)
+            item.number = -1
+            item.displayName = _('Default - Single Line Text')
+            self.templateItems.append(item)
+
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        groupBox = QGroupBox(heading)
+        topLayout.addWidget(groupBox)
+        boxLayout = QVBoxLayout(groupBox)
+        self.listBox = QListWidget()
+        boxLayout.addWidget(self.listBox)
+        self.listBox.itemDoubleClicked.connect(self.accept)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch(0)
+        self.okButton = QPushButton(_('&OK'))
+        ctrlLayout.addWidget(self.okButton)
+        self.okButton.clicked.connect(self.accept)
+        cancelButton = QPushButton(_('&Cancel'))
+        ctrlLayout.addWidget(cancelButton)
+        cancelButton.clicked.connect(self.reject)
+
+        self.readTemplates(searchPaths)
+        self.loadListBox()
+
+    def readTemplates(self, searchPaths):
+        """Read template file paths into the templateItems list.
+
+        Arguments:
+            searchPaths -- list of path objects with available templates
+        """
+        templateItems = set()
+        for path in searchPaths:
+            for templatePath in path.glob('*.trln'):
+                templateItem = TemplateFileItem(templatePath)
+                if templateItem not in templateItems:
+                    templateItems.add(templateItem)
+        availLang = set([item.langCode for item in templateItems])
+        if len(availLang) > 1:
+            lang = 'en'
+            if globalref.lang[:2] in availLang:
+                lang = globalref.lang[:2]
+            templateItems = [item for item in templateItems if
+                             item.langCode == lang or not item.langCode]
+        self.templateItems.extend(list(templateItems))
+        self.templateItems.sort(key = operator.methodcaller('sortKey'))
+
+    def loadListBox(self):
+        """Load the list box with items from the templateItems list.
+        """
+        self.listBox.clear()
+        self.listBox.addItems([item.displayName for item in
+                               self.templateItems])
+        self.listBox.setCurrentRow(0)
+        self.okButton.setEnabled(self.listBox.count() > 0)
+
+    def selectedPath(self):
+        """Return the path object from the selected item.
+        """
+        item = self.templateItems[self.listBox.currentRow()]
+        return item.pathObj
+
+    def selectedName(self):
+        """Return the displayed name with underscores from the selected item.
+        """
+        item = self.templateItems[self.listBox.currentRow()]
+        return item.name
 
 
 FindScope = enum.IntEnum('FindScope', 'fullData titlesOnly')

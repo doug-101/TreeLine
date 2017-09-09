@@ -1,0 +1,51 @@
+{
+   "formats": [
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Text",
+               "fieldtype": "Text",
+               "lines": 8
+            }
+         ],
+         "formatname": "LONG_TEXT",
+         "outputlines": [
+            "{*Name*}",
+            "{*Text*}"
+         ],
+         "titleline": "{*Name*}"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "d8ef9244959111e7a8357054d2175f18"
+         ],
+         "data": {
+            "Name": "Parent",
+            "Text": "Parent text"
+         },
+         "format": "LONG_TEXT",
+         "uid": "d8ef8eb6959111e7a8357054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Child",
+            "Text": "Child text"
+         },
+         "format": "LONG_TEXT",
+         "uid": "d8ef9244959111e7a8357054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "d8ef8eb6959111e7a8357054d2175f18"
+      ]
+   }
+}

@@ -1,0 +1,163 @@
+{
+   "formats": [
+      {
+         "childtype": "TASK_UNDONE",
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "CATEGORY",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "condition": "Done == \"true\"",
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Done",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "false"
+            },
+            {
+               "fieldname": "Urgent",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "false"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "TASK_DONE",
+         "icon": "smiley_4",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Done",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "false"
+            },
+            {
+               "fieldname": "Urgent",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "false"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "TASK_UNDONE",
+         "generic": "TASK_DONE",
+         "icon": "smiley_2",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "condition": "Done == \"false\" and Urgent == \"true\"",
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Done",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "false"
+            },
+            {
+               "fieldname": "Urgent",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "true"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "TASK_UNDONE_URGENT",
+         "generic": "TASK_DONE",
+         "icon": "smiley_5",
+         "outputlines": [
+            "<i>{*Name*}</i>"
+         ],
+         "titleline": "{*Name*}!!!"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "1d1b7e56959211e7a8357054d2175f18",
+            "1d1b857c959211e7a8357054d2175f18"
+         ],
+         "data": {
+            "Name": "Conditional Task List"
+         },
+         "format": "CATEGORY",
+         "uid": "1d1b7c9e959211e7a8357054d2175f18"
+      },
+      {
+         "children": [
+            "1d1b81b2959211e7a8357054d2175f18"
+         ],
+         "data": {
+            "Name": "Home Tasks"
+         },
+         "format": "CATEGORY",
+         "uid": "1d1b7e56959211e7a8357054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "false",
+            "Name": "Mow lawn",
+            "Urgent": "false"
+         },
+         "format": "TASK_UNDONE",
+         "uid": "1d1b81b2959211e7a8357054d2175f18"
+      },
+      {
+         "children": [
+            "1d1b868a959211e7a8357054d2175f18"
+         ],
+         "data": {
+            "Name": "Work Tasks"
+         },
+         "format": "CATEGORY",
+         "uid": "1d1b857c959211e7a8357054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "false",
+            "Name": "Write documents",
+            "Urgent": "false"
+         },
+         "format": "TASK_UNDONE",
+         "uid": "1d1b868a959211e7a8357054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "1d1b7c9e959211e7a8357054d2175f18"
+      ]
+   }
+}

@@ -1,0 +1,134 @@
+{
+   "formats": [
+      {
+         "childtype": "BOOK",
+         "fields": [
+            {
+               "fieldname": "AuthorFirstName",
+               "fieldtype": "Text",
+               "sortkeynum": 2
+            },
+            {
+               "fieldname": "AuthorLastName",
+               "fieldtype": "Text",
+               "sortkeynum": 1
+            }
+         ],
+         "formatname": "AUTHOR",
+         "icon": "book_3",
+         "outputlines": [
+            "{*AuthorFirstName*} {*AuthorLastName*}"
+         ],
+         "titleline": "{*AuthorFirstName*} {*AuthorLastName*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "Title",
+               "fieldtype": "Text",
+               "sortkeynum": 2
+            },
+            {
+               "fieldname": "Copyright",
+               "fieldtype": "Number",
+               "format": "0000",
+               "sortkeynum": 1
+            },
+            {
+               "fieldname": "ReadDate",
+               "fieldtype": "Date",
+               "format": "%B, %Y"
+            },
+            {
+               "fieldname": "Plot",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "BOOK",
+         "icon": "book_1",
+         "outputlines": [
+            "\"{*Title*}\"",
+            "(c) {*Copyright*}",
+            "Last Read: {*ReadDate*}",
+            "{*Plot*}"
+         ],
+         "titleline": "\"{*Title*}\""
+      },
+      {
+         "childtype": "AUTHOR",
+         "fields": [
+            {
+               "fieldname": "NAME",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "CATEGORY",
+         "outputlines": [
+            "{*NAME*}"
+         ],
+         "titleline": "{*NAME*}"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "0b7bffe0959211e7a8357054d2175f18",
+            "0b7c0850959211e7a8357054d2175f18"
+         ],
+         "data": {
+            "NAME": "SF Books"
+         },
+         "format": "CATEGORY",
+         "uid": "0b7bfb76959211e7a8357054d2175f18"
+      },
+      {
+         "children": [
+            "0b7c0530959211e7a8357054d2175f18"
+         ],
+         "data": {
+            "AuthorFirstName": "Orson Scott",
+            "AuthorLastName": "Card"
+         },
+         "format": "AUTHOR",
+         "uid": "0b7bffe0959211e7a8357054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Copyright": "1985",
+            "Plot": "Young boy is taught fighting and leadership",
+            "ReadDate": "2007-04-30",
+            "Title": "Ender's Game"
+         },
+         "format": "BOOK",
+         "uid": "0b7c0530959211e7a8357054d2175f18"
+      },
+      {
+         "children": [
+            "0b7c0968959211e7a8357054d2175f18"
+         ],
+         "data": {
+            "AuthorFirstName": "Isaac",
+            "AuthorLastName": "Asimov"
+         },
+         "format": "AUTHOR",
+         "uid": "0b7c0850959211e7a8357054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Copyright": "1951",
+            "Plot": "Psychohistory predicts the fall of empire",
+            "Title": "Foundation"
+         },
+         "format": "BOOK",
+         "uid": "0b7c0968959211e7a8357054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "0b7bfb76959211e7a8357054d2175f18"
+      ]
+   }
+}

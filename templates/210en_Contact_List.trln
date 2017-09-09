@@ -1,0 +1,151 @@
+{
+   "formats": [
+      {
+         "childtype": "PERSON",
+         "fields": [
+            {
+               "fieldname": "Type",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "CATEGORY",
+         "outputlines": [
+            "{*Type*}"
+         ],
+         "titleline": "{*Type*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "FirstName",
+               "fieldtype": "Text",
+               "sortkeynum": 2
+            },
+            {
+               "fieldname": "LastName",
+               "fieldtype": "Text",
+               "sortkeynum": 1
+            },
+            {
+               "fieldname": "Street",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "City",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "State",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Zip",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "HomePhone",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "WorkPhone",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "MobilePhone",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Birthday",
+               "fieldtype": "Date",
+               "format": "%B %-d, %Y"
+            },
+            {
+               "fieldname": "Email",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "PERSON",
+         "outputlines": [
+            "{*FirstName*} {*LastName*}",
+            "{*Street*}",
+            "{*City*}, {*State*} {*Zip*}",
+            "{*HomePhone*} (H)",
+            "{*WorkPhone*} (W)",
+            "{*MobilePhone*} (M)",
+            "DoB: {*Birthday*}",
+            "{*Email*}"
+         ],
+         "titleline": "{*FirstName*} {*LastName*}"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "f402b796959111e7a8357054d2175f18",
+            "f402c33a959111e7a8357054d2175f18"
+         ],
+         "data": {
+            "Type": "Main"
+         },
+         "format": "CATEGORY",
+         "uid": "f402b5ac959111e7a8357054d2175f18"
+      },
+      {
+         "children": [
+            "f402be26959111e7a8357054d2175f18"
+         ],
+         "data": {
+            "Type": "Friends"
+         },
+         "format": "CATEGORY",
+         "uid": "f402b796959111e7a8357054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "City": "Atlantis",
+            "Email": "john.doe@nowhere.com",
+            "FirstName": "John",
+            "HomePhone": "(123) 555-4567",
+            "LastName": "Doe",
+            "State": "CA",
+            "Street": "1492 Columbus Lane",
+            "WorkPhone": "(123) 555-9876",
+            "Zip": "98765"
+         },
+         "format": "PERSON",
+         "uid": "f402be26959111e7a8357054d2175f18"
+      },
+      {
+         "children": [
+            "f402c448959111e7a8357054d2175f18"
+         ],
+         "data": {
+            "Type": "Family"
+         },
+         "format": "CATEGORY",
+         "uid": "f402c33a959111e7a8357054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Birthday": "1955-02-08",
+            "City": "Britania",
+            "FirstName": "Jane",
+            "HomePhone": "(123) 490-4909",
+            "LastName": "Roe",
+            "State": "NM",
+            "Street": "1812 War Lane",
+            "Zip": "87560"
+         },
+         "format": "PERSON",
+         "uid": "f402c448959111e7a8357054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "f402b5ac959111e7a8357054d2175f18"
+      ]
+   }
+}
