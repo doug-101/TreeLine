@@ -427,6 +427,12 @@ class TreeMainControl(QObject):
         fileOpenAct.triggered.connect(self.fileOpen)
         self.allActions['FileOpen'] = fileOpenAct
 
+        fileSampleAct = QAction(_('Open Sa&mple...'), self,
+                                      toolTip=_('Open Sample'),
+                                      statusTip=_('Open a sample file'))
+        fileSampleAct.triggered.connect(self.fileOpenSample)
+        self.allActions['FileOpenSample'] = fileSampleAct
+
         fileImportAct = QAction(_('&Import...'), self,
                                       statusTip=_('Open a non-TreeLine file'))
         fileImportAct.triggered.connect(self.fileImport)
@@ -543,6 +549,23 @@ class TreeMainControl(QObject):
                                                 filters)
             if fileName:
                 self.openFile(pathlib.Path(fileName))
+
+    def fileOpenSample(self):
+        """Open a sample file from the doc directories.
+        """
+        if (globalref.genOptions['OpenNewWindow'] or
+            self.activeControl.checkSaveChanges()):
+            searchPaths = self.findResourcePaths('samples', samplePath)
+            dialog = miscdialogs.TemplateFileDialog(_('Open Sample File'),
+                                                    _('&Select Sample'),
+                                                    searchPaths, False)
+            if dialog.exec_() == QDialog.Accepted:
+                self.createLocalControl(dialog.selectedPath())
+                name = dialog.selectedName() + '.trln'
+                self.activeControl.filePathObj = pathlib.Path(name)
+                self.activeControl.updateWindowCaptions()
+                self.activeControl.expandRootNodes()
+                self.activeControl.imported = True
 
     def fileImport(self):
         """Prompt for an import type, then a file to import.

@@ -1,0 +1,198 @@
+{
+   "formats": [
+      {
+         "childtype": "BOOK",
+         "fields": [
+            {
+               "fieldname": "AuthorFirstName",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "AuthorLastName",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "WebSite",
+               "fieldtype": "ExternalLink",
+               "prefix": "<",
+               "suffix": ">"
+            }
+         ],
+         "formatname": "AUTHOR",
+         "icon": "book_1",
+         "outputlines": [
+            "{*AuthorFirstName*} {*AuthorLastName*} {*WebSite*}"
+         ],
+         "titleline": "{*AuthorFirstName*} {*AuthorLastName*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "Title",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Copyright",
+               "fieldtype": "Number",
+               "format": "0000"
+            },
+            {
+               "fieldname": "Own",
+               "fieldtype": "Boolean",
+               "format": "yes/no"
+            },
+            {
+               "fieldname": "ReadDate",
+               "fieldtype": "Date",
+               "format": "%-%-M/%-d/%Y"
+            },
+            {
+               "fieldname": "Rating",
+               "fieldtype": "Choice",
+               "format": "1/2/3/4/5"
+            },
+            {
+               "fieldname": "Plot",
+               "fieldtype": "Text",
+               "lines": 7
+            }
+         ],
+         "formathtml": true,
+         "formatname": "BOOK",
+         "icon": "book_3",
+         "outputlines": [
+            "<tr><td>\"{*Title*}\"</td>",
+            "<td>(c) {*Copyright*}, Own: {*Own*}</td>",
+            "<td>{*ReadDate*}, Rating: {*Rating*}</td>",
+            "<td>{*Plot*}</td></tr>"
+         ],
+         "tables": true,
+         "titleline": "\"{*Title*}\""
+      },
+      {
+         "childtype": "AUTHOR",
+         "fields": [
+            {
+               "fieldname": "NAME",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "ROOT",
+         "outputlines": [
+            "{*NAME*}"
+         ],
+         "titleline": "{*NAME*}"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "3b6747ac95a411e79cb17054d2175f18",
+            "3b675da095a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "NAME": "SF Books"
+         },
+         "format": "ROOT",
+         "uid": "3b67435695a411e79cb17054d2175f18"
+      },
+      {
+         "children": [
+            "3b67576095a411e79cb17054d2175f18",
+            "3b675c6a95a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "AuthorFirstName": "Greg",
+            "AuthorLastName": "Bear",
+            "WebSite": "<a href=\"http://www.gregbear.com\">www.gregbear.com</a>"
+         },
+         "format": "AUTHOR",
+         "uid": "3b6747ac95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Copyright": "1999",
+            "Own": "false",
+            "Plot": "Evolution caused by virus begining again",
+            "Rating": "4",
+            "ReadDate": "2000-10-01",
+            "Title": "Darwin's Radio"
+         },
+         "format": "BOOK",
+         "uid": "3b67576095a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Copyright": "1985",
+            "Own": "true",
+            "Plot": "Smart viruses take over",
+            "Rating": "2",
+            "ReadDate": "1998-07-01",
+            "Title": "Blood Music"
+         },
+         "format": "BOOK",
+         "uid": "3b675c6a95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [
+            "3b675ea495a411e79cb17054d2175f18",
+            "3b675fd095a411e79cb17054d2175f18",
+            "3b6760e895a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "AuthorFirstName": "Orson Scott",
+            "AuthorLastName": "Card",
+            "WebSite": "<a href=\"http://www.hatrack.com\">www.hatrack.com</a>"
+         },
+         "format": "AUTHOR",
+         "uid": "3b675da095a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Copyright": "1996",
+            "Own": "Yes",
+            "Plot": "Time travel to change history; discovery of America",
+            "Rating": "4",
+            "ReadDate": "1998-09-01",
+            "Title": "Pastwatch, The Redemption of Christopher Columbus"
+         },
+         "format": "BOOK",
+         "uid": "3b675ea495a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Copyright": "1999",
+            "Own": "Yes",
+            "Plot": "Boy travels back to Russian fairy tale",
+            "Rating": "5",
+            "ReadDate": "2000-08-01",
+            "Title": "Enchantment"
+         },
+         "format": "BOOK",
+         "uid": "3b675fd095a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Copyright": "1999",
+            "Own": "Yes",
+            "Plot": "Ender's Game from Bean's perspective",
+            "Rating": "5",
+            "ReadDate": "2001-05-01",
+            "Title": "Ender's Shadow"
+         },
+         "format": "BOOK",
+         "uid": "3b6760e895a411e79cb17054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "3b67435695a411e79cb17054d2175f18"
+      ]
+   }
+}

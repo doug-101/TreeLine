@@ -1,0 +1,87 @@
+{
+   "formats": [
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Text",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "DEFAULT",
+         "outputlines": [
+            "{*Name*}",
+            "{*Text*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Link",
+               "fieldtype": "InternalLink"
+            }
+         ],
+         "formatname": "LINK_TYPE",
+         "outputlines": [
+            "{*Name*}",
+            "{*Link*}"
+         ],
+         "titleline": "{*Name*}"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "2d70acb095a411e79cb17054d2175f18",
+            "2d70aec295a411e79cb17054d2175f18",
+            "2d70afd095a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "Name": "Main"
+         },
+         "format": "DEFAULT",
+         "uid": "2d70a88c95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Link": "<a href=\"#2d70afd095a411e79cb17054d2175f18\">Target Node</a>",
+            "Name": "Using the external link field"
+         },
+         "format": "LINK_TYPE",
+         "uid": "2d70acb095a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Embedded links",
+            "Text": "Links can be <a href=\"#2d70afd095a411e79cb17054d2175f18\">embedded</a> in any text field text by using the Internal Link item from the Edit Menu.  The \"Enable click on target\" button lets you simply click on the target node."
+         },
+         "format": "DEFAULT",
+         "uid": "2d70aec295a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Target Node",
+            "Text": "By default, the target node gets its unique ID from the content of its first field. This can be changed in the Type Config tab of the Configure Types dialog.  Use the Show Advanced button to show the control for the Unique ID Reference."
+         },
+         "format": "DEFAULT",
+         "uid": "2d70afd095a411e79cb17054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "2d70a88c95a411e79cb17054d2175f18"
+      ]
+   }
+}

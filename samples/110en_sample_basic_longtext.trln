@@ -1,0 +1,133 @@
+{
+   "formats": [
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Text",
+               "fieldtype": "HtmlText",
+               "lines": 12
+            }
+         ],
+         "formathtml": true,
+         "formatname": "HTML_TEXT",
+         "outputlines": [
+            "<b>{*Name*}</b>",
+            "{*Text*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Text",
+               "fieldtype": "Text",
+               "lines": 12
+            }
+         ],
+         "formathtml": true,
+         "formatname": "REGULAR_TEXT",
+         "outputlines": [
+            "<b>{*Name*}</b>",
+            "{*Text*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "ROOT",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Text",
+               "fieldtype": "SpacedText",
+               "lines": 12
+            }
+         ],
+         "formathtml": true,
+         "formatname": "SPACED_TEXT",
+         "outputlines": [
+            "<b>{*Name*}</b>{*Text*}"
+         ],
+         "titleline": "{*Name*}"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "ed02751e95a311e79cb17054d2175f18",
+            "ed02771c95a311e79cb17054d2175f18",
+            "ed027aaa95a311e79cb17054d2175f18",
+            "ed027f0095a311e79cb17054d2175f18"
+         ],
+         "data": {
+            "Name": "Text Fields"
+         },
+         "format": "ROOT",
+         "uid": "ed0270d295a311e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Similar to Treepad",
+            "Text": "This file provides a single long text field for each node. This is similar to how the Treepad program on windows is usually used."
+         },
+         "format": "REGULAR_TEXT",
+         "uid": "ed02751e95a311e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Regular text field",
+            "Text": "The most commonly used field type is regular text. Formatting such as <b>bold</b>, <i>italics</i>, font sizes and <span style=\"color:#aa0000\">font colors</span> can be used from the Edit menu.<br />\n<br />\nIt preserves carriage return spaces, but not multiple spaces      within a line."
+         },
+         "format": "REGULAR_TEXT",
+         "uid": "ed02771c95a311e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "HTML text field",
+            "Text": "An HTML field allows tags such as <i>italics</i> to be added manually.\n\nIt does not preserve white space.\n\nCharacters like &lt;, &gt;, and &amp; must be escaped."
+         },
+         "format": "HTML_TEXT",
+         "uid": "ed027aaa95a311e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Spaced text field",
+            "Text": "A spaced text field preserves all    white    space.\n\nIt does not allow character formatting."
+         },
+         "format": "SPACED_TEXT",
+         "uid": "ed027f0095a311e79cb17054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "ed0270d295a311e79cb17054d2175f18"
+      ]
+   }
+}

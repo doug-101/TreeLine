@@ -1,0 +1,235 @@
+{
+   "formats": [
+      {
+         "fields": [
+            {
+               "fieldname": "FirstName",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "LastName",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Street",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "City",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "State",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Zip",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "HomePhone",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "WorkPhone",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "MobilePhone",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Birthday",
+               "fieldtype": "Date",
+               "format": "%B %-d, %Y"
+            },
+            {
+               "fieldname": "Email",
+               "fieldtype": "ExternalLink"
+            }
+         ],
+         "formatname": "PERSON",
+         "outputlines": [
+            "{*FirstName*} {*LastName*}",
+            "{*Street*}",
+            "{*City*}, {*State*} {*Zip*}",
+            "{*HomePhone*} (H)",
+            "{*WorkPhone*} (W)",
+            "{*MobilePhone*} (M)",
+            "DoB: {*Birthday*}",
+            "{*Email*}"
+         ],
+         "titleline": "{*FirstName*} {*LastName*}"
+      },
+      {
+         "childtype": "TYPE",
+         "fields": [
+            {
+               "fieldname": "NAME",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "ROOT",
+         "outputlines": [
+            "{*NAME*}"
+         ],
+         "titleline": "{*NAME*}"
+      },
+      {
+         "childtype": "PERSON",
+         "fields": [
+            {
+               "fieldname": "Type",
+               "fieldtype": "Text"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "TYPE",
+         "outputlines": [
+            "<hr />{*Type*}"
+         ],
+         "titleline": "{*Type*}"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "fc702b0e95a311e79cb17054d2175f18",
+            "fc703cc095a311e79cb17054d2175f18",
+            "fc70413e95a311e79cb17054d2175f18"
+         ],
+         "data": {
+            "NAME": "Main"
+         },
+         "format": "ROOT",
+         "uid": "fc7025d295a311e79cb17054d2175f18"
+      },
+      {
+         "children": [
+            "fc70345a95a311e79cb17054d2175f18",
+            "fc703af495a311e79cb17054d2175f18"
+         ],
+         "data": {
+            "Type": "Friends"
+         },
+         "format": "TYPE",
+         "uid": "fc702b0e95a311e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Birthday": "2004-11-30",
+            "City": "Nina",
+            "Email": "<a href=\"mailto:bill@pinta.com\">bill@pinta.com</a>",
+            "FirstName": "Bill",
+            "HomePhone": "(703) 555-5647",
+            "LastName": "Smith",
+            "State": "SC",
+            "Street": "1492 Columbus Drive",
+            "Zip": "35762"
+         },
+         "format": "PERSON",
+         "uid": "fc70345a95a311e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Birthday": "1905-05-08",
+            "City": "Harbor City",
+            "Email": "<a href=\"mailto:jj@battleship.org\">jj@battleship.org</a>",
+            "FirstName": "John",
+            "HomePhone": "(401) 555-8923",
+            "LastName": "Johnson",
+            "MobilePhone": "(703) 555-2873",
+            "State": "HI",
+            "Street": "1941 Pearl Street",
+            "WorkPhone": "(506) 555-7413",
+            "Zip": "86741"
+         },
+         "format": "PERSON",
+         "uid": "fc703af495a311e79cb17054d2175f18"
+      },
+      {
+         "children": [
+            "fc703e0a95a311e79cb17054d2175f18",
+            "fc703fae95a311e79cb17054d2175f18"
+         ],
+         "data": {
+            "Type": "Family"
+         },
+         "format": "TYPE",
+         "uid": "fc703cc095a311e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Birthday": "1901-07-30",
+            "City": "Dogbone",
+            "Email": "<a href=\"mailto:jdoe@spots.net\">jdoe@spots.net</a>",
+            "FirstName": "Jane",
+            "LastName": "Doe",
+            "MobilePhone": "(654) 555-8527",
+            "State": "SD",
+            "Street": "101 Dalmation Way",
+            "Zip": "52782"
+         },
+         "format": "PERSON",
+         "uid": "fc703e0a95a311e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Birthday": "1999-08-14",
+            "City": "Undersea",
+            "Email": "<a href=\"mailto:johndoe@subs.com\">johndoe@subs.com</a>",
+            "FirstName": "John",
+            "HomePhone": "(805) 555-7296",
+            "LastName": "Doe",
+            "MobilePhone": "(503) 555-8234",
+            "State": "NY",
+            "Street": "20000 Leagues Street",
+            "WorkPhone": "(777) 555-9999",
+            "Zip": "12763"
+         },
+         "format": "PERSON",
+         "uid": "fc703fae95a311e79cb17054d2175f18"
+      },
+      {
+         "children": [
+            "fc70427495a311e79cb17054d2175f18",
+            "fc7043b495a311e79cb17054d2175f18"
+         ],
+         "data": {
+            "Type": "Work"
+         },
+         "format": "TYPE",
+         "uid": "fc70413e95a311e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "FirstName": "Dil",
+            "LastName": "Bert",
+            "WorkPhone": "(501) 555-5612"
+         },
+         "format": "PERSON",
+         "uid": "fc70427495a311e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "FirstName": "Pointy-haired",
+            "LastName": "Boss",
+            "WorkPhone": "(666) 555-8945"
+         },
+         "format": "PERSON",
+         "uid": "fc7043b495a311e79cb17054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "fc7025d295a311e79cb17054d2175f18"
+      ]
+   }
+}

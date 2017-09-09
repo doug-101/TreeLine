@@ -1,0 +1,105 @@
+{
+   "formats": [
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "ROOT",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "TOPIC",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "TEXT",
+               "fieldtype": "Text",
+               "lines": 7
+            }
+         ],
+         "formathtml": true,
+         "formatname": "TEXT_PARA",
+         "icon": "doc",
+         "outputlines": [
+            "<b>{*TOPIC*}</b>",
+            "{*TEXT*}"
+         ],
+         "titleline": "{*TOPIC*}"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "14e55e4895a411e79cb17054d2175f18",
+            "14e5604695a411e79cb17054d2175f18",
+            "14e5616895a411e79cb17054d2175f18",
+            "14e5626c95a411e79cb17054d2175f18",
+            "14e5635c95a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "Name": "Character Format Examples"
+         },
+         "format": "ROOT",
+         "uid": "14e559fc95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "TEXT": "All titles can be set to bold by adding &lt;b&gt;...&lt;/b&gt; tags in the Configure Data Types dialog's Output tab.  The \"Allow HTML rich text in format\" option must also be checked in the Type Config tab.",
+            "TOPIC": "Bold Titles"
+         },
+         "format": "TEXT_PARA",
+         "uid": "14e55e4895a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "TEXT": "Font formatting commands can be found in the Edit menu and in the <b>right-click context menu</b> in the \"Data Editor\" view.",
+            "TOPIC": "Bold Text"
+         },
+         "format": "TEXT_PARA",
+         "uid": "14e5604695a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "TEXT": "Text can also be <span style=\"color:#aa0000\">set</span> to various <span style=\"color:#00007f\">colors</span>.",
+            "TOPIC": "Colored Text"
+         },
+         "format": "TEXT_PARA",
+         "uid": "14e5616895a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "TEXT": "<font size=\"+2\">Large text</font> and <font size=\"-1\">small text</font>",
+            "TOPIC": "Font Size"
+         },
+         "format": "TEXT_PARA",
+         "uid": "14e5626c95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "TEXT": "Text in <i>italics</i> and even text <u>underlined</u>",
+            "TOPIC": "Italics and Underline"
+         },
+         "format": "TEXT_PARA",
+         "uid": "14e5635c95a411e79cb17054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "14e559fc95a411e79cb17054d2175f18"
+      ]
+   }
+}

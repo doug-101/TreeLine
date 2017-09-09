@@ -1,0 +1,240 @@
+{
+   "formats": [
+      {
+         "childtype": "TASK_UNDONE",
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "ROOT",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "condition": "Done == \"true\"",
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Done",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "false"
+            },
+            {
+               "fieldname": "Urgent",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "false"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "TASK_DONE",
+         "icon": "smiley_4",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Done",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "false"
+            },
+            {
+               "fieldname": "Urgent",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "false"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "TASK_UNDONE",
+         "generic": "TASK_DONE",
+         "icon": "smiley_2",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "condition": "Done == \"false\" and Urgent == \"true\"",
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Done",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "false"
+            },
+            {
+               "fieldname": "Urgent",
+               "fieldtype": "Boolean",
+               "format": "yes/no",
+               "init": "true"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "TASK_UNDONE_URGENT",
+         "generic": "TASK_DONE",
+         "icon": "smiley_5",
+         "outputlines": [
+            "<i>{*Name*}</i>"
+         ],
+         "titleline": "{*Name*}!!!"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "4295fc4e95a411e79cb17054d2175f18",
+            "42960f7c95a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "Name": "Conditional Task List"
+         },
+         "format": "ROOT",
+         "uid": "4295faaa95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [
+            "4295ff6e95a411e79cb17054d2175f18",
+            "429602ac95a411e79cb17054d2175f18",
+            "429603c495a411e79cb17054d2175f18",
+            "429607b695a411e79cb17054d2175f18",
+            "42960cca95a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "Name": "Home Tasks"
+         },
+         "format": "ROOT",
+         "uid": "4295fc4e95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "false",
+            "Name": "Mow lawn",
+            "Urgent": "false"
+         },
+         "format": "TASK_UNDONE",
+         "uid": "4295ff6e95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "false",
+            "Name": "Patch wall",
+            "Urgent": "false"
+         },
+         "format": "TASK_UNDONE",
+         "uid": "429602ac95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "false",
+            "Name": "Vacuum",
+            "Urgent": "false"
+         },
+         "format": "TASK_UNDONE",
+         "uid": "429603c495a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "false",
+            "Name": "Walk dog",
+            "Urgent": "true"
+         },
+         "format": "TASK_UNDONE_URGENT",
+         "uid": "429607b695a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "true",
+            "Name": "Watch TV",
+            "Urgent": "false"
+         },
+         "format": "TASK_DONE",
+         "uid": "42960cca95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [
+            "4296107695a411e79cb17054d2175f18",
+            "429611b695a411e79cb17054d2175f18",
+            "429612a695a411e79cb17054d2175f18",
+            "4296139695a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "Name": "Work Tasks"
+         },
+         "format": "ROOT",
+         "uid": "42960f7c95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "true",
+            "Name": "Play solitaire",
+            "Urgent": "false"
+         },
+         "format": "TASK_DONE",
+         "uid": "4296107695a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "false",
+            "Name": "Write documents",
+            "Urgent": "false"
+         },
+         "format": "TASK_UNDONE",
+         "uid": "429611b695a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "true",
+            "Name": "Eat lunch",
+            "Urgent": "false"
+         },
+         "format": "TASK_DONE",
+         "uid": "429612a695a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Done": "false",
+            "Name": "Compliment boss",
+            "Urgent": "true"
+         },
+         "format": "TASK_UNDONE_URGENT",
+         "uid": "4296139695a411e79cb17054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "4295faaa95a411e79cb17054d2175f18"
+      ]
+   }
+}

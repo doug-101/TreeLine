@@ -1,0 +1,184 @@
+{
+   "formats": [
+      {
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "DEFAULT",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "childtype": "DEFAULT",
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "FILE_INFO",
+         "outputlines": [
+            "{*Name*}",
+            "File: {*!File_Path*}/{*!File_Name*}",
+            "File Size: {*!File_Size*} bytes",
+            "File Modified: {*!File_Mod_Date*} {*!File_Mod_Time*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "File_Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "File_Path",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "File_Size",
+               "fieldtype": "Number",
+               "format": "#"
+            },
+            {
+               "fieldname": "File_Mod_Date",
+               "fieldtype": "Date",
+               "format": "%B %-d, %Y"
+            },
+            {
+               "fieldname": "File_Mod_Time",
+               "fieldtype": "Time",
+               "format": "%-I:%M:%S %p"
+            },
+            {
+               "fieldname": "File_Owner",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Page_Number",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Number_of_Pages",
+               "fieldtype": "Text"
+            }
+         ],
+         "formatname": "INT_TL_FILE_DATA_FORM",
+         "outputlines": [
+            ""
+         ],
+         "titleline": ""
+      },
+      {
+         "childtype": "DEFAULT",
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "PARENT_CHILD",
+         "outputlines": [
+            "{*Name*}",
+            "Parent's Name: {**Name*}",
+            "Children's Names: {*&Name*}"
+         ],
+         "titleline": "{*Name*}"
+      },
+      {
+         "childtype": "DEFAULT",
+         "fields": [
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            }
+         ],
+         "formathtml": true,
+         "formatname": "ROOT",
+         "outputlines": [
+            "{*Name*}"
+         ],
+         "titleline": "{*Name*}"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "50cdc8dc95a411e79cb17054d2175f18",
+            "50cdce0495a411e79cb17054d2175f18",
+            "50cdcf7695a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "Name": "Other Field References"
+         },
+         "format": "ROOT",
+         "uid": "50cdc36e95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "File Information"
+         },
+         "format": "FILE_INFO",
+         "uid": "50cdc8dc95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Parent Info"
+         },
+         "format": "PARENT_CHILD",
+         "uid": "50cdce0495a411e79cb17054d2175f18"
+      },
+      {
+         "children": [
+            "50cdd27895a411e79cb17054d2175f18",
+            "50cdd3e095a411e79cb17054d2175f18",
+            "50cdd4e495a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "Name": "Child Info"
+         },
+         "format": "PARENT_CHILD",
+         "uid": "50cdcf7695a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "First child"
+         },
+         "format": "DEFAULT",
+         "uid": "50cdd27895a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Next child"
+         },
+         "format": "DEFAULT",
+         "uid": "50cdd3e095a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Third child"
+         },
+         "format": "DEFAULT",
+         "uid": "50cdd4e495a411e79cb17054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "50cdc36e95a411e79cb17054d2175f18"
+      ]
+   }
+}

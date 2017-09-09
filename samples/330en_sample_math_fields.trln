@@ -1,0 +1,255 @@
+{
+   "formats": [
+      {
+         "childtype": "PART",
+         "fields": [
+            {
+               "fieldname": "PartNumber",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "eqn": "{**Level*} + 1",
+               "fieldname": "Level",
+               "fieldtype": "Math",
+               "format": "#"
+            },
+            {
+               "fieldname": "LaborCost",
+               "fieldtype": "Number",
+               "format": "0.00",
+               "prefix": "$"
+            },
+            {
+               "eqn": "sum({*&Cost*}) + {*LaborCost*}",
+               "fieldname": "Cost",
+               "fieldtype": "Math",
+               "format": "0.00",
+               "prefix": "$"
+            },
+            {
+               "eqn": "{**TotalCost*}",
+               "fieldname": "TotalCost",
+               "fieldtype": "Math",
+               "format": "0.00",
+               "prefix": "$"
+            },
+            {
+               "eqn": "{*Cost*} / {*TotalCost*} * 100",
+               "fieldname": "PercentCost",
+               "fieldtype": "Math",
+               "format": "0",
+               "suffix": "%"
+            }
+         ],
+         "formatname": "ASSEMBLY",
+         "outputlines": [
+            "Part {*PartNumber*}",
+            "{*Name*}",
+            "Assembly Level: {*Level*}",
+            "Cost: {*Cost*}",
+            "Percent Cost: {*PercentCost*}"
+         ],
+         "titleline": "{*PartNumber*} {*Name*}"
+      },
+      {
+         "fields": [
+            {
+               "fieldname": "PartNumber",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "eqn": "{**Level*} + 1",
+               "fieldname": "Level",
+               "fieldtype": "Math",
+               "format": "#"
+            },
+            {
+               "fieldname": "Cost",
+               "fieldtype": "Number",
+               "format": "0.00",
+               "prefix": "$"
+            },
+            {
+               "eqn": "{*Cost*} / {**TotalCost*} * 100",
+               "fieldname": "PercentCost",
+               "fieldtype": "Math",
+               "format": "0",
+               "suffix": "%"
+            },
+            {
+               "eqn": "('Low') if ({*PercentCost*} < 20) else ('High')",
+               "fieldname": "CostLevel",
+               "fieldtype": "Math",
+               "format": "#.##",
+               "resulttype": "text"
+            }
+         ],
+         "formatname": "PART",
+         "outputlines": [
+            "Part {*PartNumber*}",
+            "{*Name*}",
+            "Assembly Level: {*Level*}",
+            "Cost: {*Cost*}",
+            "Percent Cost: {*PercentCost*}",
+            "Cost Level: {*CostLevel*}"
+         ],
+         "titleline": "{*PartNumber*} {*Name*}"
+      },
+      {
+         "childtype": "ASSEMBLY",
+         "fields": [
+            {
+               "fieldname": "PartNumber",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Name",
+               "fieldtype": "Text"
+            },
+            {
+               "fieldname": "Level",
+               "fieldtype": "Number",
+               "format": "#"
+            },
+            {
+               "fieldname": "LaborCost",
+               "fieldtype": "Number",
+               "format": "0.00",
+               "prefix": "$"
+            },
+            {
+               "eqn": "sum({*&Cost*}) + {*LaborCost*}",
+               "fieldname": "TotalCost",
+               "fieldtype": "Math",
+               "format": "0.00",
+               "prefix": "$"
+            }
+         ],
+         "formatname": "TOP_ASSEMBLY",
+         "outputlines": [
+            "Part {*PartNumber*}",
+            "{*Name*}",
+            "Assembly Level: {*Level*}",
+            "Cost: {*TotalCost*}"
+         ],
+         "titleline": "{*PartNumber*} {*Name*}"
+      }
+   ],
+   "nodes": [
+      {
+         "children": [
+            "5f8ff84a95a411e79cb17054d2175f18",
+            "5f901e5695a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "LaborCost": "3.5",
+            "Level": "1",
+            "Name": "Widget Top Assembly",
+            "PartNumber": "123456",
+            "TotalCost": "23.89"
+         },
+         "format": "TOP_ASSEMBLY",
+         "uid": "5f8fdd3895a411e79cb17054d2175f18"
+      },
+      {
+         "children": [
+            "5f900eb695a411e79cb17054d2175f18",
+            "5f901d0c95a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "Cost": "10.040000000000001",
+            "LaborCost": "1.75",
+            "Level": "2",
+            "Name": "Lever Assembly",
+            "PartNumber": "456789",
+            "PercentCost": "42.02595228128925",
+            "TotalCost": "23.89"
+         },
+         "format": "ASSEMBLY",
+         "uid": "5f8ff84a95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Cost": "5.4",
+            "CostLevel": "High",
+            "Level": "3",
+            "Name": "Lever",
+            "PartNumber": "987654",
+            "PercentCost": "22.60359983256593"
+         },
+         "format": "PART",
+         "uid": "5f900eb695a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Cost": "2.89",
+            "CostLevel": "Low",
+            "Level": "3",
+            "Name": "Lever Bolt",
+            "PartNumber": "998877",
+            "PercentCost": "12.097111762243616"
+         },
+         "format": "PART",
+         "uid": "5f901d0c95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [
+            "5f901f6e95a411e79cb17054d2175f18",
+            "5f90208695a411e79cb17054d2175f18"
+         ],
+         "data": {
+            "Cost": "10.35",
+            "LaborCost": "2.25",
+            "Level": "2",
+            "Name": "Bracket Assembly",
+            "PartNumber": "112233",
+            "PercentCost": "43.32356634575136",
+            "TotalCost": "23.89"
+         },
+         "format": "ASSEMBLY",
+         "uid": "5f901e5695a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Cost": "6.2",
+            "CostLevel": "High",
+            "Level": "3",
+            "Name": "Bracket",
+            "PartNumber": "445566",
+            "PercentCost": "25.952281289242364"
+         },
+         "format": "PART",
+         "uid": "5f901f6e95a411e79cb17054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Cost": "1.9",
+            "CostLevel": "Low",
+            "Level": "3",
+            "Name": "Bracket Pin",
+            "PartNumber": "665544",
+            "PercentCost": "7.95311845960653"
+         },
+         "format": "PART",
+         "uid": "5f90208695a411e79cb17054d2175f18"
+      }
+   ],
+   "properties": {
+      "tlversion": "2.9.0",
+      "topnodes": [
+         "5f8fdd3895a411e79cb17054d2175f18"
+      ]
+   }
+}
