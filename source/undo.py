@@ -390,8 +390,8 @@ class ChildListFormatUndo(UndoBase):
             redoRef -- the redo list where the current state is saved
         """
         if redoRef != None:
-            ChildListUndo(redoRef, [data[0] for data in self.dataList],
-                          self.treeStructRef.treeFormats, False)
+            ChildListFormatUndo(redoRef, [data[0] for data in self.dataList],
+                                self.treeStructRef.treeFormats, False)
         self.treeStructRef.configDialogFormats = self.treeFormats
         self.treeStructRef.applyConfigDialogFormats(False)
         dialog = globalref.mainControl.configDialog
@@ -411,6 +411,58 @@ class ChildListFormatUndo(UndoBase):
                     child.addSpotRef(node)
                     for newChild in child.descendantGen():
                         self.treeStructRef.addNodeDictRef(newChild)
+
+
+class BranchFormatUndo(UndoBase):
+    """Info for undo/redo of tree node branches and type format changes.
+    """
+    def __init__(self, listRef, nodes, treeFormats, notRedo=True):
+        """Create the child list undo class and add it to the undoStore.
+
+        Arguments:
+            listRef -- a ref to the undo/redo list this gets added to
+            nodes -- a parent node or a list of parents to save children
+            treeFormats -- the format data to store
+            notRedo -- if True, clear redo list (after changes)
+        """
+        super().__init__(listRef.localControlRef)
+        self.treeFormats = copy.deepcopy(treeFormats)
+        if not isinstance(nodes, list):
+            nodes = [nodes]
+        for parent in nodes:
+            for node in parent.descendantGen():
+                self.dataList.append((node, node.data.copy(),
+                                      node.childList[:]))
+        listRef.addUndoObj(self, notRedo)
+
+    def undo(self, redoRef):
+        """Save current state to redoRef and restore saved state.
+
+        Arguments:
+            redoRef -- the redo list where the current state is saved
+        """
+        if redoRef != None:
+            BranchFormatUndo(redoRef, [data[0] for data in self.dataList],
+                             self.treeStructRef.treeFormats, False)
+        self.treeStructRef.configDialogFormats = self.treeFormats
+        self.treeStructRef.applyConfigDialogFormats(False)
+        dialog = globalref.mainControl.configDialog
+        if dialog and dialog.isVisible():
+            dialog.reset()
+        for node, data, childList in self.dataList:
+            node.data = data
+            origChildList = node.childList
+            node.childList = childList
+            for child in origChildList:
+                if child not in childList:
+                    for oldNode in child.descendantGen():
+                        if len(oldNode.spotRefs) <= 1:
+                            self.treeStructRef.removeNodeDictRef(oldNode)
+                        oldNode.removeInvalidSpotRefs(False)
+            for child in childList:
+                if child not in origChildList:
+                    child.addSpotRef(node)
+                    self.treeStructRef.addNodeDictRef(child)
 
 
 class ParamUndo(UndoBase):

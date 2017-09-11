@@ -580,6 +580,16 @@ class TreeLocalControl(QObject):
         dataCopyTypeAct.triggered.connect(self.dataCopyType)
         localActions['DataCopyType'] = dataCopyTypeAct
 
+        dataFlatCatAct = QAction(_('Flatten &by Category'), self,
+                         statusTip=_('Collapse descendants by merging fields'))
+        dataFlatCatAct.triggered.connect(self.dataFlatCategory)
+        localActions['DataFlatCategory'] = dataFlatCatAct
+
+        dataAddCatAct = QAction(_('Add Category &Level...'), self,
+                           statusTip=_('Insert category nodes above children'))
+        dataAddCatAct.triggered.connect(self.dataAddCategory)
+        localActions['DataAddCategory'] = dataAddCatAct
+
         toolsSpellCheckAct = QAction(_('&Spell Check...'), self,
                              statusTip=_('Spell check the tree\')s text data'))
         toolsSpellCheckAct.triggered.connect(self.toolsSpellCheck)
@@ -1094,6 +1104,52 @@ class TreeLocalControl(QObject):
         self.updateAll()
         if globalref.mainControl.configDialog:
             globalref.mainControl.configDialog.setRefs(self, forceCopy=True)
+
+    def dataFlatCategory(self):
+        """Collapse descendant nodes by merging fields.
+
+        Overwrites data in any fields with the same name.
+        """
+        selectList = self.currentSelectionModel().selectedBranches()
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        undo.BranchFormatUndo(self.structure.undoList, selectList,
+                              self.structure.treeFormats)
+        origFormats = self.structure.undoList[-1].treeFormats
+        for node in selectList:
+            node.flatChildCategory(origFormats)
+        self.updateAll()
+        dialog = globalref.mainControl.configDialog
+        if dialog and dialog.isVisible():
+            dialog.reset()
+        QApplication.restoreOverrideCursor()
+
+    def dataAddCategory(self):
+        """Insert category nodes above children.
+        """
+        selectList = self.currentSelectionModel().selectedBranches()
+        children = []
+        for node in selectList:
+            children.extend(node.childList)
+        fieldList = self.structure.treeFormats.commonFields(children)
+        if not fieldList:
+            QMessageBox.warning(self.activeWindow, 'TreeLine',
+                                _('Cannot expand without common fields'))
+            return
+        dialog = miscdialogs.FieldSelectDialog(_('Category Fields'),
+                                              _('Select fields for new level'),
+                                              fieldList, self.activeWindow)
+        if dialog.exec_() != QDialog.Accepted:
+            return
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        undo.BranchFormatUndo(self.structure.undoList, selectList,
+                              self.structure.treeFormats)
+        for node in selectList:
+            node.addChildCategory(dialog.selectedFields)
+        self.updateAll()
+        dialog = globalref.mainControl.configDialog
+        if dialog and dialog.isVisible():
+            dialog.reset()
+        QApplication.restoreOverrideCursor()
 
     def toolsSpellCheck(self):
         """Spell check the tree text data.

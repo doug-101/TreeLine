@@ -94,6 +94,73 @@ class RadioChoiceDialog(QDialog):
         return self.buttonGroup.checkedButton().returnValue
 
 
+class FieldSelectDialog(QDialog):
+    """Dialog for selecting a sequence from a list of field names.
+    """
+    def __init__(self, title, heading, fieldList, parent=None):
+        """Create the field select dialog.
+
+        Arguments:
+            title -- the window title
+            heading -- the groupbox text
+            fieldList -- the list of field names to select
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
+                            Qt.WindowCloseButtonHint)
+        self.setWindowTitle(title)
+        self.selectedFields = []
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        groupBox = QGroupBox(heading)
+        topLayout.addWidget(groupBox)
+        groupLayout = QVBoxLayout(groupBox)
+
+        self.listView = QTreeWidget()
+        groupLayout.addWidget(self.listView)
+        self.listView.setHeaderLabels(['#', _('Fields')])
+        self.listView.setRootIsDecorated(False)
+        self.listView.setSortingEnabled(False)
+        self.listView.setSelectionMode(QAbstractItemView.MultiSelection)
+        for field in fieldList:
+            QTreeWidgetItem(self.listView, ['', field])
+        self.listView.resizeColumnToContents(0)
+        self.listView.resizeColumnToContents(1)
+        self.listView.itemSelectionChanged.connect(self.updateSelectedFields)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch(0)
+        self.okButton = QPushButton(_('&OK'))
+        ctrlLayout.addWidget(self.okButton)
+        self.okButton.clicked.connect(self.accept)
+        self.okButton.setEnabled(False)
+        cancelButton = QPushButton(_('&Cancel'))
+        ctrlLayout.addWidget(cancelButton)
+        cancelButton.clicked.connect(self.reject)
+        self.listView.setFocus()
+
+    def updateSelectedFields(self):
+        """Update the TreeView and the list of selected fields.
+        """
+        itemList = [self.listView.topLevelItem(i) for i in
+                    range(self.listView.topLevelItemCount())]
+        for item in itemList:
+            if item.isSelected():
+                if item.text(1) not in self.selectedFields:
+                    self.selectedFields.append(item.text(1))
+            elif item.text(1) in self.selectedFields:
+                self.selectedFields.remove(item.text(1))
+        for item in itemList:
+            if item.isSelected():
+                item.setText(0, str(self.selectedFields.index(item.text(1))
+                                    + 1))
+            else:
+                item.setText(0, '')
+        self.okButton.setEnabled(len(self.selectedFields))
+
+
 class FilePropertiesDialog(QDialog):
     """Dialog for setting file parameters like compression and encryption.
     """

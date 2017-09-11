@@ -658,6 +658,83 @@ class TreeNode:
                 if restartSetting and child.formatRef.name not in fieldDict:
                     childSequence[-1] = 1
 
+    def flatChildCategory(self, origFormats):
+        """Collapse descendant nodes by merging fields.
+
+        Overwrites data in any fields with the same name.
+        Arguments:
+            origFormats -- copy of tree formats before any changes
+        """
+        self.childList = [node for node in self.selectiveDescendantGen() if
+                          not node.childList]
+        for node in self.childList:
+            oldParent = node.parent
+            while oldParent != self:
+                for field in origFormats[oldParent.formatName].fields():
+                    data = oldParent.data.get(field.name, '')
+                    if data:
+                        node.data[field.name] = data
+                    node.nodeFormat().addFieldIfNew(field.name,
+                                                    field.xmlAttr())
+                oldParent.removeUniqueId()
+                oldParent = oldParent.parent
+            node.parent = self
+
+    def addChildCategory(self, catList):
+        """Insert category nodes above children.
+
+        Arguments:
+            catList -- the field names to add to the new level
+        """
+        newFormat = None
+        catSet = set(catList)
+        similarFormats = [nodeFormat for nodeFormat in
+                          self.modelRef.formats.values() if
+                          catSet.issubset(set(nodeFormat.fieldNames()))]
+        if similarFormats:
+            similarFormat = min(similarFormats, key=lambda f: len(f.fieldDict))
+            if len(similarFormat.fieldDict) < len(self.childList[0].
+                                                  nodeFormat().fieldDict):
+                newFormat = similarFormat
+        if not newFormat:
+            newFormatName = '{0}_TYPE'.format(catList[0].upper())
+            num = 1
+            while newFormatName in self.modelRef.formats:
+                newFormatName = '{0}_TYPE_{1}'.format(catList[0].upper(), num)
+                num += 1
+            newFormat = nodeformat.NodeFormat(newFormatName,
+                                              self.modelRef.formats)
+            newFormat.addFieldList(catList, True, True)
+            self.modelRef.formats[newFormatName] = newFormat
+        newParents = []
+        for child in self.childList:
+            newParent = child.findEqualFields(catList, newParents)
+            if not newParent:
+                newParent = TreeNode(self, newFormat.name, self.modelRef)
+                for field in catList:
+                    data = child.data.get(field, '')
+                    if data:
+                        newParent.data[field] = data
+                newParent.setUniqueId(True)
+                newParents.append(newParent)
+            newParent.childList.append(child)
+            child.parent = newParent
+        self.childList = newParents
+
+    def findEqualFields(self, fieldNames, nodes):
+        """Return first node in nodes with same data in fieldNames as self.
+
+        Arguments:
+            fieldNames -- the list of fields to check
+            nodes -- the nodes to search for a match
+        """
+        for node in nodes:
+            for field in fieldNames:
+                if self.data.get(field, '') != node.data.get(field, ''):
+                    break
+            else:   # this for loop didn't hit break, so we have a match
+                return node
+
     def exportTitleText(self, level=0):
         """Return a list of tabbed title lines for this node and descendants.
 
