@@ -17,6 +17,7 @@ import uuid
 import operator
 import itertools
 import treespot
+import nodeformat
 
 _replaceBackrefRe = (re.compile(r'\\(\d+)'), re.compile(r'\\g<(\d+)>'))
 _origBackrefMatch = None
@@ -658,68 +659,77 @@ class TreeNode:
                 if restartSetting and child.formatRef.name not in fieldDict:
                     childSequence[-1] = 1
 
-    def flatChildCategory(self, origFormats):
+    def flatChildCategory(self, origFormats, structure):
         """Collapse descendant nodes by merging fields.
 
         Overwrites data in any fields with the same name.
         Arguments:
             origFormats -- copy of tree formats before any changes
+            structure -- a ref to the tree structure
         """
-        self.childList = [node for node in self.selectiveDescendantGen() if
-                          not node.childList]
-        for node in self.childList:
-            oldParent = node.parent
-            while oldParent != self:
-                for field in origFormats[oldParent.formatName].fields():
-                    data = oldParent.data.get(field.name, '')
-                    if data:
-                        node.data[field.name] = data
-                    node.nodeFormat().addFieldIfNew(field.name,
-                                                    field.xmlAttr())
-                oldParent.removeUniqueId()
-                oldParent = oldParent.parent
-            node.parent = self
+        thisSpot = self.spotByNumber(0)
+        newChildList = []
+        for spot in thisSpot.spotDescendantOnlyGen():
+            if not spot.nodeRef.childList:
+                oldParentSpot = spot.parentSpot
+                while oldParentSpot != thisSpot:
+                    for field in origFormats[oldParentSpot.nodeRef.formatRef.
+                                             name].fields():
+                        data = oldParentSpot.nodeRef.data.get(field.name, '')
+                        if data:
+                            spot.nodeRef.data[field.name] = data
+                        spot.nodeRef.formatRef.addFieldIfNew(field.name,
+                                                            field.formatData())
+                    oldParentSpot = oldParentSpot.parentSpot
+                spot.parentSpot = thisSpot
+                newChildList.append(spot.nodeRef)
+            else:
+                structure.removeNodeDictRef(spot.nodeRef)
+        self.childList = newChildList
 
-    def addChildCategory(self, catList):
+    def addChildCategory(self, catList, structure):
         """Insert category nodes above children.
 
         Arguments:
             catList -- the field names to add to the new level
+            structure -- a ref to the tree structure
         """
         newFormat = None
         catSet = set(catList)
         similarFormats = [nodeFormat for nodeFormat in
-                          self.modelRef.formats.values() if
+                          structure.treeFormats.values() if
                           catSet.issubset(set(nodeFormat.fieldNames()))]
         if similarFormats:
             similarFormat = min(similarFormats, key=lambda f: len(f.fieldDict))
             if len(similarFormat.fieldDict) < len(self.childList[0].
-                                                  nodeFormat().fieldDict):
+                                                  formatRef.fieldDict):
                 newFormat = similarFormat
         if not newFormat:
             newFormatName = '{0}_TYPE'.format(catList[0].upper())
             num = 1
-            while newFormatName in self.modelRef.formats:
+            while newFormatName in structure.treeFormats:
                 newFormatName = '{0}_TYPE_{1}'.format(catList[0].upper(), num)
                 num += 1
             newFormat = nodeformat.NodeFormat(newFormatName,
-                                              self.modelRef.formats)
+                                              structure.treeFormats)
             newFormat.addFieldList(catList, True, True)
-            self.modelRef.formats[newFormatName] = newFormat
+            structure.treeFormats[newFormatName] = newFormat
         newParents = []
         for child in self.childList:
             newParent = child.findEqualFields(catList, newParents)
             if not newParent:
-                newParent = TreeNode(self, newFormat.name, self.modelRef)
+                newParent = TreeNode(newFormat)
                 for field in catList:
                     data = child.data.get(field, '')
                     if data:
                         newParent.data[field] = data
-                newParent.setUniqueId(True)
+                structure.addNodeDictRef(newParent)
                 newParents.append(newParent)
             newParent.childList.append(child)
-            child.parent = newParent
         self.childList = newParents
+        for child in self.childList:
+            child.removeInvalidSpotRefs()
+            child.addSpotRef(self)
 
     def findEqualFields(self, fieldNames, nodes):
         """Return first node in nodes with same data in fieldNames as self.

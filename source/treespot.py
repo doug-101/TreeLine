@@ -78,8 +78,17 @@ class TreeSpot:
         Includes self.
         """
         yield self
-        for childNode in self.nodeRef.childList:
-            childSpot = childNode.matchedSpot(self)
+        for childSpot in self.childSpots():
+            for spot in childSpot.spotDescendantGen():
+                yield spot
+
+    def spotDescendantOnlyGen(self):
+        """Return a generator to step through the spots in this branch.
+
+        Does not include self.
+        """
+        for childSpot in self.childSpots():
+            yield childSpot
             for spot in childSpot.spotDescendantGen():
                 yield spot
 

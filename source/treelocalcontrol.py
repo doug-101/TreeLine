@@ -1103,7 +1103,7 @@ class TreeLocalControl(QObject):
         QApplication.restoreOverrideCursor()
         self.updateAll()
         if globalref.mainControl.configDialog:
-            globalref.mainControl.configDialog.setRefs(self, forceCopy=True)
+            globalref.mainControl.configDialog.reset()
 
     def dataFlatCategory(self):
         """Collapse descendant nodes by merging fields.
@@ -1116,11 +1116,10 @@ class TreeLocalControl(QObject):
                               self.structure.treeFormats)
         origFormats = self.structure.undoList[-1].treeFormats
         for node in selectList:
-            node.flatChildCategory(origFormats)
+            node.flatChildCategory(origFormats, self.structure)
         self.updateAll()
-        dialog = globalref.mainControl.configDialog
-        if dialog and dialog.isVisible():
-            dialog.reset()
+        if globalref.mainControl.configDialog:
+            globalref.mainControl.configDialog.reset()
         QApplication.restoreOverrideCursor()
 
     def dataAddCategory(self):
@@ -1144,11 +1143,10 @@ class TreeLocalControl(QObject):
         undo.BranchFormatUndo(self.structure.undoList, selectList,
                               self.structure.treeFormats)
         for node in selectList:
-            node.addChildCategory(dialog.selectedFields)
+            node.addChildCategory(dialog.selectedFields, self.structure)
         self.updateAll()
-        dialog = globalref.mainControl.configDialog
-        if dialog and dialog.isVisible():
-            dialog.reset()
+        if globalref.mainControl.configDialog:
+            globalref.mainControl.configDialog.reset()
         QApplication.restoreOverrideCursor()
 
     def toolsSpellCheck(self):

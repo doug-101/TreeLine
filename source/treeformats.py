@@ -211,6 +211,22 @@ class TreeFormats(dict):
                 result[typeFormat.name] = numberingFields
         return result
 
+    def commonFields(self, nodes):
+        """Return a list of field names common to all given node formats.
+
+        Retains the field sequence from one of the types.
+        Arguments:
+            nodes -- the nodes to check for common fields
+        """
+        formats = set()
+        for node in nodes:
+            formats.add(node.formatRef.name)
+        firstFields = self[formats.pop()].fieldNames()
+        commonFields = set(firstFields)
+        for formatName in formats:
+            commonFields.intersection_update(self[formatName].fieldNames())
+        return [field for field in firstFields if field in commonFields]
+
     def savedConditions(self):
         """Return a dictionary with saved Conditonals from all type formats.
         """
