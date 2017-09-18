@@ -95,7 +95,8 @@ class TitleListView(QTextEdit):
                        zip(selSpots, textList)
                        if spot.nodeRef.title(spot) != text]
             for node, text in changes:
-                undoObj = undo.DataUndo(treeStructure.undoList, node, True)
+                undoObj = undo.DataUndo(treeStructure.undoList, node,
+                                        skipSame=True)
                 if node.setTitle(text):
                     self.nodeModified.emit(node)
                 else:

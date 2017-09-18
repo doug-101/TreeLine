@@ -107,13 +107,16 @@ class UndoBase:
 class DataUndo(UndoBase):
     """Info for undo/redo of tree node data changes.
     """
-    def __init__(self, listRef, nodes, skipSame=False, fieldRef='',
-                 notRedo=True):
+    def __init__(self, listRef, nodes, addChildren=False, addBranch=False,
+                 skipSame=False, fieldRef='', notRedo=True):
         """Create the data undo class and add it to the undoStore.
 
+        Can't use skipSame if addChildren or addBranch are True.
         Arguments:
             listRef -- a ref to the undo/redo list this gets added to
             nodes -- a node or a list of nodes to back up
+            addChildren -- if True, include child nodes
+            addBranch -- if True, include all branch nodes (ignores addChildren
             skipSame -- if true, don't add an undo that is similar to the last
             fieldRef -- optional field name ref to check for similar changes
             notRedo -- if True, clear redo list (after changes)
@@ -127,7 +130,14 @@ class DataUndo(UndoBase):
             fieldRef == listRef[-1].dataList[0][2]):
             return
         for node in nodes:
-            self.dataList.append((node, node.data.copy(), fieldRef))
+            if addBranch:
+                for child in node.descendantGen():
+                    self.dataList.append((child, child.data.copy(), ''))
+            else:
+                self.dataList.append((node, node.data.copy(), fieldRef))
+                if addChildren:
+                    for child in node.childList:
+                        self.dataList.append((child, child.data.copy(), ''))
         listRef.addUndoObj(self, notRedo)
 
     def undo(self, redoRef):
@@ -137,8 +147,8 @@ class DataUndo(UndoBase):
             redoRef -- the redo list where the current state is saved
         """
         if redoRef != None:
-            DataUndo(redoRef, [data[0] for data in self.dataList],
-                     False, '', False)
+            DataUndo(redoRef, [data[0] for data in self.dataList], False,
+                     False, False, '', False)
         for node, data, fieldRef in self.dataList:
             node.data = data
 
@@ -146,12 +156,18 @@ class DataUndo(UndoBase):
 class ChildListUndo(UndoBase):
     """Info for undo/redo of tree node child lists.
     """
-    def __init__(self, listRef, nodes, skipSame=False, notRedo=True):
+    def __init__(self, listRef, nodes, addChildren=False, addBranch=False,
+                 treeFormats=None, skipSame=False, notRedo=True):
         """Create the child list undo class and add it to the undoStore.
 
+        Also stores data formats if given.
+        Can't use skipSame if addChildren or addBranch are True.
         Arguments:
             listRef -- a ref to the undo/redo list this gets added to
             nodes -- a parent node or a list of parents to save children
+            addChildren -- if True, include child nodes
+            addBranch -- if True, include all branch nodes (ignores addChildren
+            treeFormats -- the format data to store
             skipSame -- if true, don't add an undo that is similar to the last
             notRedo -- if True, clear redo list (after changes)
         """
@@ -162,8 +178,19 @@ class ChildListUndo(UndoBase):
             and len(listRef[-1].dataList) == 1 and len(nodes) == 1 and
             nodes[0] == listRef[-1].dataList[0][0]):
             return
+        self.addBranch = addBranch
+        self.treeFormats = None
+        if treeFormats:
+            self.treeFormats = copy.deepcopy(treeFormats)
         for node in nodes:
-            self.dataList.append((node, node.childList[:]))
+            if addBranch:
+                for child in node.descendantGen():
+                    self.dataList.append((child, child.childList[:]))
+            else:
+                self.dataList.append((node, node.childList[:]))
+                if addChildren:
+                    for child in node.childList:
+                        self.dataList.append((child, child.childList[:]))
         listRef.addUndoObj(self, notRedo)
 
     def undo(self, redoRef):
@@ -173,8 +200,30 @@ class ChildListUndo(UndoBase):
             redoRef -- the redo list where the current state is saved
         """
         if redoRef != None:
-            ChildListUndo(redoRef, [data[0] for data in self.dataList],
-                          False, False)
+            formats = None
+            if self.treeFormats:
+                formats = self.treeStructRef.treeFormats
+            ChildListUndo(redoRef, [data[0] for data in self.dataList], False,
+                          False, formats, False, False)
+        if self.treeFormats:
+            self.treeStructRef.configDialogFormats = self.treeFormats
+            self.treeStructRef.applyConfigDialogFormats(False)
+            if globalref.mainControl.configDialog:
+                globalref.mainControl.configDialog.reset()
+        newIds = set()
+        oldIdFreq = dict()
+        for node, childList in self.dataList:
+            origChildren = {child.uId for child in node.childList}
+            children = {child.uId for child in childList}
+            newIds = newNodes | (children - origChildren)
+            for oldId in (origChildren - children):
+                oldIdFreq[oldId] = oldIdFreq.get(oldId, 0) + 1
+            node.childList = childList
+        for node, childList in self.dataList:
+            if (node.uId in oldIdFreq and
+                oldIdFreq[node.uId] >= len(node.spotRefs)):
+                node.removeInvalidSpotRefs(not self.addBranch)
+
         for node, childList in self.dataList:
             origChildList = node.childList
             node.childList = childList

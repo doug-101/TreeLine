@@ -224,7 +224,7 @@ class DataEditDelegate(QStyledItemDelegate):
                 skipUndoAvail = numLines == self.prevNumLines
                 self.prevNumLines = numLines
                 treeStructure = globalref.mainControl.activeControl.structure
-                undo.DataUndo(treeStructure.undoList, cell.node,
+                undo.DataUndo(treeStructure.undoList, cell.node, False, False,
                               skipUndoAvail, cell.field.name)
                 try:
                     cell.node.setData(cell.field, newText)
