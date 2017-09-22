@@ -72,8 +72,8 @@ class UndoRedoList(list):
         Remove the last undo item from the list.
         Restore the previous selection and saved doc modified state.
         """
-        # clear selection to avoid crash due to invalid selection:
-        self.localControlRef.currentSelectionModel().selectSpots([], False)
+        # # clear selection to avoid crash due to invalid selection:
+        # self.localControlRef.currentSelectionModel().selectSpots([], False)
         item = self.pop()
         item.undo(self.altListRef)
         selectSpots = [node.spotByNumber(num) for (node, num) in
@@ -95,8 +95,6 @@ class UndoBase:
         """
         self.dataList = []
         self.treeStructRef = localControlRef.structure
-        self.selectedSpots = (localControlRef.currentSelectionModel().
-                              selectedSpots())
         self.selectedTuples = [(spot.nodeRef, spot.instanceNumber())
                                for spot in
                                localControlRef.currentSelectionModel().
@@ -210,56 +208,68 @@ class ChildListUndo(UndoBase):
             self.treeStructRef.applyConfigDialogFormats(False)
             if globalref.mainControl.configDialog:
                 globalref.mainControl.configDialog.reset()
-        newIds = set()
-        oldIdFreq = dict()
+        newNodes = set()
+        oldNodeFreq = dict()
         for node, childList in self.dataList:
-            origChildren = {child.uId for child in node.childList}
-            children = {child.uId for child in childList}
-            newIds = newNodes | (children - origChildren)
-            for oldId in (origChildren - children):
-                oldIdFreq[oldId] = oldIdFreq.get(oldId, 0) + 1
+            origChildren = set(node.childList)
+            children = set(childList)
+            newNodes = newNodes | (children - origChildren)
+            for oldNode in (origChildren - children):
+                if self.addBranch:
+                    oldNodeFreq[oldNode] = oldNodeFreq.get(oldNode, 0) + 1
+                else:
+                    for child in oldNode.descendantGen():
+                        oldNodeFreq[child] = oldNodeFreq.get(child, 0) + 1
+        for node, childList in self.dataList:
             node.childList = childList
+        for newNode in newNodes:
+            if self.addBranch:
+                self.treeStructRef.addNodeDictRef(newNode)
+            else:
+                for child in newNode.descendantGen():
+                    self.treeStructRef.addNodeDictRef(child)
+        for oldNode, freq in oldNodeFreq.items():
+            if oldNode not in newNodes and freq >= len(oldNode.spotRefs):
+                self.treeStructRef.removeNodeDictRef(oldNode)
+            oldNode.removeInvalidSpotRefs(not self.addBranch)
         for node, childList in self.dataList:
-            if (node.uId in oldIdFreq and
-                oldIdFreq[node.uId] >= len(node.spotRefs)):
-                node.removeInvalidSpotRefs(not self.addBranch)
-
-        for node, childList in self.dataList:
-            origChildList = node.childList
-            node.childList = childList
-            for child in origChildList:
-                if child not in childList:
-                    for oldNode in child.descendantGen():
-                        if len(oldNode.spotRefs) <= 1:
-                            self.treeStructRef.removeNodeDictRef(oldNode)
-                        oldNode.removeInvalidSpotRefs(False)
             for child in childList:
-                if child not in origChildList:
-                    child.addSpotRef(node)
-                    for newChild in child.descendantGen():
-                        self.treeStructRef.addNodeDictRef(newChild)
+                if child in newNodes:
+                    child.addSpotRef(node, not self.addBranch)
 
 
 class ChildDataUndo(UndoBase):
     """Info for undo/redo of tree node child data and lists.
     """
-    def __init__(self, listRef, nodes, notRedo=True):
+    def __init__(self, listRef, nodes, addBranch=False, treeFormats=None,
+                 notRedo=True):
         """Create the child data undo class and add it to the undoStore.
 
         Arguments:
             listRef -- a ref to the undo/redo list this gets added to
             nodes -- a parent node or a list of parents to save children
+            addBranch -- if True, include all branch nodes
+            treeFormats -- the format data to store
             notRedo -- if True, clear redo list (after changes)
         """
         super().__init__(listRef.localControlRef)
         if not isinstance(nodes, list):
             nodes = [nodes]
+        self.addBranch = addBranch
+        self.treeFormats = None
+        if treeFormats:
+            self.treeFormats = copy.deepcopy(treeFormats)
         for parent in nodes:
-            self.dataList.append((parent, parent.data.copy(),
-                                  parent.childList[:]))
-            for node in parent.childList:
-                self.dataList.append((node, node.data.copy(),
-                                      node.childList[:]))
+            if addBranch:
+                for node in parent.descendantGen():
+                    self.dataList.append((node, node.data.copy(),
+                                          node.childList[:]))
+            else:
+                self.dataList.append((parent, parent.data.copy(),
+                                      parent.childList[:]))
+                for node in parent.childList:
+                    self.dataList.append((node, node.data.copy(),
+                                          node.childList[:]))
         listRef.addUndoObj(self, notRedo)
 
     def undo(self, redoRef):
@@ -269,22 +279,45 @@ class ChildDataUndo(UndoBase):
             redoRef -- the redo list where the current state is saved
         """
         if redoRef != None:
-            ChildDataUndo(redoRef, [data[0] for data in self.dataList], False)
+            formats = None
+            if self.treeFormats:
+                formats = self.treeStructRef.treeFormats
+            ChildDataUndo(redoRef, [data[0] for data in self.dataList], False,
+                          formats, False)
+        if self.treeFormats:
+            self.treeStructRef.configDialogFormats = self.treeFormats
+            self.treeStructRef.applyConfigDialogFormats(False)
+            if globalref.mainControl.configDialog:
+                globalref.mainControl.configDialog.reset()
+        newNodes = set()
+        oldNodeFreq = dict()
         for node, data, childList in self.dataList:
-            node.data = data
-            origChildList = node.childList
+            origChildren = set(node.childList)
+            children = set(childList)
+            newNodes = newNodes | (children - origChildren)
+            for oldNode in (origChildren - children):
+                if self.addBranch:
+                    oldNodeFreq[oldNode] = oldNodeFreq.get(oldNode, 0) + 1
+                else:
+                    for child in oldNode.descendantGen():
+                        oldNodeFreq[child] = oldNodeFreq.get(child, 0) + 1
+        for node, data, childList in self.dataList:
             node.childList = childList
-            for child in origChildList:
-                if child not in childList:
-                    for oldNode in child.descendantGen():
-                        if len(oldNode.spotRefs) <= 1:
-                            self.treeStructRef.removeNodeDictRef(oldNode)
-                        oldNode.removeInvalidSpotRefs(False)
+            node.data = data
+        for newNode in newNodes:
+            if self.addBranch:
+                self.treeStructRef.addNodeDictRef(newNode)
+            else:
+                for child in newNode.descendantGen():
+                    self.treeStructRef.addNodeDictRef(child)
+        for oldNode, freq in oldNodeFreq.items():
+            if oldNode not in newNodes and freq >= len(oldNode.spotRefs):
+                self.treeStructRef.removeNodeDictRef(oldNode)
+            oldNode.removeInvalidSpotRefs(not self.addBranch)
+        for node, data, childList in self.dataList:
             for child in childList:
-                if child not in origChildList:
-                    child.addSpotRef(node)
-                    for newChild in child.descendantGen():
-                        self.treeStructRef.addNodeDictRef(newChild)
+                if child in newNodes:
+                    child.addSpotRef(node, not self.addBranch)
 
 
 class BranchUndo(UndoBase):

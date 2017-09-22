@@ -65,12 +65,13 @@ class TreeNode:
         for child in self.childList:
             child.generateSpots(spot)
 
-    def addSpotRef(self, parentNode):
+    def addSpotRef(self, parentNode, includeChildren=True):
         """Add a spot ref here to the given parent if not already there.
 
         If changed, propogate to descendant nodes.
         Arguments:
             parentNode -- the parent to ref in the new spot
+            includeChildren -- if True, propogate to descendant nodes
         """
         changed = False
         origParentSpots = {spot.parentSpot for spot in self.spotRefs}
@@ -78,7 +79,7 @@ class TreeNode:
             if parentSpot not in origParentSpots:
                 self.spotRefs.add(treespot.TreeSpot(self, parentSpot))
                 changed = True
-        if changed:
+        if changed and includeChildren:
             for child in self.childList:
                 child.addSpotRef(self)
 

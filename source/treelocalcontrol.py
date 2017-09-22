@@ -953,8 +953,8 @@ class TreeLocalControl(QObject):
         """
         selSpots = self.currentSelectionModel().selectedSpots()
         if selSpots:
-            # avoid problems with temporarily invalid selection
-            self.currentSelectionModel().selectSpots([], False)
+            # # avoid problems with temporarily invalid selection
+            # self.currentSelectionModel().selectSpots([], False)
             nextSel = selSpots.delete(self.structure)
             self.currentSelectionModel().selectSpots([nextSel], False)
             self.updateAll()
