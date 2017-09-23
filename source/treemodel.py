@@ -169,8 +169,8 @@ class TreeModel(QAbstractItemModel):
         Arguments:
             mimeData -- data for the node branch to be added
             dropAction -- a drop type enum value
-            row -- a row number for the drop location (ignored, can be 0)
-            column -- the coumn number for the drop location (normally 0)
+            row -- a row number for the drop location
+            column -- the column number for the drop location (normally 0)
             index -- the index of the parent node for the drop
 
         """
@@ -186,12 +186,12 @@ class TreeModel(QAbstractItemModel):
         newStruct = treestructure.structFromMimeData(mimeData)
         # check for valid structure and no circular clone ref and not siblings:
         if newStruct and (not isMove or (not parent.uId in newStruct.nodeDict
-                                         and {node.uId for node in
-                                              parent.childList}.
-                                         isdisjoint({node.uId for node in
-                                                     newStruct.childList}))):
-            undo.ChildListFormatUndo(self.treeStructure.undoList, undoParents,
-                                     self.treeStructure.treeFormats)
+                                         and (row >= 0 or {node.uId for node in
+                                                           parent.childList}.
+                                              isdisjoint({node.uId for node in
+                                                      newStruct.childList})))):
+            undo.ChildListUndo(self.treeStructure.undoList, undoParents,
+                               treeFormats=self.treeStructure.treeFormats)
             if isMove:
                 for spot in TreeModel.storedDragSpots:
                     self.treeStructure.deleteNodeSpot(spot)

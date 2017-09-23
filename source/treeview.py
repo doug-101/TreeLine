@@ -277,8 +277,8 @@ class TreeView(QTreeView):
         """
         clickedSpot = self.indexAt(event.pos()).internalPointer()
         if clickedSpot:
-            # clear selection to avoid invalid select bug
-            self.selectionModel().selectSpots([], False)
+            # # clear selection to avoid invalid select bug
+            # self.selectionModel().selectSpots([], False)
             super().dropEvent(event)
             self.selectionModel().selectSpots([clickedSpot], False)
             self.scheduleDelayedItemsLayout()  # reqd before expand
@@ -287,7 +287,8 @@ class TreeView(QTreeView):
             super().dropEvent(event)
             self.selectionModel().selectSpots([])
             self.scheduleDelayedItemsLayout()
-        self.model().treeModified.emit(True)
+        if event.isAccepted():
+            self.model().treeModified.emit(True)
 
     def toggleNoMouseSelectMode(self, active=True):
         """Set noMouseSelectMode to active or inactive.

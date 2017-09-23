@@ -1141,7 +1141,7 @@ class NumberingDialog(QDialog):
             if (self.whatButtons.checkedId() == NumberingScope.fullTree or
                 len(selNodes) == 0):
                 selNodes = control.structure.childList
-            undo.BranchUndo(control.structure.undoList, selNodes)
+            undo.DataUndo(control.structure.undoList, selNodes, addBranch=True)
             reserveNums = (self.noFieldButtons.checkedId() ==
                            NumberingNoField.reserveNoField)
             restartSetting = (self.noFieldButtons.checkedId() ==

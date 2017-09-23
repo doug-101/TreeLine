@@ -1112,8 +1112,8 @@ class TreeLocalControl(QObject):
         """
         selectList = self.currentSelectionModel().selectedBranches()
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        undo.BranchFormatUndo(self.structure.undoList, selectList,
-                              self.structure.treeFormats)
+        undo. ChildDataUndo(self.structure.undoList, selectList, True,
+                            self.structure.treeFormats)
         origFormats = self.structure.undoList[-1].treeFormats
         for node in selectList:
             node.flatChildCategory(origFormats, self.structure)
@@ -1140,8 +1140,8 @@ class TreeLocalControl(QObject):
         if dialog.exec_() != QDialog.Accepted:
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        undo.BranchFormatUndo(self.structure.undoList, selectList,
-                              self.structure.treeFormats)
+        undo.ChildDataUndo(self.structure.undoList, selectList, True,
+                           self.structure.treeFormats)
         for node in selectList:
             node.addChildCategory(dialog.selectedFields, self.structure)
         self.updateAll()
@@ -1366,8 +1366,8 @@ class TreeLocalControl(QObject):
             replaceText -- if not None, replace a match with this string
         """
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        dataUndo = undo.BranchUndo(self.structure.undoList,
-                                   self.structure.childList)
+        dataUndo = undo.DataUndo(self.structure.undoList,
+                                 self.structure.childList, addBranch=True)
         totalMatches = 0
         for node in self.structure.nodeDict.values():
             field, matchQty, num = node.searchReplace(searchText, regExpObj,
@@ -1398,4 +1398,5 @@ class TreeLocalControl(QObject):
             oldControl.activeWindow.saveWindowGeom()
         window.restoreWindowGeom(offset)
         self.activeWindow = window
+        self.expandRootNodes()
         window.show()

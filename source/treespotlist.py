@@ -60,8 +60,8 @@ class TreeSpotList(list):
         parentNodes = self.relatedNodes()
         if not parentNodes:
             parentNodes = [treeStruct]
-        undoObj = undo.ChildListFormatUndo(treeStruct.undoList, parentNodes,
-                                           treeStruct.treeFormats)
+        undoObj = undo.ChildListUndo(treeStruct.undoList, parentNodes,
+                                     treeFormats=treeStruct.treeFormats)
         for parent in parentNodes:
             newStruct = treestructure.structFromMimeData(mimeData)
             if not newStruct:
@@ -83,8 +83,8 @@ class TreeSpotList(list):
         """
         mimeData = QApplication.clipboard().mimeData()
         parentNodes = [spot.parentSpot.nodeRef for spot in self]
-        undoObj = undo.ChildListFormatUndo(treeStruct.undoList, parentNodes,
-                                           treeStruct.treeFormats)
+        undoObj = undo.ChildListUndo(treeStruct.undoList, parentNodes,
+                                     treeFormats=treeStruct.treeFormats)
         for spot in self:
             newStruct = treestructure.structFromMimeData(mimeData)
             if not newStruct:
@@ -124,8 +124,8 @@ class TreeSpotList(list):
             for node in existNodes:
                 if parent in node.parents():
                     return False   # identical siblings
-        undoObj = undo.ChildListFormatUndo(treeStruct.undoList, parentNodes,
-                                           treeStruct.treeFormats)
+        undoObj = undo.ChildListUndo(treeStruct.undoList, parentNodes,
+                                     treeFormats=treeStruct.treeFormats)
         for parent in parentNodes:
             for node in existNodes:
                 parent.childList.append(node)
@@ -158,8 +158,8 @@ class TreeSpotList(list):
             for node in existNodes:
                 if parent in node.parents():
                     return False   # identical siblings
-        undoObj = undo.ChildListFormatUndo(treeStruct.undoList, parentNodes,
-                                           treeStruct.treeFormats)
+        undoObj = undo.ChildListUndo(treeStruct.undoList, parentNodes,
+                                     treeFormats=treeStruct.treeFormats)
         for spot in self:
             parent = spot.parentSpot.nodeRef
             pos = parent.childList.index(spot.nodeRef)
