@@ -853,6 +853,7 @@ class TreeLocalControl(QObject):
         if (self.currentSelectionModel().selectedSpots().
             pasteChild(self.structure, self.activeWindow.treeView)):
             self.updateAll()
+            globalref.mainControl.updateConfigDialog()
 
     def editPasteBefore(self):
         """Paste a sibling before selection.
@@ -861,6 +862,7 @@ class TreeLocalControl(QObject):
         if selSpots.pasteSibling(self.structure):
             self.currentSelectionModel().selectSpots(selSpots, False)
             self.updateAll()
+            globalref.mainControl.updateConfigDialog()
 
     def editPasteAfter(self):
         """Paste a sibling after selection.
@@ -869,6 +871,7 @@ class TreeLocalControl(QObject):
         if selSpots.pasteSibling(self.structure, False):
             self.currentSelectionModel().selectSpots(selSpots, False)
             self.updateAll()
+            globalref.mainControl.updateConfigDialog()
 
     def editPasteCloneChild(self):
         """Paste a child clone from the clipboard.
@@ -1102,8 +1105,7 @@ class TreeLocalControl(QObject):
             self.structure.treeFormats.addTypeIfMissing(nodeFormat)
         QApplication.restoreOverrideCursor()
         self.updateAll()
-        if globalref.mainControl.configDialog:
-            globalref.mainControl.configDialog.reset()
+        globalref.mainControl.updateConfigDialog()
 
     def dataFlatCategory(self):
         """Collapse descendant nodes by merging fields.
@@ -1118,8 +1120,7 @@ class TreeLocalControl(QObject):
         for node in selectList:
             node.flatChildCategory(origFormats, self.structure)
         self.updateAll()
-        if globalref.mainControl.configDialog:
-            globalref.mainControl.configDialog.reset()
+        globalref.mainControl.updateConfigDialog()
         QApplication.restoreOverrideCursor()
 
     def dataAddCategory(self):
@@ -1145,8 +1146,7 @@ class TreeLocalControl(QObject):
         for node in selectList:
             node.addChildCategory(dialog.selectedFields, self.structure)
         self.updateAll()
-        if globalref.mainControl.configDialog:
-            globalref.mainControl.configDialog.reset()
+        globalref.mainControl.updateConfigDialog()
         QApplication.restoreOverrideCursor()
 
     def toolsSpellCheck(self):

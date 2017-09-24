@@ -125,7 +125,7 @@ class TreeWindow(QMainWindow):
         self.rightTabs.currentChanged.connect(self.updateRightViews)
 
     def setExternalSignals(self):
-        """Connect widow object signals to signals in this onject.
+        """Connect widow object signals to signals in this object.
 
         In a separate method to refresh after local control change.
         """

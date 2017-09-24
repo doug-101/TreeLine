@@ -388,6 +388,12 @@ class TreeMainControl(QObject):
             localControl.windowList[0].saveToolbarPosition()
             globalref.histOptions.writeFile()
 
+    def updateConfigDialog(self):
+        """Update the config dialog for changes if it exists.
+        """
+        if self.configDialog:
+            self.configDialog.reset()
+
     def currentStatusBar(self):
         """Return the status bar from the current main window.
         """

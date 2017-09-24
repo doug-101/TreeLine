@@ -206,8 +206,7 @@ class ChildListUndo(UndoBase):
         if self.treeFormats:
             self.treeStructRef.configDialogFormats = self.treeFormats
             self.treeStructRef.applyConfigDialogFormats(False)
-            if globalref.mainControl.configDialog:
-                globalref.mainControl.configDialog.reset()
+            globalref.mainControl.updateConfigDialog()
         newNodes = set()
         oldNodeFreq = dict()
         for node, childList in self.dataList:
@@ -281,8 +280,7 @@ class ChildDataUndo(UndoBase):
         if self.treeFormats:
             self.treeStructRef.configDialogFormats = self.treeFormats
             self.treeStructRef.applyConfigDialogFormats(False)
-            if globalref.mainControl.configDialog:
-                globalref.mainControl.configDialog.reset()
+            globalref.mainControl.updateConfigDialog()
         newNodes = set()
         oldNodeFreq = dict()
         for node, data, childList in self.dataList:
@@ -383,9 +381,7 @@ class FormatUndo(UndoBase):
                        self.treeFormats, False)
         self.treeStructRef.configDialogFormats = self.treeFormats
         self.treeStructRef.applyConfigDialogFormats(False)
-        dialog = globalref.mainControl.configDialog
-        if dialog and dialog.isVisible():
-            dialog.reset()
+        globalref.mainControl.updateConfigDialog()
 
 
 class ParamUndo(UndoBase):
