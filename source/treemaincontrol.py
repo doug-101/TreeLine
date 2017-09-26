@@ -33,6 +33,7 @@ import imports
 import configdialog
 import miscdialogs
 import conditional
+import helpview
 try:
     from __main__ import __version__, __author__
 except ImportError:
@@ -72,6 +73,7 @@ class TreeMainControl(QObject):
         self.findReplaceDialog = None
         self.filterTextDialog = None
         self.filterConditionDialog = None
+        self.basicHelpView = None
         self.passwords = {}
         globalref.mainControl = self
         self.allActions = {}
@@ -172,6 +174,27 @@ class TreeMainControl(QObject):
             pathList.insert(1, pathlib.Path(preferredPath))
         return [path.resolve() for path in pathList if path.is_dir() and
                 list(path.iterdir())]
+
+    def findResourceFile(self, fileName, resourceName, preferredPath=''):
+        """Return a path object for a resource file.
+
+        Add a language code before the extension if it exists.
+        Arguments:
+            fileName -- the name of the file to find
+            resourceName -- the typical name of the resource directory
+            preferredPath -- search this path first if given
+        """
+        fileList = [fileName]
+        if globalref.lang and globalref.lang != 'C':
+            fileList[0:0] = [fileName.replace('.', '_{0}.'.
+                                              format(globalref.lang)),
+                             fileName.replace('.', '_{0}.'.
+                                              format(globalref.lang[:2]))]
+        for fileName in fileList:
+            for path in self.findResourcePaths(resourceName, preferredPath):
+                if (path / fileName).is_file():
+                    return path / fileName
+        return None
 
     def defaultPathObj(self, dirOnly=False):
         """Return a reasonable default file path object.
@@ -847,22 +870,18 @@ class TreeMainControl(QObject):
     def helpViewFull(self):
         """Open a TreeLine file with full documentation.
         """
-        path = self.findResourceFile('documentation.trl', 'doc', docPath)
+        path = self.findResourceFile('documentation.trln', 'doc', docPath)
         if not path:
             QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
                                 _('Error - documentation file not found'))
             return
-        newWindowSetting = globalref.genOptions.getValue('OpenNewWindow')
-        if not newWindowSetting:
-            globalref.genOptions.changeValue('OpenNewWindow', True)
-        self.createLocalControl(path)
-        self.activeControl.filePath = 'documentation.trl'
+        self.createLocalControl(path, forceNewWindow=True)
+        self.activeControl.filePathObj = pathlib.Path('documentation.trln')
         self.activeControl.updateWindowCaptions()
+        self.activeControl.expandRootNodes()
         self.activeControl.imported = True
         win = self.activeControl.activeWindow
         win.rightTabs.setCurrentWidget(win.outputSplitter)
-        if not newWindowSetting:
-            globalref.genOptions.changeValue('OpenNewWindow', False)
 
     def helpAbout(self):
         """ Display version info about this program.
