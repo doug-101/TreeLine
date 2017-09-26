@@ -14,7 +14,7 @@
 
 import unicodedata
 from PyQt5.QtCore import QEvent, QPoint, Qt, pyqtSignal
-from PyQt5.QtGui import QContextMenuEvent, QKeySequence
+from PyQt5.QtGui import QContextMenuEvent, QKeySequence, QTextDocument
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QHeaderView,
                              QLabel, QListWidget, QListWidgetItem, QMenu,
                              QStyledItemDelegate, QTreeView)
@@ -445,6 +445,11 @@ class TreeFilterView(QListWidget):
             self.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.itemSelectionChanged.connect(self.updateSelectionModel)
         self.itemChanged.connect(self.changeTitle)
+        treeFont = QTextDocument().defaultFont()
+        treeFontName = globalref.miscOptions['TreeFont']
+        if treeFontName:
+            treeFont.fromString(treeFontName)
+            self.setFont(treeFont)
 
     def updateItem(self, node):
         """Update the item corresponding to the given node.

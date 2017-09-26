@@ -15,7 +15,7 @@
 import pathlib
 import base64
 from PyQt5.QtCore import QEvent, QRect, QSize, Qt, pyqtSignal
-from PyQt5.QtGui import QGuiApplication
+from PyQt5.QtGui import QGuiApplication, QTextDocument
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QMainWindow,
                              QSplitter, QStackedWidget, QStatusBar, QTabWidget)
 import treeview
@@ -123,6 +123,7 @@ class TreeWindow(QMainWindow):
         self.titleSplitter.addWidget(childTitleView)
 
         self.rightTabs.currentChanged.connect(self.updateRightViews)
+        self.updateFonts()
 
     def setExternalSignals(self):
         """Connect widow object signals to signals in this object.
@@ -205,6 +206,30 @@ class TreeWindow(QMainWindow):
         self.allActions['ViewNextSelect'].setEnabled(len(self.treeView.
                                                          selectionModel().
                                                          nextSpots) > 0)
+
+    def updateFonts(self):
+        """Update custom fonts in views.
+        """
+        treeFont = QTextDocument().defaultFont()
+        treeFontName = globalref.miscOptions['TreeFont']
+        if treeFontName:
+            treeFont.fromString(treeFontName)
+        self.treeView.setFont(treeFont)
+        self.treeView.updateTreeGenOptions()
+        if self.treeFilterView:
+            self.treeFilterView.setFont(treeFont)
+        ouputFont = QTextDocument().defaultFont()
+        ouputFontName = globalref.miscOptions['OutputFont']
+        if ouputFontName:
+            ouputFont.fromString(ouputFontName)
+        editorFont = QTextDocument().defaultFont()
+        editorFontName = globalref.miscOptions['EditorFont']
+        if editorFontName:
+            editorFont.fromString(editorFontName)
+        for i in range(2):
+            self.outputSplitter.widget(i).setFont(ouputFont)
+            self.editorSplitter.widget(i).setFont(editorFont)
+            self.titleSplitter.widget(i).setFont(editorFont)
 
     def resetTreeModel(self, model):
         """Change the model assigned to the tree view.
@@ -528,6 +553,10 @@ class TreeWindow(QMainWindow):
         toolsMenu.addAction(self.allActions['ToolsSpellCheck'])
         toolsMenu.addSeparator()
         toolsMenu.addAction(self.allActions['ToolsGenOptions'])
+        toolsMenu.addSeparator()
+        toolsMenu.addAction(self.allActions['ToolsShortcuts'])
+        toolsMenu.addAction(self.allActions['ToolsToolbars'])
+        toolsMenu.addAction(self.allActions['ToolsFonts'])
 
         formatMenu = self.menuBar().addMenu(_('Fo&rmat'))
         formatMenu.addAction(self.allActions['FormatBoldFont'])
@@ -568,6 +597,9 @@ class TreeWindow(QMainWindow):
         self.windowMenu.addSeparator()
 
         helpMenu = self.menuBar().addMenu(_('&Help'))
+        helpMenu.addAction(self.allActions['HelpBasic'])
+        helpMenu.addAction(self.allActions['HelpFull'])
+        helpMenu.addSeparator()
         helpMenu.addAction(self.allActions['HelpAbout'])
 
     def viewExpandBranch(self):

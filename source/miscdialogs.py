@@ -16,7 +16,9 @@ import enum
 import re
 import sys
 import operator
+import collections
 from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QKeySequence, QTextDocument
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
                              QCheckBox, QComboBox, QDialog, QGridLayout,
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit,
@@ -24,6 +26,8 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
                              QPushButton, QRadioButton, QScrollArea, QSpinBox,
                              QTabWidget, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget)
+import options
+import printdialogs
 import undo
 import globalref
 
@@ -1175,3 +1179,671 @@ class NumberingDialog(QDialog):
             event -- the close event
         """
         self.dialogShown.emit(False)
+
+
+menuNames = collections.OrderedDict([(N_('File Menu'), _('File')),
+                                     (N_('Edit Menu'), _('Edit')),
+                                     (N_('Node Menu'), _('Node')),
+                                     (N_('Data Menu'), _('Data')),
+                                     (N_('Tools Menu'), _('Tools')),
+                                     (N_('Format Menu'), _('Format')),
+                                     (N_('View Menu'), _('View')),
+                                     (N_('Window Menu'), _('Window')),
+                                     (N_('Help Menu'), _('Help'))])
+
+class CustomShortcutsDialog(QDialog):
+    """Dialog for customizing keyboard commands.
+    """
+    def __init__(self, allActions, parent=None):
+        """Create a shortcuts selection dialog.
+
+        Arguments:
+            allActions -- dict of all actions from a window
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
+                            Qt.WindowCloseButtonHint)
+        self.setWindowTitle(_('Keyboard Shortcuts'))
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        scrollArea = QScrollArea()
+        topLayout.addWidget(scrollArea)
+        viewport = QWidget()
+        viewLayout = QGridLayout(viewport)
+        scrollArea.setWidget(viewport)
+        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scrollArea.setWidgetResizable(True)
+
+        self.editors = []
+        for i, keyOption in enumerate(globalref.keyboardOptions.values()):
+            category = menuNames.get(keyOption.category, _('No menu'))
+            try:
+                action = allActions[keyOption.name]
+            except KeyError:
+                pass
+            else:
+                text = '{0} > {1}'.format(category, action.toolTip())
+                label = QLabel(text)
+                viewLayout.addWidget(label, i, 0)
+                editor = KeyLineEdit(keyOption, action, self)
+                viewLayout.addWidget(editor, i, 1)
+                self.editors.append(editor)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        restoreButton = QPushButton(_('&Restore Defaults'))
+        ctrlLayout.addWidget(restoreButton)
+        restoreButton.clicked.connect(self.restoreDefaults)
+        ctrlLayout.addStretch(0)
+        self.okButton = QPushButton(_('&OK'))
+        ctrlLayout.addWidget(self.okButton)
+        self.okButton.clicked.connect(self.accept)
+        cancelButton = QPushButton(_('&Cancel'))
+        ctrlLayout.addWidget(cancelButton)
+        cancelButton.clicked.connect(self.reject)
+        self.editors[0].setFocus()
+
+    def restoreDefaults(self):
+        """Restore all default keyboard shortcuts.
+        """
+        for editor in self.editors:
+            editor.loadDefaultKey()
+
+    def accept(self):
+        """Save any changes to options and actions before closing.
+        """
+        modified = False
+        for editor in self.editors:
+            if editor.modified:
+                editor.saveChange()
+                modified = True
+        if modified:
+            globalref.keyboardOptions.writeFile()
+        super().accept()
+
+
+class KeyLineEdit(QLineEdit):
+    """Line editor for keyboad sequence entry.
+    """
+    usedKeySet = set()
+    blankText = ' ' * 8
+    def __init__(self, keyOption, action, parent=None):
+        """Create a key editor.
+
+        Arguments:
+            keyOption -- the KeyOptionItem for this editor
+            action -- the action to update on changes
+            parent -- the parent dialog
+        """
+        super().__init__(parent)
+        self.keyOption = keyOption
+        self.keyAction = action
+        self.key = None
+        self.modified = False
+        self.setReadOnly(True)
+        self.loadKey()
+
+    def loadKey(self):
+        """Load the initial key shortcut from the option.
+        """
+        key = self.keyOption.value
+        if key:
+            self.setKey(key)
+        else:
+            self.setText(KeyLineEdit.blankText)
+
+    def loadDefaultKey(self):
+        """Change to the default key shortcut from the option.
+
+        Arguments:
+            useDefault -- if True, load the default key
+        """
+        key = self.keyOption.defaultValue
+        if key == self.key:
+            return
+        if key:
+            self.setKey(key)
+            self.modified = True
+        else:
+            self.clearKey(False)
+
+    def setKey(self, key):
+        """Set this editor to the given key and add to the used key set.
+
+        Arguments:
+            key - the QKeySequence to add
+        """
+        keyText = key.toString(QKeySequence.NativeText)
+        self.setText(keyText)
+        self.key = key
+        KeyLineEdit.usedKeySet.add(keyText)
+
+    def clearKey(self, staySelected=True):
+        """Remove any existing key.
+        """
+        self.setText(KeyLineEdit.blankText)
+        if staySelected:
+            self.selectAll()
+        if self.key:
+            KeyLineEdit.usedKeySet.remove(self.key.toString(QKeySequence.
+                                                            NativeText))
+            self.key = None
+            self.modified = True
+
+    def saveChange(self):
+        """Save any change to the option and action.
+        """
+        if self.modified:
+            self.keyOption.setValue(self.key)
+            if self.key:
+                self.keyAction.setShortcut(self.key)
+            else:
+                self.keyAction.setShortcut(QKeySequence())
+
+    def keyPressEvent(self, event):
+        """Capture key strokes and update the editor if valid.
+
+        Arguments:
+            event -- the key press event
+        """
+        if event.key() in (Qt.Key_Shift, Qt.Key_Control,
+                           Qt.Key_Meta, Qt.Key_Alt,
+                           Qt.Key_AltGr, Qt.Key_CapsLock,
+                           Qt.Key_NumLock, Qt.Key_ScrollLock,
+                           Qt.Key_Pause, Qt.Key_Print,
+                           Qt.Key_Cancel):
+            event.ignore()
+        elif event.key() in (Qt.Key_Backspace, Qt.Key_Escape):
+            self.clearKey()
+            event.accept()
+        else:
+            modifier = event.modifiers()
+            if modifier & Qt.KeypadModifier:
+                modifier = modifier ^ Qt.KeypadModifier
+            key = QKeySequence(event.key() + int(modifier))
+            if key != self.key:
+                keyText = key.toString(QKeySequence.NativeText)
+                if keyText not in KeyLineEdit.usedKeySet:
+                    if self.key:
+                        KeyLineEdit.usedKeySet.remove(self.key.
+                                                   toString(QKeySequence.
+                                                            NativeText))
+                    self.setKey(key)
+                    self.selectAll()
+                    self.modified = True
+                else:
+                    text = _('Key {0} is already used').format(keyText)
+                    QMessageBox.warning(self.parent(), 'TreeLine', text)
+            event.accept()
+
+    def contextMenuEvent(self, event):
+        """Change to a context menu with a clear command.
+
+        Arguments:
+            event -- the menu event
+        """
+        menu = QMenu(self)
+        menu.addAction(_('Clear &Key'), self.clearKey)
+        menu.exec_(event.globalPos())
+
+    def mousePressEvent(self, event):
+        """Capture mouse clicks to avoid selection loss.
+
+        Arguments:
+            event -- the mouse event
+        """
+        event.accept()
+
+    def mouseReleaseEvent(self, event):
+        """Capture mouse clicks to avoid selection loss.
+
+        Arguments:
+            event -- the mouse event
+        """
+        event.accept()
+
+    def mouseMoveEvent(self, event):
+        """Capture mouse clicks to avoid selection loss.
+
+        Arguments:
+            event -- the mouse event
+        """
+        event.accept()
+
+    def mouseDoubleClickEvent(self, event):
+        """Capture mouse clicks to avoid selection loss.
+
+        Arguments:
+            event -- the mouse event
+        """
+        event.accept()
+
+    def focusInEvent(self, event):
+        """Select contents when focussed.
+
+        Arguments:
+            event -- the focus event
+        """
+        self.selectAll()
+        super().focusInEvent(event)
+
+
+class CustomToolbarDialog(QDialog):
+    """Dialog for customizing toolbar buttons.
+    """
+    separatorString = _('--Separator--')
+    def __init__(self, allActions, updateFunction, parent=None):
+        """Create a toolbar buttons customization dialog.
+
+        Arguments:
+            allActions -- dict of all actions from a window
+            updateFunction -- a function ref for updating window toolbars
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
+                            Qt.WindowCloseButtonHint)
+        self.setWindowTitle(_('Customize Toolbars'))
+        self.allActions = allActions
+        self.updateFunction = updateFunction
+        self.availableCommands = []
+        self.modified = False
+        self.numToolbars = 0
+        self.availableCommands = []
+        self.toolbarLists = []
+
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        gridLayout = QGridLayout()
+        topLayout.addLayout(gridLayout)
+
+        sizeBox = QGroupBox(_('Toolbar &Size'))
+        gridLayout.addWidget(sizeBox, 0, 0, 1, 2)
+        sizeLayout = QVBoxLayout(sizeBox)
+        self.sizeCombo = QComboBox()
+        sizeLayout.addWidget(self.sizeCombo)
+        self.sizeCombo.addItems([_('Small Icons'), _('Large Icons')])
+        self.sizeCombo.currentIndexChanged.connect(self.setModified)
+
+        numberBox = QGroupBox(_('Toolbar Quantity'))
+        gridLayout.addWidget(numberBox, 0, 2)
+        numberLayout = QHBoxLayout(numberBox)
+        self.quantitySpin = QSpinBox()
+        numberLayout.addWidget(self.quantitySpin)
+        self.quantitySpin.setRange(0, 20)
+        numberlabel = QLabel(_('&Toolbars'))
+        numberLayout.addWidget(numberlabel)
+        numberlabel.setBuddy(self.quantitySpin)
+        self.quantitySpin.valueChanged.connect(self.changeQuantity)
+
+        availableBox = QGroupBox(_('A&vailable Commands'))
+        gridLayout.addWidget(availableBox, 1, 0)
+        availableLayout = QVBoxLayout(availableBox)
+        menuCombo = QComboBox()
+        availableLayout.addWidget(menuCombo)
+        menuCombo.addItems([_(name) for name in menuNames.keys()])
+        menuCombo.currentIndexChanged.connect(self.updateAvailableCommands)
+
+        self.availableListWidget = QListWidget()
+        availableLayout.addWidget(self.availableListWidget)
+
+        buttonLayout = QVBoxLayout()
+        gridLayout.addLayout(buttonLayout, 1, 1)
+        self.addButton = QPushButton('>>')
+        buttonLayout.addWidget(self.addButton)
+        self.addButton.setMaximumWidth(self.addButton.sizeHint().height())
+        self.addButton.clicked.connect(self.addTool)
+
+        self.removeButton = QPushButton('<<')
+        buttonLayout.addWidget(self.removeButton)
+        self.removeButton.setMaximumWidth(self.removeButton.sizeHint().
+                                          height())
+        self.removeButton.clicked.connect(self.removeTool)
+
+        toolbarBox = QGroupBox(_('Tool&bar Commands'))
+        gridLayout.addWidget(toolbarBox, 1, 2)
+        toolbarLayout = QVBoxLayout(toolbarBox)
+        self.toolbarCombo = QComboBox()
+        toolbarLayout.addWidget(self.toolbarCombo)
+        self.toolbarCombo.currentIndexChanged.connect(self.
+                                                      updateToolbarCommands)
+
+        self.toolbarListWidget = QListWidget()
+        toolbarLayout.addWidget(self.toolbarListWidget)
+        self.toolbarListWidget.currentRowChanged.connect(self.
+                                                         setButtonsAvailable)
+
+        moveLayout = QHBoxLayout()
+        toolbarLayout.addLayout(moveLayout)
+        self.moveUpButton = QPushButton(_('Move &Up'))
+        moveLayout.addWidget(self.moveUpButton)
+        self.moveUpButton.clicked.connect(self.moveUp)
+        self.moveDownButton = QPushButton(_('Move &Down'))
+        moveLayout.addWidget(self.moveDownButton)
+        self.moveDownButton.clicked.connect(self.moveDown)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        restoreButton = QPushButton(_('&Restore Defaults'))
+        ctrlLayout.addWidget(restoreButton)
+        restoreButton.clicked.connect(self.restoreDefaults)
+        ctrlLayout.addStretch()
+        self.okButton = QPushButton(_('&OK'))
+        ctrlLayout.addWidget(self.okButton)
+        self.okButton.clicked.connect(self.accept)
+        self.applyButton = QPushButton(_('&Apply'))
+        ctrlLayout.addWidget(self.applyButton)
+        self.applyButton.clicked.connect(self.applyChanges)
+        self.applyButton.setEnabled(False)
+        cancelButton = QPushButton(_('&Cancel'))
+        ctrlLayout.addWidget(cancelButton)
+        cancelButton.clicked.connect(self.reject)
+
+        self.updateAvailableCommands(0)
+        self.loadToolbars()
+
+    def setModified(self):
+        """Set modified flag and make apply button available.
+        """
+        self.modified = True
+        self.applyButton.setEnabled(True)
+
+    def setButtonsAvailable(self):
+        """Enable or disable buttons based on toolbar list state.
+        """
+        toolbarNum = numCommands = commandNum = 0
+        if self.numToolbars:
+            toolbarNum = self.toolbarCombo.currentIndex()
+            numCommands = len(self.toolbarLists[toolbarNum])
+            if self.toolbarLists[toolbarNum]:
+                commandNum = self.toolbarListWidget.currentRow()
+        self.addButton.setEnabled(self.numToolbars > 0)
+        self.removeButton.setEnabled(self.numToolbars and numCommands)
+        self.moveUpButton.setEnabled(self.numToolbars and numCommands > 1 and
+                                     commandNum > 0)
+        self.moveDownButton.setEnabled(self.numToolbars and numCommands > 1 and
+                                       commandNum < numCommands - 1)
+
+    def loadToolbars(self, defaultOnly=False):
+        """Load all toolbar data from options.
+
+        Arguments:
+            defaultOnly -- if True, load default settings
+        """
+        size = (globalref.toolbarOptions['ToolbarSize'] if not defaultOnly else
+                globalref.toolbarOptions.getDefaultValue('ToolbarSize'))
+        self.sizeCombo.blockSignals(True)
+        if size < 24:
+            self.sizeCombo.setCurrentIndex(0)
+        else:
+            self.sizeCombo.setCurrentIndex(1)
+        self.sizeCombo.blockSignals(False)
+        self.numToolbars = (globalref.toolbarOptions['ToolbarQuantity'] if not
+                            defaultOnly else globalref.toolbarOptions.
+                            getDefaultValue('ToolbarQuantity'))
+        self.quantitySpin.blockSignals(True)
+        self.quantitySpin.setValue(self.numToolbars)
+        self.quantitySpin.blockSignals(False)
+        self.toolbarLists = []
+        for num in range(self.numToolbars):
+            key = 'Toolbar{0}'.format(num)
+            toolbar = (globalref.toolbarOptions[key] if not defaultOnly else
+                       globalref.toolbarOptions.getDefaultValue(key))
+            self.toolbarLists.append(toolbar.split(','))
+        self.updateToolbarCombo()
+
+    def updateToolbarCombo(self):
+        """Fill combo with toolbar numbers for current quantity.
+        """
+        self.toolbarCombo.clear()
+        if self.numToolbars:
+            self.toolbarCombo.addItems(['Toolbar {0}'.format(num + 1) for
+                                        num in range(self.numToolbars)])
+        else:
+            self.toolbarListWidget.clear()
+            self.setButtonsAvailable()
+
+    def updateAvailableCommands(self, menuNum):
+        """Fill in available command list for given menu.
+
+        Arguments:
+            menuNum -- the index of the current menu selected
+        """
+        menuName = list(menuNames.keys())[menuNum]
+        self.availableCommands = []
+        self.availableListWidget.clear()
+        for option in globalref.keyboardOptions.values():
+            if option.category == menuName:
+                action = self.allActions[option.name]
+                icon = action.icon()
+                if not icon.isNull():
+                    self.availableCommands.append(option.name)
+                    QListWidgetItem(icon, action.toolTip(),
+                                          self.availableListWidget)
+        QListWidgetItem(CustomToolbarDialog.separatorString,
+                              self.availableListWidget)
+        self.availableListWidget.setCurrentRow(0)
+
+    def updateToolbarCommands(self, toolbarNum):
+        """Fill in toolbar commands for given toolbar.
+
+        Arguments:
+            toolbarNum -- the number of the toolbar to update
+        """
+        self.toolbarListWidget.clear()
+        if self.numToolbars == 0:
+            return
+        for command in self.toolbarLists[toolbarNum]:
+            if command:
+                action = self.allActions[command]
+                QListWidgetItem(action.icon(), action.toolTip(),
+                                      self.toolbarListWidget)
+            else:  # separator
+                QListWidgetItem(CustomToolbarDialog.separatorString,
+                                      self.toolbarListWidget)
+        if self.toolbarLists[toolbarNum]:
+            self.toolbarListWidget.setCurrentRow(0)
+        self.setButtonsAvailable()
+
+    def changeQuantity(self, qty):
+        """Change the toolbar quantity based on a spin box signal.
+
+        Arguments:
+            qty -- the new toolbar quantity
+        """
+        self.numToolbars = qty
+        while qty > len(self.toolbarLists):
+            self.toolbarLists.append([])
+        self.updateToolbarCombo()
+        self.setModified()
+
+    def addTool(self):
+        """Add the selected command to the current toolbar.
+        """
+        toolbarNum = self.toolbarCombo.currentIndex()
+        try:
+            command = self.availableCommands[self.availableListWidget.
+                                             currentRow()]
+            action = self.allActions[command]
+            item = QListWidgetItem(action.icon(), action.toolTip())
+        except IndexError:
+            command = ''
+            item = QListWidgetItem(CustomToolbarDialog.separatorString)
+        if self.toolbarLists[toolbarNum]:
+            pos = self.toolbarListWidget.currentRow() + 1
+        else:
+            pos = 0
+        self.toolbarLists[toolbarNum].insert(pos, command)
+        self.toolbarListWidget.insertItem(pos, item)
+        self.toolbarListWidget.setCurrentRow(pos)
+        self.toolbarListWidget.scrollToItem(item)
+        self.setModified()
+
+    def removeTool(self):
+        """Remove the selected command from the current toolbar.
+        """
+        toolbarNum = self.toolbarCombo.currentIndex()
+        pos = self.toolbarListWidget.currentRow()
+        del self.toolbarLists[toolbarNum][pos]
+        self.toolbarListWidget.takeItem(pos)
+        if self.toolbarLists[toolbarNum]:
+            if pos == len(self.toolbarLists[toolbarNum]):
+                pos -= 1
+            self.toolbarListWidget.setCurrentRow(pos)
+        self.setModified()
+
+    def moveUp(self):
+        """Raise the selected command.
+        """
+        toolbarNum = self.toolbarCombo.currentIndex()
+        pos = self.toolbarListWidget.currentRow()
+        command = self.toolbarLists[toolbarNum].pop(pos)
+        self.toolbarLists[toolbarNum].insert(pos - 1, command)
+        item = self.toolbarListWidget.takeItem(pos)
+        self.toolbarListWidget.insertItem(pos - 1, item)
+        self.toolbarListWidget.setCurrentRow(pos - 1)
+        self.toolbarListWidget.scrollToItem(item)
+        self.setModified()
+
+    def moveDown(self):
+        """Lower the selected command.
+        """
+        toolbarNum = self.toolbarCombo.currentIndex()
+        pos = self.toolbarListWidget.currentRow()
+        command = self.toolbarLists[toolbarNum].pop(pos)
+        self.toolbarLists[toolbarNum].insert(pos + 1, command)
+        item = self.toolbarListWidget.takeItem(pos)
+        self.toolbarListWidget.insertItem(pos + 1, item)
+        self.toolbarListWidget.setCurrentRow(pos + 1)
+        self.toolbarListWidget.scrollToItem(item)
+        self.setModified()
+
+    def restoreDefaults(self):
+        """Restore all default toolbar settings.
+        """
+        self.loadToolbars(True)
+        self.setModified()
+
+    def applyChanges(self):
+        """Apply any changes from the dialog.
+        """
+        size = 16 if self.sizeCombo.currentIndex() == 0 else 32
+        globalref.toolbarOptions.changeValue('ToolbarSize', size)
+        globalref.toolbarOptions.changeValue('ToolbarQuantity',
+                                             self.numToolbars)
+        del self.toolbarLists[self.numToolbars:]
+        for num, toolbarList in enumerate(self.toolbarLists):
+            name = 'Toolbar{0}'.format(num)
+            if name not in globalref.toolbarOptions:
+                options.StringOptionItem(globalref.toolbarOptions, name, '',
+                                         'Toolbar Commands')
+            globalref.toolbarOptions.changeValue(name, ','.join(toolbarList))
+        globalref.toolbarOptions.writeFile()
+        self.modified = False
+        self.applyButton.setEnabled(False)
+        self.updateFunction()
+
+    def accept(self):
+        """Apply changes and close the dialog.
+        """
+        if self.modified:
+            self.applyChanges()
+        super().accept()
+
+
+class CustomFontData:
+    """Class to store custom font settings.
+
+    Acts as a stand-in for PrintData class in the font page of the dialog.
+    """
+    def __init__(self, fontOption):
+        """Initialize the font data.
+
+        Arguments:
+            fontOption -- the name of the font setting to retrieve
+        """
+        self.fontOption = fontOption
+        self.defaultFont = QTextDocument().defaultFont()
+        self.useDefaultFont = True
+        self.mainFont = QTextDocument().defaultFont()
+        fontName = globalref.miscOptions[fontOption]
+        if fontName:
+            self.mainFont.fromString(fontName)
+            self.useDefaultFont = False
+
+    def recordChanges(self):
+        """Record the updated font info to the option settings.
+        """
+        if self.useDefaultFont:
+            globalref.miscOptions.changeValue(self.fontOption, '')
+        else:
+            globalref.miscOptions.changeValue(self.fontOption,
+                                              self.mainFont.toString())
+
+
+class CustomFontDialog(QDialog):
+    """Dialog for selecting custom fonts.
+
+    Uses the print setup dialog's font page for the details.
+    """
+    updateRequired = pyqtSignal()
+    def __init__(self, parent=None):
+        """Create a font customization dialog.
+
+        Arguments:
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
+                            Qt.WindowCloseButtonHint)
+        self.setWindowTitle(_('Customize Toolbars'))
+
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        tabs = QTabWidget()
+        topLayout.addWidget(tabs)
+
+        self.pages = []
+        treeFontPage = printdialogs.FontPage(CustomFontData('TreeFont'), True)
+        self.pages.append(treeFontPage)
+        tabs.addTab(treeFontPage, _('Tree View Font'))
+        outputFontPage = printdialogs.FontPage(CustomFontData('OutputFont'),
+                                               True)
+        self.pages.append(outputFontPage)
+        tabs.addTab(outputFontPage, _('Output View Font'))
+        editorFontPage = printdialogs.FontPage(CustomFontData('EditorFont'),
+                                               True)
+        self.pages.append(editorFontPage)
+        tabs.addTab(editorFontPage, _('Editor View Font'))
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch()
+        self.okButton = QPushButton(_('&OK'))
+        ctrlLayout.addWidget(self.okButton)
+        self.okButton.clicked.connect(self.accept)
+        self.applyButton = QPushButton(_('&Apply'))
+        ctrlLayout.addWidget(self.applyButton)
+        self.applyButton.clicked.connect(self.applyChanges)
+        cancelButton = QPushButton(_('&Cancel'))
+        ctrlLayout.addWidget(cancelButton)
+        cancelButton.clicked.connect(self.reject)
+
+    def applyChanges(self):
+        """Apply any changes from the dialog.
+        """
+        modified = False
+        for page in self.pages:
+            if page.saveChanges():
+                page.printData.recordChanges()
+                modified = True
+        if modified:
+            globalref.miscOptions.writeFile()
+            self.updateRequired.emit()
+
+    def accept(self):
+        """Apply changes and close the dialog.
+        """
+        self.applyChanges()
+        super().accept()

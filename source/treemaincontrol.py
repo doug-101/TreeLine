@@ -504,6 +504,36 @@ class TreeMainControl(QObject):
         toolsGenOptionsAct.triggered.connect(self.toolsGenOptions)
         self.allActions['ToolsGenOptions'] = toolsGenOptionsAct
 
+        toolsShortcutAct = QAction(_('Set &Keyboard Shortcuts...'), self,
+                                    statusTip=_('Customize keyboard commands'))
+        toolsShortcutAct.triggered.connect(self.toolsCustomShortcuts)
+        self.allActions['ToolsShortcuts'] = toolsShortcutAct
+
+        toolsToolbarAct = QAction(_('C&ustomize Toolbars...'), self,
+                                     statusTip=_('Customize toolbar buttons'))
+        toolsToolbarAct.triggered.connect(self.toolsCustomToolbars)
+        self.allActions['ToolsToolbars'] = toolsToolbarAct
+
+        toolsFontsAct = QAction(_('Customize Fo&nts...'), self,
+                               statusTip=_('Customize fonts in various views'))
+        toolsFontsAct.triggered.connect(self.toolsCustomFonts)
+        self.allActions['ToolsFonts'] = toolsFontsAct
+
+        helpBasicAct = QAction(_('&Basic Usage...'), self,
+                               statusTip=_('Display basic usage instructions'))
+        helpBasicAct.triggered.connect(self.helpViewBasic)
+        self.allActions['HelpBasic'] = helpBasicAct
+
+        helpFullAct = QAction(_('&Full Documentation...'), self,
+                   statusTip=_('Open a TreeLine file with full documentation'))
+        helpFullAct.triggered.connect(self.helpViewFull)
+        self.allActions['HelpFull'] = helpFullAct
+
+        helpAboutAct = QAction(_('&About TreeLine...'), self,
+                        statusTip=_('Display version info about this program'))
+        helpAboutAct.triggered.connect(self.helpAbout)
+        self.allActions['HelpAbout'] = helpAboutAct
+
         formatSelectAllAct =  QAction(_('&Select All'), self,
                                    statusTip=_('Select all text in an editor'))
         formatSelectAllAct.setEnabled(False)
@@ -750,6 +780,48 @@ class TreeMainControl(QObject):
                     window.treeView.updateTreeGenOptions()
                 control.updateAll(False)
 
+    def toolsCustomShortcuts(self):
+        """Show dialog to customize keyboard commands.
+        """
+        actions = self.activeControl.activeWindow.allActions
+        dialog = miscdialogs.CustomShortcutsDialog(actions, QApplication.
+                                                   activeWindow())
+        dialog.exec_()
+
+    def toolsCustomToolbars(self):
+        """Show dialog to customize toolbar buttons.
+        """
+        actions = self.activeControl.activeWindow.allActions
+        dialog = miscdialogs.CustomToolbarDialog(actions, self.updateToolbars,
+                                                 QApplication.
+                                                 activeWindow())
+        dialog.exec_()
+
+    def updateToolbars(self):
+        """Update toolbars after changes in custom toolbar dialog.
+        """
+        for control in self.localControls:
+            for window in control.windowList:
+                window.setupToolbars()
+
+    def toolsCustomFonts(self):
+        """Show dialog to customize fonts in various views.
+        """
+        dialog = miscdialogs.CustomFontDialog(QApplication.
+                                              activeWindow())
+        dialog.updateRequired.connect(self.updateCustomFonts)
+        dialog.exec_()
+
+    def updateCustomFonts(self):
+        """Update fonts in all windows based on a dialog signal.
+        """
+        for control in self.localControls:
+            for window in control.windowList:
+                window.updateFonts()
+            control.printData.setDefaultFont()
+        for control in self.localControls:
+            control.updateAll(False)
+
     def formatSelectAll(self):
         """Select all text in any currently focused editor.
         """
@@ -757,6 +829,40 @@ class TreeMainControl(QObject):
             QApplication.focusWidget().selectAll()
         except AttributeError:
             pass
+
+    def helpViewBasic(self):
+        """Display basic usage instructions.
+        """
+        if not self.basicHelpView:
+            path = self.findResourceFile('basichelp.html', 'doc', docPath)
+            if not path:
+                QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
+                                    _('Error - basic help file not found'))
+                return
+            self.basicHelpView = helpview.HelpView(path,
+                                                   _('TreeLine Basic Usage'),
+                                                   globalref.toolIcons)
+        self.basicHelpView.show()
+
+    def helpViewFull(self):
+        """Open a TreeLine file with full documentation.
+        """
+        path = self.findResourceFile('documentation.trl', 'doc', docPath)
+        if not path:
+            QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
+                                _('Error - documentation file not found'))
+            return
+        newWindowSetting = globalref.genOptions.getValue('OpenNewWindow')
+        if not newWindowSetting:
+            globalref.genOptions.changeValue('OpenNewWindow', True)
+        self.createLocalControl(path)
+        self.activeControl.filePath = 'documentation.trl'
+        self.activeControl.updateWindowCaptions()
+        self.activeControl.imported = True
+        win = self.activeControl.activeWindow
+        win.rightTabs.setCurrentWidget(win.outputSplitter)
+        if not newWindowSetting:
+            globalref.genOptions.changeValue('OpenNewWindow', False)
 
     def helpAbout(self):
         """ Display version info about this program.

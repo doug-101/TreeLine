@@ -26,6 +26,7 @@ import dataeditors
 import globalref
 
 _minColumnWidth = 80
+defaultFont = None
 
 class DataEditCell(QTableWidgetItem):
     """Class override for data edit view cells.
@@ -49,6 +50,7 @@ class DataEditCell(QTableWidgetItem):
         self.errorFlag = False
         # store doc to speed up delegate sizeHint and paint calls
         self.doc = QTextDocument()
+        self.doc.setDefaultFont(defaultFont)
         self.doc.setDocumentMargin(6)
         self.updateText()
 
@@ -483,6 +485,15 @@ class DataEditView(QTableWidget):
             self.resizeRowToContents(prevCell.row())
         if newCell:
             self.openPersistentEditor(newCell)
+
+    def setFont(self, font):
+        """Override to avoid setting fonts of inactive cells.
+
+        Arguments:
+            font -- the font to set
+        """
+        global defaultFont
+        defaultFont = font
 
     def highlightSearch(self, wordList=None, regExpList=None):
         """Highlight any found search terms.
