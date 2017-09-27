@@ -29,20 +29,96 @@ import os.path
 import argparse
 import locale
 import builtins
+from PyQt5.QtCore import QCoreApplication, QTranslator
 from PyQt5.QtWidgets import QApplication
 
 
-def markNoTranslate(text, comment=''):
-    """Dummy translation function, only used to mark text.
+def loadTranslator(fileName, app):
+    """Load and install qt translator, return True if sucessful.
 
     Arguments:
-        text -- the text to be translated
-        comment -- a comment used only as a guide for translators
+        fileName -- the translator file to load
+        app -- the main QApplication
     """
-    return text
+    translator = QTranslator(app)
+    modPath = pathlib.Path(sys.path[0]).resolve()
+    if modPath.is_file():
+        modPath = modPath.parent
+    path = modPath / translationPath
+    result = translator.load(fileName, str(path))
+    if not result:
+        path = modPath.parent / translationPath
+        result = translator.load(fileName, str(path))
+    if not result:
+        path = modPath.parent / 'i18n' / translationPath
+        result = translator.load(fileName, str(path))
+    if result:
+        QCoreApplication.installTranslator(translator)
+        return True
+    else:
+        print('Warning: translation file "{0}" could not be loaded'.
+              format(fileName))
+        return False
 
-builtins._ = markNoTranslate
-builtins.N_ = markNoTranslate
+def setupTranslator(app, lang=''):
+    """Set language, load translators and setup translator functions.
+
+    Return the language setting
+    Arguments:
+        app -- the main QApplication
+        lang -- language setting from the command line
+    """
+    try:
+        locale.setlocale(locale.LC_ALL, '')
+    except locale.Error:
+        pass
+    if not lang:
+        lang = os.environ.get('LC_MESSAGES', '')
+        if not lang:
+            lang = os.environ.get('LANG', '')
+            if not lang:
+                try:
+                    lang = locale.getdefaultlocale()[0]
+                except ValueError:
+                    pass
+                if not lang:
+                    lang = ''
+    numTranslators = 0
+    if lang and lang[:2] not in ['C', 'en']:
+        numTranslators += loadTranslator('qt_{0}'.format(lang), app)
+        numTranslators += loadTranslator('treeline_{0}'.format(lang),
+                                         app)
+
+    def translate(text, comment=''):
+        """Translation function, sets context to calling module's filename.
+
+        Arguments:
+            text -- the text to be translated
+            comment -- a comment used only as a guide for translators
+        """
+        try:
+            frame = sys._getframe(1)
+            fileName = frame.f_code.co_filename
+        finally:
+            del frame
+        context = pathlib.Path(fileName).stem
+        return QCoreApplication.translate(context, text, comment)
+
+    def markNoTranslate(text, comment=''):
+        """Dummy translation function, only used to mark text.
+
+        Arguments:
+            text -- the text to be translated
+            comment -- a comment used only as a guide for translators
+        """
+        return text
+
+    if numTranslators:
+        builtins._ = translate
+    else:
+        builtins._ = markNoTranslate
+    builtins.N_ = markNoTranslate
+    return lang
 
 
 if __name__ == '__main__':
@@ -50,12 +126,16 @@ if __name__ == '__main__':
     """
     app = QApplication(sys.argv)
     parser = argparse.ArgumentParser()
+    parser.add_argument('--lang', help='language code for GUI translation')
     parser.add_argument('fileList', nargs='*', metavar='filename',
                         help='input filename(s) to load')
     args = parser.parse_args()
     # use abspath() - pathlib's resolve() replaces drive letters with map names
     pathObjects = [pathlib.Path(os.path.abspath(path)) for path in
                    args.fileList]
+
+    # must setup translator before any treeline module imports
+    lang = setupTranslator(app, args.lang)
 
     import globalref
     globalref.localTextEncoding = locale.getpreferredencoding()
