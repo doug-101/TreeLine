@@ -121,7 +121,8 @@ class RecentFileItem:
                                                        spotId in
                                                        self.selectSpots])
             return True
-        except KeyError:   # for old TreeLine import (spotIds don't match)
+        except (KeyError, IndexError):
+            # for old TreeLine import (spotIds don't match)
             return False
 
     def __eq__(self, other):

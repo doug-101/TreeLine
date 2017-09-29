@@ -132,7 +132,7 @@ class TreeNode:
     def parents(self):
         """Return a set of parent nodes for this node.
 
-        Returns an empty set if called from the tree structure..
+        Returns an empty set if called from the tree structure.
         """
         try:
             return {spot.parentSpot.nodeRef for spot in self.spotRefs}
@@ -659,6 +659,23 @@ class TreeNode:
                     childSequence[-1] += 1
                 if restartSetting and child.formatRef.name not in fieldDict:
                     childSequence[-1] = 1
+
+    def isIdentical(self, node):
+        """Return True if node format, data and descendants are identical.
+
+        Also returns False if the nodes have parents in common.
+        Arguments:
+            node -- the node to check
+        """
+        if (self.formatRef != node.formatRef or
+            len(self.childList) != len(node.childList) or
+            self.data != node.data or not
+            self.parents().isdisjoint(node.parents())):
+            return False
+        for thisChild, otherChild in zip(self.childList, node.childList):
+            if not thisChild.isIdentical(otherChild):
+                return False
+        return True
 
     def flatChildCategory(self, origFormats, structure):
         """Collapse descendant nodes by merging fields.

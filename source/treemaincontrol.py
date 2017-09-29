@@ -400,7 +400,8 @@ class TreeMainControl(QObject):
             localControl -- the local control that is closing
         """
         self.localControls.remove(localControl)
-        if globalref.genOptions['SaveTreeStates']:
+        if (globalref.genOptions['SaveTreeStates'] and
+            not localControl.modified):
             self.recentFiles.saveTreeState(localControl)
         if not self.localControls:
             if globalref.genOptions['SaveWindowGeom']:

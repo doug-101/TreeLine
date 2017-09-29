@@ -580,6 +580,16 @@ class TreeLocalControl(QObject):
         dataCopyTypeAct.triggered.connect(self.dataCopyType)
         localActions['DataCopyType'] = dataCopyTypeAct
 
+        dataCloneMatchesAct = QAction(_('Clone All &Matched Nodes'), self,
+                         statusTip=_('Convert all matching nodes into clones'))
+        dataCloneMatchesAct.triggered.connect(self.dataCloneMatches)
+        localActions['DataCloneMatches'] = dataCloneMatchesAct
+
+        dataDetachClonesAct = QAction(_('&Detach Clones'), self,
+                    statusTip=_('Detach all cloned nodes in current branches'))
+        dataDetachClonesAct.triggered.connect(self.dataDetachClones)
+        localActions['DataDetachClones'] = dataDetachClonesAct
+
         dataFlatCatAct = QAction(_('Flatten &by Category'), self,
                          statusTip=_('Collapse descendants by merging fields'))
         dataFlatCatAct.triggered.connect(self.dataFlatCategory)
@@ -589,6 +599,11 @@ class TreeLocalControl(QObject):
                            statusTip=_('Insert category nodes above children'))
         dataAddCatAct.triggered.connect(self.dataAddCategory)
         localActions['DataAddCategory'] = dataAddCatAct
+
+        dataSwapCatAct = QAction(_('S&wap Category Levels'), self,
+                       statusTip=_('Swap child and grandchild category nodes'))
+        dataSwapCatAct.triggered.connect(self.dataSwapCategory)
+        localActions['DataSwapCategory'] = dataSwapCatAct
 
         toolsSpellCheckAct = QAction(_('&Spell Check...'), self,
                              statusTip=_('Spell check the tree\')s text data'))
@@ -1107,6 +1122,57 @@ class TreeLocalControl(QObject):
         self.updateAll()
         globalref.mainControl.updateConfigDialog()
 
+    def dataCloneMatches(self):
+        """Convert all matching nodes into clones.
+        """
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        selSpots = self.currentSelectionModel().selectedSpots()
+        titleDict = {}
+        for node in self.structure.nodeDict.values():
+            titleDict.setdefault(node.title(), set()).add(node)
+        undoObj = undo.ChildListUndo(self.structure.undoList,
+                                     self.structure.childList, addBranch=True)
+        numChanges = 0
+        for node in self.structure.descendantGen():
+            matches = titleDict[node.title()]
+            if len(matches) > 1:
+                matches = matches.copy()
+                matches.remove(node)
+                for matchedNode in matches:
+                    if node.isIdentical(matchedNode):
+                        numChanges += 1
+                        if len(matchedNode.spotRefs) > len(node.spotRefs):
+                            tmpNode = node
+                            node = matchedNode
+                            matchedNode = tmpNode
+                        numSpots = len(matchedNode.spotRefs)
+                        for parent in matchedNode.parents():
+                            pos = parent.childList.index(matchedNode)
+                            parent.childList[pos] = node
+                            node.addSpotRef(parent)
+                        for child in matchedNode.descendantGen():
+                            if len(child.spotRefs) <= numSpots:
+                                titleDict[child.title()].remove(child)
+                                self.structure.removeNodeDictRef(child)
+                            else:
+                                child.removeInvalidSpotRefs(False)
+        if numChanges:
+            msg = _('Converted {0} branches into clones').format(numChanges)
+            self.currentSelectionModel().selectSpots([spot for spot in selSpots
+                                                      if spot.isValid()],
+                                                     False)
+            self.updateAll()
+        else:
+            msg = _('No identical nodes found')
+            self.structure.undoList.removeLastUndo(undoObj)
+        QApplication.restoreOverrideCursor()
+        QMessageBox.information(self.activeWindow, 'TreeLine', msg)
+
+    def dataDetachClones(self):
+        """Detach all cloned nodes in current branches.
+        """
+        pass
+
     def dataFlatCategory(self):
         """Collapse descendant nodes by merging fields.
 
@@ -1114,7 +1180,7 @@ class TreeLocalControl(QObject):
         """
         selectList = self.currentSelectionModel().selectedBranches()
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        undo. ChildDataUndo(self.structure.undoList, selectList, True,
+        undo.ChildDataUndo(self.structure.undoList, selectList, True,
                             self.structure.treeFormats)
         origFormats = self.structure.undoList[-1].treeFormats
         for node in selectList:
@@ -1148,6 +1214,11 @@ class TreeLocalControl(QObject):
         self.updateAll()
         globalref.mainControl.updateConfigDialog()
         QApplication.restoreOverrideCursor()
+
+    def dataSwapCategory(self):
+        """Swap child and grandchild category nodes.
+        """
+        pass
 
     def toolsSpellCheck(self):
         """Spell check the tree text data.

@@ -255,6 +255,7 @@ class TreeStructure(treenode.TreeNode):
             self.treeFormats.addTypeIfMissing(nodeFormat)
         for node in treeStruct.nodeDict.values():
             self.nodeDict[node.uId] = node
+            node.formatRef = self.treeFormats[node.formatRef.name]
         for node in treeStruct.childList:
             if position >= 0:
                 parent.childList.insert(position, node)

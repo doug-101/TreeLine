@@ -539,8 +539,12 @@ class TreeWindow(QMainWindow):
         dataMenu.addAction(self.allActions['DataSortNodes'])
         dataMenu.addAction(self.allActions['DataNumbering'])
         dataMenu.addSeparator()
+        dataMenu.addAction(self.allActions['DataCloneMatches'])
+        dataMenu.addAction(self.allActions['DataDetachClones'])
+        dataMenu.addSeparator()
         dataMenu.addAction(self.allActions['DataFlatCategory'])
         dataMenu.addAction(self.allActions['DataAddCategory'])
+        dataMenu.addAction(self.allActions['DataSwapCategory'])
 
         toolsMenu = self.menuBar().addMenu(_('&Tools'))
         toolsMenu.addAction(self.allActions['ToolsFindText'])
