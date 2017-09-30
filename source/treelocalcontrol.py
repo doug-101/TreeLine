@@ -24,6 +24,7 @@ import treemaincontrol
 import treestructure
 import treemodel
 import treeformats
+import treenode
 import treewindow
 import exports
 import miscdialogs
@@ -1171,7 +1172,33 @@ class TreeLocalControl(QObject):
     def dataDetachClones(self):
         """Detach all cloned nodes in current branches.
         """
-        pass
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        selSpots = self.currentSelectionModel().selectedBranchSpots()
+        undoObj = undo.ChildListUndo(self.structure.undoList,
+                                     [spot.parentSpot.nodeRef for spot in
+                                      selSpots], addBranch=True)
+        numChanges = 0
+        for branchSpot in selSpots:
+            for spot in branchSpot.spotDescendantGen():
+                if (len(spot.nodeRef.spotRefs) > 1 and
+                    len(spot.parentSpot.nodeRef.spotRefs) <= 1):
+                    numChanges += 1
+                    linkedNode = spot.nodeRef
+                    linkedNode.spotRefs.remove(spot)
+                    newNode = treenode.TreeNode(linkedNode.formatRef)
+                    newNode.data = linkedNode.data.copy()
+                    newNode.childList = linkedNode.childList[:]
+                    newNode.spotRefs.add(spot)
+                    spot.nodeRef = newNode
+                    parent = spot.parentSpot.nodeRef
+                    pos = parent.childList.index(linkedNode)
+                    parent.childList[pos] = newNode
+                    self.structure.addNodeDictRef(newNode)
+        if numChanges:
+            self.updateAll()
+        else:
+            self.structure.undoList.removeLastUndo(undoObj)
+        QApplication.restoreOverrideCursor()
 
     def dataFlatCategory(self):
         """Collapse descendant nodes by merging fields.

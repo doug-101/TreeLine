@@ -228,7 +228,7 @@ class ChildListUndo(UndoBase):
         for node, childList in self.dataList:
             for child in childList:
                 if child in newNodes:
-                    child.addSpotRef(node, not self.addBranch)
+                    child.addSpotRef(node)
 
 
 class ChildDataUndo(UndoBase):
