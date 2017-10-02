@@ -17,6 +17,7 @@ import json
 import os
 import sys
 import gzip
+import operator
 from PyQt5.QtCore import QObject, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
                              QFileDialog, QMenu, QMessageBox)
@@ -1205,8 +1206,8 @@ class TreeLocalControl(QObject):
 
         Overwrites data in any fields with the same name.
         """
-        selectList = self.currentSelectionModel().selectedBranches()
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        selectList = self.currentSelectionModel().selectedBranches()
         undo.ChildDataUndo(self.structure.undoList, selectList, True,
                             self.structure.treeFormats)
         origFormats = self.structure.undoList[-1].treeFormats
@@ -1245,7 +1246,39 @@ class TreeLocalControl(QObject):
     def dataSwapCategory(self):
         """Swap child and grandchild category nodes.
         """
-        pass
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        selectList = self.currentSelectionModel().selectedBranches()
+        undo.ChildListUndo(self.structure.undoList, selectList, addBranch=True)
+        doneNodes = set()
+        for ancestor in selectList:
+            for child in ancestor.childList[:]:
+                for catNode in child.childList[:]:
+                    if catNode not in doneNodes:
+                        doneNodes.add(catNode)
+                        childSpots = [spot.parentSpot for spot in
+                                      catNode.spotRefs]
+                        childSpots.sort(key=operator.methodcaller('sortKey'))
+                        children = [childSpot.nodeRef for childSpot in
+                                    childSpots]
+                        catNode.childList[0:0] = children
+        doneNodes = set()
+        for ancestor in selectList:
+            for child in ancestor.childList[:]:
+                for catNode in child.childList[:]:
+                    if catNode not in doneNodes:
+                        doneNodes.add(catNode)
+                        childSpots = [spot.parentSpot for spot in
+                                      catNode.spotRefs]
+                        for childSpot in childSpots:
+                            child = childSpot.nodeRef
+                            child.childList = []
+                            ancestor = childSpot.parentSpot.nodeRef
+                            ancestor.childList[ancestor.childList.
+                                               index(child)] = catNode
+                            catNode.addSpotRef(ancestor)
+                        catNode.removeInvalidSpotRefs()
+        self.updateAll()
+        QApplication.restoreOverrideCursor()
 
     def toolsSpellCheck(self):
         """Spell check the tree text data.
