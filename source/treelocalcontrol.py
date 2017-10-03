@@ -1261,21 +1261,22 @@ class TreeLocalControl(QObject):
                         children = [childSpot.nodeRef for childSpot in
                                     childSpots]
                         catNode.childList[0:0] = children
-        doneNodes = set()
         for ancestor in selectList:
+            position = 0
+            doneNodes = set()
             for child in ancestor.childList[:]:
                 for catNode in child.childList[:]:
                     if catNode not in doneNodes:
                         doneNodes.add(catNode)
-                        childSpots = [spot.parentSpot for spot in
-                                      catNode.spotRefs]
-                        for childSpot in childSpots:
-                            child = childSpot.nodeRef
+                        for catSpot in catNode.spotRefs:
+                            child = catSpot.parentSpot.nodeRef
                             child.childList = []
-                            ancestor = childSpot.parentSpot.nodeRef
-                            ancestor.childList[ancestor.childList.
-                                               index(child)] = catNode
-                            catNode.addSpotRef(ancestor)
+                            if child in ancestor.childList:
+                                position = ancestor.childList.index(child)
+                                del ancestor.childList[position]
+                        ancestor.childList.insert(position, catNode)
+                        position += 1
+                        catNode.addSpotRef(ancestor)
                         catNode.removeInvalidSpotRefs()
         self.updateAll()
         QApplication.restoreOverrideCursor()
