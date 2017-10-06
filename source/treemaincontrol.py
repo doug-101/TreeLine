@@ -801,7 +801,7 @@ class TreeMainControl(QObject):
             self.recentFiles.updateNumEntries()
             for control in self.localControls:
                 for window in control.windowList:
-                    window.treeView.updateTreeGenOptions()
+                    window.updateWinGenOptions()
                 control.updateAll(False)
 
     def toolsCustomShortcuts(self):

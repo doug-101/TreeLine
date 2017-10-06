@@ -235,12 +235,6 @@ class DataEditDelegate(QStyledItemDelegate):
                 self.parent().nodeModified.emit(cell.node)
                 cell.titleCellRef.setText(cell.node.title(cell.spot))
                 cell.typeCellRef.setText(cell.node.formatRef.name)
-                # linkRefCollect = cell.node.modelRef.linkRefCollect
-                # if (hasattr(editor, 'addedIntLinkFlag') and
-                    # (editor.addedIntLinkFlag or
-                     # linkRefCollect.linkCount(cell.node, cell.field.name))):
-                    # linkRefCollect.searchForLinks(cell.node, cell.field.name)
-                    # editor.addedIntLinkFlag = False
                 editor.modified = False
         else:
             super().setModelData(editor, styleOption, modelIndex)
@@ -297,15 +291,14 @@ class DataEditDelegate(QStyledItemDelegate):
             self.prevNumLines = -1  # reset undo avail for mouse cursor changes
         if event.type() == QEvent.FocusOut:
             self.prevNumLines = -1  # reset undo avail for any focus loss
-            if (event.reason() in (Qt.MouseFocusReason,
-                                   Qt.TabFocusReason,
-                                   Qt.BacktabFocusReason) and
-                (not hasattr(editor, 'calendar') or
-                 not editor.calendar or not editor.calendar.isVisible()) and
+            if (event.reason() in (Qt.MouseFocusReason, Qt.TabFocusReason,
+                                   Qt.BacktabFocusReason)
+                and (not hasattr(editor, 'calendar') or
+                not editor.calendar or not editor.calendar.isVisible()) and
                 (not hasattr(editor, 'intLinkDialog') or
                  not editor.intLinkDialog or
                  not editor.intLinkDialog.isVisible())):
-                self.parent().setCurrentCell(-1, -1)
+                self.parent().endEditor()
                 return True
         return super().eventFilter(editor, event)
 
@@ -319,6 +312,7 @@ class DataEditView(QTableWidget):
     inLinkSelectMode = pyqtSignal(bool)
     internalLinkSelected = pyqtSignal(treenode.TreeNode)
     focusOtherView = pyqtSignal(bool)
+    hoverFocusActive = pyqtSignal()
     shortcutEntered = pyqtSignal(QKeySequence)
     def __init__(self, treeView, allActions, isChildView=True,
                  parent=None):
@@ -335,7 +329,9 @@ class DataEditView(QTableWidget):
         self.allActions = allActions
         self.isChildView = isChildView
         self.hideChildView = not globalref.genOptions['InitShowChildPane']
+        self.prevHoverCell = None
         self.setAcceptDrops(True)
+        self.setMouseTracking(globalref.genOptions['EditorOnHover'])
         self.horizontalHeader().hide()
         self.verticalHeader().hide()
         self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
@@ -479,12 +475,19 @@ class DataEditView(QTableWidget):
             newCell -- the new current edit cell item
             prevCell - the old current cell item
         """
+        prevText = prevCell.text() if prevCell else 'none'
+        newText = newCell.text() if newCell else 'none'
         if prevCell and hasattr(prevCell, 'updateText'):
             self.closePersistentEditor(prevCell)
             prevCell.updateText()
             self.resizeRowToContents(prevCell.row())
         if newCell:
             self.openPersistentEditor(newCell)
+
+    def endEditor(self):
+        """End persistent editors by changing active cells.
+        """
+        self.setCurrentCell(-1, -1)
 
     def setFont(self, font):
         """Override to avoid setting fonts of inactive cells.
@@ -662,6 +665,23 @@ class DataEditView(QTableWidget):
             event.accept()
         else:
             super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+        """Handle mouse move event to create editors on hover.
+
+        Arguments:
+            event -- the mouse event
+        """
+        cell = self.itemAt(event.pos())
+        if cell and hasattr(cell, 'doc'):
+            if cell != self.currentItem() and cell != self.prevHoverCell:
+                self.prevHoverCell = cell
+                self.hoverFocusActive.emit()
+                self.setFocus()
+                self.setCurrentItem(None)
+                self.setCurrentItem(cell)
+        else:
+            self.prevHoverCell = None
 
 
 class SearchHighlighter(QSyntaxHighlighter):

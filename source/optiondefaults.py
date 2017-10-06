@@ -47,6 +47,9 @@ def setGenOptionDefaults(generalOptions):
     BoolOptionItem(generalOptions, 'OpenNewWindow', True,
                    _('Features Available'),
                    _('Open files in new windows'))
+    BoolOptionItem(generalOptions, 'EditorOnHover', True,
+                   _('Features Available'),
+                   _('Activate data editors on mouse hover'))
     BoolOptionItem(generalOptions, 'ClickRename', True,
                    _('Features Available'), _('Click node to rename'))
     BoolOptionItem(generalOptions, 'RenameNewNodes', True,

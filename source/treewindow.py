@@ -111,6 +111,8 @@ class TreeWindow(QMainWindow):
                                                toggleNoMouseSelectMode)
         self.treeView.skippedMouseSelect.connect(childEditView.
                                                  internalLinkSelected)
+        parentEditView.hoverFocusActive.connect(childEditView.endEditor)
+        childEditView.hoverFocusActive.connect(parentEditView.endEditor)
         self.editorSplitter.addWidget(childEditView)
 
         self.titleSplitter = QSplitter(Qt.Vertical)
@@ -206,6 +208,14 @@ class TreeWindow(QMainWindow):
         self.allActions['ViewNextSelect'].setEnabled(len(self.treeView.
                                                          selectionModel().
                                                          nextSpots) > 0)
+
+    def updateWinGenOptions(self):
+        """Update tree and data edit windows based on general option changes.
+        """
+        self.treeView.updateTreeGenOptions()
+        for i in range(2):
+            self.editorSplitter.widget(i).setMouseTracking(globalref.
+                                                   genOptions['EditorOnHover'])
 
     def updateFonts(self):
         """Update custom fonts in views.
