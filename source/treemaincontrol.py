@@ -236,6 +236,10 @@ class TreeMainControl(QObject):
                                   globalref.genOptions['OpenNewWindow'] or
                                   self.activeControl.checkSaveChanges()):
             return
+        if not self.checkAutoSave(pathObj):
+            if not self.localControls:
+                self.createLocalControl()
+            return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
             self.createLocalControl(pathObj, None, forceNewWindow)
@@ -248,7 +252,7 @@ class TreeMainControl(QObject):
             QApplication.restoreOverrideCursor()
             QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
                                 _('Error - could not read file {0}').
-                                format(str(pathObj)))
+                                format(pathObj))
             self.recentFiles.removeItem(pathObj)
         except (ValueError, KeyError, TypeError):
             fileObj = pathObj.open('rb')
@@ -299,7 +303,7 @@ class TreeMainControl(QObject):
             else:
                 QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
                                     _('Error - invalid TreeLine file {0}').
-                                    format(str(pathObj)))
+                                    format(pathObj))
                 self.recentFiles.removeItem(pathObj)
         if not self.localControls:
             self.createLocalControl()
@@ -359,6 +363,61 @@ class TreeMainControl(QObject):
             return (fileObj, False)
         newFileObj.name = fileObj.name
         return (newFileObj, True)
+
+    def checkAutoSave(self, pathObj):
+        """Check for presence of auto save file & prompt user.
+
+        Return True if OK to contimue, False if aborting or already loaded.
+        Arguments:
+            pathObj -- the base path object to search for a backup
+        """
+        if not globalref.genOptions['AutoSaveMinutes']:
+            return True
+        basePath = pathObj
+        pathObj = pathlib.Path(str(pathObj) + '~')
+        if not pathObj.is_file():
+            return True
+        msgBox = QMessageBox(QMessageBox.Information, 'TreeLine',
+                             _('Backup file "{}" exists.\nA previous '
+                               'session may have crashed').
+                             format(pathObj), QMessageBox.NoButton,
+                             QApplication.activeWindow())
+        restoreButton = msgBox.addButton(_('&Restore Backup'),
+                                         QMessageBox.ApplyRole)
+        deleteButton = msgBox.addButton(_('&Delete Backup'),
+                                        QMessageBox.DestructiveRole)
+        cancelButton = msgBox.addButton(_('&Cancel File Open'),
+                                        QMessageBox.RejectRole)
+        msgBox.exec_()
+        if msgBox.clickedButton() == restoreButton:
+            self.openFile(pathObj)
+            if self.activeControl.filePathObj != pathObj:
+                return False
+            try:
+                basePath.unlink()
+                pathObj.rename(basePath)
+            except OSError:
+                QMessageBox.warning(QApplication.activeWindow(),
+                                  'TreeLine',
+                                  _('Error - could not rename "{0}" to "{1}"').
+                                  format(pathObj, basePath))
+                return False
+            self.activeControl.filePathObj = basePath
+            self.activeControl.updateWindowCaptions()
+            self.recentFiles.removeItem(pathObj)
+            self.recentFiles.addItem(basePath)
+            return False
+        elif msgBox.clickedButton() == deleteButton:
+            try:
+                pathObj.unlink()
+            except OSError:
+                QMessageBox.warning(QApplication.activeWindow(),
+                                  'TreeLine',
+                                  _('Error - could not remove backup file {}').
+                                  format(pathObj))
+        else:   # cancel button
+            return False
+        return True
 
     def createLocalControl(self, pathObj=None, treeStruct=None,
                            forceNewWindow=False):
@@ -792,6 +851,7 @@ class TreeMainControl(QObject):
     def toolsGenOptions(self):
         """Set general user preferences for all files.
         """
+        oldAutoSaveMinutes = globalref.genOptions['AutoSaveMinutes']
         dialog = options.OptionDialog(globalref.genOptions,
                                       QApplication.activeWindow())
         dialog.setWindowTitle(_('General Options'))
@@ -799,10 +859,13 @@ class TreeMainControl(QObject):
             globalref.genOptions.modified):
             globalref.genOptions.writeFile()
             self.recentFiles.updateNumEntries()
+            autoSaveMinutes = globalref.genOptions['AutoSaveMinutes']
             for control in self.localControls:
                 for window in control.windowList:
                     window.updateWinGenOptions()
                 control.updateAll(False)
+                if autoSaveMinutes != oldAutoSaveMinutes:
+                    control.resetAutoSave()
 
     def toolsCustomShortcuts(self):
         """Show dialog to customize keyboard commands.

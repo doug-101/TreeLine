@@ -18,7 +18,7 @@ import os
 import sys
 import gzip
 import operator
-from PyQt5.QtCore import QObject, Qt, pyqtSignal
+from PyQt5.QtCore import QObject, QTimer, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
                              QFileDialog, QMenu, QMessageBox)
 import treemaincontrol
@@ -99,6 +99,8 @@ class TreeLocalControl(QObject):
                                                     self)
         self.structure.undoList.altListRef = self.structure.redoList
         self.structure.redoList.altListRef = self.structure.undoList
+        self.autoSaveTimer = QTimer(self)
+        self.autoSaveTimer.timeout.connect(self.autoSave)
         if not globalref.mainControl.activeControl:
             self.windowNew(offset=0)
         elif forceNewWindow or globalref.genOptions['OpenNewWindow']:
@@ -305,6 +307,7 @@ class TreeLocalControl(QObject):
         if modified != self.modified:
             self.modified = modified
             self.allActions['FileSave'].setEnabled(modified)
+            self.resetAutoSave()
 
     def expandRootNodes(self, maxNum=5):
         """Expand root node if there are fewer than the maximum.
@@ -358,7 +361,7 @@ class TreeLocalControl(QObject):
         """
         if not self.modified or len(self.windowList) > 1:
             return True
-        promptText = (_('Save changes to {}?').format(str(self.filePathObj))
+        promptText = (_('Save changes to {}?').format(self.filePathObj)
                       if self.filePathObj else _('Save changes?'))
         ans = QMessageBox.information(self.activeWindow, 'TreeLine',
                                       promptText,
@@ -368,6 +371,8 @@ class TreeLocalControl(QObject):
             self.fileSave()
         elif ans == QMessageBox.Cancel:
             return False
+        else:
+            self.deleteAutoSaveFile()
         return True
 
     def closeWindows(self):
@@ -375,6 +380,38 @@ class TreeLocalControl(QObject):
         """
         for window in self.windowList:
             window.close()
+
+    def autoSave(self):
+        """Save a backup file if appropriate.
+
+        Called from the timer.
+        """
+        if self.filePathObj and not self.imported:
+            self.fileSave(True)
+
+    def resetAutoSave(self):
+        """Start or stop the auto-save timer based on file modified status.
+
+        Also delete old autosave files if file becomes unmodified.
+        """
+        self.autoSaveTimer.stop()
+        minutes = globalref.genOptions['AutoSaveMinutes']
+        if minutes and self.modified:
+            self.autoSaveTimer.start(60000 * minutes)
+        else:
+            self.deleteAutoSaveFile()
+
+    def deleteAutoSaveFile(self):
+        """Delete an auto save file if it exists.
+        """
+        filePath = pathlib.Path(str(self.filePathObj) + '~')
+        if self.filePathObj and filePath.is_file():
+            try:
+                filePath.unlink()
+            except OSError:
+                QMessageBox.warning(self.activeWindow, 'TreeLine',
+                                  _('Error - could not delete backup file {}').
+                                  format(filePath))
 
     def windowActions(self, startNum=1, active=False):
         """Return a list of window menu actions to select this file's windows.
@@ -707,7 +744,7 @@ class TreeLocalControl(QObject):
                 QApplication.restoreOverrideCursor()
                 QMessageBox.warning(self.activeWindow, 'TreeLine',
                                     _('Error - could not write to {}').
-                                    format(str(savePathObj)))
+                                    format(savePathObj))
                 return
         else:
             data = json.dumps(fileData, indent=3, sort_keys=True).encode()
@@ -736,7 +773,7 @@ class TreeLocalControl(QObject):
                 QApplication.restoreOverrideCursor()
                 QMessageBox.warning(self.activeWindow, 'TreeLine',
                                     _('Error - could not write to {}').
-                                    format(str(savePathObj)))
+                                    format(savePathObj))
                 return
         QApplication.restoreOverrideCursor()
         if not backupFile:

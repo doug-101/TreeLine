@@ -135,10 +135,7 @@ class RecentFileItem:
             otherPath = other.pathObj
         except AttributeError:
             otherPath = other
-        try:
-            return self.pathObj.samefile(otherPath)
-        except OSError:
-            return False
+        return self.pathObj.resolve() == otherPath.resolve()
 
     def __ne__(self, other):
         """Test for inequality between RecentFileItems and paths.
@@ -150,10 +147,7 @@ class RecentFileItem:
             otherPath = other.pathObj
         except AttributeError:
             otherPath = other
-        try:
-            return not self.pathObj.samefile(otherPath)
-        except OSError:
-            return True
+        return self.pathObj.resolve() != otherPath.resolve()
 
 
 class RecentFileList(list):
@@ -239,7 +233,7 @@ class RecentFileList(list):
         """
         try:
             item = self[self.index(localControl.filePathObj)]
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, AttributeError):
             return
         item.recordTreeState(localControl)
 
