@@ -1184,6 +1184,7 @@ class CombinationDialog(QDialog):
 
         Arguments:
             choiceList -- a list of text choices
+            selectList -- a lit of choices to preselect
             parent -- the parent, if given
         """
         super().__init__(parent)

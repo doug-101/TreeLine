@@ -17,10 +17,11 @@ import copy
 import operator
 from PyQt5.QtCore import QPoint, QSize, Qt, pyqtSignal
 from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
-                             QGridLayout, QGroupBox, QHBoxLayout, QLabel,
-                             QLineEdit, QListView, QListWidget,
-                             QListWidgetItem, QMenu, QMessageBox, QPushButton,
+from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
+                             QCheckBox, QComboBox, QDialog, QGridLayout,
+                             QGroupBox, QHBoxLayout, QLabel, QLineEdit,
+                             QListView, QListWidget, QListWidgetItem, QMenu,
+                             QMessageBox, QPushButton, QScrollArea,
                              QSizePolicy, QSpinBox, QTabWidget, QTextEdit,
                              QTreeWidget, QTreeWidgetItem, QVBoxLayout,
                              QWidget)
@@ -386,6 +387,9 @@ class TypeListPage(ConfigPage):
                     nodeType.childType = dlg.text
                 if nodeType.genericType == oldName:
                     nodeType.genericType = dlg.text
+                if oldName in nodeType.childTypeLimit:
+                    nodeType.childTypeLimit.remove(oldName)
+                    nodeType.childTypeLimit.add(dlg.text)
             ConfigDialog.currentTypeName = dlg.text
             self.updateContent()
             self.mainDialogRef.setModified()
@@ -412,6 +416,7 @@ class TypeListPage(ConfigPage):
             if nodeType.genericType == ConfigDialog.currentTypeName:
                 nodeType.genericType = ''
                 nodeType.conditional = None
+            nodeType.childTypeLimit.discard(ConfigDialog.currentTypeName)
         ConfigDialog.formatsRef.updateDerivedRefs()
         ConfigDialog.currentTypeName = ConfigDialog.formatsRef.typeNames()[0]
         ConfigDialog.currentFieldName = ConfigDialog.formatsRef[ConfigDialog.
@@ -506,6 +511,15 @@ class TypeConfigPage(ConfigPage):
         conditionLayout.addWidget(self.conditionButton)
         self.conditionButton.clicked.connect(self.showConditionDialog)
 
+        typeLimitBox = QGroupBox(_('Child Type Limits'))
+        topLayout.addWidget(typeLimitBox, 4, 0)
+        self.advancedWidgets.append(typeLimitBox)
+        typeLimitLayout = QVBoxLayout(typeLimitBox)
+        self.typeLimitCombo = TypeLimitCombo()
+        typeLimitLayout.addWidget(self.typeLimitCombo)
+        self.typeLimitCombo.limitChanged.connect(self.mainDialogRef.
+                                                 setModified)
+
         topLayout.setRowStretch(5, 1)
 
     def updateContent(self):
@@ -561,17 +575,20 @@ class TypeConfigPage(ConfigPage):
         self.genericCombo.blockSignals(True)
         self.genericCombo.clear()
         self.genericCombo.addItem(_noTypeSetName)
-        typeNames = [name for name in typeNames if
-                     name != ConfigDialog.currentTypeName and
-                     not ConfigDialog.formatsRef[name].genericType]
-        self.genericCombo.addItems(typeNames)
+        genTypeNames = [name for name in typeNames if
+                        name != ConfigDialog.currentTypeName and
+                        not ConfigDialog.formatsRef[name].genericType]
+        self.genericCombo.addItems(genTypeNames)
         try:
-            generic = typeNames.index(currentFormat.genericType) + 1
+            generic = genTypeNames.index(currentFormat.genericType) + 1
         except ValueError:
             generic = 0
         self.genericCombo.setCurrentIndex(generic)
         self.genericCombo.blockSignals(False)
         self.setConditionAvail()
+
+        self.typeLimitCombo.updateLists(typeNames,
+                                        currentFormat.childTypeLimit)
 
     def changeIcon(self):
         """Show the change icon dialog based on a button press.
@@ -664,6 +681,7 @@ class TypeConfigPage(ConfigPage):
                 ConfigDialog.currentFieldName = currentFormat.fieldNames()[0]
         currentFormat.spaceBetween = self.blanksButton.isChecked()
         currentFormat.formatHtml = self.htmlButton.isChecked()
+        currentFormat.childTypeLimit = self.typeLimitCombo.selectSet
         useBullets = self.bulletButton.isChecked()
         useTables = self.tableButton.isChecked()
         if (useBullets != currentFormat.useBullets or
@@ -1576,6 +1594,122 @@ class TitleEdit(QLineEdit):
         self.setCursorPosition(cursorPos)
         if selectStart >= 0:
             self.setSelection(selectStart, cursorPos - selectStart)
+
+
+class TypeLimitCombo(QComboBox):
+    """A combo box for selecting limited child types.
+    """
+    limitChanged = pyqtSignal()
+    def __init__(self, parent=None):
+        """Initialize the editor class.
+
+        Arguments:
+            parent -- the parent, if given
+        """
+        super().__init__(parent)
+        self.checkBoxDialog = None
+        self.typeNames = []
+        self.selectSet = set()
+
+    def updateLists(self, typeNames, selectSet):
+        """Update control text and store data for popup.
+
+        Arguments:
+            typeNames -- a list of available type names
+            selectSet -- a set of seleected type names
+        """
+        self.typeNames = typeNames
+        self.updateSelects(selectSet)
+
+    def updateSelects(self, selectSet):
+        """Update control text and store selected items.
+
+        Arguments:
+            selectSet -- a set of seleected type names
+        """
+        self.selectSet = selectSet
+        if not selectSet or selectSet == set(self.typeNames):
+            text = _('[All Types Available]')
+            self.selectSet = set()
+        else:
+            text = ', '.join(sorted(selectSet))
+        self.addItem(text)
+        self.setCurrentText(text)
+
+    def showPopup(self):
+        """Override to show a popup entry widget in place of a list view.
+        """
+        self.checkBoxDialog = TypeLimitCheckBox(self.typeNames,
+                                                self.selectSet, self)
+        self.checkBoxDialog.setMinimumWidth(self.width())
+        self.checkBoxDialog.buttonChanged.connect(self.updateFromButton)
+        self.checkBoxDialog.show()
+        pos = self.mapToGlobal(self.rect().bottomRight())
+        pos.setX(pos.x() - self.checkBoxDialog.width() + 1)
+        screenBottom =  (QApplication.desktop().screenGeometry(self).
+                         bottom())
+        if pos.y() + self.checkBoxDialog.height() > screenBottom:
+            pos.setY(pos.y() - self.rect().height() -
+                     self.checkBoxDialog.height())
+        self.checkBoxDialog.move(pos)
+
+    def hidePopup(self):
+        """Override to hide the popup entry widget.
+        """
+        if self.checkBoxDialog:
+            self.checkBoxDialog.hide()
+        super().hidePopup()
+
+    def updateFromButton(self):
+        """Update selected items based on a button change.
+        """
+        self.updateSelects(self.checkBoxDialog.selectSet())
+        self.limitChanged.emit()
+
+
+class TypeLimitCheckBox(QDialog):
+    """A popup dialog box for selecting limited child types.
+    """
+    buttonChanged = pyqtSignal()
+    def __init__(self, textList, selectSet, parent=None):
+        """Initialize the combination dialog.
+
+        Arguments:
+            textList -- a list of text choices
+            selectSet -- a set of choices to preselect
+            parent -- the parent, if given
+        """
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Popup)
+        topLayout = QVBoxLayout(self)
+        topLayout.setContentsMargins(0, 0, 0, 0)
+        scrollArea = QScrollArea()
+        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        topLayout.addWidget(scrollArea)
+        innerWidget = QWidget()
+        innerLayout = QVBoxLayout(innerWidget)
+        self.buttonGroup = QButtonGroup(self)
+        self.buttonGroup.setExclusive(False)
+        self.buttonGroup.buttonClicked.connect(self.buttonChanged)
+        for text in textList:
+            button = QCheckBox(text, innerWidget)
+            if text in selectSet:
+                button.setChecked(True)
+            self.buttonGroup.addButton(button)
+            innerLayout.addWidget(button)
+        scrollArea.setWidget(innerWidget)
+        buttons = self.buttonGroup.buttons()
+        if buttons:
+            buttons[0].setFocus()
+
+    def selectSet(self):
+        """Return a set of currently checked text.
+        """
+        result = set()
+        for button in self.buttonGroup.buttons():
+            if button.isChecked():
+                result.add(button.text())
+        return result
 
 
 _illegalRe = re.compile(r'[^\w_\-.]')

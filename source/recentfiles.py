@@ -233,7 +233,7 @@ class RecentFileList(list):
         """
         try:
             item = self[self.index(localControl.filePathObj)]
-        except (ValueError, TypeError, AttributeError):
+        except (ValueError, TypeError, AttributeError, OSError):
             return
         item.recordTreeState(localControl)
 

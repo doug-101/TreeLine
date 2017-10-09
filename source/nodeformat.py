@@ -52,6 +52,8 @@ class NodeFormat:
         self.name = name
         self.parentFormats = parentFormats
         self.savedConditionText = {}
+        self.conditional = None
+        self.childTypeLimit = set()
         self.readFormat(formatData)
         self.siblingPrefix = ''
         self.siblingSuffix = ''
@@ -92,8 +94,8 @@ class NodeFormat:
         self.genericType = formatData.get('generic', '')
         if 'condition' in formatData:
             self.conditional = conditional.Conditional(formatData['condition'])
-        else:
-            self.conditional = None
+        if 'childTypeLimit' in formatData:
+            self.childTypeLimit = set(formatData['childTypeLimit'])
         self.iconName = formatData.get('icon', '')
         self.outputSeparator = formatData.get('outputsep',
                                               _defaultOutputSeparator)
@@ -122,8 +124,9 @@ class NodeFormat:
         if self.genericType:
             formatData['generic'] = self.genericType
         if self.conditional:
-            print('storing conditional')
             formatData['condition'] = self.conditional.conditionStr()
+        if self.childTypeLimit:
+            formatData['childTypeLimit'] = sorted(list(self.childTypeLimit))
         if self.iconName:
             formatData['icon'] = self.iconName
         if self.outputSeparator != _defaultOutputSeparator:

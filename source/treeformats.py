@@ -103,7 +103,10 @@ class TreeFormats(dict):
         """
         if sourceFormats.typeRenameDict:
             for oldName, newName in sourceFormats.typeRenameDict.items():
-                self[oldName].name = newName
+                try:
+                    self[oldName].name = newName
+                except KeyError:
+                    pass    # skip if new type is renamed
             formats = list(self.values())
             self.clear()
             for nodeFormat in formats:
