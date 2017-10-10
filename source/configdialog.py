@@ -1711,6 +1711,29 @@ class TypeLimitCheckBox(QDialog):
                 result.add(button.text())
         return result
 
+    def selectAll(self):
+        """Select all of the entries.
+        """
+        for button in self.buttonGroup.buttons():
+            button.setChecked(True)
+
+    def selectNone(self):
+        """Clear all of the selections.
+        """
+        for button in self.buttonGroup.buttons():
+            button.setChecked(False)
+
+    def contextMenuEvent(self, event):
+        """Create a popup context menu.
+
+        Arguments:
+            event -- the menu even to process
+        """
+        menu = QMenu(self)
+        menu.addAction(_('&Select All'), self.selectAll)
+        menu.addAction(_('Select &None'), self.selectNone)
+        menu.exec_(event.globalPos())
+
 
 _illegalRe = re.compile(r'[^\w_\-.]')
 

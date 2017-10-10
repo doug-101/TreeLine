@@ -1086,9 +1086,22 @@ class TreeLocalControl(QObject):
     def loadTypeSubMenu(self):
         """Update type select submenu with type names and check marks.
         """
-        selectTypes = {node.formatRef.name for node in
-                       self.currentSelectionModel().selectedNodes()}
-        typeNames = self.structure.treeFormats.typeNames()
+        selectTypeNames = set()
+        typeLimitNames = set()
+        for node in self.currentSelectionModel().selectedNodes():
+            selectTypeNames.add(node.formatRef.name)
+            if typeLimitNames is not None:
+                for parent in node.parents():
+                    limit = parent.formatRef.childTypeLimit
+                    if (not limit or (typeLimitNames and
+                                      limit != typeLimitNames)):
+                        typeLimitNames = None
+                    elif typeLimitNames is not None:
+                        typeLimitNames = limit
+        if typeLimitNames:
+            typeNames = sorted(list(typeLimitNames))
+        else:
+            typeNames = self.structure.treeFormats.typeNames()
         self.typeSubMenu.clear()
         usedShortcuts = []
         for name in typeNames:
@@ -1102,7 +1115,7 @@ class TreeLocalControl(QObject):
                 text = name
             action = self.typeSubMenu.addAction(text)
             action.setCheckable(True)
-            if name in selectTypes:
+            if name in selectTypeNames:
                 action.setChecked(True)
 
     def showTypeContextMenu(self):
