@@ -17,19 +17,26 @@ import re
 import sys
 import operator
 import collections
-from PyQt5.QtCore import Qt, pyqtSignal
+import datetime
+import platform
+import traceback
+from PyQt5.QtCore import Qt, pyqtSignal, PYQT_VERSION_STR, qVersion
 from PyQt5.QtGui import QKeySequence, QTextDocument
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
                              QCheckBox, QComboBox, QDialog, QGridLayout,
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit,
                              QListWidget, QListWidgetItem, QMenu, QMessageBox,
                              QPushButton, QRadioButton, QScrollArea, QSpinBox,
-                             QTabWidget, QTreeWidget, QTreeWidgetItem,
-                             QVBoxLayout, QWidget)
+                             QTabWidget, QTextEdit, QTreeWidget,
+                             QTreeWidgetItem, QVBoxLayout, QWidget)
 import options
 import printdialogs
 import undo
 import globalref
+try:
+    from __main__ import __version__
+except ImportError:
+    __version__ = ''
 
 
 class RadioChoiceDialog(QDialog):
@@ -453,6 +460,53 @@ class TemplateFileDialog(QDialog):
         """
         item = self.templateItems[self.listBox.currentRow()]
         return item.name
+
+
+class ExceptionDialog(QDialog):
+    """Dialog for showing debug info from an unhandled exception.
+    """
+    def __init__(self, excType, value, tb, parent=None):
+        """Initialize the exception dialog.
+
+        Arguments:
+            excType -- execption class
+            value -- execption error text
+            tb -- the traceback object
+        """
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
+        self.setWindowTitle(_('TreeLine - Serious Error'))
+
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        label = QLabel(_('A serious error has occurred.  TreeLine could be '
+                         'in an unstable state.\n'
+                         'Recommend saving any file changes under another '
+                         'filename and restart TreeLine.\n\n'
+                         'The debugging info shown below can be copied '
+                         'and emailed to doug101@bellz.org along with\n'
+                         'an explanation of the circumstances.\n'))
+        topLayout.addWidget(label)
+        textBox = QTextEdit()
+        textBox.setReadOnly(True)
+        pyVersion = '.'.join([repr(num) for num in sys.version_info[:3]])
+        textLines = ['When:  {0}\n'.format(datetime.datetime.now().
+                                           isoformat(' ')),
+                     'TreeLine Version:  {0}\n'.format(__version__),
+                     'Python Version:  {0}\n'.format(pyVersion),
+                     'Qt Version:  {0}\n'.format(qVersion()),
+                     'PyQt Version:  {0}\n'.format(PYQT_VERSION_STR),
+                     'OS:  {0}\n'.format(platform.platform()), '\n']
+        textLines.extend(traceback.format_exception(excType, value, tb))
+        textBox.setPlainText(''.join(textLines))
+        topLayout.addWidget(textBox)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch(0)
+        closeButton = QPushButton(_('&Close'))
+        ctrlLayout.addWidget(closeButton)
+        closeButton.clicked.connect(self.close)
 
 
 FindScope = enum.IntEnum('FindScope', 'fullData titlesOnly')

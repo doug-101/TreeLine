@@ -121,6 +121,23 @@ def setupTranslator(app, lang=''):
     return lang
 
 
+exceptDialog = None
+
+def handleException(excType, value, tb):
+    """Handle uncaught exceptions, show debug info to the user.
+
+    Called from sys.excepthook.
+    Arguments:
+        excType -- execption class
+        value -- execption error text
+        tb -- the traceback object
+    """
+    import miscdialogs
+    global exceptDialog
+    exceptDialog = miscdialogs.ExceptionDialog(excType, value, tb)
+    exceptDialog.show()
+
+
 if __name__ == '__main__':
     """Main event loop for TreeLine
     """
@@ -139,6 +156,8 @@ if __name__ == '__main__':
 
     import globalref
     globalref.localTextEncoding = locale.getpreferredencoding()
+
+    sys.excepthook = handleException
 
     import treemaincontrol
     treeMainControl = treemaincontrol.TreeMainControl(pathObjects)
