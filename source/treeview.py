@@ -157,6 +157,9 @@ class TreeView(QTreeView):
     def endEditing(self):
         """Stop the editing of any item being renamed.
         """
+        delegate = self.itemDelegate()
+        if delegate.editor:
+            delegate.commitData.emit(delegate.editor)
         self.closePersistentEditor(self.selectionModel().currentIndex())
 
     def incremSearchStart(self):
@@ -357,6 +360,7 @@ class TreeEditDelegate(QStyledItemDelegate):
             parent -- the parent view
         """
         super().__init__(parent)
+        self.editor = None
 
     def createEditor(self, parent, styleOption, modelIndex):
         """Return a new text editor for an item.
@@ -366,8 +370,8 @@ class TreeEditDelegate(QStyledItemDelegate):
             styleOption -- the data for styles and geometry
             modelIndex -- the index of the item to be edited
         """
-        editor = super().createEditor(parent, styleOption, modelIndex)
-        return editor
+        self.editor = super().createEditor(parent, styleOption, modelIndex)
+        return self.editor
 
     def eventFilter(self, editor, event):
         """Override to handle shortcut control keys.
