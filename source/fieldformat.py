@@ -906,6 +906,8 @@ class DateField(HtmlTextField):
             if fullYearFormat != editorFormat:
                 date = datetime.datetime.strptime(editorText,
                                                   fullYearFormat).date()
+            else:
+                raise
         return date.strftime(DateField.isoFormat)
 
     def getInitDefault(self):
