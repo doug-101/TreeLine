@@ -94,6 +94,278 @@
    ],
    "nodes": [
       {
+         "children": [],
+         "data": {
+            "Name": "Automatic clone creation",
+            "Text": "Cloned nodes can be created automatically from all identical nodes by using the \"Data &gt; Clone All Matched Nodes\" command."
+         },
+         "format": "BULLETS",
+         "uid": "04a868f4bb0611e7aea13417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Multiple top-level nodes",
+            "Text": "Multiple top-level (root) nodes are now permitted. When no nodes are selected in the tree (by clicking on a blank area or Ctrl clicking to unselect), the right-hand view will show information about all of the top-level nodes."
+         },
+         "format": "BULLETS",
+         "uid": "04da8386ba4811e7b3de3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Remove unique ID",
+            "Text": "To improve efficiency, user visible node unique IDs that depend on the node's data have been removed."
+         },
+         "format": "BULLETS",
+         "uid": "1d015318bb0511e7a2ac3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Reuse TreeLine windows",
+            "Text": "When a file is opened in an existing window, the window is now reused (not just replaced) to eliminate flashing."
+         },
+         "format": "BULLETS",
+         "uid": "1e3a82e4bb0411e7b7f33417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Breadcrumb View",
+            "Text": "The top pane shows the parent and ancestors of the selected node. It is blank if no nodes or multiple nodes are selected. Ancestors with blue text can be clicked to select those nodes."
+         },
+         "format": "HEAD_PARA",
+         "uid": "28f8844ab58711e79d173417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Multiple paste commands",
+            "Text": "New paste commands have been added for adding nodes before and after siblings.  There are also multiple paste commands for adding clones of nodes."
+         },
+         "format": "BULLETS",
+         "uid": "39c001f0bb0311e79e793417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Major rewrite",
+            "Text": "This is a major rewrite of TreeLine. Once it becomes more stable, it will become TreeLine version 3.0.0. The 2.1.x unstable series is being discontinued (no stable 2.2.0 release is planned)."
+         },
+         "format": "BULLETS",
+         "uid": "3d2bb12eba3c11e79b223417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Clone removal",
+            "Text": "The new \"Data &gt; Detach Clones\" command converts cloned nodes in selected branches back into independent nodes."
+         },
+         "format": "BULLETS",
+         "uid": "5647bc8cbb0611e783853417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Category level swap",
+            "Text": "A new \"Swap Category Levels\" command swaps child and grandchild nodes beneath a selected node. A child node with multiple nodes under it will become cloned under each one. Any existing grandchild clones will become individual nodes with multiple children."
+         },
+         "format": "BULLETS",
+         "uid": "5c90e0b0bb0611e78e443417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Cloned nodes",
+            "Text": "Cloned nodes (the same nodes with multiple parents/locations) can be created using special paste commands or by automatically matching identical nodes."
+         },
+         "format": "BULLETS",
+         "uid": "5f12f768b32c11e7a41a3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "TreeLine Export",
+            "Text": "Files can be exported that are compatible with older versions of TreeLine (1.x and 2.x), with a \".trl\" file extension.  Some newer features, such as cloned nodes and multiple root nodes may not be completely preserved.  TreeLine subtrees can also be exported to save just selected branches of the tree to a file using the current TreeLine version."
+         },
+         "format": "HEAD_PARA",
+         "uid": "65289b36b97611e783eb3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Child type limits",
+            "Text": "Child node types that are available to be set can be limited. A new pull-down list of child type limits is in the \"Type Config\" tab of the configuration dialog if the advanced functions are shown."
+         },
+         "format": "BULLETS",
+         "uid": "6dc88226bb0711e7894d3417ebd53aeb"
+      },
+      {
+         "children": [
+            "6df9a0c6ba3b11e7925d3417ebd53aeb",
+            "6df9a0c9ba3b11e7a9793417ebd53aeb"
+         ],
+         "data": {
+            "Name": "November 19, 2017 - Release 2.9.0 (unstable development snapshot)"
+         },
+         "format": "HEADINGS",
+         "uid": "6df9a0c5ba3b11e78e7e3417ebd53aeb"
+      },
+      {
+         "children": [
+            "6df9a0c7ba3b11e7b7bd3417ebd53aeb",
+            "3d2bb12eba3c11e79b223417ebd53aeb",
+            "6df9a0c8ba3b11e78d783417ebd53aeb"
+         ],
+         "data": {
+            "Name": "Notes"
+         },
+         "format": "BULLET_HEADING",
+         "uid": "6df9a0c6ba3b11e7925d3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Unstable snapshot",
+            "Text": "This is an unstable development snapshot of TreeLine. It probably contains bugs. Testing and bug reports are appreciated, but the stable release (TreeLine 2.0.x) should be used for critical work."
+         },
+         "format": "BULLETS",
+         "uid": "6df9a0c7ba3b11e7b7bd3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Translations",
+            "Text": "The GUI and documentation translations are out of date and have not been included.  Volunteers are needed to update translations in several languages."
+         },
+         "format": "BULLETS",
+         "uid": "6df9a0c8ba3b11e78d783417ebd53aeb"
+      },
+      {
+         "children": [
+            "6df9a0caba3b11e78b283417ebd53aeb",
+            "d1d8e56eba4011e784ab3417ebd53aeb",
+            "04da8386ba4811e7b3de3417ebd53aeb",
+            "e6ad9f6eba4311e796bd3417ebd53aeb",
+            "cd28e024bb0211e79c553417ebd53aeb",
+            "1e3a82e4bb0411e7b7f33417ebd53aeb",
+            "98132868ba4511e7b7283417ebd53aeb",
+            "39c001f0bb0311e79e793417ebd53aeb",
+            "04a868f4bb0611e7aea13417ebd53aeb",
+            "5647bc8cbb0611e783853417ebd53aeb",
+            "5c90e0b0bb0611e78e443417ebd53aeb",
+            "6dc88226bb0711e7894d3417ebd53aeb",
+            "7697b826bb0411e788433417ebd53aeb",
+            "1d015318bb0511e7a2ac3417ebd53aeb",
+            "f5983b38bb0411e795e13417ebd53aeb"
+         ],
+         "data": {
+            "Name": "New Features"
+         },
+         "format": "BULLET_HEADING",
+         "uid": "6df9a0c9ba3b11e7a9793417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "New file format",
+            "Text": "TreeLine files now uses a new JSON format in place of the old XML format. This provides more flexibility for structuring new features like cloned nodes and multiple root nodes.  A new file extension (\".trln) helps to distinguish these files."
+         },
+         "format": "BULLETS",
+         "uid": "6df9a0caba3b11e78b283417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Date and time formats",
+            "Text": "The Date, Time and DateTime fields  have new format strings that enable extra text to be added to the date output."
+         },
+         "format": "BULLETS",
+         "uid": "7697b826bb0411e788433417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Old TreeLine Import",
+            "Text": "Files from older versions of TreeLine (1.x or 2.x) can be imported. These files are in XML format and generally have a \".trl\" file extension (current files are in JSON format with a \".trln\" file extension). Unlike other file imports, these older files will import without showing the import dialog box when using the \"File &gt; Open\" command."
+         },
+         "format": "HEAD_PARA",
+         "uid": "95547c38b97411e7a42a3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Native cloned nodes",
+            "Text": "Cloned nodes now have a more native and efficient implementation.  This allows the same nodes to have multiple parents.  The new breadcrumb view shows a list of clones for the selected node that can be clicked to select the other instances."
+         },
+         "format": "BULLETS",
+         "uid": "98132868ba4511e7b7283417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Format Menu",
+            "Text": "The format menu has text formatting commands that are active when using edit boxes in the Data Edit view."
+         },
+         "format": "HEAD_PARA",
+         "uid": "997af664b58811e7ac243417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Old TreeLine import/export",
+            "Text": "Files from older versions of TreeLine (2.x and 1.x) can be imported and exported."
+         },
+         "format": "BULLETS",
+         "uid": "9bd80f34b32b11e7be613417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Child Type Limits",
+            "Text": "In addition to setting the default child type, the child node types that are available to be set can be limited. There is a pull-down list of child type limits in the \"Type Config\" tab of the configuration dialog if the advanced functions are shown. Only checked types will show up in the type lists when using the \"Data &gt; Set Node Type\" command on a child node."
+         },
+         "format": "HEAD_PARA",
+         "uid": "aa6f6ca4bb0711e7bbf43417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Breadcrumb view",
+            "Text": "An upper breadcrumb view shows titles of the selected node's ancestors that can be clicked to select them."
+         },
+         "format": "BULLETS",
+         "uid": "b1b5d434b32911e780fd3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Data editor hover",
+            "Text": "By default, the edit boxes in the data edit view now activate when the mouse hovers over them. This eliminates the need to click to activate them. This feature can be disabled in general options if desired."
+         },
+         "format": "BULLETS",
+         "uid": "cd28e024bb0211e79c553417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "TreeLine 2 import / export",
+            "Text": "Import and export filters are provided for older TreeLine version 2.x and 1.x files. The older files can be opened using the standard \"File &gt; Open\" command."
+         },
+         "format": "BULLETS",
+         "uid": "d1d8e56eba4011e784ab3417ebd53aeb"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Breadcrumb view",
+            "Text": "A new breadcrumb view pane above the other panes shows a sequence of ancestor titles for a selected node. The ancestors can be clicked to select them. For cloned nodes, multiple lines provide links to each instance's ancestor sequence."
+         },
+         "format": "BULLETS",
+         "uid": "e6ad9f6eba4311e796bd3417ebd53aeb"
+      },
+      {
          "children": [
             "f16f7f70a25a11e7b7c67054d2175f18",
             "f16f87b8a25a11e7b7c67054d2175f18",
@@ -127,7 +399,7 @@
          "children": [],
          "data": {
             "Name": "Version",
-            "Text": "This document covers TreeLine, Version 2.1.2, an unstable development snapshot, released March 26, 2017 by Doug Bell."
+            "Text": "This document covers TreeLine, Version 2.9.0, an unstable development snapshot, released November 19, 2017 by Doug Bell."
          },
          "format": "PARAGRAPH",
          "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -145,7 +417,7 @@
          "children": [],
          "data": {
             "Name": "Outliner vs. database",
-            "Text": "Treeline is both an outliner and a small database. It stores almost any kind of information. A tree structure makes it easy to keep things organized. And each node in the tree can contain several fields, forming a database. The output format for each node can be defined, and the output can be shown on the screen, printed, or exported to HTML or text."
+            "Text": "TreeLine is both an outliner and a small database. It stores almost any kind of information. A tree structure makes it easy to keep things organized. And each node in the tree can contain several fields, forming a database. The output format for each node can be defined, and the output can be shown on the screen, printed, or exported to HTML or text."
          },
          "format": "PARAGRAPH",
          "uid": "f16f85b0a25a11e7b7c67054d2175f18"
@@ -242,7 +514,8 @@
             "f16f9834a25a11e7b7c67054d2175f18",
             "f16f992ea25a11e7b7c67054d2175f18",
             "f16f9a32a25a11e7b7c67054d2175f18",
-            "f16f9b36a25a11e7b7c67054d2175f18"
+            "f16f9b36a25a11e7b7c67054d2175f18",
+            "b1b5d434b32911e780fd3417ebd53aeb"
          ],
          "data": {
             "Name": "Views"
@@ -389,7 +662,7 @@
          "children": [],
          "data": {
             "Name": "File formats",
-            "Text": "TreeLine files are XML by default, with options for automatically compressing or encrypting the files."
+            "Text": "TreeLine files are JSON by default, with options for automatically compressing or encrypting the files."
          },
          "format": "BULLETS",
          "uid": "f16fa504a25a11e7b7c67054d2175f18"
@@ -416,6 +689,7 @@
          "children": [
             "f16fa8f6a25a11e7b7c67054d2175f18",
             "f16fa9f0a25a11e7b7c67054d2175f18",
+            "9bd80f34b32b11e7be613417ebd53aeb",
             "f16faaf4a25a11e7b7c67054d2175f18",
             "f16fabf8a25a11e7b7c67054d2175f18",
             "f16facf2a25a11e7b7c67054d2175f18"
@@ -516,6 +790,7 @@
             "f16fb3c8a25a11e7b7c67054d2175f18",
             "f16fb4eaa25a11e7b7c67054d2175f18",
             "f16fb5e4a25a11e7b7c67054d2175f18",
+            "5f12f768b32c11e7a41a3417ebd53aeb",
             "f16fb6dea25a11e7b7c67054d2175f18",
             "f16fb7f6a25a11e7b7c67054d2175f18"
          ],
@@ -574,7 +849,7 @@
          "children": [],
          "data": {
             "Name": "Arranging data",
-            "Text": "Data can be automatically arranged using either parent references or categories from data fields."
+            "Text": "Data can be automatically arranged using categories from data fields."
          },
          "format": "BULLETS",
          "uid": "f16fb7f6a25a11e7b7c67054d2175f18"
@@ -584,8 +859,7 @@
             "f16fba08a25a11e7b7c67054d2175f18",
             "f16fbb02a25a11e7b7c67054d2175f18",
             "f16fbc06a25a11e7b7c67054d2175f18",
-            "f16fbd00a25a11e7b7c67054d2175f18",
-            "f16fbdfaa25a11e7b7c67054d2175f18"
+            "f16fbd00a25a11e7b7c67054d2175f18"
          ],
          "data": {
             "Name": "Customization"
@@ -624,19 +898,10 @@
          "children": [],
          "data": {
             "Name": "Languages",
-            "Text": "The user interface is available in English, German and Portuguese."
+            "Text": "The user interface is available in English - translations into other languages are TBD."
          },
          "format": "BULLETS",
          "uid": "f16fbd00a25a11e7b7c67054d2175f18"
-      },
-      {
-         "children": [],
-         "data": {
-            "Name": "Plugins",
-            "Text": "Plugin extension modules can be loaded to further customize TreeLine."
-         },
-         "format": "BULLETS",
-         "uid": "f16fbdfaa25a11e7b7c67054d2175f18"
       },
       {
          "children": [
@@ -666,7 +931,7 @@
          "children": [],
          "data": {
             "Name": "Python",
-            "Text": "Python (Version 3.4 or higher)"
+            "Text": "Python (Version 3.5 or higher)"
          },
          "format": "BULLETS",
          "uid": "f16fc0d4a25a11e7b7c67054d2175f18"
@@ -675,7 +940,7 @@
          "children": [],
          "data": {
             "Name": "Qt",
-            "Text": "QT (Version 5.4 or higher)"
+            "Text": "QT (Version 5.8 or higher)"
          },
          "format": "BULLETS",
          "uid": "f16fc1cea25a11e7b7c67054d2175f18"
@@ -684,7 +949,7 @@
          "children": [],
          "data": {
             "Name": "PyQt",
-            "Text": "PyQt (Version 5.4 or higher)"
+            "Text": "PyQt (Version 5.8 or higher)"
          },
          "format": "BULLETS",
          "uid": "f16fc2c8a25a11e7b7c67054d2175f18"
@@ -713,7 +978,7 @@
          "children": [],
          "data": {
             "Name": "Binary",
-            "Text": "Should run on any computer running Windows XP, Vista, 7, 8 or 10."
+            "Text": "Should run on any computer running Windows Vista, 7, 8 or 10."
          },
          "format": "BULLETS",
          "uid": "f16fc5aca25a11e7b7c67054d2175f18"
@@ -763,7 +1028,7 @@
          "children": [],
          "data": {
             "Name": "Python 3",
-            "Text": "If your distribution defaults to Python 2.x, you may need to substitute \"python3\", \"python3.2\" or \"python3.3\" for \"python\" in these commands."
+            "Text": "If your distribution defaults to Python 2.x, you may need to substitute \"python3\" for \"python\" in these commands."
          },
          "format": "PARAGRAPH",
          "uid": "f16fcaa2a25a11e7b7c67054d2175f18"
@@ -832,6 +1097,7 @@
       {
          "children": [
             "f16fd682a25a11e7b7c67054d2175f18",
+            "28f8844ab58711e79d173417ebd53aeb",
             "f16fd858a25a11e7b7c67054d2175f18",
             "f16fd9aca25a11e7b7c67054d2175f18",
             "f16fdabaa25a11e7b7c67054d2175f18",
@@ -856,7 +1122,7 @@
          "children": [],
          "data": {
             "Name": "Right-hand Views",
-            "Text": "The right pane is tabbed to show one of three different views of the data. The \"Data Output\" view shows the formatted text, the \"Data Edit\" view shows a text edit boxes, and the \"Title List\" view shows an editable list of node titles.<br />\n<br />\nWhen a parent node is selected in the tree, the right view will default to showing information about the selected node in an upper pane and information about the selected node's children in a lower pane. The \"View &gt; Show Child Pane\" command will toggle the display of the child nodes. If the selected node has no children, the view will show a single pane with information about the selected node only.<br />\n<br />\nWhen multiple nodes are selected in the tree (by holding down the shift or Ctrl keys while clicking), the right view will not display any child node information. It will instead show information about every selected node."
+            "Text": "The right pane is tabbed to show one of three different views of the data. The \"Data Output\" view shows the formatted text, the \"Data Edit\" view shows text edit boxes, and the \"Title List\" view shows an editable list of node titles.<br />\n<br />\nWhen a parent node is selected in the tree, the right view will default to showing information about the selected node in an upper pane and information about the selected node's children in a lower pane. The \"View &gt; Show Child Pane\" command will toggle the display of the child nodes. If the selected node has no children, the view will show a single pane with information about the selected node only.<br />\n<br />\nWhen multiple nodes are selected in the tree (by holding down the shift or Ctrl keys while clicking), the right view will not display any child node information. It will instead show information about every selected node.<br />\n<br />\nWhen no nodes are selected in the tree (by clicking on a blank area or Ctrl clicking to unselect), the right view will show information about the top-level (root) nodes."
          },
          "format": "HEAD_PARA",
          "uid": "f16fd858a25a11e7b7c67054d2175f18"
@@ -892,6 +1158,7 @@
          "children": [
             "f16fddbca25a11e7b7c67054d2175f18",
             "f16fdeb6a25a11e7b7c67054d2175f18",
+            "997af664b58811e7ac243417ebd53aeb",
             "f16fdfb0a25a11e7b7c67054d2175f18"
          ],
          "data": {
@@ -913,7 +1180,7 @@
          "children": [],
          "data": {
             "Name": "Edit Menu",
-            "Text": "The edit menu includes undo and redo commands that can fix problems.  Cut, copy and paste commands can operate either on text in the right-hand view (if selected or active) or to tree nodes.  It also has text formatting commands that are active when using edit boxes in the Data Edit view."
+            "Text": "The edit menu includes undo and redo commands that can fix problems. Cut, copy and paste commands can operate either on text in the right-hand view (if selected or active) or to tree nodes."
          },
          "format": "HEAD_PARA",
          "uid": "f16fdeb6a25a11e7b7c67054d2175f18"
@@ -997,8 +1264,7 @@
             "f170207ea25a11e7b7c67054d2175f18",
             "f170256aa25a11e7b7c67054d2175f18",
             "f1702c4aa25a11e7b7c67054d2175f18",
-            "f170335ca25a11e7b7c67054d2175f18",
-            "f170394ca25a11e7b7c67054d2175f18"
+            "f170335ca25a11e7b7c67054d2175f18"
          ],
          "data": {
             "Name": "Detailed Usage"
@@ -1023,7 +1289,7 @@
          "children": [],
          "data": {
             "Name": "Keyboard Shortcuts",
-            "Text": "There are several keyboard commands that can be used for tree navigation. The up and down arrow keys move the selection. The left and right arrows open and close the current node. Holding the CTRL and SHIFT keys with \"J\" or \"K\" moves between siblings, skipping children. The \"Home\", \"End\", \"Page Up\" and \"Page Down\" keys can be used to move quickly through the tree. The CTRL and SHIFT keys can be held with the \"Page Up\" and \"Page Down\" keys to move the tree view even when a different pane is focused.<br />\n<br />\nAnother way to move through the tree is to type the first letter of a visible node title. Hitting the letter again moves to the next possibility."
+            "Text": "There are several keyboard commands that can be used for tree navigation. The up and down arrow keys move the selection. The left and right arrows open and close the current node. The \"Home\", \"End\", \"Page Up\" and \"Page Down\" keys can be used to move quickly through the tree.<br />\n<br />\nAnother way to move through the tree is to type the first letter of a visible node title. Hitting the letter again highlights to the next possibility."
          },
          "format": "HEAD_PARA",
          "uid": "f16fe8dea25a11e7b7c67054d2175f18"
@@ -1032,7 +1298,7 @@
          "children": [],
          "data": {
             "Name": "Selection",
-            "Text": "Multiple nodes can be selected by holding down the CTRL or the SHIFT key when changing the active node. Individual nodes are added or removed from the selection when the CTRL key is held. The selection of all nodes between the old and new active nodes are toggled when SHIFT is held. The active node can be changed by using the mouse or by using any of the keyboard navigation methods.<br />\n<br />\nNote that multiple nodes selected with the CTRL key are output in the order selected.<br />\n<br />\nThe \"View &gt; Previous Selection\" and \"View &gt; Next Selection\" commands can be used to toggle through a history of selections, allowing faster navigation through the tree."
+            "Text": "Multiple nodes can be selected by holding down the CTRL or the SHIFT key when changing the active node. Individual nodes are added or removed from the selection when the CTRL key is held. The selection of all nodes between the old and new active nodes are toggled when SHIFT is held. The active node can be changed by using the mouse or by using any of the keyboard navigation methods.<br />\n<br />\nThe \"View &gt; Previous Selection\" and \"View &gt; Next Selection\" commands can be used to toggle through a history of selections, allowing faster navigation through the tree."
          },
          "format": "HEAD_PARA",
          "uid": "f16fe9e2a25a11e7b7c67054d2175f18"
@@ -1082,7 +1348,7 @@
          "children": [],
          "data": {
             "Name": "Type Config",
-            "Text": "\"Type Config\" is the second tab of the Configure Types Dialog. It contains a selection for the default child type. If set, this will be the initial type used for new children with this type of parent. If set to \"[None]\", children will default to either the type of their siblings or their parent.<br />\n<br />\nThe \"Change Icon\" button allows the selection of a custom tree icon for this data type. The \"Clear Select\" button on the icon dialog can be used to set the icon to \"None\", so that no icon will be displayed for this type. To avoid showing any tree icons, the \"Show icons in the tree view\" general option can be unset.<br />\n<br />\nThere are also options here for adding blanks lines between nodes, allowing HTML tags in the common format text, and changing the output  to add bullets or tables."
+            "Text": "\"Type Config\" is the second tab of the Configure Types Dialog. It contains a selection for the default child type. If set, this will be the initial type used for new children with this type of parent. If set to \"[None]\", children will default to either the type of their siblings or their parent.<br />\n<br />\nThe \"Change Icon\" button allows the selection of a custom tree icon for this data type. The \"Clear Select\" button on the icon dialog can be used to set the icon to \"None\", so that no icon will be displayed for this type. To avoid showing any tree icons, the \"Show icons in the tree view\" general option can be unset.<br />\n<br />\nThere are also options here for adding blanks lines between nodes, allowing HTML tags in the common format text, and changing the output to add bullets or tables."
          },
          "format": "HEAD_PARA",
          "uid": "f16feef6a25a11e7b7c67054d2175f18"
@@ -1091,7 +1357,7 @@
          "children": [],
          "data": {
             "Name": "Field List",
-            "Text": "The \"Field List\" is the third tab of the Configure Types Dialog. The list of fields within a data type can be modified by using the buttons on the right. New fields can be added, and existing fields can be moved, renamed or deleted."
+            "Text": "The \"Field List\" is the third tab of the Configure Types Dialog. The list of fields within a data type can be modified by using the buttons on the right. New fields can be added, and existing fields can be moved, renamed or deleted.  Sort keys can also be defined to specify the fields that are compared when nodes are sorted."
          },
          "format": "HEAD_PARA",
          "uid": "f16feffaa25a11e7b7c67054d2175f18"
@@ -1109,7 +1375,7 @@
          "children": [],
          "data": {
             "Name": "Output",
-            "Text": "\"Output\" is the last tab of the Configure Types Dialog. The left half of the dialog shows the fields. The right half shows the formatting for the title (used for the node text in the tree view) and the node output. The formatting consists of text lines with embedded fields. The fields are shown as \"{*field_name*}\". The fields that are selected in the list can be added to a format at the cursor position with the \"&gt;&gt;\" keys. The field reference at the cursor can be removed with the \"&lt;&lt;\" keys."
+            "Text": "\"Output\" is the last tab of the Configure Types Dialog. The left half of the dialog shows the fields. The right half shows the formatting for the title (used for the node text in the tree view) and the node output. The formatting consists of text lines with embedded fields. The fields are shown as \"{*field_name*}\". The fields that are selected in the list (multiple fields can be selected by holding Ctrl or Shift keys while clicking) can be added to a format at the cursor position with the \"&gt;&gt;\" keys. The field reference at the cursor can be removed with the \"&lt;&lt;\" keys."
          },
          "format": "HEAD_PARA",
          "uid": "f16ff1e4a25a11e7b7c67054d2175f18"
@@ -1122,10 +1388,12 @@
             "f16ff7c0a25a11e7b7c67054d2175f18",
             "f16ff8f6a25a11e7b7c67054d2175f18",
             "f16ff9faa25a11e7b7c67054d2175f18",
-            "f16ffb08a25a11e7b7c67054d2175f18",
+            "f17005f8a25a11e7b7c67054d2175f18",
+            "f1700710a25a11e7b7c67054d2175f18",
             "f16ffc02a25a11e7b7c67054d2175f18",
             "f16ffd06a25a11e7b7c67054d2175f18",
             "f16ffe14a25a11e7b7c67054d2175f18",
+            "f16ffb08a25a11e7b7c67054d2175f18",
             "f16fff18a25a11e7b7c67054d2175f18",
             "f1700008a25a11e7b7c67054d2175f18",
             "f1700102a25a11e7b7c67054d2175f18",
@@ -1133,8 +1401,6 @@
             "f1700300a25a11e7b7c67054d2175f18",
             "f1700404a25a11e7b7c67054d2175f18",
             "f17004fea25a11e7b7c67054d2175f18",
-            "f17005f8a25a11e7b7c67054d2175f18",
-            "f1700710a25a11e7b7c67054d2175f18",
             "f170081ea25a11e7b7c67054d2175f18"
          ],
          "data": {
@@ -1156,7 +1422,7 @@
          "children": [],
          "data": {
             "Name": "Text Type",
-            "Text": "The default field type is a text field. It is the most commonly used field.  These fields are edited using edit boxes in the data editor view. There are several commands in the Edit menu (and also in the context menu) for setting the font style and adding external or internal links. The edit box height expands when re-displayed after adding several lines of text. The minimum edit box height can also be set explicitly in the \"Field Config\" tab."
+            "Text": "The default field type is a text field. It is the most commonly used field. These fields are edited using edit boxes in the data editor view. There are several commands in the Format menu (and also in the context menu) for setting the font style and adding external or internal links. The edit box height expands when re-displayed after adding several lines of text. The minimum edit box height can also be set explicitly in the \"Field Config\" tab."
          },
          "format": "HEAD_PARA",
          "uid": "f16ff4dca25a11e7b7c67054d2175f18"
@@ -1165,7 +1431,7 @@
          "children": [],
          "data": {
             "Name": "HTML Text Type",
-            "Text": "This type allows simple HTML tags to be used in the text. Commonly used tags include \"&lt;b&gt;bold&lt;/b&gt;\", \"&lt;u&gt;underline&lt;/u&gt;\", \"line break&lt;br/&gt;\", \"horizontal line&lt;hr/&gt;\", and various font tags. Complex block tags should generally be avoided. Carriage returns are ignored and non-escaped \"&lt;\", \"&gt;\" and \"&amp;\" symbols do not display. "
+            "Text": "This type allows simple HTML tags to be used in the text. Commonly used tags include \"&lt;b&gt;bold&lt;/b&gt;\", \"&lt;u&gt;underline&lt;/u&gt;\", \"line break&lt;br/&gt;\", \"horizontal line&lt;hr/&gt;\", and various font tags. Complex block tags should generally be avoided. Carriage returns are ignored, and non-escaped \"&lt;\", \"&gt;\" and \"&amp;\" symbols do not display. "
          },
          "format": "HEAD_PARA",
          "uid": "f16ff5f4a25a11e7b7c67054d2175f18"
@@ -1174,7 +1440,7 @@
          "children": [],
          "data": {
             "Name": "One Line Text Type",
-            "Text": "This type restricts the text length to a single line.  It does not allow carriage returns, but does not restrict line wrapping of a single long line."
+            "Text": "This type restricts the text length to a single line. It does not allow carriage returns but does not restrict line wrapping of a single long line."
          },
          "format": "HEAD_PARA",
          "uid": "f16ff7c0a25a11e7b7c67054d2175f18"
@@ -1210,7 +1476,7 @@
          "children": [],
          "data": {
             "Name": "Date Type",
-            "Text": "In the date field type, special characters in the format are replaced by elements of the data, similar to number fields. Press the \"Format Help\" button from the field format dialog for formatting details. <br />\n<br />\nThere is also an edit format under \"Tools &gt; General Options &gt; Data Editor Formats\". This controls how date fields are displayed in the Data Editor view. Generally, entries in the data editor with various formats will be correctly interpreted regardless of this setting, but dates must use the correct day-month-year sequence. Also note that the date editor format does not support days of the week.<br />\n<br />\nA default initial field value of \"Now\" can be used to enter the date of node creation."
+            "Text": "In the date field type, special characters in the format (all starting with \"%\") are replaced by elements of the data, similar to number fields. Press the \"Format Help\" button from the field format dialog for formatting details.  Non-special characters will be output as themselves.<br />\n<br />\nThere is also an edit format under \"Tools &gt; General Options &gt; Data Editor Formats\". This controls how date fields are displayed in the Data Editor view. Generally, entries in the data editor with various formats will be correctly interpreted regardless of this setting, but dates must use the correct day-month-year sequence. Also note that the date editor format does not support days of the week.<br />\n<br />\nA default initial field value of \"Now\" can be used to enter the date of node creation."
          },
          "format": "HEAD_PARA",
          "uid": "f16ffc02a25a11e7b7c67054d2175f18"
@@ -1219,7 +1485,7 @@
          "children": [],
          "data": {
             "Name": "Time Type",
-            "Text": "In the time field type, special characters in the format are replaced by elements of the data, similar to number fields. Press the \"Format Help\" button from the field format dialog for formatting details. <br />\n<br />\nThere is also an edit format under \"Tools &gt; General Options &gt; Data Editor Formats\". This controls how time fields are displayed in the Data Editor view. Generally, entries in the data editor with various formats will be correctly interpreted regardless of this setting.<br />\n<br />\nA default initial field value of \"Now\" can be used to enter the time of node creation."
+            "Text": "In the time field type, special characters in the format (all starting with \"%\") are replaced by elements of the data, similar to number fields. Press the \"Format Help\" button from the field format dialog for formatting details. Non-special characters will be output as themselves. <br />\n<br />\nThere is also an edit format under \"Tools &gt; General Options &gt; Data Editor Formats\". This controls how time fields are displayed in the Data Editor view. Generally, entries in the data editor with various formats will be correctly interpreted regardless of this setting.<br />\n<br />\nA default initial field value of \"Now\" can be used to enter the time of node creation."
          },
          "format": "HEAD_PARA",
          "uid": "f16ffd06a25a11e7b7c67054d2175f18"
@@ -1228,7 +1494,7 @@
          "children": [],
          "data": {
             "Name": "DateTime Type",
-            "Text": "The DateTime field combines dates and times into a single field that is useful for timestamps. Special characters in the format are replaced by elements of the data, as in date and time fields. Press the \"Format Help\" button from the field format dialog for formatting details. <br />\n<br />\nThe DateTime edit format is uses the date and time formats located in \"Tools &gt; General Options &gt; Data Editor Formats\". The date and time formats are combined, separated by a space character."
+            "Text": "The DateTime field combines dates and times into a single field that is useful for timestamps. Special characters in the format (all starting with \"%\") are replaced by elements of the data, as in date and time fields. Press the \"Format Help\" button from the field format dialog for formatting details. Non-special characters will be output as themselves. <br />\n<br />\nThe DateTime edit format is uses the date and time formats located in \"Tools &gt; General Options &gt; Data Editor Formats\". The date and time formats are combined, separated by a space character.<br />\n<br />\nA default initial field value of \"Now\" can be used to enter the date and time of node creation."
          },
          "format": "HEAD_PARA",
          "uid": "f16ffe14a25a11e7b7c67054d2175f18"
@@ -1282,7 +1548,7 @@
          "children": [],
          "data": {
             "Name": "Internal Link Type",
-            "Text": "These links create shortcuts to select nodes elsewhere in the tree structure. The unique ID of the referenced node is entered along with a display name. The pull down dialog in the data editor has an \"Enable click on target\" button. Once clicked, the target node can be selected and the appropriate unique node ID will be entered. Like external links, this link can be clicked in the output view, or \"Open Link\" can be chosen from the right-click context menu."
+            "Text": "These links create shortcuts to select nodes elsewhere in the tree structure. To create a link, click the pull-down arrow and then select the target node in the tree view. The display name is shown in brackets. It is initially set to the target node title, but it can be edited. The right-click context menu can be used to clear the link or to select the target node.<br />\n<br />\nClicking the link in the output view will select the target node in the tree view."
          },
          "format": "HEAD_PARA",
          "uid": "f1700404a25a11e7b7c67054d2175f18"
@@ -1300,7 +1566,7 @@
          "children": [],
          "data": {
             "Name": "Math Type",
-            "Text": "Math field types are configured by defining equations. The equations can reference number fields, date fields, time fields, boolean fields, text fields and/or other math fields. The resulting values of math fields are automatically calculated for each node.<br />\n<br />\nTo define a math field equation, press the \"Define Equation\" button in the \"Field Config\" tab of the \"Data &gt; Configure Types Dialog\". This brings up a dialog with fields to reference on the left and math operators on the right. The \"Reference Level\" pull-down determines whether the reference is from the same node, the node's parent, the root node, or the node's children. The \"Result Type\" pull-down allows numeric, date, time, boolean or text results to be chosen. The \"Operator Type\" pull-down allows numeric, comparison or text operators to be shown in the operator list. The down-arrow buttons below the references and operators add the selected item to the equation text below. Portions of equations can also be typed directly in the equation text line editor.<br />\n<br />\nReferences to child nodes must be enclosed in a grouping function, such as sum, max, min, mean or join. A math field can contain a parent or child reference to itself, but not a same-level reference to itself (a circular reference). The references only contain the field name, so they will reference a parent or child field with that name even if it is a different node type.<br />\n<br />\nIn equations, date fields are represented by the number of days since January 1, 1970, and time fields are the number of seconds since midnight. So date fields can be subtracted to give the number of days elapsed, and numbers of days can be added to or subtracted from dates to result in new dates. Time fields can be subtracted to give the number of seconds elapsed, and numbers of seconds can be added to or subtracted from times to result in new times.<br />\n<br />\nThe \"if\" comparison operator can be used to make the result depend on the value of another field. The expression is written as \"true_value if condition else false_value\".  Of course, the \"true_value\", \"condition\" and \"false_value\" strings must be replaced with valid fields or expressions.  If this operator is inserted from the operator list (under comparisons), it will include parenthesis as placeholders.  These parenthesis are optional in the equations.<br />\n<br />\nThe \"join\" text function is used to combine text from several other fields (or from child nodes). The first argument to the function is a separator string that is placed between each piece of text. The remaining argument(s) are the text to be joined.<br />\n<br />\nBy default, math fields are shown in the data edit view, but they are read-only. To hide them, uncheck the \"Show math fields in the Data Edit View\" box under \"Tools &gt; General Options &gt; Features Available\".<br />\n<br />\nThere is also an option under \"File &gt; Properties\" that toggles whether blank fields are treated as zeros. If checked (the default), a blank field that is referenced by a math field has a value of zero (for numeric operations) or blank (for text operations). If unchecked, any blank references also cause equations that reference them to be blank.<br />\n"
+            "Text": "Math field types are configured by defining equations. The equations can reference number fields, date fields, time fields, boolean fields, text fields and/or other math fields. The resulting values of math fields are automatically calculated for each node.<br />\n<br />\nTo define a math field equation, press the \"Define Equation\" button in the \"Field Config\" tab of the \"Data &gt; Configure Types Dialog\". This brings up a dialog with fields to reference on the left and math operators on the right. The \"Reference Level\" pull-down determines whether the reference is from the same node, the node's parent, the root node, or the node's children. The \"Result Type\" pull-down allows arithmetic, date, time, boolean or text results to be chosen. The \"Operator Type\" pull-down allows numeric, comparison or text operators to be shown in the operator list. The down-arrow buttons below the references and operators add the selected item to the equation text below. Portions of equations can also be typed directly in the equation text line editor.<br />\n<br />\nReferences to child nodes must be enclosed in a grouping function, such as sum, max, min, mean or join. A math field can contain a parent or child reference to itself, but not a same-level reference to itself (a circular reference). The references only contain the field name, so they will reference a parent or child field with that name even if it is a different node type.<br />\n<br />\nIn equations, date fields are represented by the number of days since January 1, 1970, and time fields are the number of seconds since midnight. So date fields can be subtracted to give the number of days elapsed, and numbers of days can be added to or subtracted from dates to result in new dates. Time fields can be subtracted to give the number of seconds elapsed, and numbers of seconds can be added to or subtracted from times to result in new times.<br />\n<br />\nThe \"if\" comparison operator can be used to make the result depend on the value of another field. The expression is written as \"true_value if condition else false_value\". Of course, the \"true_value\", \"condition\" and \"false_value\" strings must be replaced with valid fields or expressions. If this operator is inserted from the operator list (under comparisons), it will include parenthesis as placeholders. These parenthesis are optional in the equations.<br />\n<br />\nThe \"join\" text function is used to combine text from several other fields (or from child nodes). The first argument to the function is a separator string that is placed between each piece of text. The remaining argument(s) are the text to be joined.<br />\n<br />\nBy default, math fields are shown in the data edit view, but they are read-only. To hide them, uncheck the \"Show math fields in the Data Edit View\" box under \"Tools &gt; General Options &gt; Features Available\".<br />\n<br />\nThere is also an option under \"File &gt; Properties\" that toggles whether blank fields are treated as zeros. If checked (the default), a blank field that is referenced by a math field has a value of zero (for numeric operations) or blank (for text operations). If unchecked, any blank references also cause equations that reference them to be blank.<br />\n"
          },
          "format": "HEAD_PARA",
          "uid": "f17005f8a25a11e7b7c67054d2175f18"
@@ -1359,7 +1625,7 @@
          "children": [],
          "data": {
             "Name": "Skipped Output Lines",
-            "Text": "If a line in the output formatting contains one or more fields and all of those fields for a given node are empty, the line is skipped. No blank line or embedded text will be output for that line. Note that this does not apply to a line without any fields (only embedded text). Also, when a line ending with a &lt;br/&gt; or an &lt;hr/&gt; tag is skipped, the ending tag is retained."
+            "Text": "If all of the fields in an output format line are empty for a given node, then the line is skipped. No blank line or embedded text will be output for that line. Note that this does not apply to a line without any fields (only embedded text). Also, when a line ending with a &lt;br/&gt; or an &lt;hr/&gt; tag is skipped, the ending tag is retained."
          },
          "format": "HEAD_PARA",
          "uid": "f1700c38a25a11e7b7c67054d2175f18"
@@ -1377,32 +1643,23 @@
          "children": [],
          "data": {
             "Name": "Other Field References",
-            "Text": "References to fields that are not contained within the node can be added to the output. Pushing the \"Show Advanced\" button on the \"Output\" tab of the configure dialog makes a reference level selection become visible.<br />\n<br />\nIf the reference level is changed to \"File Info Reference\", fields containing file meta-data can be added to the output. These include the file name, path, size, modified day and modified time. A field referencing the node's unique ID is also included here.  These special fields are shown as \"{*!field_name*}\" in the title and output format editors.<br />\n<br />\nThere are field references to various ancestor nodes (parents, grandparents, etc.). These require the data type of the reference to be specified. This selection determines the field names that are available, but the data from any type with a matching field name will be shown in the output. References to fields from parent and grandparent nodes are shown as \"{**field_name*}\" and \"{***field_name*}\", respectively. There are also general ancestor references, shown as \"{*?field_name*}\", that take data from the closest ancestor with a matching field.<br />\n<br />\nReferences to child nodes can also be added. These also require that the child data type be specified. The child data becomes embedded in the parent output. The child data is delimited with a separator string defined on the \"Type Config\" tab (with show advanced active). The separator defaults to a comma and a space, but can be set to &lt;br/&gt; or anything else.<br />\n<br />\nFinally, a \"Child Count\" reference can be added. This field will show the number of children (\"Level1\" field) or grandchildren (\"Level2\" field) of a node. These are shown as {*#Level1*} in the format editors.<br />\n<br />\nFor examples of these fields, see the \"sample_other_fields\" file (by using the \"File &gt; Open Sample\" command)."
+            "Text": "References to fields that are not contained within the node can be added to the output. Pushing the \"Show Advanced\" button on the \"Output\" tab of the configure dialog makes a reference level selection become visible.<br />\n<br />\nIf the reference level is changed to \"File Info Reference\", fields containing file meta-data can be added to the output. These include the file name, path, size, modified date and modified time. These special fields are shown as \"{*!field_name*}\" in the title and output format editors.<br />\n<br />\nThere are field references to various ancestor nodes (parents, grandparents, etc.). These require the data type of the reference to be specified. This selection determines the field names that are available, but the data from any type with a matching field name will be shown in the output. References to fields from parent and grandparent nodes are shown as \"{**field_name*}\" and \"{***field_name*}\", respectively. There are also general ancestor references, shown as \"{*?field_name*}\", that take data from the closest ancestor with a matching field.<br />\n<br />\nReferences to child nodes can also be added, shown as \"{*&amp;field_name*}\". These also require that the child data type be specified. The child data becomes embedded in the parent output. The child data is delimited with a separator string defined on the \"Type Config\" tab (with show advanced active). The separator defaults to a comma and a space, but can be set to &lt;br/&gt; or anything else.<br />\n<br />\nFinally, a \"Child Count\" reference can be added. This field will show the number of children (\"Level1\" field) or grandchildren (\"Level2\" field) of a node. These are shown as {*#Level1*} in the format editors.<br />\n<br />\nFor examples of these fields, see the \"sample_other_fields\" file (by using the \"File &gt; Open Sample\" command)."
          },
          "format": "HEAD_PARA",
          "uid": "f1700e40a25a11e7b7c67054d2175f18"
       },
       {
          "children": [
-            "f1701052a25a11e7b7c67054d2175f18",
             "f1701156a25a11e7b7c67054d2175f18",
             "f170125aa25a11e7b7c67054d2175f18",
-            "f1701368a25a11e7b7c67054d2175f18"
+            "f1701368a25a11e7b7c67054d2175f18",
+            "aa6f6ca4bb0711e7bbf43417ebd53aeb"
          ],
          "data": {
             "Name": "Type Format Details"
          },
          "format": "HEADINGS",
          "uid": "f1700f58a25a11e7b7c67054d2175f18"
-      },
-      {
-         "children": [],
-         "data": {
-            "Name": "Unique IDs",
-            "Text": "Every node has a Unique ID string associated with it. The IDs are used for addresses in internal links and in other places where TreeLine needs to identify a particular node.By default, the text in the first field is used to generate the ID. This can be changed in the \"Type Config\" tab of the \"Data &gt; Configure Types Dialog\". Click the \"Show Advanced\" button to see the \"Unique ID Reference Field\" setting. <br />\n<br />\nTo create the Unique ID, text in the reference field is modified by removing spaces and other special characters, shortening long entries, and adding extra characters if required to be unique in the file. If the content of the reference field changes, the Unique ID is updated, along with any links that reference it.<br />\n<br />\nThe Unique IDs can be shown in the data edit view by checking the \"Show node unique IDs in the Data Edit View\" box under \"Tools &gt; General Options &gt; Features Available\". "
-         },
-         "format": "HEAD_PARA",
-         "uid": "f1701052a25a11e7b7c67054d2175f18"
       },
       {
          "children": [],
@@ -1417,7 +1674,7 @@
          "children": [],
          "data": {
             "Name": "Conditional Types",
-            "Text": "Conditional expressions can be used to automatically assign a data type based on each node's content. Conditions can be assigned only to a generic type and its associated derived types. This allows the automatic assignment of different output formatting or different icons depending on each node's field data.<br />\n<br />\nThe conditional dialog box is accessed from a button on the \"Type Config\" tab of the \"Data-&gt;Configure Types Dialog\" if the advanced functions are shown. Each line of the condition includes a field, an operator and a comparison value. The operators include equality, greater than, less than, starts with, ends with, and contains. There are also True and False operators that will toggle the type of all nodes simultaneously.<br />\n<br />\nFor special field types such as dates, times, and booleans, the comparison value should be entered in the same format that is used in the Data Editor window. In general, the starts with, ends with, and contains operators should not be used for these special fields, since the comparison is done using an internal data representation. Dates and times also support a special comparison value of \"now\", which is always interpreted as the current date and time.<br />\n<br />\nThe \"Add New Rule\" button is used to add additional condition lines. The lines can be joined with \"and\" or \"or\" operators. The \"Remove Rule\" button deletes the last condition line. If only a single line is present, the \"Remove Rule\" button completely removes the condition.<br />\n<br />\nConditions do not have to be set for all types in a family. If no conditions are true for a node, the program will select a blank condition over a false one.<br />\n<br />\nFor an example, see the \"sample_conditional_todo\" file (by using the \"File &gt; Open Sample\" command)."
+            "Text": "Conditional expressions can be used to automatically assign a data type based on each node's content. Conditions can be assigned only to a generic type and its associated derived types. This allows the automatic assignment of different output formatting or different icons depending on each node's field data.<br />\n<br />\nThe conditional dialog box is accessed from a button on the \"Type Config\" tab of the \"Data-&gt;Configure Types Dialog\" if the advanced functions are shown. Each line of the condition includes a field, an operator and a comparison value. The operators include equality, greater than, less than, starts with, ends with, and contains. There are also True and False operators that will toggle the type of all nodes simultaneously.<br />\n<br />\nFor special field types such as dates, times, and booleans, the comparison value should be entered in the same format that is used in the Data Editor window. In general, the starts with, ends with, and contains operators should not be used for these special fields, since the comparison is done using an internal data representation. Dates and times also support a special comparison value of \"now\", which is always interpreted as the current date and time.<br />\n<br />\nThe \"Add New Rule\" button is used to add additional condition lines. The lines can be joined with \"and\" or \"or\" operators. The \"Remove Rule\" button deletes the last condition line. If only a single line is present, the \"Remove Rule\" button completely removes the condition.<br />\n<br />\nConditions do not have to be set for all types in a family. If no conditions are true for a node, the program will select a blank condition rather than a false one.<br />\n<br />\nFor an example, see the \"sample_conditional_todo\" file (by using the \"File &gt; Open Sample\" command)."
          },
          "format": "HEAD_PARA",
          "uid": "f170125aa25a11e7b7c67054d2175f18"
@@ -1438,8 +1695,7 @@
             "f1701764a25a11e7b7c67054d2175f18",
             "f1701868a25a11e7b7c67054d2175f18",
             "f170198aa25a11e7b7c67054d2175f18",
-            "f1701a8ea25a11e7b7c67054d2175f18",
-            "f1701b9ca25a11e7b7c67054d2175f18"
+            "f1701a8ea25a11e7b7c67054d2175f18"
          ],
          "data": {
             "Name": "Tree Data Operations"
@@ -1487,7 +1743,7 @@
          "children": [],
          "data": {
             "Name": "Cloned Nodes",
-            "Text": "Cloned nodes are used to duplicate sections of the tree. Editing their data or child structure in one location changes all locations. They are created by copying nodes or branches and then using the \"Edit-&gt;Paste Cloned Node\" command to paste them elsewhere. The clone link can be removed by deleting the nodes or by cutting them and pasting them back using the regular paste command."
+            "Text": "Cloned nodes are used to duplicate sections of the tree. Editing their data or child structure in one location changes all locations. When a cloned node is selected, multiple lines are shown in the Breadcrumb view, showing ancestor nodes that have multiple parents. The selected node will appear black (not a link), but its clones can be clicked to select their location in the tree view.<br />\n<br />\nCloned nodes are created by copying nodes or branches and then using the special paste clone commands found in the \"Edit\" menu to paste them elsewhere. The clone link can be removed by deleting the nodes or by using the \"Data &gt; Detach Clones\" command to convert them back to regular nodes.<br />\n<br />\nCloned nodes can also be created automatically by using the \"Data &gt; Clone All Matched Nodes\" command. This will convert all identical nodes in the tree structure into cloned nodes.<br />\n<br />\nFor an example of cloned nodes with multiple parents, see the \"sample_genealogy\" file (by using the \"File &gt; Open Sample\" command)."
          },
          "format": "HEAD_PARA",
          "uid": "f170198aa25a11e7b7c67054d2175f18"
@@ -1496,19 +1752,10 @@
          "children": [],
          "data": {
             "Name": "Category-Based Arrangement",
-            "Text": "The \"Data\" menu contains commands for arranging and flattening the data by category and by internal links. These methods are used to automatically add and remove levels of nodes below the current node in the tree.<br />\n<br />\nThe \"Add Category Level\" command allows you to select one or more of the fields that the child nodes have in common. These fields are used to create new parent nodes for the children, grouping them by common categories. For example, in a list of books, picking the \"author_first_name\" and \"author_last_name\" fields will result in a tree with the books under new nodes for each unique author.<br />\n<br />\nThe \"Flatten by Category\" command is almost the opposite of \"Add Category Level\". It eliminates any descendant nodes with children, transferring their data fields to their children. It will rename fields instead of overwriting data with the same field names, but this command is most useful when the children and parents are different types with unique field names."
+            "Text": "The \"Data\" menu contains commands for arranging and flattening the data by category. These methods are used to automatically add and remove levels of nodes below the current node in the tree.<br />\n<br />\nThe \"Add Category Level\" command allows you to select one or more of the fields that the child nodes have in common. These fields are used to create new parent nodes for the children, grouping them by common categories. For example, in a list of books, picking the \"author_first_name\" and \"author_last_name\" fields will result in a tree with the books under new nodes for each unique author.<br />\n<br />\nThe \"Flatten by Category\" command is almost the opposite of \"Add Category Level\". It eliminates any descendant nodes with children, transferring their data fields to their children. It will rename fields instead of overwriting data with the same field names, but this command is most useful when the children and parents are different types with unique field names.<br />\n<br />\nThere is also a \"Swap Category Levels\" command that will swap the child and grandchild nodes beneath a selected node.  A child node with multiple nodes under it will become cloned under each one.  Any existing grandchild clones will become individual nodes with multiple children."
          },
          "format": "HEAD_PARA",
          "uid": "f1701a8ea25a11e7b7c67054d2175f18"
-      },
-      {
-         "children": [],
-         "data": {
-            "Name": "Link-Based Arrangement",
-            "Text": "The \"Data &gt; Flatten by Link\" command will move all descendant nodes directly under a root node in a flat structure.  It will add an internal link field to each node that points to the node's former parent.<br />\n<br />\nThe \"Data &gt; Arrange by Link\" command does the opposite, placing each node under a parent node that is referenced by an internal link field."
-         },
-         "format": "HEAD_PARA",
-         "uid": "f1701b9ca25a11e7b7c67054d2175f18"
       },
       {
          "children": [
@@ -1566,7 +1813,7 @@
          "children": [],
          "data": {
             "Name": "File Compression",
-            "Text": "A TreeLine file is in an XML text format. There are also options to work with compressed files (gzip format) to save storage space. Individual files can be set to compressed mode from either \"File &gt; Properties\" or from the file type pull-down in the save-as dialog."
+            "Text": "A TreeLine file is in a JSON text format. There are options to compress the files (gzip format) to save storage space. Individual files can be set to compressed mode from either \"File &gt; Properties\" or from the file type pull-down in the save-as dialog."
          },
          "format": "HEAD_PARA",
          "uid": "f170216ea25a11e7b7c67054d2175f18"
@@ -1602,10 +1849,11 @@
          "children": [
             "f170265aa25a11e7b7c67054d2175f18",
             "f170275ea25a11e7b7c67054d2175f18",
+            "f1702b46a25a11e7b7c67054d2175f18",
+            "95547c38b97411e7a42a3417ebd53aeb",
             "f1702858a25a11e7b7c67054d2175f18",
             "f1702952a25a11e7b7c67054d2175f18",
-            "f1702a42a25a11e7b7c67054d2175f18",
-            "f1702b46a25a11e7b7c67054d2175f18"
+            "f1702a42a25a11e7b7c67054d2175f18"
          ],
          "data": {
             "Name": "File Import"
@@ -1617,7 +1865,7 @@
          "children": [],
          "data": {
             "Name": "General Information",
-            "Text": "A TreeLine file is in a specific XML text format. Other types of files can be imported using the \"File &gt; Import\" command, which will show a dialog box where the type of import can be selected.  Alternatively, using the \"File &gt; Open\" command with a non-TreeLine file will also show this dialog."
+            "Text": "A TreeLine file is in a specific JSON text format. Other types of files can be imported using the \"File &gt; Import\" command, which will show a dialog box where the type of import can be selected. Alternatively, using the \"File &gt; Open\" command with a non-TreeLine file will also show this dialog."
          },
          "format": "HEAD_PARA",
          "uid": "f170265aa25a11e7b7c67054d2175f18"
@@ -1672,6 +1920,7 @@
             "f1702d4ea25a11e7b7c67054d2175f18",
             "f1702e52a25a11e7b7c67054d2175f18",
             "f1702f60a25a11e7b7c67054d2175f18",
+            "65289b36b97611e783eb3417ebd53aeb",
             "f1703064a25a11e7b7c67054d2175f18",
             "f170315ea25a11e7b7c67054d2175f18",
             "f1703262a25a11e7b7c67054d2175f18"
@@ -1797,45 +2046,7 @@
       },
       {
          "children": [
-            "f1703a32a25a11e7b7c67054d2175f18",
-            "f1703b7ca25a11e7b7c67054d2175f18",
-            "f1703c80a25a11e7b7c67054d2175f18"
-         ],
-         "data": {
-            "Name": "Plugins"
-         },
-         "format": "HEADINGS",
-         "uid": "f170394ca25a11e7b7c67054d2175f18"
-      },
-      {
-         "children": [],
-         "data": {
-            "Name": "Description",
-            "Text": "TreeLine has an interface for plugin extension modules. This allows extensions to be written by various programmers to provide features needed by a few users without adding bloat to the main application. The plugins can add new menu items, access and modify TreeLine data, and read and write TreeLine Files.<br />\n<br />\nCurrently available plugins are listed on the \"Downloads\" page of the TreeLine web site."
-         },
-         "format": "HEAD_PARA",
-         "uid": "f1703a32a25a11e7b7c67054d2175f18"
-      },
-      {
-         "children": [],
-         "data": {
-            "Name": "Installation",
-            "Text": "The plugins are installed by copying their Python file (*.py) to a plugins directory. This can be a directory in the TreeLine installation (\"&lt;prefix&gt;/share/treeline/plugins/\" on Linux or \"TreeLine-2\\plugins\\\" under the Program Files or Application Data folders on Windows) or in the user configuration directory (\"~/.treeline-2.x/plugins/\" on Linux, \"Documents and Settings\\&lt;user&gt;\\Application Data\\bellz\\treeline-2.x\\plugins\\\" on Windows). A list of loaded plugins can be found using the \"Help &gt;About Plugins\" command."
-         },
-         "format": "HEAD_PARA",
-         "uid": "f1703b7ca25a11e7b7c67054d2175f18"
-      },
-      {
-         "children": [],
-         "data": {
-            "Name": "Programming Interface",
-            "Text": "Information needed to write new plugins can be found in the \"plugininterface.py\" file in the TreeLine source code."
-         },
-         "format": "HEAD_PARA",
-         "uid": "f1703c80a25a11e7b7c67054d2175f18"
-      },
-      {
-         "children": [
+            "6df9a0c5ba3b11e78e7e3417ebd53aeb",
             "f1703e7ea25a11e7b7c67054d2175f18",
             "f1704752a25a11e7b7c67054d2175f18",
             "f170527ea25a11e7b7c67054d2175f18",
@@ -4191,6 +4402,15 @@
          },
          "format": "HEAD_PARA",
          "uid": "f171372aa25a11e7b7c67054d2175f18"
+      },
+      {
+         "children": [],
+         "data": {
+            "Name": "Error handling",
+            "Text": "Error handling has been improved.  For most errors, a dialog box is shown with debugging information that can be copied into an email."
+         },
+         "format": "BULLETS",
+         "uid": "f5983b38bb0411e795e13417ebd53aeb"
       }
    ],
    "properties": {
