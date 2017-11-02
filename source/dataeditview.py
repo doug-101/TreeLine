@@ -166,7 +166,8 @@ class DataEditDelegate(QStyledItemDelegate):
             # self.parent().setFocusProxy(editor)
             editor.contentsChanged.connect(self.commitData)
             if hasattr(editor, 'inLinkSelectMode'):
-                editor.inLinkSelectMode.connect(self.parent().inLinkSelectMode)
+                editor.inLinkSelectMode.connect(self.parent().
+                                                changeInLinkSelectMode)
             if hasattr(editor, 'setLinkFromNode'):
                 self.parent().internalLinkSelected.connect(editor.
                                                            setLinkFromNode)
@@ -330,6 +331,7 @@ class DataEditView(QTableWidget):
         self.isChildView = isChildView
         self.hideChildView = not globalref.genOptions['InitShowChildPane']
         self.prevHoverCell = None
+        self.inLinkSelectActive = False
         self.setAcceptDrops(True)
         self.setMouseTracking(globalref.genOptions['EditorOnHover'])
         self.horizontalHeader().hide()
@@ -380,6 +382,7 @@ class DataEditView(QTableWidget):
                 rowNum = self.addNodeData(spot, rowNum + 2)
             self.setRowCount(rowNum + 1)
             self.adjustSizes()
+            self.scrollToTop()
             self.show()
 
     def addNodeData(self, spot, startRow):
@@ -497,6 +500,25 @@ class DataEditView(QTableWidget):
         """
         global defaultFont
         defaultFont = font
+
+    def changeInLinkSelectMode(self, active=True):
+        """Change the internal link select mode.
+
+        Changes the internal variable (controlling hover) and signals the tree.
+        Arguments:
+            active -- if True, starts the mode, o/w ends
+        """
+        self.inLinkSelectActive = active
+        self.inLinkSelectMode.emit(active)
+
+    def updateInLinkSelectMode(self, active=True):
+        """Update the internal link select mode.
+
+        Updates the internal variable (controlling hover).
+        Arguments:
+            active -- if True, starts the mode, o/w ends
+        """
+        self.inLinkSelectActive = active
 
     def highlightSearch(self, wordList=None, regExpList=None):
         """Highlight any found search terms.
@@ -674,7 +696,8 @@ class DataEditView(QTableWidget):
         """
         cell = self.itemAt(event.pos())
         if cell and hasattr(cell, 'doc'):
-            if cell != self.currentItem() and cell != self.prevHoverCell:
+            if (cell != self.currentItem() and cell != self.prevHoverCell and
+                not self.inLinkSelectActive):
                 self.prevHoverCell = cell
                 self.hoverFocusActive.emit()
                 self.setFocus()

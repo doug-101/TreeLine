@@ -1364,7 +1364,7 @@ class  OutputPage(ConfigPage):
         else:
             try:
                 activeFormat = ConfigDialog.formatsRef[self.refLevelType]
-            except ValueError:
+            except (KeyError, ValueError):
                 self.refLevelType = ConfigDialog.currentTypeName
                 activeFormat = currentFormat
         self.fieldListBox.blockSignals(True)

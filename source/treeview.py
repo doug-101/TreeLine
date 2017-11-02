@@ -373,6 +373,16 @@ class TreeEditDelegate(QStyledItemDelegate):
         self.editor = super().createEditor(parent, styleOption, modelIndex)
         return self.editor
 
+    def destroyEditor(self, editor, index):
+        """Reset editor storage after editing ends.
+
+        Arguments:
+            editor -- the editor that is ending
+            index -- the index of the edited item
+        """
+        self.editor = None
+        super().destroyEditor(editor, index)
+
     def eventFilter(self, editor, event):
         """Override to handle shortcut control keys.
 

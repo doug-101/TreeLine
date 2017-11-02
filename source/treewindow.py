@@ -113,6 +113,10 @@ class TreeWindow(QMainWindow):
                                                  internalLinkSelected)
         parentEditView.hoverFocusActive.connect(childEditView.endEditor)
         childEditView.hoverFocusActive.connect(parentEditView.endEditor)
+        parentEditView.inLinkSelectMode.connect(childEditView.
+                                                updateInLinkSelectMode)
+        childEditView.inLinkSelectMode.connect(parentEditView.
+                                               updateInLinkSelectMode)
         self.editorSplitter.addWidget(childEditView)
 
         self.titleSplitter = QSplitter(Qt.Vertical)
