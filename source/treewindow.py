@@ -152,6 +152,9 @@ class TreeWindow(QMainWindow):
         Arguments:
             allActions -- a dict containing the upper level actions
         """
+        # remove submenu actions that are children of the window
+        self.removeAction(self.allActions['DataNodeType'])
+        self.removeAction(self.allActions['FormatFontSize'])
         self.allActions = allActions.copy()
         self.allActions.update(self.winActions)
         self.menuBar().clear()

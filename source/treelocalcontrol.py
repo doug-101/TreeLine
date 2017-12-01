@@ -716,6 +716,12 @@ class TreeLocalControl(QObject):
             key = globalref.keyboardOptions[name]
             if not key.isEmpty():
                 action.setShortcut(key)
+        typeIcon = globalref.toolIcons.getIcon('DataNodeType'.lower())
+        if typeIcon:
+            self.typeSubMenu.setIcon(typeIcon)
+        fontIcon = globalref.toolIcons.getIcon('FormatFontSize'.lower())
+        if fontIcon:
+            self.fontSizeSubMenu.setIcon(fontIcon)
         self.allActions.update(localActions)
 
     def fileSave(self, backupFile=False):
@@ -838,12 +844,12 @@ class TreeLocalControl(QObject):
     def fileProperties(self):
         """Show dialog to set file parameters like compression and encryption.
         """
-        # origZeroBlanks = self.model.mathZeroBlanks
+        origZeroBlanks = self.structure.mathZeroBlanks
         dialog = miscdialogs.FilePropertiesDialog(self, self.activeWindow)
         if dialog.exec_() == QDialog.Accepted:
             self.setModified()
-            # if self.model.mathZeroBlanks != origZeroBlanks:
-                # self.updateAll(False)
+            if self.structure.mathZeroBlanks != origZeroBlanks:
+                self.updateAll(False)
 
     def editUndo(self):
         """Undo the previous action and update the views.

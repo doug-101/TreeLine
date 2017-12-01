@@ -211,6 +211,15 @@ class TreeView(QTreeView):
         self.incremSearchString = ''
         globalref.mainControl.currentStatusBar().clearMessage()
 
+    def showTypeMenu(self, menu):
+        """Show a popup menu for setting the item type.
+        """
+        index = self.selectionModel().currentIndex()
+        self.scrollTo(index)
+        rect = self.visualRect(index)
+        pt = self.mapToGlobal(QPoint(rect.center().x(), rect.bottom()))
+        menu.popup(pt)
+
     def contextMenu(self):
         """Return the context menu, creating it if necessary.
         """
