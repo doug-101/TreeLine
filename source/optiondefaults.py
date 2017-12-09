@@ -120,10 +120,11 @@ def setToolbarOptionDefaults(toolbarOptions):
     StringOptionItem(toolbarOptions, 'Toolbar0',
                      'FileNew,FileOpen,FileSave,,FilePrintPreview,FilePrint,,'
                      'EditUndo,EditRedo,,EditCut,EditCopy,EditPaste,,'
-                     'DataConfigType')
+                     'DataConfigType,ToolsFindText')
     StringOptionItem(toolbarOptions, 'Toolbar1',
                      'NodeInsertAfter,NodeAddChild,,NodeDelete,NodeIndent,'
                      'NodeUnindent,,NodeMoveUp,NodeMoveDown,,'
+                     'ViewExpandBranch,ViewCollapseBranch,,'
                      'ViewPrevSelect,ViewNextSelect,,ViewShowDescend')
 
 def setKeyboardOptionDefaults(keyboardOptions):

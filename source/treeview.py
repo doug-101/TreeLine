@@ -106,12 +106,15 @@ class TreeView(QTreeView):
     def expandBranch(self, parentSpot):
         """Expand all spots in the given branch.
 
+        Collapses parentSpot first to avoid extreme slowness.
         Arguments:
             parentSpot -- the top spot in the branch
         """
-        for spot in parentSpot.spotDescendantGen():
+        self.collapse(parentSpot.index(self.model()))
+        for spot in parentSpot.spotDescendantOnlyGen():
             if spot.nodeRef.childList:
                 self.expand(spot.index(self.model()))
+        self.expand(parentSpot.index(self.model()))
 
     def collapseBranch(self, parentSpot):
         """Collapse all spots in the given branch.
@@ -241,6 +244,9 @@ class TreeView(QTreeView):
         menu.addAction(self.allActions['NodeMoveDown'])
         menu.addSeparator()
         menu.addMenu(self.allActions['DataNodeType'].parent())
+        menu.addSeparator()
+        menu.addAction(self.allActions['ViewExpandBranch'])
+        menu.addAction(self.allActions['ViewCollapseBranch'])
         return menu
 
     def contextMenuEvent(self, event):

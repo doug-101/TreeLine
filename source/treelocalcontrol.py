@@ -244,11 +244,9 @@ class TreeLocalControl(QObject):
         """Set commands available based on node selections.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
+        hasSelect = len(selSpots) > 0
         rootSpots = [spot for spot in selSpots if not
                      spot.parentSpot.parentSpot]
-        hasGrandParent = (len(selSpots) and len(rootSpots) == 0 and
-                          None not in [spot.parentSpot.parentSpot.parentSpot
-                                       for spot in selSpots])
         hasPrevSibling = (len(selSpots) and None not in
                           [spot.prevSiblingSpot() for spot in selSpots])
         hasNextSibling = (len(selSpots) and None not in
@@ -258,28 +256,26 @@ class TreeLocalControl(QObject):
         hasText = len(mime.data('text/plain')) > 0
         self.allActions['EditPaste'].setEnabled(hasData or hasText)
         self.allActions['EditPasteChild'].setEnabled(hasData)
-        self.allActions['EditPasteBefore'].setEnabled(hasData and
-                                                      len(selSpots) > 0)
-        self.allActions['EditPasteAfter'].setEnabled(hasData and
-                                                     len(selSpots) > 0)
+        self.allActions['EditPasteBefore'].setEnabled(hasData and hasSelect)
+        self.allActions['EditPasteAfter'].setEnabled(hasData and hasSelect)
         self.allActions['EditPasteCloneChild'].setEnabled(hasData)
         self.allActions['EditPasteCloneBefore'].setEnabled(hasData and
-                                                           len(selSpots) > 0)
+                                                           hasSelect)
         self.allActions['EditPasteCloneAfter'].setEnabled(hasData and
-                                                          len(selSpots) > 0)
+                                                          hasSelect)
         self.allActions['NodeRename'].setEnabled(len(selSpots) == 1)
-        self.allActions['NodeInsertBefore'].setEnabled(len(selSpots) > 0)
-        self.allActions['NodeInsertAfter'].setEnabled(len(selSpots) > 0)
-        self.allActions['NodeDelete'].setEnabled(len(selSpots) > 0 and
-                                                 len(rootSpots) <
+        self.allActions['NodeInsertBefore'].setEnabled(hasSelect)
+        self.allActions['NodeInsertAfter'].setEnabled(hasSelect)
+        self.allActions['NodeDelete'].setEnabled(hasSelect and len(rootSpots) <
                                                  len(self.structure.childList))
         self.allActions['NodeIndent'].setEnabled(hasPrevSibling)
-        self.allActions['NodeUnindent'].setEnabled(hasGrandParent)
+        self.allActions['NodeUnindent'].setEnabled(hasSelect and
+                                                   len(rootSpots) == 0)
         self.allActions['NodeMoveUp'].setEnabled(hasPrevSibling)
         self.allActions['NodeMoveDown'].setEnabled(hasNextSibling)
         self.allActions['NodeMoveFirst'].setEnabled(hasPrevSibling)
         self.allActions['NodeMoveLast'].setEnabled(hasNextSibling)
-        self.allActions['DataNodeType'].parent().setEnabled(len(selSpots) > 0)
+        self.allActions['DataNodeType'].parent().setEnabled(hasSelect)
         if self.activeWindow.treeFilterView:
             self.allActions['NodeInsertBefore'].setEnabled(False)
             self.allActions['NodeInsertAfter'].setEnabled(False)

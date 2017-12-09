@@ -18,7 +18,8 @@ import ast
 import io
 import gzip
 import zlib
-from PyQt5.QtCore import QIODevice, QObject, Qt
+import platform
+from PyQt5.QtCore import QIODevice, QObject, Qt, PYQT_VERSION_STR, qVersion
 from PyQt5.QtNetwork import QLocalServer, QLocalSocket
 from PyQt5.QtWidgets import (QAction, QApplication, QDialog, QFileDialog,
                              QMessageBox, qApp)
@@ -437,6 +438,7 @@ class TreeMainControl(QObject):
         self.localControls.append(localControl)
         self.updateLocalControlRef(localControl)
         localControl.updateRightViews()
+        localControl.updateCommandsAvail()
 
     def updateLocalControlRef(self, localControl):
         """Set the given local control as active.
@@ -950,6 +952,13 @@ class TreeMainControl(QObject):
     def helpAbout(self):
         """ Display version info about this program.
         """
+        pyVersion = '.'.join([repr(num) for num in sys.version_info[:3]])
+        textLines = [_('TreeLine version {0}').format(__version__),
+                     _('written by {0}').format(__author__), '',
+                     _('Library versions:'),
+                     '   Python:  {0}'.format(pyVersion),
+                     '   Qt:  {0}'.format(qVersion()),
+                     '   PyQt:  {0}'.format(PYQT_VERSION_STR),
+                     '   OS:  {0}'.format(platform.platform())]
         QMessageBox.about(QApplication.activeWindow(), 'TreeLine',
-                          _('TreeLine, Version {0}\nby {1}').
-                          format(__version__, __author__))
+                          '\n'.join(textLines))
