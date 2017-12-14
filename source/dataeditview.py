@@ -478,8 +478,6 @@ class DataEditView(QTableWidget):
             newCell -- the new current edit cell item
             prevCell - the old current cell item
         """
-        prevText = prevCell.text() if prevCell else 'none'
-        newText = newCell.text() if newCell else 'none'
         if prevCell and hasattr(prevCell, 'updateText'):
             self.closePersistentEditor(prevCell)
             prevCell.updateText()
@@ -696,12 +694,17 @@ class DataEditView(QTableWidget):
         """
         cell = self.itemAt(event.pos())
         if cell and hasattr(cell, 'doc'):
-            if (cell != self.currentItem() and cell != self.prevHoverCell and
+            oldCell = self.currentItem()
+            if (cell != oldCell and cell != self.prevHoverCell and
                 not self.inLinkSelectActive):
                 self.prevHoverCell = cell
                 self.hoverFocusActive.emit()
                 self.setFocus()
-                self.setCurrentItem(None)
+                if oldCell:
+                    # these lines result in two calls to moveEditor, but seems
+                    # to be necessary to avoid race that leaves stray editors
+                    self.moveEditor(None, oldCell)
+                    self.setCurrentItem(None)
                 self.setCurrentItem(cell)
         else:
             self.prevHoverCell = None
