@@ -2235,7 +2235,7 @@ class RegularExpressionField(HtmlTextField):
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
-        match = re.match(self.format, saxutils.unescape(storedText))
+        match = re.fullmatch(self.format, saxutils.unescape(storedText))
         if not storedText or match:
             text = storedText
         else:
@@ -2251,7 +2251,7 @@ class RegularExpressionField(HtmlTextField):
         """
         if not self.evalHtml:
             storedText = saxutils.unescape(storedText)
-        match = re.match(self.format, storedText)
+        match = re.fullmatch(self.format, storedText)
         if not storedText or match:
             return storedText
         raise ValueError
@@ -2263,7 +2263,7 @@ class RegularExpressionField(HtmlTextField):
         Arguments:
             editorText -- the new text entered into the editor
         """
-        match = re.match(self.format, editorText)
+        match = re.fullmatch(self.format, editorText)
         if not editorText or match:
             if self.evalHtml:
                 return editorText

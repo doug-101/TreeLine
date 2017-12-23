@@ -254,8 +254,7 @@ class MathEquation:
 
 
 # recursive equation ref eval directions
-EvalDir = enum.Enum('EvalDir', 'optional upward downward')
-optional, upward, downward = range(3)
+EvalDir = enum.IntEnum('EvalDir', 'optional upward downward')
 
 
 class EquationFieldRef:
@@ -372,8 +371,11 @@ class EquationRootRef(EquationFieldRef):
         if 1 not in {len(spot.spotChain()) for spot in refNode.spotRefs}:
             # not a root node
             return []
-        return [node for node in refNode.selectiveDescendantGen() if
+        refs = [node for node in refNode.descendantGen() if
                 node.formatRef.name == self.eqnNodeTypeName]
+        if refs[0] is refNode:
+            refs = refs[1:]
+        return refs
 
 
 class EquationChildRef(EquationFieldRef):
