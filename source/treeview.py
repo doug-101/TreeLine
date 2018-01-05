@@ -295,8 +295,6 @@ class TreeView(QTreeView):
         """
         clickedSpot = self.indexAt(event.pos()).internalPointer()
         if clickedSpot:
-            # # clear selection to avoid invalid select bug
-            # self.selectionModel().selectSpots([], False)
             super().dropEvent(event)
             self.selectionModel().selectSpots([clickedSpot], False)
             self.scheduleDelayedItemsLayout()  # reqd before expand

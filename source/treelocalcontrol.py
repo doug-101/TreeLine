@@ -971,13 +971,11 @@ class TreeLocalControl(QObject):
         selSpots = self.currentSelectionModel().selectedSpots()
         newSpots = selSpots.addChild(self.structure,
                                      self.activeWindow.treeView)
-        if globalref.genOptions['RenameNewNodes']:
-            self.currentSelectionModel().selectSpots(newSpots, False)
-            if len(newSpots) == 1:
-                self.updateAll()
-                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
-                return
         self.updateAll()
+        if globalref.genOptions['RenameNewNodes']:
+            self.currentSelectionModel().selectSpots(newSpots)
+            if len(newSpots) == 1:
+                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
 
     def nodeInBefore(self):
         """Insert new sibling before selection.
@@ -985,13 +983,11 @@ class TreeLocalControl(QObject):
         self.activeWindow.treeView.endEditing()
         selSpots = self.currentSelectionModel().selectedSpots()
         newSpots = selSpots.insertSibling(self.structure)
-        if globalref.genOptions['RenameNewNodes']:
-            self.currentSelectionModel().selectSpots(newSpots, False)
-            if len(newSpots) == 1:
-                self.updateAll()
-                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
-                return
         self.updateAll()
+        if globalref.genOptions['RenameNewNodes']:
+            self.currentSelectionModel().selectSpots(newSpots)
+            if len(newSpots) == 1:
+                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
 
     def nodeInAfter(self):
         """Insert new sibling after selection.
@@ -999,23 +995,19 @@ class TreeLocalControl(QObject):
         self.activeWindow.treeView.endEditing()
         selSpots = self.currentSelectionModel().selectedSpots()
         newSpots = selSpots.insertSibling(self.structure, False)
-        if globalref.genOptions['RenameNewNodes']:
-            self.currentSelectionModel().selectSpots(newSpots, False)
-            if len(newSpots) == 1:
-                self.updateAll()
-                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
-                return
         self.updateAll()
+        if globalref.genOptions['RenameNewNodes']:
+            self.currentSelectionModel().selectSpots(newSpots)
+            if len(newSpots) == 1:
+                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
 
     def nodeDelete(self):
         """Delete the selected nodes.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
         if selSpots:
-            # # avoid problems with temporarily invalid selection
-            # self.currentSelectionModel().selectSpots([], False)
             nextSel = selSpots.delete(self.structure)
-            self.currentSelectionModel().selectSpots([nextSel], False)
+            self.currentSelectionModel().selectSpots([nextSel])
             self.updateAll()
 
     def nodeIndent(self):
@@ -1043,32 +1035,32 @@ class TreeLocalControl(QObject):
         """
         selSpots = self.currentSelectionModel().selectedSpots()
         selSpots.move(self.structure)
-        self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
+        self.currentSelectionModel().selectSpots(selSpots)
 
     def nodeMoveDown(self):
         """Move the selected nodes downward in the sibling list.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
         selSpots.move(self.structure, False)
-        self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
+        self.currentSelectionModel().selectSpots(selSpots)
 
     def nodeMoveFirst(self):
         """Move the selected nodes to be the first children.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
         selSpots.moveToEnd(self.structure)
-        self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
+        self.currentSelectionModel().selectSpots(selSpots)
 
     def nodeMoveLast(self):
         """Move the selected nodes to be the last children.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
         selSpots.moveToEnd(self.structure, False)
-        self.currentSelectionModel().selectSpots(selSpots, False)
         self.updateAll()
+        self.currentSelectionModel().selectSpots(selSpots)
 
     def dataSetType(self, action):
         """Change the type of selected nodes based on a menu selection.
