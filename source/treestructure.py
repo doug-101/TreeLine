@@ -199,6 +199,7 @@ class TreeStructure(treenode.TreeNode):
             undo.FormatUndo(self.undoList, self.treeFormats,
                             self.configDialogFormats)
         self.treeFormats.copySettings(self.configDialogFormats)
+        self.treeFormats.updateDerivedRefs()
         self.treeFormats.updateMathFieldRefs()
         if self.configDialogFormats.fieldRenameDict:
             for node in self.nodeDict.values():
