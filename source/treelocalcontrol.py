@@ -1086,7 +1086,8 @@ class TreeLocalControl(QObject):
             selectTypeNames.add(node.formatRef.name)
             if typeLimitNames is not None:
                 for parent in node.parents():
-                    limit = parent.formatRef.childTypeLimit
+                    limit = (parent.formatRef.childTypeLimit if
+                             parent.formatRef else None)
                     if (not limit or (typeLimitNames and
                                       limit != typeLimitNames)):
                         typeLimitNames = None
