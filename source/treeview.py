@@ -294,6 +294,8 @@ class TreeView(QTreeView):
             event -- the drop event
         """
         clickedSpot = self.indexAt(event.pos()).internalPointer()
+        # clear selection to avoid invalid multiple selection bug
+        self.selectionModel().selectSpots([], False)
         if clickedSpot:
             super().dropEvent(event)
             self.selectionModel().selectSpots([clickedSpot], False)
