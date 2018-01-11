@@ -50,6 +50,8 @@ class TreeView(QTreeView):
         self.header().setStretchLastSection(False)
         self.setHeaderHidden(True)
         self.setItemDelegate(TreeEditDelegate(self))
+        # use mouse event for editing to avoid with multiple select
+        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.updateTreeGenOptions()
         self.setDragDropMode(QAbstractItemView.DragDrop)
         self.setDefaultDropAction(Qt.MoveAction)
@@ -69,10 +71,6 @@ class TreeView(QTreeView):
     def updateTreeGenOptions(self):
         """Set the tree to match the current general options.
         """
-        if globalref.genOptions['ClickRename']:
-            self.setEditTriggers(QAbstractItemView.SelectedClicked)
-        else:
-            self.setEditTriggers(QAbstractItemView.NoEditTriggers)
         dragAvail = globalref.genOptions['DragTree']
         self.setDragEnabled(dragAvail)
         self.setAcceptDrops(dragAvail)
@@ -261,7 +259,7 @@ class TreeView(QTreeView):
                 event.ignore()
                 return
             if clickedSpot not in self.selectionModel().selectedSpots():
-                self.selectionModel().selectSpot(clickedSpot)
+                self.selectionModel().selectSpots([clickedSpot])
             pos = event.globalPos()
         else:       # shown for menu key or other reason
             selectList = self.selectionModel().selectedSpots()
@@ -328,8 +326,16 @@ class TreeView(QTreeView):
         if self.incremSearchMode:
             self.incremSearchStop()
         clickedSpot = self.indexAt(event.pos()).internalPointer()
-        if self.noMouseSelectMode and clickedSpot:
-            self.skippedMouseSelect.emit(clickedSpot.nodeRef)
+        if self.noMouseSelectMode:
+            if clickedSpot and event.button() == Qt.LeftButton:
+                self.skippedMouseSelect.emit(clickedSpot.nodeRef)
+            event.ignore()
+            return
+        if (event.button() == Qt.LeftButton and
+            self.selectionModel().selectedCount() == 1 and
+            clickedSpot == self.selectionModel().selectedSpots()[0] and
+            globalref.genOptions['ClickRename']):
+            self.edit(self.indexAt(event.pos()))
             event.ignore()
             return
         super().mousePressEvent(event)
@@ -468,10 +474,8 @@ class TreeFilterView(QListWidget):
         self.filterStr = ''
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.setItemDelegate(TreeEditDelegate(self))
-        if globalref.genOptions['ClickRename']:
-            self.setEditTriggers(QAbstractItemView.SelectedClicked)
-        else:
-            self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        # use mouse event for editing to avoid with multiple select
+        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.itemSelectionChanged.connect(self.updateSelectionModel)
         self.itemChanged.connect(self.changeTitle)
         treeFont = QTextDocument().defaultFont()
@@ -653,7 +657,7 @@ class TreeFilterView(QListWidget):
                 event.ignore()
                 return
             if clickedItem.spot not in self.selectionModel.selectedSpots():
-                self.selectionModel().selectSpots(clickedItem.spot)
+                self.selectionModel.selectSpots([clickedItem.spot])
             pos = event.globalPos()
         else:       # shown for menu key or other reason
             selectList = self.selectedItems()
@@ -698,7 +702,15 @@ class TreeFilterView(QListWidget):
             event.ignore()
             return
         if self.noMouseSelectMode:
-            self.skippedMouseSelect.emit(clickedItem.spot.nodeRef)
+            if event.button() == Qt.LeftButton:
+                self.skippedMouseSelect.emit(clickedItem.spot.nodeRef)
+            event.ignore()
+            return
+        if (event.button() == Qt.LeftButton and
+            self.selectionModel.selectedCount() == 1 and
+            clickedItem.spot == self.selectionModel.selectedSpots()[0] and
+            globalref.genOptions['ClickRename']):
+            self.editItem(clickedItem)
             event.ignore()
             return
         super().mousePressEvent(event)

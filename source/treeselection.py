@@ -44,6 +44,11 @@ class TreeSelection(QItemSelectionModel):
         self.restoreFlag = False
         self.selectionChanged.connect(self.updateSelectLists)
 
+    def selectedCount(self):
+        """Return the number of selected spots.
+        """
+        return len(self.selectedIndexes())
+
     def selectedSpots(self):
         """Return a SpotList of selected spots, sorted in tree order.
         """
