@@ -4,7 +4,7 @@
 # dataeditview.py, provides a class for the data edit right-hand view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -777,6 +777,6 @@ class MatchHighlighter(QSyntaxHighlighter):
             else:
                 match = self.regExpObj.search(text, pos)
                 pos = match.start() if match else -1
-                matchLen = len(match.group())
+                matchLen = len(match.group()) if match else 0
         if pos >= 0:
             self.setFormat(pos, matchLen, self.charFormat)

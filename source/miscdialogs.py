@@ -4,7 +4,7 @@
 # miscdialogs.py, provides classes for various control dialogs
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -728,7 +728,6 @@ class FindReplaceDialog(QDialog):
         textLayout = QVBoxLayout(textBox)
         self.textEntry = QLineEdit()
         textLayout.addWidget(self.textEntry)
-        self.textEntry.textEdited.connect(self.updateAvail)
         self.textEntry.textEdited.connect(self.clearMatch)
 
         replaceBox = QGroupBox(_('Replacement &Text'))
@@ -808,6 +807,7 @@ class FindReplaceDialog(QDialog):
         """Remove reference to matched node if search criteria changes.
         """
         self.matchedSpot = None
+        globalref.mainControl.activeControl.findReplaceSpotRef = (None, 0)
         self.updateAvail()
 
     def loadTypeNames(self):
