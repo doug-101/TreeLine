@@ -4,7 +4,7 @@
 # treeview.py, provides a class for the indented tree view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -12,6 +12,7 @@
 # but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
+import re
 import unicodedata
 from PyQt5.QtCore import QEvent, QPoint, Qt, pyqtSignal
 from PyQt5.QtGui import QContextMenuEvent, QKeySequence, QTextDocument
@@ -536,11 +537,14 @@ class TreeFilterView(QListWidget):
         self.selectItems(self.selectionModel.selectedSpots(), True)
         if self.count() and not self.selectedItems():
             self.item(0).setSelected(True)
+        if not self.messageLabel:
+            self.messageLabel = QLabel()
+            globalref.mainControl.currentStatusBar().addWidget(self.
+                                                               messageLabel)
         message = _('Filtering by "{0}", found {1} nodes').format(self.
                                                                   filterStr,
                                                                   self.count())
-        self.messageLabel = QLabel(message)
-        globalref.mainControl.currentStatusBar().addWidget(self.messageLabel)
+        self.messageLabel.setText(message)
         QApplication.restoreOverrideCursor()
 
     def conditionalUpdate(self):
@@ -557,10 +561,13 @@ class TreeFilterView(QListWidget):
         self.selectItems(self.selectionModel.selectedSpots(), True)
         if self.count() and not self.selectedItems():
             self.item(0).setSelected(True)
+        if not self.messageLabel:
+            self.messageLabel = QLabel()
+            globalref.mainControl.currentStatusBar().addWidget(self.
+                                                               messageLabel)
         message = _('Conditional filtering, found {0} nodes').format(self.
                                                                      count())
-        self.messageLabel = QLabel(message)
-        globalref.mainControl.currentStatusBar().addWidget(self.messageLabel)
+        self.messageLabel.setText(message)
         QApplication.restoreOverrideCursor()
 
     def selectItems(self, spots, signalModel=False):

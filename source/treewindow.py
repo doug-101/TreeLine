@@ -4,7 +4,7 @@
 # treewindow.py, provides a class for the main window and controls
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -305,6 +305,7 @@ class TreeWindow(QMainWindow):
             globalref.mainControl.currentStatusBar().removeWidget(self.
                                                                 treeFilterView.
                                                                 messageLabel)
+            self.treeFilterView.messageLabel.deleteLater()
         self.treeFilterView = None
 
     def rightParentView(self):
