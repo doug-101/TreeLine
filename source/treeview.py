@@ -46,6 +46,7 @@ class TreeView(QTreeView):
         self.incremSearchMode = False
         self.incremSearchString = ''
         self.noMouseSelectMode = False
+        self.prevSelSpot = None   # temp, to check for edit at mouse release
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.header().setStretchLastSection(False)
@@ -318,7 +319,7 @@ class TreeView(QTreeView):
         self.noMouseSelectMode = active
 
     def mousePressEvent(self, event):
-        """Skip unselecting click on blank spaces and if in noMouseSelectMode.
+        """Skip unselecting click if in noMouseSelectMode.
 
         If in noMouseSelectMode, signal which node is under the mouse.
         Arguments:
@@ -326,6 +327,7 @@ class TreeView(QTreeView):
         """
         if self.incremSearchMode:
             self.incremSearchStop()
+        self.prevSelSpot = None
         clickedSpot = self.indexAt(event.pos()).internalPointer()
         if self.noMouseSelectMode:
             if clickedSpot and event.button() == Qt.LeftButton:
@@ -334,12 +336,24 @@ class TreeView(QTreeView):
             return
         if (event.button() == Qt.LeftButton and
             self.selectionModel().selectedCount() == 1 and
-            clickedSpot == self.selectionModel().selectedSpots()[0] and
             globalref.genOptions['ClickRename']):
+            self.prevSelSpot = self.selectionModel().selectedSpots()[0]
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        """Initiate editing if clicking on a single selected node.
+
+        Arguments:
+            event -- the mouse click event
+        """
+        clickedSpot = self.indexAt(event.pos()).internalPointer()
+        if (event.button() == Qt.LeftButton and
+            self.prevSelSpot and clickedSpot == self.prevSelSpot):
             self.edit(self.indexAt(event.pos()))
             event.ignore()
             return
-        super().mousePressEvent(event)
+        self.prevSelSpot = None
+        super().mouseReleaseEvent(event)
 
     def keyPressEvent(self, event):
         """Record characters if in incremental search mode.
@@ -467,6 +481,7 @@ class TreeFilterView(QListWidget):
         self.allActions = allActions
         self.menu = None
         self.noMouseSelectMode = False
+        self.prevSelSpot = None   # temp, to check for edit at mouse release
         self.drivingSelectionChange = False
         self.conditionalFilter = None
         self.messageLabel = None
@@ -704,6 +719,7 @@ class TreeFilterView(QListWidget):
         Arguments:
             event -- the mouse click event
         """
+        self.prevSelSpot = None
         clickedItem = self.itemAt(event.pos())
         if not clickedItem:
             event.ignore()
@@ -715,9 +731,21 @@ class TreeFilterView(QListWidget):
             return
         if (event.button() == Qt.LeftButton and
             self.selectionModel.selectedCount() == 1 and
-            clickedItem.spot == self.selectionModel.selectedSpots()[0] and
             globalref.genOptions['ClickRename']):
+            self.prevSelSpot = self.selectionModel.selectedSpots()[0]
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        """Initiate editing if clicking on a single selected node.
+
+        Arguments:
+            event -- the mouse click event
+        """
+        clickedItem = self.itemAt(event.pos())
+        if (event.button() == Qt.LeftButton and clickedItem and
+            self.prevSelSpot and clickedItem.spot == self.prevSelSpot):
             self.editItem(clickedItem)
             event.ignore()
             return
-        super().mousePressEvent(event)
+        self.prevSelSpot = None
+        super().mouseReleaseEvent(event)
