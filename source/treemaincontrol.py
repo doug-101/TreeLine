@@ -4,7 +4,7 @@
 # treemaincontrol.py, provides a class for global tree commands
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -865,6 +865,7 @@ class TreeMainControl(QObject):
             for control in self.localControls:
                 for window in control.windowList:
                     window.updateWinGenOptions()
+                control.structure.undoList.setNumLevels()
                 control.updateAll(False)
                 if autoSaveMinutes != oldAutoSaveMinutes:
                     control.resetAutoSave()

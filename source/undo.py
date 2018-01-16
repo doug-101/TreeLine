@@ -4,7 +4,7 @@
 # undo.py, provides a classes to store and execute undo & redo operations
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -55,6 +55,15 @@ class UndoRedoList(list):
         """
         del self[:]
         self.action.setEnabled(False)
+
+    def setNumLevels(self):
+        """Change number of stored undo levels to the stored option.
+        """
+        self.levels = globalref.genOptions['UndoLevels']
+        del self[:-self.levels]
+        if self.levels == 0:
+            del self[:]
+        self.action.setEnabled(len(self) > 0)
 
     def removeLastUndo(self, undoObject):
         """Remove the last undo object if it matches the given object.
