@@ -328,7 +328,8 @@ class TreeView(QTreeView):
         if self.incremSearchMode:
             self.incremSearchStop()
         self.prevSelSpot = None
-        clickedSpot = self.indexAt(event.pos()).internalPointer()
+        clickedIndex = self.indexAt(event.pos())
+        clickedSpot = clickedIndex.internalPointer()
         if self.noMouseSelectMode:
             if clickedSpot and event.button() == Qt.LeftButton:
                 self.skippedMouseSelect.emit(clickedSpot.nodeRef)
@@ -336,7 +337,9 @@ class TreeView(QTreeView):
             return
         if (event.button() == Qt.LeftButton and
             self.selectionModel().selectedCount() == 1 and
+            event.pos().x() > self.visualRect(clickedIndex).left() and
             globalref.genOptions['ClickRename']):
+            # set for edit if single select and not an expand/collapse click
             self.prevSelSpot = self.selectionModel().selectedSpots()[0]
         super().mousePressEvent(event)
 
@@ -346,10 +349,11 @@ class TreeView(QTreeView):
         Arguments:
             event -- the mouse click event
         """
-        clickedSpot = self.indexAt(event.pos()).internalPointer()
+        clickedIndex = self.indexAt(event.pos())
+        clickedSpot = clickedIndex.internalPointer()
         if (event.button() == Qt.LeftButton and
             self.prevSelSpot and clickedSpot == self.prevSelSpot):
-            self.edit(self.indexAt(event.pos()))
+            self.edit(clickedIndex)
             event.ignore()
             return
         self.prevSelSpot = None
