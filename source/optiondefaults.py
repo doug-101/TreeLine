@@ -4,7 +4,7 @@
 # optiondefaults.py, defines defaults for config options
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -113,19 +113,19 @@ def setToolbarOptionDefaults(toolbarOptions):
     """Set defaults for toolbar geometry and buttons.
     """
     StringOptionItem = options.StringOptionItem
+    DataListOptionItem = options.DataListOptionItem
     IntOptionItem = options.IntOptionItem
     IntOptionItem(toolbarOptions, 'ToolbarQuantity', 2, 0, 20)
     IntOptionItem(toolbarOptions, 'ToolbarSize', 16, 1, 128)
     StringOptionItem(toolbarOptions, 'ToolbarPosition', '')
-    StringOptionItem(toolbarOptions, 'Toolbar0',
-                     'FileNew,FileOpen,FileSave,,FilePrintPreview,FilePrint,,'
-                     'EditUndo,EditRedo,,EditCut,EditCopy,EditPaste,,'
-                     'DataConfigType,ToolsFindText')
-    StringOptionItem(toolbarOptions, 'Toolbar1',
-                     'NodeInsertAfter,NodeAddChild,,NodeDelete,NodeIndent,'
-                     'NodeUnindent,,NodeMoveUp,NodeMoveDown,,'
-                     'ViewExpandBranch,ViewCollapseBranch,,'
-                     'ViewPrevSelect,ViewNextSelect,,ViewShowDescend')
+    DataListOptionItem(toolbarOptions, 'ToolbarCommands',
+                       ['FileNew,FileOpen,FileSave,,FilePrintPreview,'
+                        'FilePrint,,EditUndo,EditRedo,,EditCut,EditCopy,'
+                        'EditPaste,,DataConfigType,ToolsFindText',
+                        'NodeInsertAfter,NodeAddChild,,NodeDelete,NodeIndent,'
+                        'NodeUnindent,,NodeMoveUp,NodeMoveDown,,'
+                        'ViewExpandBranch,ViewCollapseBranch,,'
+                        'ViewPrevSelect,ViewNextSelect,,ViewShowDescend'])
 
 def setKeyboardOptionDefaults(keyboardOptions):
     """Set defaults for keyboard shortcuts.

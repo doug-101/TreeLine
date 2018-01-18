@@ -474,12 +474,11 @@ class TreeWindow(QMainWindow):
     def addToolbarCommands(self):
         """Add toolbar commands for current actions.
         """
-        numToolbars = globalref.toolbarOptions['ToolbarQuantity']
-        for toolbar in self.toolbars:
+        for toolbar, commandList in zip(self.toolbars,
+                                        globalref.
+                                        toolbarOptions['ToolbarCommands']):
             toolbar.clear()
-            commandList = (globalref.toolbarOptions[toolbar.objectName()].
-                           split(','))
-            for command in commandList:
+            for command in commandList.split(','):
                 if command:
                     try:
                         toolbar.addAction(self.allActions[command])

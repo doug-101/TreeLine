@@ -1640,11 +1640,14 @@ class CustomToolbarDialog(QDialog):
         self.quantitySpin.setValue(self.numToolbars)
         self.quantitySpin.blockSignals(False)
         self.toolbarLists = []
-        for num in range(self.numToolbars):
-            key = 'Toolbar{0}'.format(num)
-            toolbar = (globalref.toolbarOptions[key] if not defaultOnly else
-                       globalref.toolbarOptions.getDefaultValue(key))
-            self.toolbarLists.append(toolbar.split(','))
+        commands = (globalref.toolbarOptions['ToolbarCommands'] if not
+                    defaultOnly else globalref.toolbarOptions.
+                    getDefaultValue('ToolbarCommands'))
+        self.toolbarLists = [cmd.split(',') for cmd in commands]
+        # account for toolbar quantity mismatch (should not happen)
+        del self.toolbarLists[self.numToolbars:]
+        while len(self.toolbarLists) < self.numToolbars:
+            self.toolbarLists.append([])
         self.updateToolbarCombo()
 
     def updateToolbarCombo(self):
@@ -1787,12 +1790,8 @@ class CustomToolbarDialog(QDialog):
         globalref.toolbarOptions.changeValue('ToolbarQuantity',
                                              self.numToolbars)
         del self.toolbarLists[self.numToolbars:]
-        for num, toolbarList in enumerate(self.toolbarLists):
-            name = 'Toolbar{0}'.format(num)
-            if name not in globalref.toolbarOptions:
-                options.StringOptionItem(globalref.toolbarOptions, name, '',
-                                         'Toolbar Commands')
-            globalref.toolbarOptions.changeValue(name, ','.join(toolbarList))
+        commands = [','.join(cmds) for cmds in self.toolbarLists]
+        globalref.toolbarOptions.changeValue('ToolbarCommands', commands)
         globalref.toolbarOptions.writeFile()
         self.modified = False
         self.applyButton.setEnabled(False)
