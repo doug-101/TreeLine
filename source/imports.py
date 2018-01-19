@@ -4,7 +4,7 @@
 # imports.py, provides classes for a file import dialog and import functions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -63,6 +63,13 @@ fileFilters = {'importTabbedText': 'txt',
                'importTreePad': 'hjt',
                'importXml': 'xml',
                'importOdfText': 'odt'}
+
+oldDateTimeConv = {'d': '%-d', 'dd': '%d', 'ddd': '%a', 'dddd': '%A',
+                   'M': '%-m', 'MM': '%m', 'MMM': '%b', 'MMMM': '%B',
+                   'yy': '%y', 'yyyy': '%Y',
+                   'H': '%-H', 'HH': '%H', 'h': '%-I', 'hh': '%I',
+                   'm': '%-M', 'mm': '%M', 's': '%-S', 'ss': '%S',
+                   'zzz': '%f', 'AP': '%p', 'ap': '%p'}
 bookmarkFolderTypeName = _('FOLDER')
 bookmarkLinkTypeName = _('BOOKMARK')
 bookmarkSeparatorTypeName = _('SEPARATOR')
@@ -490,27 +497,19 @@ class ImportControl:
         if 'evalhtml' in attrib:
             attrib['evalhtml'] = attrib['evalhtml'].startswith('y')
         if fieldType in ('Date', 'Time', 'DateTime'):
-            fieldFormat = fieldFormat.replace('dddd', '%A')
-            fieldFormat = fieldFormat.replace('ddd', '%a')
-            fieldFormat = fieldFormat.replace('dd', '%d')
-            fieldFormat = fieldFormat.replace('d', '%-d')
-            fieldFormat = fieldFormat.replace('MMMM', '%B')
-            fieldFormat = fieldFormat.replace('MMM', '%b')
-            fieldFormat = fieldFormat.replace('MM', '%m')
-            fieldFormat = fieldFormat.replace('M', '%-m')
-            fieldFormat = fieldFormat.replace('yyyy', '%Y')
-            fieldFormat = fieldFormat.replace('yy', '%y')
-            fieldFormat = fieldFormat.replace('HH', '%H')
-            fieldFormat = fieldFormat.replace('H', '%-H')
-            fieldFormat = fieldFormat.replace('hh', '%I')
-            fieldFormat = fieldFormat.replace('h', '%-I')
-            fieldFormat = fieldFormat.replace('mm', '%M')
-            fieldFormat = fieldFormat.replace('m', '%-M')
-            fieldFormat = fieldFormat.replace('ss', '%S')
-            fieldFormat = fieldFormat.replace('s', '%-S')
-            fieldFormat = fieldFormat.replace('zzz', '%f')
-            fieldFormat = fieldFormat.replace('AP', '%p')
-            fieldFormat = fieldFormat.replace('ap', '%p')
+            origFormat = fieldFormat
+            fieldFormat = ''
+            while origFormat:
+                replLen = 4
+                while replLen > 0:
+                    if origFormat[:replLen] in oldDateTimeConv:
+                        fieldFormat += oldDateTimeConv[origFormat[:replLen]]
+                        origFormat = origFormat[replLen:]
+                        break
+                    replLen -= 1
+                if replLen == 0:
+                    fieldFormat += origFormat[0]
+                    origFormat = origFormat[1:]
         if fieldFormat:
             attrib['format'] = fieldFormat
         return attrib
