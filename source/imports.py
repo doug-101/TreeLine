@@ -359,10 +359,6 @@ class ImportControl:
         structure.treeFormats.updateDerivedRefs()
         for nodeFormat in structure.treeFormats.values():
             nodeFormat.updateLineParsing()
-            if nodeFormat.useBullets:
-                nodeFormat.addBullets()
-            if nodeFormat.useTables:
-                nodeFormat.addTables()
         return structure
 
     def loadOldTreeLineNode(self, element, structure, idRefDict, linkList,

@@ -44,7 +44,7 @@
             {
                "fieldname": "ReadDate",
                "fieldtype": "Date",
-               "format": "%-%-M/%-d/%Y"
+               "format": "%-m/%-d/%Y"
             },
             {
                "fieldname": "Rating",
@@ -61,10 +61,10 @@
          "formatname": "BOOK",
          "icon": "book_3",
          "outputlines": [
-            "<tr><td>\"{*Title*}\"</td>",
-            "<td>(c) {*Copyright*}, Own: {*Own*}</td>",
-            "<td>{*ReadDate*}, Rating: {*Rating*}</td>",
-            "<td>{*Plot*}</td></tr>"
+            "Title: \"{*Title*}\"",
+            "Status: (c) {*Copyright*}, Own: {*Own*}",
+            "Last Read: {*ReadDate*}, Rating: {*Rating*}",
+            "Plot: {*Plot*}"
          ],
          "tables": true,
          "titleline": "\"{*Title*}\""
@@ -87,19 +87,19 @@
    "nodes": [
       {
          "children": [
-            "3b6747ac95a411e79cb17054d2175f18",
-            "3b675da095a411e79cb17054d2175f18"
+            "5cd2946cfe1011e7b8dc7054d2175f18",
+            "5cd2bffafe1011e7b8dc7054d2175f18"
          ],
          "data": {
             "NAME": "SF Books"
          },
          "format": "ROOT",
-         "uid": "3b67435695a411e79cb17054d2175f18"
+         "uid": "5cd28d1efe1011e7b8dc7054d2175f18"
       },
       {
          "children": [
-            "3b67576095a411e79cb17054d2175f18",
-            "3b675c6a95a411e79cb17054d2175f18"
+            "5cd2b3d4fe1011e7b8dc7054d2175f18",
+            "5cd2bdc0fe1011e7b8dc7054d2175f18"
          ],
          "data": {
             "AuthorFirstName": "Greg",
@@ -107,7 +107,7 @@
             "WebSite": "<a href=\"http://www.gregbear.com\">www.gregbear.com</a>"
          },
          "format": "AUTHOR",
-         "uid": "3b6747ac95a411e79cb17054d2175f18"
+         "uid": "5cd2946cfe1011e7b8dc7054d2175f18"
       },
       {
          "children": [],
@@ -120,7 +120,7 @@
             "Title": "Darwin's Radio"
          },
          "format": "BOOK",
-         "uid": "3b67576095a411e79cb17054d2175f18"
+         "uid": "5cd2b3d4fe1011e7b8dc7054d2175f18"
       },
       {
          "children": [],
@@ -133,13 +133,13 @@
             "Title": "Blood Music"
          },
          "format": "BOOK",
-         "uid": "3b675c6a95a411e79cb17054d2175f18"
+         "uid": "5cd2bdc0fe1011e7b8dc7054d2175f18"
       },
       {
          "children": [
-            "3b675ea495a411e79cb17054d2175f18",
-            "3b675fd095a411e79cb17054d2175f18",
-            "3b6760e895a411e79cb17054d2175f18"
+            "5cd2c1bcfe1011e7b8dc7054d2175f18",
+            "5cd2c392fe1011e7b8dc7054d2175f18",
+            "5cd2c54afe1011e7b8dc7054d2175f18"
          ],
          "data": {
             "AuthorFirstName": "Orson Scott",
@@ -147,7 +147,7 @@
             "WebSite": "<a href=\"http://www.hatrack.com\">www.hatrack.com</a>"
          },
          "format": "AUTHOR",
-         "uid": "3b675da095a411e79cb17054d2175f18"
+         "uid": "5cd2bffafe1011e7b8dc7054d2175f18"
       },
       {
          "children": [],
@@ -160,7 +160,7 @@
             "Title": "Pastwatch, The Redemption of Christopher Columbus"
          },
          "format": "BOOK",
-         "uid": "3b675ea495a411e79cb17054d2175f18"
+         "uid": "5cd2c1bcfe1011e7b8dc7054d2175f18"
       },
       {
          "children": [],
@@ -173,7 +173,7 @@
             "Title": "Enchantment"
          },
          "format": "BOOK",
-         "uid": "3b675fd095a411e79cb17054d2175f18"
+         "uid": "5cd2c392fe1011e7b8dc7054d2175f18"
       },
       {
          "children": [],
@@ -186,13 +186,13 @@
             "Title": "Ender's Shadow"
          },
          "format": "BOOK",
-         "uid": "3b6760e895a411e79cb17054d2175f18"
+         "uid": "5cd2c54afe1011e7b8dc7054d2175f18"
       }
    ],
    "properties": {
       "tlversion": "2.9.0",
       "topnodes": [
-         "3b67435695a411e79cb17054d2175f18"
+         "5cd28d1efe1011e7b8dc7054d2175f18"
       ]
    }
 }
