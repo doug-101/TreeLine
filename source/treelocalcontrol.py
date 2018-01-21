@@ -4,7 +4,7 @@
 # treelocalcontrol.py, provides a class for the main tree commands
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -741,7 +741,7 @@ class TreeLocalControl(QObject):
             try:
                 with savePathObj.open('w', encoding='utf-8',
                                       newline='\n') as f:
-                    json.dump(fileData, f, indent=3, sort_keys=True)
+                    json.dump(fileData, f, indent=0, sort_keys=True)
             except IOError:
                 QApplication.restoreOverrideCursor()
                 QMessageBox.warning(self.activeWindow, 'TreeLine',
@@ -749,7 +749,7 @@ class TreeLocalControl(QObject):
                                     format(savePathObj))
                 return
         else:
-            data = json.dumps(fileData, indent=3, sort_keys=True).encode()
+            data = json.dumps(fileData, indent=0, sort_keys=True).encode()
             if self.compressed:
                 data = gzip.compress(data)
             if self.encrypted:

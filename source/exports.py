@@ -4,7 +4,7 @@
 # exports.py, provides classes for a file export dialog and export functions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -591,7 +591,7 @@ class ExportControl:
                 data['children'] = []
             fileData['nodes'] = nodeData
         with pathObj.open('w', encoding='utf-8', newline='\n') as f:
-            json.dump(fileData, f, indent=3, sort_keys=True)
+            json.dump(fileData, f, indent=0, sort_keys=True)
         return True
 
     def exportXmlGeneric(self, pathObj=None):
