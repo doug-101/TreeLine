@@ -857,9 +857,8 @@ def _setHtmlDirectories(node, pathDict, parentPath, siblingNames,
         i += 1
     siblingNames.add(name)
     pathObj = parentPath / name
-    if addSuffix:
-        pathObj = pathObj.with_suffix('.html')
-    pathDict[node.uId] = pathObj
+    filePathObj = pathObj.with_suffix('.html') if addSuffix else pathObj
+    pathDict[node.uId] = filePathObj
     siblings = set()
     for child in node.childList:
         _setHtmlDirectories(child, pathDict, pathObj, siblings, addSuffix)
