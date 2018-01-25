@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.1
+Name=TreeLine
+GenericName=Outliner
+Comment=Organize text information in a tree structure
+Exec=treeline %f
+Icon=treeline-icon
+StartupNotify=true
+Terminal=false
+Categories=Office;TextTools;

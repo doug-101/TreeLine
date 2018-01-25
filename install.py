@@ -28,7 +28,7 @@ buildRoot = '/'
 progName = 'treeline'
 docDir = 'share/doc/{0}'.format(progName)
 templateDir = 'share/{0}/templates'.format(progName)
-iconDir = 'share/icons/{0}'.format(progName)
+iconToolDir = 'share/icons/{0}'.format(progName)
 testSpell = True
 
 def usage(exitCode=2):
@@ -49,7 +49,8 @@ def usage(exitCode=2):
           .format(docDir))
     print('    -t dir     template dir [default: <prefix>/{0}]'
           .format(templateDir))
-    print('    -i dir     icon dir [default: <prefix>/{0}]'.format(iconDir))
+    print('    -i dir     tool icon dir [default: <prefix>/{0}]'
+          .format(iconToolDir))
     print('    -b dir     temporary build root for packagers [default: {0}]'
           .format(buildRoot))
     print('    -s         skip language translation files')
@@ -187,7 +188,7 @@ def main():
     global prefixDir
     global docDir
     global templateDir
-    global iconDir
+    global iconToolDir
     global buildRoot
     global progName
     depCheck = True
@@ -202,7 +203,7 @@ def main():
         elif opt == '-t':
             templateDir = val
         elif opt == '-i':
-            iconDir = val
+            iconToolDir = val
         elif opt == '-b':
             buildRoot = val
         elif opt == '-s':
@@ -327,11 +328,11 @@ def main():
                     'dataFilePath =  \'{0}\'   # modified by install script\n'
                     .format(dataPrefixDir))
     if os.path.isdir('icons'):
-        iconPrefixDir = iconDir.replace('<prefix>/', '')
+        iconPrefixDir = iconToolDir.replace('<prefix>/', '')
         if not os.path.isabs(iconPrefixDir):
             iconPrefixDir = os.path.join(prefixDir, iconPrefixDir)
         iconBuildDir = os.path.join(buildRoot, iconPrefixDir[1:])
-        print('  Copying icon files to {0}'.format(iconBuildDir))
+        print('  Copying tool icon files to {0}'.format(iconBuildDir))
         copyDir('icons', iconBuildDir)
         # update icon location in main python script
         replaceLine(os.path.join(pythonBuildDir, '{0}.py'.format(progName)),
@@ -349,6 +350,31 @@ def main():
                         os.path.join(iconToolBuildDir, '32x32'))
         if os.path.isdir('icons/tree'):
             copyDir('icons/tree', os.path.join(iconBuildDir, 'tree'))
+        if os.path.isfile(os.path.join('icons', progName + '-icon.png')):
+            pngIconPrefixDir = os.path.join(prefixDir, 'share', 'icons',
+                                            'hicolor', '48x48', 'apps')
+            pngIconBuildDir = os.path.join(buildRoot, pngIconPrefixDir[1:])
+            print('  Copying app icon files to {0}'.format(pngIconBuildDir))
+            if not os.path.isdir(pngIconBuildDir):
+                os.makedirs(pngIconBuildDir)
+            shutil.copy2(os.path.join('icons', progName + '-icon.png'),
+                         pngIconBuildDir)
+        if os.path.isfile(os.path.join('icons', progName + '-icon.svg')):
+            svgIconPrefixDir = os.path.join(prefixDir, 'share', 'icons',
+                                            'hicolor', 'scalable', 'apps')
+            svgIconBuildDir = os.path.join(buildRoot, svgIconPrefixDir[1:])
+            print('  Copying app icon files to {0}'.format(svgIconBuildDir))
+            if not os.path.isdir(svgIconBuildDir):
+                os.makedirs(svgIconBuildDir)
+            shutil.copy2(os.path.join('icons', progName + '-icon.svg'),
+                         svgIconBuildDir)
+    if os.path.isfile(progName + '.desktop'):
+        desktopPrefixDir = os.path.join(prefixDir, 'share', 'applications')
+        desktopBuildDir = os.path.join(buildRoot, desktopPrefixDir[1:])
+        print('  Copying desktop file to {0}'.format(desktopBuildDir))
+        if not os.path.isdir(desktopBuildDir):
+            os.makedirs(desktopBuildDir)
+        shutil.copy2(progName + '.desktop', desktopBuildDir)
 
     if os.path.isdir('source'):
         createWrapper(pythonPrefixDir, progName)

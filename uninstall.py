@@ -4,7 +4,7 @@
 ****************************************************************************
  uninstall.py, Linux uninstall script for TreeLine
 
- Copyright (C) 2013, Douglas W. Bell
+ Copyright (C) 2018, Douglas W. Bell
 
  This is free software; you can redistribute it and/or modify it under the
  terms of the GNU General Public License, either Version 2 or any later
@@ -74,6 +74,12 @@ def main():
     removeAll(os.path.join(prefixDir, 'share', 'doc', progName))
     removeAll(os.path.join(prefixDir, 'share', progName))
     removeAll(os.path.join(prefixDir, 'share', 'icons', progName))
+    removeAll(os.path.join(prefixDir, 'share', 'icons', 'hicolor', '48x48',
+                           'apps', progName + '-icon.png'))
+    removeAll(os.path.join(prefixDir, 'share', 'icons', 'hicolor', 'scalable',
+                           'apps', progName + '-icon.svg'))
+    removeAll(os.path.join(prefixDir, 'share', 'applications',
+                           progName + '.desktop'))
     removeAll(os.path.join(prefixDir, 'bin', progName))
     print('Uninstall complete.')
 

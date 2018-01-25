@@ -168,6 +168,15 @@
 {
 "children": [],
 "data": {
+"Name": "Linux menus",
+"Text": "Added a desktop specification file to the Linux installer for desktop environment menu support."
+},
+"format": "BULLETS",
+"uid": "58dddee4010f11e88925d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
 "Name": "Category level swap",
 "Text": "A new \"Swap Category Levels\" command swaps child and grandchild nodes beneath a selected node. A child node with multiple nodes under it will become cloned under each one. Any existing grandchild clones will become individual nodes with multiple children."
 },
@@ -258,7 +267,8 @@
 "6dc88226bb0711e7894d3417ebd53aeb",
 "7697b826bb0411e788433417ebd53aeb",
 "1d015318bb0511e7a2ac3417ebd53aeb",
-"f5983b38bb0411e795e13417ebd53aeb"
+"f5983b38bb0411e795e13417ebd53aeb",
+"58dddee4010f11e88925d66a6ab671cb"
 ],
 "data": {
 "Name": "New Features"
