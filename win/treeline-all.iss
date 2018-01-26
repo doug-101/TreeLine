@@ -18,7 +18,7 @@ Uninstallable=IsTaskSelected('adduninstall')
 UninstallDisplayIcon={app}\treeline.exe,0
 
 [Tasks]
-Name: "fileassoc"; Description: "Add *.trl file association"
+Name: "fileassoc"; Description: "Add *.trln file association"
 Name: "startmenu"; Description: "Add start menu shortcuts"
 Name: "deskicon"; Description: "Add a desktop shortcut"
 Name: "adduninstall"; Description: "Create an uninstaller"
@@ -34,19 +34,19 @@ Source: "imageformats\*.dll"; DestDir: "{app}\imageformats"
 Source: "platforms\*.dll"; DestDir: "{app}\platforms"
 Source: "doc\LICENSE"; DestDir: "{app}\doc"
 Source: "doc\basichelp.html"; DestDir: "{app}\doc"
-Source: "doc\documentation.trl"; DestDir: "{app}\doc"; Attribs: readonly; \
+Source: "doc\documentation.trln"; DestDir: "{app}\doc"; Attribs: readonly; \
         Flags: overwritereadonly uninsremovereadonly
-Source: "doc\*.html"; DestDir: "{app}\doc"; Tasks: "translate"
-Source: "doc\*.trl"; DestDir: "{app}\doc"; Attribs: readonly; \
-        Tasks: "translate"; Flags: overwritereadonly uninsremovereadonly
-Source: "samples\*.trl"; DestDir: "{app}\samples"; Attribs: readonly; \
+; Source: "doc\*.html"; DestDir: "{app}\doc"; Tasks: "translate"
+; Source: "doc\*.trln"; DestDir: "{app}\doc"; Attribs: readonly; \
+;         Tasks: "translate"; Flags: overwritereadonly uninsremovereadonly
+Source: "samples\*.trln"; DestDir: "{app}\samples"; Attribs: readonly; \
         Flags: overwritereadonly uninsremovereadonly
 Source: "icons\toolbar\32x32\*.png"; DestDir: "{app}\icons\toolbar\32x32"
 Source: "icons\tree\*.png"; DestDir: "{app}\icons\tree"
-Source: "templates\*en_*.trl"; DestDir: "{app}\templates"; Attribs: readonly; \
+Source: "templates\*en_*.trln"; DestDir: "{app}\templates"; Attribs: readonly; \
         Flags: overwritereadonly uninsremovereadonly
-Source: "templates\*.trl"; DestDir: "{app}\templates"; Attribs: readonly; \
-        Tasks: "translate"; Flags: overwritereadonly uninsremovereadonly
+; Source: "templates\*.trln"; DestDir: "{app}\templates"; Attribs: readonly; \
+;         Tasks: "translate"; Flags: overwritereadonly uninsremovereadonly
 ; Source: "translations\*.qm"; DestDir: "{app}\translations"; Tasks: "translate"
 Source: "source\*.py"; DestDir: "{app}\source"; Tasks: "source"
 Source: "treeline.ico"; DestDir: "{app}"; Tasks: "source"
