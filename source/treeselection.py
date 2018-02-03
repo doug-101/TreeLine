@@ -171,8 +171,15 @@ class TreeSelection(QItemSelectionModel):
             for node in nodes:
                 titleList.extend(node.exportTitleText())
             clip.setText('\n'.join(titleList), QClipboard.Selection)
-        data = treestructure.TreeStructure(topNodes=nodes,
-                                           addSpots=False).fileData()
+        struct = treestructure.TreeStructure(topNodes=nodes, addSpots=False)
+        generics = {formatRef.genericType for formatRef in
+                    struct.treeFormats.values() if formatRef.genericType}
+        for generic in generics:
+            genericRef = self.modelRef.treeStructure.treeFormats[generic]
+            struct.treeFormats.addTypeIfMissing(genericRef)
+            for formatRef in genericRef.derivedTypes:
+                struct.treeFormats.addTypeIfMissing(formatRef)
+        data = struct.fileData()
         dataStr = json.dumps(data, indent=0, sort_keys=True)
         mime = QMimeData()
         mime.setData('application/json', bytes(dataStr, encoding='utf-8'))
