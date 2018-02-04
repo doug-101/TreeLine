@@ -17,7 +17,7 @@
 "formatname": "BULLETS",
 "icon": "bullet_1",
 "outputlines": [
-"<li>{*Text*}</li>"
+"{*Text*}"
 ],
 "spacebetween": false,
 "titleline": "{*Name*}"
