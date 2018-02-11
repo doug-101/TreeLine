@@ -1,0 +1,21 @@
+body {
+    background-color: #607d8b;
+    color: white;
+}
+
+ul {
+    cursor: default;
+    list-style-type: none;
+}
+
+.marker {
+    font-size: 0.8em;
+    display: inline-block;
+    width: 2em;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.selected {
+    color: red;
+}
