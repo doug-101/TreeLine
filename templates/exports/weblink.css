@@ -3,19 +3,40 @@ body {
     color: white;
 }
 
-ul {
+#tree {
+    width: 40%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    overflow: scroll;
+}
+
+#tree ul {
     cursor: default;
     list-style-type: none;
+}
+
+#tree li {
+    text-indent: -1.3em;
 }
 
 .marker {
     font-size: 0.8em;
     display: inline-block;
-    width: 2em;
+    width: 1.3em;
     text-align: center;
     vertical-align: middle;
 }
 
 .selected {
     color: red;
+}
+
+#output {
+    margin-left: 41%;
+}
+
+#output div {
+    padding-left: 2em;
 }
