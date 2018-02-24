@@ -3,7 +3,7 @@
 #******************************************************************************
 # gennumber.py, provides a class for number formating
 #
-# Copyright (C) 2011, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -87,7 +87,8 @@ class GenNumber:
         num = self.num / 10**exp
         totPlcs = len(re.findall(r'[#0]', formMain))
         num = round(num, totPlcs - 1 if totPlcs > 0 else 0)
-        wholePlcs = len(re.findall(r'[#0]', _doubleSplit('.', formMain)[0]))
+        radix = _getRadix(strFormat)
+        wholePlcs = len(re.findall(r'[#0]', _doubleSplit(radix, formMain)[0]))
         expChg = wholePlcs - int(math.floor(math.log10(abs(num)))) - 1
         num = num * 10**expChg
         exp -= expChg
