@@ -189,6 +189,10 @@ function FieldFormat(fieldData) {
     this.format = valueOrDefault(fieldData, "format", "");
     this.prefix = valueOrDefault(fieldData, "prefix", "");
     this.suffix = valueOrDefault(fieldData, "suffix", "");
+    this.mathResultType = valueOrDefault(fieldData, "resulttype", "number");
+    if (this.fieldType == "Numbering") {
+        this.numberingFormats = initNumbering(this.format);
+    }
 }
 FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
     // return formatted output text for this field in this node
@@ -204,6 +208,15 @@ FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
         case "Number":
             var num = Number(value);
             value = formatNumber(num, this.format);
+            break;
+        case "Math":
+            if (this.mathResultType == "number") {
+                var num = Number(value);
+                value = formatNumber(num, this.format);
+            }
+            break;
+        case "Numbering":
+            value = formatNumbering(value, this.numberingFormats);
             break;
     }
     var prefix = this.prefix;
@@ -339,12 +352,168 @@ function formatNumber(num, format) {
     // return a formttted string for the given number
     var formatParts = format.split(/e/i);
     if (formatParts.length < 2) return formatBasicNumber(num, format);
-    format = formatParts[0];
-    var expFormat = formatParts[1];
-    return num.toString();
+    var formatMain = formatParts[0];
+    var formatExp = formatParts[1];
+    var exp = Math.floor(Math.log(Math.abs(num)) / Math.LN10);
+    num = num / Math.pow(10, exp);
+    var totalPlcs = (formatMain.match(/[#0]/g) || []).length;
+    if (totalPlcs < 1) totalPlcs = 1;
+    num = Number(num.toFixed(totalPlcs - 1));
+    var radix = ".";
+    if (format.indexOf("\\,") < 0 && (format.indexOf("\\.") >= 0 ||
+                      (format.indexOf(",") >= 0 && format.indexOf(".") < 0))) {
+        radix = ",";
+    }
+    var formatWhole = formatMain.split(radix)[0];
+    var wholePlcs = (formatWhole.match(/[#0]/g) || []).length;
+    var expChg = wholePlcs - Math.floor(Math.log(Math.abs(num)) / Math.LN10) -
+                 1;
+    num = num * Math.pow(10, expChg);
+    exp -= expChg;
+    var c = format.indexOf("e") >= 0 ? "e" : "E";
+    return formatBasicNumber(num, formatMain) + c +
+           formatBasicNumber(exp, formatExp)
 }
 
 function formatBasicNumber(num, format) {
     // return a formatted string for the given number without an exponent
-    return num.toString();
+    var radix;
+    if (format.indexOf("\\,") < 0 && (format.indexOf("\\.") >= 0 ||
+                      (format.indexOf(",") >= 0 && format.indexOf(".") < 0))) {
+        radix = ",";
+        format.replace(/\\./g, ".");
+    } else {
+        radix = ".";
+        format.replace(/\\,/g, ",");
+    }
+    var formatParts = format.split(radix);
+    var formatWhole = formatParts[0].split("");
+    var formatFract = formatParts.length > 1 ? formatParts[1] : "";
+    var decPlcs = (formatFract.match(/[#0]/g) || []).length;
+    formatFract = formatFract.split("");
+    var numParts = num.toFixed(decPlcs).split(".");
+    var numWhole = numParts[0].split("");
+    var numFract = numParts.length > 1 ? numParts[1] : "";
+    numFract = numFract.replace(/0+$/g, "").split("");
+    var sign = "+";
+    if (numWhole[0] == "-") sign = numWhole.shift();
+    var c;
+    var result = [];
+    while (numWhole.length || formatWhole.length) {
+        c = formatWhole.length ? formatWhole.pop() : "";
+        if (c && "#0 +-".indexOf(c) < 0) {
+            if (numWhole.length || formatWhole.indexOf("0") >= 0) {
+                result.unshift(c);
+            }
+        } else if (numWhole.length && c != " ") {
+            result.unshift(numWhole.pop());
+            if (c && "+-".indexOf(c) >= 0) {
+                formatWhole.push(c);
+            }
+        } else if ("0 ".indexOf(c) >= 0) {
+            result.unshift(c);
+        } else if ("+-".indexOf(c) >= 0) {
+            if (sign == "-" || c == "+") {
+                result.unshift(sign);
+            }
+            sign = "";
+        }
+    }
+    if (sign == "-") {
+        if (result[0] == " ") {
+            result = [result.join("").replace(/\s(?!\s)/, "-")];
+        } else {
+            result.unshift("-");
+        }
+    }
+    if (formatFract.length || (format.length &&
+                               format.charAt(format.length - 1) == radix)) {
+        result.push(radix);
+    }
+    while (formatFract.length) {
+        c = formatFract.shift();
+        if ("#0 ".indexOf(c) <  0) {
+            if (numFract.length || formatFract.indexOf("0") >= 0) {
+                result.push(c);
+            }
+        } else if (numFract.length) {
+            result.push(numFract.shift());
+        } else if ("0 ".indexOf(c) >= 0) {
+            result.push("0");
+        }
+    }
+    return result.join("");
+}
+
+function initNumbering(format) {
+    // return an array of basic numbering formats
+    var sectionStyle = false;
+    var tmpFormat = format.replace("..", ".").replace("//", "\0");
+    var delim = "/";
+    var formats = tmpFormat.split(delim);
+    if (formats.length < 2) {
+        tmpFormat = format.replace("//", "/").replace("..", "\0");
+        delim = ".";
+        formats = tmpFormat.split(delim);
+        if (formats.length > 1) sectionStyle = true;
+    }
+    formats = formats.map(function(text) {
+        return new NumberingFormat(text.replace("\0", delim), sectionStyle);
+    });
+    return formats;
+}
+
+var romanDict = {0: "", 1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", 6: "VI",
+                 7: "VII", 8: "VIII", 9: "IX", 10: "X", 20: "XX", 30: "XXX",
+                 40: "XL", 50: "L", 60: "LX", 70: "LXX", 80: "LXXX",
+                 90: "XC", 100: "C", 200: "CC", 300: "CCC", 400: "CD",
+                 500: "D", 600: "DC", 700: "DCC", 800: "DCCC", 900: "CM",
+                 1000: "M", 2000: "MM", 3000: "MMM"}
+
+function NumberingFormat(formatStr, sectionStyle) {
+    // class to store basic formatting for an element of numbering fields
+    this.sectionStyle = sectionStyle;
+    var match = /(.*)([1AaIi])(.*)/.exec(formatStr);
+    if (match) {
+        this.prefix = match[1];
+        this.format = match[2];
+        this.suffix = match[3];
+    } else {
+        this.prefix = formatStr;
+        this.format = "1";
+        this.suffix = "";
+    } 
+}
+NumberingFormat.prototype.numString = function(num) {
+    var result = "";
+    var digit;
+    var factor = 1000;
+    if (num > 0) {
+        if (this.format == "1") {
+            result = num.toString();
+        } else if (this.format == "A" || this.format == "a") {
+            while (num) {
+                digit = (num - 1) % 26;
+                result = String.fromCharCode(digit + "A".charCodeAt(0)) +
+                         result;
+                num = Math.floor((num - digit - 1) / 26);
+            }
+            if (this.format == "a") result = result.toLowerCase();
+        } else if (num < 4000) {
+            while (num) {
+                digit = num - (num % factor);
+                result += romanDict[digit];
+                factor = Math.floor(factor / 10);
+                num -= digit;
+            }
+            if (this.format == "i") result = result.toLowerCase();
+        }
+    }
+    return this.prefix + result + this.suffix;
+}
+
+function formatNumbering(value, numFormats) {
+    // return a formatted string for a numbering field
+    if (!value.length) return "";
+    return value;
 }
