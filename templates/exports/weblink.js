@@ -117,7 +117,8 @@ function NodeFormat(formatData) {
     this.titleLine = this.parseLine(formatData.titleline);
     this.outputLines = formatData.outputlines.map(this.parseLine, this);
     this.spaceBetween = valueOrDefault(formatData, "spacebetween", true);
-    this.formatHtml = false;
+    this.formatHtml = valueOrDefault(formatData, "formathtml", false);
+    this.outputSeparator = valueOrDefault(formatData, "outputsep", ", ");
 }
 NodeFormat.prototype.parseLine = function(text) {
     // parse text with embedded fields, return list of fields and text
@@ -193,9 +194,19 @@ function FieldFormat(fieldData) {
     if (this.fieldType == "Numbering") {
         this.numberingFormats = initNumbering(this.format);
     }
+    if (this.fieldType == "Choice" || this.fieldType == "Combination") {
+        var formatText = this.format.replace(/\/\//g, "\0");
+        if (valueOrDefault(fieldData, "evalhtml", false)) {
+            formatText = escapeHtml(formatText);
+        }
+        this.choiceList = formatText.split("/").map(function(text) {
+            return text.replace(/\0/g, "/");
+        });
+    }
 }
 FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
     // return formatted output text for this field in this node
+    var splitValue, outputSep, selections, result, boolDict, options;
     var value = valueOrDefault(node.data, this.name, "");
     if (!value) return "";
     switch (this.fieldType) {
@@ -217,6 +228,50 @@ FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
             break;
         case "Numbering":
             value = formatNumbering(value, this.numberingFormats);
+            break;
+        case "Date":
+            value = formatDate(value, this.format);
+            break;
+        case "Time":
+            value = formatTime(value, this.format);
+            break;
+        case "DateTime":
+            splitValue = value.split(" ");
+            value = formatDate(splitValue[0], this.format);
+            value = formatTime(splitValue[1], value);
+            break;
+        case "Choice":
+            if (this.choiceList.indexOf(value) < 0) value = "#####";
+            break;
+        case "Combination":
+            outputSep = node.formatRef.outputSeparator;
+            value = value.replace(/\/\//g, "\0");
+            selections = value.split("/").map(function(text) {
+                return text.replace(/\0/g, "/");
+            });
+            result = this.choiceList.filter(function(text) {
+                return selections.indexOf(text) >= 0;
+            });
+            if (result.length == selections.length) {
+                value = result.join(outputSep);
+            } else {
+                value = "#####";
+            }
+            break;
+        case "AutoCombination":
+            outputSep = node.formatRef.outputSeparator;
+            value = value.replace(/\/\//g, "\0");
+            selections = value.split("/").map(function(text) {
+                return text.replace(/\0/g, "/");
+            });
+            value = selections.join(outputSep);
+            break;
+        case "Boolean":
+            boolDict = {"true": 0, "false": 1, "t": 0, "f": 1,
+                        "yes": 0, "no": 1, "y": 0, "n": 1};
+            value = boolDict[value.toLowerCase()];
+            value = this.format.split("/")[value];
+            if (value == undefined) value = "#####";
             break;
     }
     var prefix = this.prefix;
@@ -448,30 +503,30 @@ function formatBasicNumber(num, format) {
 function initNumbering(format) {
     // return an array of basic numbering formats
     var sectionStyle = false;
-    var tmpFormat = format.replace("..", ".").replace("//", "\0");
+    var tmpFormat = format.replace(/\.\./g, ".").replace(/\/\//g, "\0");
     var delim = "/";
     var formats = tmpFormat.split(delim);
     if (formats.length < 2) {
-        tmpFormat = format.replace("//", "/").replace("..", "\0");
+        tmpFormat = format.replace(/\/\//g, "/").replace(/\.\./g, "\0");
         delim = ".";
         formats = tmpFormat.split(delim);
         if (formats.length > 1) sectionStyle = true;
     }
     formats = formats.map(function(text) {
-        return new NumberingFormat(text.replace("\0", delim), sectionStyle);
+        return new NumberingFormat(text.replace(/\0/g, delim), sectionStyle);
     });
     return formats;
 }
 
-var romanDict = {0: "", 1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", 6: "VI",
-                 7: "VII", 8: "VIII", 9: "IX", 10: "X", 20: "XX", 30: "XXX",
-                 40: "XL", 50: "L", 60: "LX", 70: "LXX", 80: "LXXX",
-                 90: "XC", 100: "C", 200: "CC", 300: "CCC", 400: "CD",
-                 500: "D", 600: "DC", 700: "DCC", 800: "DCCC", 900: "CM",
-                 1000: "M", 2000: "MM", 3000: "MMM"}
-
 function NumberingFormat(formatStr, sectionStyle) {
     // class to store basic formatting for an element of numbering fields
+    this.romanDict = {0: "", 1: "I", 2: "II", 3: "III", 4: "IV", 5: "V",
+                      6: "VI", 7: "VII", 8: "VIII", 9: "IX", 10: "X",
+                      20: "XX", 30: "XXX", 40: "XL", 50: "L", 60: "LX",
+                      70: "LXX", 80: "LXXX", 90: "XC", 100: "C", 200: "CC",
+                      300: "CCC", 400: "CD", 500: "D", 600: "DC",
+                      700: "DCC", 800: "DCCC", 900: "CM", 1000: "M",
+                      2000: "MM", 3000: "MMM"};
     this.sectionStyle = sectionStyle;
     var match = /(.*)([1AaIi])(.*)/.exec(formatStr);
     if (match) {
@@ -502,7 +557,7 @@ NumberingFormat.prototype.numString = function(num) {
         } else if (num < 4000) {
             while (num) {
                 digit = num - (num % factor);
-                result += romanDict[digit];
+                result += this.romanDict[digit];
                 factor = Math.floor(factor / 10);
                 num -= digit;
             }
@@ -514,6 +569,107 @@ NumberingFormat.prototype.numString = function(num) {
 
 function formatNumbering(value, numFormats) {
     // return a formatted string for a numbering field
-    if (!value.length) return "";
-    return value;
+    var inputNums = value.split(".").map(function(num) {
+        return Number(num);
+    });
+    if (numFormats[0].sectionStyle) {
+        numFormats = numFormats.slice();
+        while (numFormats.length < inputNums.length) {
+            numFormats.push(numFormats[numFormats.length - 1]);
+        }
+        var results = inputNums.map(function(num, i) {
+            return numFormats[i].numString(num);
+        });
+        return results.join(".");
+    } else {
+        var numFormat = numFormats[inputNums.length - 1];
+        if (!numFormat) numFormat = numFormats[numFormats.length - 1];
+        return numFormat.numString(inputNums[inputNums.length - 1]);
+    }
+}
+
+function formatDate(storedText, format) {
+    // return a formatted date string
+    var monthNames = ["", "January", "February", "March", "April", "May",
+                      "June", "July", "August", "September", "October",
+                      "November", "December"];
+    var dateArray = storedText.split("-");
+    var year = dateArray[0];
+    var month = dateArray[1];
+    var day = dateArray[2];
+    var yearNum = Number(year);
+    var monthNum = Number(month);
+    var dayNum = Number(day);
+    format = format.replace(/%-d/g, dayNum).replace(/%d/g, day);
+    format = format.replace(/%a/g, weekday(yearNum, monthNum,
+                                           dayNum).substr(0, 3));
+    format = format.replace(/%A/g, weekday(yearNum, monthNum, dayNum));
+    format = format.replace(/%-m/g, monthNum).replace(/%m/g, month);
+    format = format.replace(/%b/g, monthNames[monthNum].substr(0, 3));
+    format = format.replace(/%B/g, monthNames[monthNum]);
+    format = format.replace(/%y/g, year.slice(-2)).replace(/%Y/g, year);
+    format = format.replace(/%-U/g, weekNumber(yearNum, monthNum, dayNum));
+    format = format.replace(/%-j/g, dayOfYear(yearNum, monthNum, dayNum));
+    return format;
+}
+
+function dayOfYear(year, month, day) {
+    // return the day of year (1 to 366)
+    var daysInMonths = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    var day = daysInMonths[month - 1] + day;
+    if (month > 2 && year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
+        day += 1;
+    }
+    return day;
+}
+
+function firstWeekday(year) {
+    // return a number for the weekday of Jan. 1st (0=Sun., 6=Sat.)
+    var y = year - 1;
+    return (y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400)
+            + 1) % 7;
+}
+
+function weekday(year, month, day) {
+    // return the weekday name for the given date
+    var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+                    "Friday", "Saturday"];
+    var day = (firstWeekday(year) + dayOfYear(year, month, day) - 1) % 7;
+    return weekdays[day];
+}
+
+function weekNumber(year, month, day) {
+    // return the week number for the given date
+    return Math.floor((dayOfYear(year, month, day) + firstWeekday(year) - 1)
+                      / 7);
+}
+
+function formatTime(storedText, format) {
+    // return a formatted time string
+    var timeArray = storedText.split(":");
+    var hour = timeArray[0];
+    var minute = timeArray[1];
+    var second = timeArray[2].split(".")[0];
+    var microSecond = timeArray[2].split(".")[1];
+    var hourNum = Number(hour);
+    var minuteNum = Number(minute);
+    var secondNum = Number(second);
+    format = format.replace(/%-H/g, hourNum).replace(/%H/g, hour);
+    var ampm = "AM";
+    if (hourNum == 0) {
+        hourNum = 12;
+        hour = "12";
+    } else if (hourNum > 11) {
+        ampm = "PM";
+        if (hourNum > 12) {
+            hourNum -= 12;
+            hour = hourNum.toString();
+            if (hourNum < 10) hour = "0" + hour;
+        }
+    }
+    format = format.replace(/%-I/g, hourNum).replace(/%I/g, hour);
+    format = format.replace(/%-M/g, minuteNum).replace(/%M/g, minute);
+    format = format.replace(/%-S/g, secondNum).replace(/%S/g, second);
+    format = format.replace(/%f/g, microSecond).replace(/%p/g, ampm);
+    return format;
 }
