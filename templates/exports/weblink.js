@@ -206,7 +206,7 @@ function FieldFormat(fieldData) {
 }
 FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
     // return formatted output text for this field in this node
-    var splitValue, outputSep, selections, result, boolDict, options;
+    var splitValue, outputSep, selections, result, options, match;
     var value = valueOrDefault(node.data, this.name, "");
     if (!value) return "";
     switch (this.fieldType) {
@@ -224,6 +224,12 @@ FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
             if (this.mathResultType == "number") {
                 var num = Number(value);
                 value = formatNumber(num, this.format);
+            } else if (this.mathResultType == "date") {
+                value = formatDate(value, this.format);
+            } else if (this.mathResultType == "time") {
+                value = formatTime(value, this.format);
+            } else if (this.mathResultType == "boolean") {
+                value = formatBoolean(value, this.format);
             }
             break;
         case "Numbering":
@@ -267,11 +273,33 @@ FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
             value = selections.join(outputSep);
             break;
         case "Boolean":
-            boolDict = {"true": 0, "false": 1, "t": 0, "f": 1,
-                        "yes": 0, "no": 1, "y": 0, "n": 1};
-            value = boolDict[value.toLowerCase()];
-            value = this.format.split("/")[value];
-            if (value == undefined) value = "#####";
+            value = formatBoolean(value, this.format);
+            break;
+        case "ExternalLink":
+        case "InternalLink":
+            if (titleMode) {
+                match = /<a [^>]*href="([^"]+)"[^>]*>([\S\s]*?)<\/a>/i.
+                        exec(value);
+                if (match) {
+                    value = match[2].trim();
+                    if (!value) {
+                        value = match[1];
+                        if (value.startsWith("#")) value = value.substr(1);
+                    }
+                }
+            }
+            break;
+        case "Picture":
+            if (titleMode) {
+                match = /<img [^>]*src="([^"]+)"[^>]*>/i.exec(value);
+                if (match) value = match(1).trim();
+            }
+            break;
+        case "RegularExpression":
+            match = new RegExp(this.format).exec(unescapeHtml(value));
+            if (!match || match[0] != unescapeHtml(value)) {
+                value = "#####";
+            }
             break;
     }
     var prefix = this.prefix;
@@ -393,8 +421,14 @@ function valueOrDefault(object, name, dflt) {
 
 function escapeHtml(text) {
     // return the given string with &, <, > escaped
-    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').
-           replace(/>/g, '&gt;');
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g,
+                                                                     '&gt;');
+}
+
+function unescapeHtml(text) {
+    // return the given string with &, <, > unescaped
+    return text.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g,
+                                                                     ">");
 }
 
 function removeMarkup(text) {
@@ -672,4 +706,14 @@ function formatTime(storedText, format) {
     format = format.replace(/%-S/g, secondNum).replace(/%S/g, second);
     format = format.replace(/%f/g, microSecond).replace(/%p/g, ampm);
     return format;
+}
+
+function formatBoolean(storedText, format) {
+    // return a formatted boolean string
+    var boolDict = {"true": 0, "false": 1, "t": 0, "f": 1,
+                    "yes": 0, "no": 1, "y": 0, "n": 1};
+    var valueNum = boolDict[storedText.toLowerCase()];
+    var value = format.split("/")[valueNum];
+    if (value == undefined) value = "#####";
+    return value;
 }
