@@ -419,7 +419,7 @@ class TreeWindow(QMainWindow):
         viewChildPaneAct.triggered.connect(self.viewShowChildPane)
         self.winActions['ViewShowChildPane'] = viewChildPaneAct
 
-        viewDescendAct = QAction(_('Show Output &Descedants'), self,
+        viewDescendAct = QAction(_('Show Output &Descendants'), self,
                 statusTip=_('Toggle showing output view indented descendants'),
                 checkable=True)
         viewDescendAct.setChecked(globalref.genOptions['InitShowDescendants'])
