@@ -114,11 +114,55 @@ function NodeFormat(formatData) {
     formatData.fields.forEach(function(fieldData) {
         this.fieldDict[fieldData.fieldname] = new FieldFormat(fieldData);
     }, this);
-    this.titleLine = this.parseLine(formatData.titleline);
-    this.outputLines = formatData.outputlines.map(this.parseLine, this);
     this.spaceBetween = valueOrDefault(formatData, "spacebetween", true);
     this.formatHtml = valueOrDefault(formatData, "formathtml", false);
     this.outputSeparator = valueOrDefault(formatData, "outputsep", ", ");
+    this.siblingPrefix = "";
+    this.siblingSuffix = "";
+    this.titleLine = this.parseLine(formatData.titleline);
+    var lines = formatData.outputlines;
+    this.useBullets = valueOrDefault(formatData, "bullets", false);
+    if (this.useBullets) {
+        this.siblingPrefix = "<ul>";
+        this.siblingSuffix = "</ul>";
+        if (lines != [""]) {
+            lines[0] = "<li>" + lines[0];
+            lines[lines.length - 1] += "</li>";
+        }
+    }
+    this.useTables = valueOrDefault(formatData, "tables", false);
+    if (this.useTables) {
+        lines = lines.filter(String);
+        var newLines = [];
+        var headings = [];
+        var head, firstPart, parts;
+        lines.forEach(function(line) {
+            head = "";
+            firstPart = this.parseLine(line)[0];
+            if (typeof firstPart == "string" && firstPart.indexOf(":") >= 0) {
+                parts = line.split(":");
+                head = parts.shift();
+                line = parts.join("");
+            }
+            newLines.push(line.trim());
+            headings.push(head.trim());
+        }, this);
+        this.siblingPrefix = '<table border="1" cellpadding="3">';
+        if (headings.filter(String).length > 0) {
+            this.siblingPrefix += "<tr>";
+            headings.forEach(function(hd) {
+                this.siblingPrefix += "<th>" + hd + "</th>";
+            }, this);
+            this.siblingPrefix += "</tr>";
+        }
+        this.siblingSuffix = "</table>";
+        lines = newLines.map(function(line) {
+            return "<td>" + line + "</td>";
+        });
+        lines[0] = "<tr>" + lines[0];
+        lines[lines.length - 1] += "</tr>";
+    }
+    this.outputLines = lines.map(this.parseLine, this);
 }
 NodeFormat.prototype.parseLine = function(text) {
     // parse text with embedded fields, return list of fields and text
@@ -147,7 +191,7 @@ NodeFormat.prototype.formatTitle = function(node) {
     }, this);
     return result.join("").trim().split("\n", 1)[0];
 }
-NodeFormat.prototype.formatOutput = function(node) {
+NodeFormat.prototype.formatOutput = function(node, keepBlanks) {
     // return a list of formatted text output lines
     var line, numEmptyFields, numFullFields, text, match;
     var result = [];
@@ -171,7 +215,7 @@ NodeFormat.prototype.formatOutput = function(node) {
                 line += part;
             }
         }, this);
-        if (numFullFields > 0 || numEmptyFields == 0) {
+        if (keepBlanks || numFullFields > 0 || numEmptyFields == 0) {
             result.push(line);
         } else if (this.formatHtml && result.length > 0) {
             match = /.*(<br[ /]*?>|<hr[ /]*?>)$/gi.exec(line);
@@ -319,20 +363,49 @@ FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
 
 function OutputItem(node, level) {
     // class to store output for a single node
-    this.textLines = node.formatRef.formatOutput(node).map(function(line) {
-        return line + "<br />";
-    });
+    if (node.formatRef.useTables) {
+        this.textLines = node.formatRef.formatOutput(node, true);
+    } else {
+        this.textLines = node.formatRef.formatOutput(node, false).
+                         map(function(line) {
+            return line + "<br />";
+        });
+    }
     this.level = level;
     this.uId = node.uId;
     this.addSpace = node.formatRef.spaceBetween;
+    this.siblingPrefix = node.formatRef.siblingPrefix;
+    this.siblingSuffix = node.formatRef.siblingSuffix;
+    if (node.formatRef.useBullets && this.textLines.length > 0) {
+        this.textLines[this.textLines.length - 1] =
+             this.textLines[this.textLines.length - 1].slice(0, -6);
+    }
 }
 OutputItem.prototype.addIndent = function(prevLevel, nextLevel) {
+    // add <div> tags to define indent levels in the output
     for (var i = 0; i < this.level - prevLevel; i++) {
         this.textLines[0] = "<div>" + this.textLines[0];
     }
     for (var i = 0; i < this.level - nextLevel; i++) {
         this.textLines[this.textLines.length - 1] += "</div>";
     }
+}
+OutputItem.prototype.addSiblingPrefix = function() {
+    // add the sibling prefix before this output
+    if (this.siblingPrefix) {
+        this.textLines[0] = this.siblingPrefix + this.textLines[0];
+    }
+}
+OutputItem.prototype.addSiblingSuffix = function() {
+    // add the sibling suffix after this output
+    if (this.siblingSuffix) {
+        this.textLines[this.textLines.length - 1] += this.siblingSuffix;
+    }
+}
+OutputItem.prototype.equalPrefix = function(otherItem) {
+    // return true if sibling prefixes and suffixes are equal
+    return (this.siblingPrefix == otherItem.siblingPrefix &&
+            this.siblingSuffix == otherItem.siblingSuffix);
 }
 
 function OutputGroup() {
@@ -342,6 +415,7 @@ function OutputGroup() {
     if (parentNode) {
         this.itemList.push(new OutputItem(parentNode, 0));
         this.addChildren(parentNode, 0);
+        if (this.hasPrefixes()) this.combineAllSiblings();
         this.addBlanksBetween();
         this.addIndents();
     }
@@ -375,6 +449,41 @@ OutputGroup.prototype.addIndents = function() {
         this.itemList[i].addIndent(prevLevel, nextLevel);
         prevLevel = this.itemList[i].level;
     }
+}
+OutputGroup.prototype.hasPrefixes = function() {
+    // return true if sibling prefixes or suffixes are found
+    var items = this.itemList.filter(function(item) {
+        return item.siblingPrefix || item.siblingSuffix;
+    });
+    return items.length > 0;
+}
+OutputGroup.prototype.combineAllSiblings = function() {
+    // group all sibling items with the same prefix into single items
+    // also add sibling prefixes and suffixes and spaces in between
+    var newItems = [];
+    var prevItem = null;
+    this.itemList.forEach(function(item) {
+        if (prevItem) {
+            if (item.level == prevItem.level && item.equalPrefix(prevItem)) {
+                if (item.addSpace || prevItem.addSpace) {
+                    prevItem.textLines[prevItem.textLines.length - 1] +=
+                             "<br />";
+                }
+                prevItem.textLines = prevItem.textLines.concat(item.textLines);
+            } else {
+                prevItem.addSiblingSuffix();
+                newItems.push(prevItem);
+                item.addSiblingPrefix();
+                prevItem = item;
+            }
+        } else {
+            item.addSiblingPrefix();
+            prevItem = item;
+        }
+    });
+    prevItem.addSiblingSuffix();
+    newItems.push(prevItem);
+    this.itemList = newItems;
 }
 OutputGroup.prototype.getText = function() {
     // return a text string for all output

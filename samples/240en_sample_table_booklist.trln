@@ -62,8 +62,10 @@
 "icon": "book_3",
 "outputlines": [
 "Title: \"{*Title*}\"",
-"Status: (c) {*Copyright*}, Own: {*Own*}",
-"Last Read: {*ReadDate*}, Rating: {*Rating*}",
+"Status: (c) {*Copyright*}",
+"Own: {*Own*}",
+"Last Read: {*ReadDate*}",
+"Rating: {*Rating*}",
 "Plot: {*Plot*}"
 ],
 "spacebetween": false,
