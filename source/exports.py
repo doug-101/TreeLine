@@ -612,7 +612,7 @@ class ExportControl:
             self.selectedNodes = self.structure.childList
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
         if len(self.selectedNodes) > 1:
-            rootElement = ElementTree.Element(treeformat.defaultTypeName)
+            rootElement = ElementTree.Element(treeformats.defaultTypeName)
             for node in self.selectedNodes:
                 rootElement.append(_createGenericXml(node, addBranches))
         else:
