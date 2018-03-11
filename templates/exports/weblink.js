@@ -1,11 +1,13 @@
 "use strict";
 
-var nodeDict = {};
-var rootNodes = [];
+var spotDict = {};
+var rootSpots = [];
 var treeFormats = {};
-var selectedId = "";
+var selectedSpot = null;
 
-var dataSource = "http://data.bellz.org/data/SFBooks.trln";
+var dataFilePath = "http://data.bellz.org/data/";
+var dataFileName = "320en_sample_other_fields.trln";
+// var dataFileName = "SFBooks.trln";
 var openMarker = "\u2296";
 var closedMarker = "\u2295";
 var leafMarker = "\u25CB";
@@ -15,7 +17,7 @@ function loadFile() {
     // initial data load
     var xhttp = new XMLHttpRequest();
     xhttp.overrideMimeType("application/json");
-    xhttp.open("GET", dataSource, true);
+    xhttp.open("GET", dataFilePath + dataFileName, true);
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var fileData = JSON.parse(this.responseText);
@@ -23,75 +25,74 @@ function loadFile() {
                 var formatName = formatData.formatname;
                 treeFormats[formatName] = new NodeFormat(formatData);
             });
-            var node;
+            var node, spot;
             fileData.nodes.forEach(function(nodeData) {
                 node = new TreeNode(treeFormats[nodeData.format], nodeData);
-                nodeDict[node.uId] = node;
+                spot = new TreeSpot(node, nodeData.uid);
             });
-            var uId;
-            for (uId in nodeDict) {
-                nodeDict[uId].assignRefs();
-            }
-            rootNodes = fileData.properties.topnodes.map(function(id) {
-                return nodeDict[id];
+            rootSpots = fileData.properties.topnodes.map(function(id) {
+                return spotDict[id];
+            });
+            rootSpots.forEach(function(rootSpot) {
+                rootSpot.nodeRef.assignRefs(null);
             });
             var rootElement = document.getElementById("rootlist");
-            rootNodes.forEach(function(rootNode) {
-                rootNode.open = true;
-                rootNode.outputElement(rootElement);
+            rootSpots.forEach(function(rootSpot) {
+                rootSpot.open = true;
+                rootSpot.outputElement(rootElement);
             });
         }
     }
     xhttp.send(null);
 }
 
-function TreeNode(formatRef, fileData) {
-    // class to store nodes
-    this.formatRef = formatRef;
-    this.uId = fileData.uid;
-    this.data = fileData.data;
-    this.tmpChildRefs = fileData.children;
-    this.childList = [];
+function TreeSpot(nodeRef, uId) {
+    // class to store node positions (unique even for cloned nodes)
+    this.nodeRef = nodeRef;
+    this.uId = uId;
+    this.parentSpot;
     this.open = false;
+    spotDict[uId] = this;
+    nodeRef.spotRefs.push(this);
 }
-TreeNode.prototype.assignRefs = function() {
-    // add actual refs to child nodes
-    this.childList = this.tmpChildRefs.map(function(id) {
-        return nodeDict[id];
-    });
-    this.tmpChildRefs = [];
+TreeSpot.prototype.childSpots = function() {
+    // return an array of child spots
+    return this.nodeRef.childList.map(function(node) {
+        return node.matchedSpot(this);
+    }, this);
 }
-TreeNode.prototype.outputElement = function(parentElement) {
+TreeSpot.prototype.outputElement = function(parentElement) {
     // recursively output html tree elements
+    var node = this.nodeRef;
     var element = document.createElement("li");
     var markerSpan = document.createElement("span");
     var markerText = leafMarker;
-    if (this.childList.length > 0) {
+    if (node.childList.length > 0) {
         markerText = this.open ? openMarker : closedMarker;
     }
     markerSpan.appendChild(document.createTextNode(markerText));
     markerSpan.className = "marker";
     element.appendChild(markerSpan);
     var textSpan = document.createElement("span");
-    textSpan.appendChild(document.createTextNode(this.formatRef.
+    textSpan.appendChild(document.createTextNode(node.formatRef.
                                                  formatTitle(this)));
     textSpan.className = "nodetext";
     element.appendChild(textSpan);
     element.setAttribute("id", this.uId);
     parentElement.appendChild(element);
-    if (this.open && this.childList.length > 0) this.openChildren(element);
+    if (this.open && node.childList.length > 0) this.openChildren(element);
 }
-TreeNode.prototype.openChildren = function(parentElement) {
+TreeSpot.prototype.openChildren = function(parentElement) {
     // output children of this node
     var listElement = document.createElement("ul");
     parentElement.appendChild(listElement);
-    this.childList.forEach(function(child) {
-        child.outputElement(listElement);
+    this.childSpots().forEach(function(childSpot) {
+        childSpot.outputElement(listElement);
     });
 }
-TreeNode.prototype.toggleOpen = function() {
-    // toggle this node's opened/closed state
-    if (this.childList.length == 0) return;
+TreeSpot.prototype.toggleOpen = function() {
+    // toggle this spot's opened/closed state
+    if (this.nodeRef.childList.length == 0) return;
     this.open = !this.open;
     var element = document.getElementById(this.uId);
     if (this.open) {
@@ -106,6 +107,48 @@ TreeNode.prototype.toggleOpen = function() {
             }
         }
     }
+}
+
+function TreeNode(formatRef, fileData) {
+    // class to store nodes
+    this.formatRef = formatRef;
+    this.data = fileData.data;
+    this.tmpChildRefs = fileData.children;
+    this.spotRefs = [];
+    this.childList = [];
+}
+TreeNode.prototype.assignRefs = function(parentSpot) {
+    // recursively add actual refs to child nodes and parent spots
+    var spot = this.spotRefs[0];
+    if (spot.parentSpot !== undefined) {  // cloned node
+        var id = spot.uId;
+        var num = 1;
+        do {
+            id = id + "_" + num;
+            num += 1;
+        } while (id in spotDict);
+        spot = new TreeSpot(this, id);
+    }
+    spot.parentSpot = parentSpot;
+    this.childList.forEach(function(child) {  // for clones (2nd time thru)
+        child.assignRefs(spot);
+    });
+    var childNode;
+    this.tmpChildRefs.forEach(function(childId) {  // for first time thru
+        childNode = spotDict[childId].nodeRef;
+        this.childList.push(childNode);
+        childNode.assignRefs(spot);
+    }, this);
+    this.tmpChildRefs = [];
+}
+TreeNode.prototype.matchedSpot = function(parentSpot) {
+    // return the spot for this node that matches the given parent spot
+    for (var i = 0; i < this.spotRefs.length; i++) {
+        if (this.spotRefs[i].parentSpot === parentSpot) {
+            return this.spotRefs[i];
+        }
+    }
+    return null;
 }
 
 function NodeFormat(formatData) {
@@ -171,27 +214,63 @@ NodeFormat.prototype.parseLine = function(text) {
 }
 NodeFormat.prototype.parseField = function(text) {
     // parse text field, return field type or plain text if not a field
+    var field;
     var match = /{\*(\**|\?|!|&|#)([\w_\-.]+)\*}/g.exec(text);
     if (match) {
         var modifier = match[1];
         var fieldName = match[2];
         if (modifier == "" && fieldName in this.fieldDict) {
             return this.fieldDict[fieldName];
+        } else if (modifier.match(/^\*+$/)) {
+            field = new FieldFormat({"fieldname": fieldName,
+                                     "fieldtype": "AncestorLevel"});
+            field.ancestorLevel = modifier.length;
+            field.placeholder = true;
+            return field;
+        } else if (modifier == "?") {
+            field = new FieldFormat({"fieldname": fieldName,
+                                     "fieldtype": "AnyAncestor"});
+            field.placeholder = true;
+            return field;
+        } else if (modifier == "&") {
+            field = new FieldFormat({"fieldname": fieldName,
+                                     "fieldtype": "ChildList"});
+            field.placeholder = true;
+            return field;
+        } else if (modifier == "#") {
+            match = /[^0-9]+([0-9]+)$/.exec(fieldName);
+            if (match && match[1] != "0") {
+                field = new FieldFormat({"fieldname": fieldName,
+                                         "fieldtype": "DescendantCount"});
+                field.descendantLevel = Number(match[1]);
+                field.placeholder = true;
+                return field;
+            }
+        } else if (modifier == "!") {
+            field = new FieldFormat({"fieldname": fieldName,
+                                     "fieldtype": "StaticFileInfo"});
+            if (fieldName == "File_Name") {
+                field.staticInfo = dataFileName;
+            } else if (fieldName == "File_Path") {
+                field.staticInfo = dataFilePath;
+            }
+            field.placeholder = true;
+            return field;
         }
     }
     return text;
 }
-NodeFormat.prototype.formatTitle = function(node) {
+NodeFormat.prototype.formatTitle = function(spot) {
     // return a string with formatted title data
     var result = this.titleLine.map(function(part) {
         if (typeof part.outputText === "function") {
-            return part.outputText(node, true, this.formatHtml);
+            return part.outputText(spot, true, this.formatHtml);
         }
         return part;
     }, this);
     return result.join("").trim().split("\n", 1)[0];
 }
-NodeFormat.prototype.formatOutput = function(node, keepBlanks) {
+NodeFormat.prototype.formatOutput = function(spot, keepBlanks) {
     // return a list of formatted text output lines
     var line, numEmptyFields, numFullFields, text, match;
     var result = [];
@@ -201,7 +280,7 @@ NodeFormat.prototype.formatOutput = function(node, keepBlanks) {
         numFullFields = 0;
         lineData.forEach(function(part) {
             if (typeof part.outputText === "function") {
-                text = part.outputText(node, false, this.formatHtml);
+                text = part.outputText(spot, false, this.formatHtml);
                 if (text) {
                     numFullFields += 1;
                 } else {
@@ -235,6 +314,10 @@ function FieldFormat(fieldData) {
     this.prefix = valueOrDefault(fieldData, "prefix", "");
     this.suffix = valueOrDefault(fieldData, "suffix", "");
     this.mathResultType = valueOrDefault(fieldData, "resulttype", "number");
+    this.placeholder = false;
+    this.ancestorLevel = 0;
+    this.descendantLevel = 0;
+    this.staticInfo = "";
     if (this.fieldType == "Numbering") {
         this.numberingFormats = initNumbering(this.format);
     }
@@ -248,11 +331,12 @@ function FieldFormat(fieldData) {
         });
     }
 }
-FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
+FieldFormat.prototype.outputText = function(spot, titleMode, formatHtml) {
     // return formatted output text for this field in this node
-    var splitValue, outputSep, selections, result, options, match;
-    var value = valueOrDefault(node.data, this.name, "");
-    if (!value) return "";
+    var splitValue, outputSep, selections, result, match, i, field;
+    var newNodes, prevNodes;
+    var value = valueOrDefault(spot.nodeRef.data, this.name, "");
+    if (!value && !this.placeholder) return "";
     switch (this.fieldType) {
         case "OneLineText":
             value = value.split("<br />", 1)[0];
@@ -294,7 +378,7 @@ FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
             if (this.choiceList.indexOf(value) < 0) value = "#####";
             break;
         case "Combination":
-            outputSep = node.formatRef.outputSeparator;
+            outputSep = spot.nodeRef.formatRef.outputSeparator;
             value = value.replace(/\/\//g, "\0");
             selections = value.split("/").map(function(text) {
                 return text.replace(/\0/g, "/");
@@ -309,7 +393,7 @@ FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
             }
             break;
         case "AutoCombination":
-            outputSep = node.formatRef.outputSeparator;
+            outputSep = spot.nodeRef.formatRef.outputSeparator;
             value = value.replace(/\/\//g, "\0");
             selections = value.split("/").map(function(text) {
                 return text.replace(/\0/g, "/");
@@ -345,6 +429,55 @@ FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
                 value = "#####";
             }
             break;
+        case "AncestorLevel":
+            value = "";
+            for (i = 0; i < this.ancestorLevel; i++) {
+                spot = spot.parentSpot;
+            }
+            if (spot) {
+                field = spot.nodeRef.formatRef.fieldDict[this.name];
+                if (field) {
+                    value = field.outputText(spot, titleMode, formatHtml);
+                }
+            }
+            break;
+        case "AnyAncestor":
+            value = "";
+            while (spot.parentSpot) {
+                spot = spot.parentSpot;
+                field = spot.nodeRef.formatRef.fieldDict[this.name];
+                if (field) {
+                    value = field.outputText(spot, titleMode, formatHtml);
+                    break;
+                }
+            }
+            break;
+        case "ChildList":
+            result = [];
+            spot.childSpots().forEach(function(childSpot) {
+                field = childSpot.nodeRef.formatRef.fieldDict[this.name];
+                if (field) {
+                    result.push(field.outputText(childSpot, titleMode,
+                                                 formatHtml));
+                }
+            }, this);
+            outputSep = spot.nodeRef.formatRef.outputSeparator;
+            value = result.join(outputSep);
+            break;
+        case "DescendantCount":
+            newNodes = [childSpot.nodeRef];
+            for (i = 0; i < this.descendantLevel; i++) {
+                prevNodes = newNodes;
+                newNodes = [];
+                prevNodes.forEach(function(child) {
+                    newNodes = newNodes.concat(child.childList);
+                });
+            }
+            value = newNodes.length.toString();
+            break;
+        case "StaticFileInfo":
+            value = this.staticInfo;
+            break;
     }
     var prefix = this.prefix;
     var suffix = this.suffix;
@@ -361,32 +494,34 @@ FieldFormat.prototype.outputText = function(node, titleMode, formatHtml) {
     return prefix + value + suffix;
 }
 
-function OutputItem(node, level) {
+function OutputItem(spot, level) {
     // class to store output for a single node
-    if (node.formatRef.useTables) {
-        this.textLines = node.formatRef.formatOutput(node, true);
+    var format = spot.nodeRef.formatRef;
+    if (format.useTables) {
+        this.textLines = format.formatOutput(spot, true);
     } else {
-        this.textLines = node.formatRef.formatOutput(node, false).
+        this.textLines = format.formatOutput(spot, false).
                          map(function(line) {
             return line + "<br />";
         });
     }
     this.level = level;
-    this.uId = node.uId;
-    this.addSpace = node.formatRef.spaceBetween;
-    this.siblingPrefix = node.formatRef.siblingPrefix;
-    this.siblingSuffix = node.formatRef.siblingSuffix;
-    if (node.formatRef.useBullets && this.textLines.length > 0) {
+    this.uId = spot.uId;
+    this.addSpace = format.spaceBetween;
+    this.siblingPrefix = format.siblingPrefix;
+    this.siblingSuffix = format.siblingSuffix;
+    if (format.useBullets && this.textLines.length > 0) {
         this.textLines[this.textLines.length - 1] =
              this.textLines[this.textLines.length - 1].slice(0, -6);
     }
 }
 OutputItem.prototype.addIndent = function(prevLevel, nextLevel) {
     // add <div> tags to define indent levels in the output
-    for (var i = 0; i < this.level - prevLevel; i++) {
+    var i;
+    for (i = 0; i < this.level - prevLevel; i++) {
         this.textLines[0] = "<div>" + this.textLines[0];
     }
-    for (var i = 0; i < this.level - nextLevel; i++) {
+    for (i = 0; i < this.level - nextLevel; i++) {
         this.textLines[this.textLines.length - 1] += "</div>";
     }
 }
@@ -411,20 +546,19 @@ OutputItem.prototype.equalPrefix = function(otherItem) {
 function OutputGroup() {
     // class to store and modify output lines
     this.itemList = [];
-    var parentNode = nodeDict[selectedId];
-    if (parentNode) {
-        this.itemList.push(new OutputItem(parentNode, 0));
-        this.addChildren(parentNode, 0);
+    if (selectedSpot) {
+        this.itemList.push(new OutputItem(selectedSpot, 0));
+        this.addChildren(selectedSpot, 0);
         if (this.hasPrefixes()) this.combineAllSiblings();
         this.addBlanksBetween();
         this.addIndents();
     }
 }
-OutputGroup.prototype.addChildren = function(node, level) {
+OutputGroup.prototype.addChildren = function(spot, level) {
     // recursively add output items for descendants
-    node.childList.forEach(function(child) {
-        this.itemList.push(new OutputItem(child, level + 1));
-        this.addChildren(child, level + 1);
+    spot.childSpots().forEach(function(childSpot) {
+        this.itemList.push(new OutputItem(childSpot, level + 1));
+        this.addChildren(childSpot, level + 1);
     }, this);
 }
 OutputGroup.prototype.addBlanksBetween = function() {
@@ -498,18 +632,16 @@ OutputGroup.prototype.getText = function() {
 window.onclick = function(event) {
     // handle mouse clicks for open/close and selection
     if (event.target.tagName == "SPAN") {
-        if (event.target.classList.contains("marker")) {
-            var uId = event.target.parentElement.getAttribute("id");
-            if (uId in nodeDict) {
-                nodeDict[uId].toggleOpen();
-            }
-        } else if (event.target.classList.contains("nodetext")) {
-            var uId = event.target.parentElement.getAttribute("id");
-            if (uId in nodeDict) {
-                var prevId = selectedId;
-                selectedId = uId;
-                if (prevId) {
-                    var prevElem = document.getElementById(prevId);
+        var elemId = event.target.parentElement.getAttribute("id");
+        var spot = spotDict[elemId];
+        if (spot) {
+            if (event.target.classList.contains("marker")) {
+                spot.toggleOpen();
+            } else if (event.target.classList.contains("nodetext")) {
+                var prevSpot = selectedSpot;
+                selectedSpot = spot;
+                if (prevSpot) {
+                    var prevElem = document.getElementById(prevSpot.uId);
                     prevElem.childNodes[1].classList.remove("selected");
                 }
                 event.target.classList.add("selected");
@@ -543,7 +675,7 @@ function unescapeHtml(text) {
 function removeMarkup(text) {
     // return text with all HTML Markup removed and entities unescaped
     return text.replace(/<.*?>/g, "").replace(/&amp;/g, "&").
-           replace(/&lt;/g, "<").replace(/&gt/g, ">");
+           replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 }
 
 function formatNumber(num, format) {
