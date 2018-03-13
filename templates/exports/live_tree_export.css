@@ -1,6 +1,8 @@
+/*  live_tree_export.css, provides css for a read-only TreeLine view  */
+
 body {
-    background-color: #607d8b;
-    color: white;
+    background-color: white;
+    color: black;
 }
 
 #tree {
@@ -27,6 +29,7 @@ body {
     width: 1.3em;
     text-align: center;
     vertical-align: middle;
+    color: blue;
 }
 
 .selected {

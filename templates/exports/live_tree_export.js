@@ -1,49 +1,67 @@
+//  live_tree_export.js, provides javascript code for a read-only tree view
+//  Works with TreeLine, an information storage program
+//  Copyright (C) 2018, Douglas W. Bell
+
+//  This is free software; you can redistribute it and/or modify it under the
+//  terms of the GNU General Public License, either Version 2 or any later
+//  version.  This program is distributed in the hope that it will be useful,
+//  but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
+
 "use strict";
 
 var spotDict = {};
 var rootSpots = [];
 var treeFormats = {};
 var selectedSpot = null;
-
-var dataFilePath = "http://data.bellz.org/data/";
-var dataFileName = "320en_sample_other_fields.trln";
-// var dataFileName = "SFBooks.trln";
 var openMarker = "\u2296";
 var closedMarker = "\u2295";
 var leafMarker = "\u25CB";
-loadFile();
 
-function loadFile() {
-    // initial data load
+if (dataFileName) {
+    if (dataFilePath) {
+        dataFileName = dataFilePath + "/" + dataFileName;
+    }
+    loadFile(dataFileName);
+} else if (inlineTextData) {
+    loadData(inlineTextData);
+}
+
+function loadFile(filePath) {
+    // initial load from file link
     var xhttp = new XMLHttpRequest();
     xhttp.overrideMimeType("application/json");
-    xhttp.open("GET", dataFilePath + dataFileName, true);
+    xhttp.open("GET", filePath, true);
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            var fileData = JSON.parse(this.responseText);
-            fileData.formats.forEach(function(formatData) {
-                var formatName = formatData.formatname;
-                treeFormats[formatName] = new NodeFormat(formatData);
-            });
-            var node, spot;
-            fileData.nodes.forEach(function(nodeData) {
-                node = new TreeNode(treeFormats[nodeData.format], nodeData);
-                spot = new TreeSpot(node, nodeData.uid);
-            });
-            rootSpots = fileData.properties.topnodes.map(function(id) {
-                return spotDict[id];
-            });
-            rootSpots.forEach(function(rootSpot) {
-                rootSpot.nodeRef.assignRefs(null);
-            });
-            var rootElement = document.getElementById("rootlist");
-            rootSpots.forEach(function(rootSpot) {
-                rootSpot.open = true;
-                rootSpot.outputElement(rootElement);
-            });
+            loadData(this.responseText);
         }
     }
     xhttp.send(null);
+}
+
+function loadData(textData) {
+    // initial load from text data file
+    var fileData = JSON.parse(textData);
+    fileData.formats.forEach(function(formatData) {
+        var formatName = formatData.formatname;
+        treeFormats[formatName] = new NodeFormat(formatData);
+    });
+    var node, spot;
+    fileData.nodes.forEach(function(nodeData) {
+        node = new TreeNode(treeFormats[nodeData.format], nodeData);
+        spot = new TreeSpot(node, nodeData.uid);
+    });
+    rootSpots = fileData.properties.topnodes.map(function(id) {
+        return spotDict[id];
+    });
+    rootSpots.forEach(function(rootSpot) {
+        rootSpot.nodeRef.assignRefs(null);
+    });
+    var rootElement = document.getElementById("rootlist");
+    rootSpots.forEach(function(rootSpot) {
+        rootSpot.open = true;
+        rootSpot.outputElement(rootElement);
+    });
 }
 
 function TreeSpot(nodeRef, uId) {
@@ -107,6 +125,71 @@ TreeSpot.prototype.toggleOpen = function() {
             }
         }
     }
+}
+TreeSpot.prototype.openParents = function() {
+    // open all parent spots of this spot
+    var ancestors = [];
+    var spot = this.parentSpot;
+    var element;
+    while (spot) {
+        ancestors.unshift(spot);
+        spot = spot.parentSpot;
+    }
+    ancestors.forEach(function(ancestor) {
+        if (!ancestor.open) {
+            ancestor.open = true;
+            element = document.getElementById(ancestor.uId);
+            element.childNodes[0].innerHTML = openMarker;
+            ancestor.openChildren(element);
+        }
+    });
+}
+TreeSpot.prototype.select = function() {
+    // change selection to this
+    var prevSpot = selectedSpot;
+    selectedSpot = this;
+    if (prevSpot) {
+        var prevElem = document.getElementById(prevSpot.uId);
+        if (prevElem) prevElem.childNodes[1].classList.remove("selected");
+    }
+    var element = document.getElementById(this.uId);
+    element.childNodes[1].classList.add("selected");
+    var outputGroup = new OutputGroup();
+    document.getElementById("output").innerHTML = outputGroup.getText();
+}
+TreeSpot.prototype.prevTreeSpot = function() {
+    // return the previous open spot in tree order
+    if (!this.parentSpot) return null;
+    var node, sibling;
+    var pos = this.parentSpot.nodeRef.childList.indexOf(this.nodeRef);
+    if (pos > 0) {
+        node = this.parentSpot.nodeRef.childList[pos - 1];
+        sibling = node.matchedSpot(this.parentSpot);
+        while (sibling.open) {
+            node = sibling.nodeRef.childList[sibling.nodeRef.childList.
+                                             length - 1];
+            sibling = node.matchedSpot(sibling);
+        }
+        return sibling;
+    }
+    return this.parentSpot;
+}
+TreeSpot.prototype.nextTreeSpot = function() {
+    // return the next open spot in tree order
+    if (this.open) {
+        return this.nodeRef.childList[0].matchedSpot(this);
+    }
+    var pos, sibling;
+    var ancestor = this;
+    while (ancestor.parentSpot) {
+        pos = ancestor.parentSpot.nodeRef.childList.indexOf(ancestor.nodeRef);
+        sibling = ancestor.parentSpot.nodeRef.childList[pos + 1];
+        if (sibling) {
+            return sibling.matchedSpot(ancestor.parentSpot);
+        }
+        ancestor = ancestor.parentSpot;
+    }
+    return null;
 }
 
 function TreeNode(formatRef, fileData) {
@@ -631,25 +714,60 @@ OutputGroup.prototype.getText = function() {
 
 window.onclick = function(event) {
     // handle mouse clicks for open/close and selection
+    var spot;
     if (event.target.tagName == "SPAN") {
         var elemId = event.target.parentElement.getAttribute("id");
-        var spot = spotDict[elemId];
+        spot = spotDict[elemId];
         if (spot) {
             if (event.target.classList.contains("marker")) {
                 spot.toggleOpen();
             } else if (event.target.classList.contains("nodetext")) {
-                var prevSpot = selectedSpot;
-                selectedSpot = spot;
-                if (prevSpot) {
-                    var prevElem = document.getElementById(prevSpot.uId);
-                    prevElem.childNodes[1].classList.remove("selected");
-                }
-                event.target.classList.add("selected");
-                var outputGroup = new OutputGroup();
-                document.getElementById("output").innerHTML =
-                         outputGroup.getText();
+                spot.select();
             }
         }
+    } else if (event.target.tagName == "A") {
+        var addr = event.target.getAttribute("href");
+        if (addr.startsWith("#")) {
+            event.preventDefault();
+            spot = spotDict[addr.substr(1)];
+            if (spot) {
+                spot.openParents();
+                spot.select();
+            }
+        }
+    }
+}
+
+window.onkeydown = function(event) {
+    // handle arrow keys for selection management
+    var spot;
+    switch (event.which) {
+        case 38:  // up arrow
+            if (selectedSpot) {
+                spot = selectedSpot.prevTreeSpot();
+            } else {
+                spot = rootSpots[0];
+            }
+            if (spot) spot.select();
+            event.preventDefault();
+            break;
+        case 40:  // down arrow
+            if (selectedSpot) {
+                spot = selectedSpot.nextTreeSpot();
+            } else {
+                spot = rootSpots[0];
+            }
+            if (spot) spot.select();
+            event.preventDefault();
+            break;
+        case 37:  // left arrow
+            if (selectedSpot && selectedSpot.open) selectedSpot.toggleOpen();
+            event.preventDefault();
+            break;
+        case 39:  // right arrow
+            if (selectedSpot && !selectedSpot.open) selectedSpot.toggleOpen();
+            event.preventDefault();
+            break;
     }
 }
 
