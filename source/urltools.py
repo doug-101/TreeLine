@@ -4,7 +4,7 @@
 # urltools.py, provides functions for parsing and modifying URLs.
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -126,7 +126,10 @@ def toRelative(url, refPath):
     """
     scheme, drive, address = splitUrl(url)
     if drive or address.startswith('/'):
-        url = os.path.relpath(drive + address, refPath)
+        try:
+            url = os.path.relpath(drive + address, refPath)
+        except ValueError:
+            pass
     if os.sep == '\\':
         url = url.replace('\\', '/')
     return url
