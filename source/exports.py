@@ -20,6 +20,7 @@ import copy
 import io
 import zipfile
 import csv
+import shutil
 from xml.etree import ElementTree
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFontInfo
@@ -33,6 +34,7 @@ import treeformats
 import nodeformat
 import fieldformat
 import treeoutput
+import treemaincontrol
 import imports
 import urltools
 import globalref
@@ -40,6 +42,10 @@ try:
     from __main__ import __version__
 except ImportError:
     __version__ = ''
+try:
+    from __main__ import templatePath
+except ImportError:
+    templatePath = None
 
 _bookmarkTitle = _('Bookmarks')
 _odfNamespace = {'fo':
@@ -83,6 +89,8 @@ class ExportControl:
                          'htmlNavSingle': self.exportHtmlNavSingle,
                          'htmlPages': self.exportHtmlPages,
                          'htmlTables': self.exportHtmlTables,
+                         'htmlLiveLink': self.exportHtmlLiveLink,
+                         'htmlLiveSingle': self.exportHtmlLiveSingle,
                          'textTitles': self.exportTextTitles,
                          'textPlain': self.exportTextPlain,
                          'textTableCsv': self.exportTextTableCsv,
@@ -368,6 +376,95 @@ class ExportControl:
                             set(), False)
         _writeHtmlTable(self.structure.childList[0], None, pathDict)
         os.chdir(oldDir)
+        return True
+
+    def exportHtmlLiveLink(self, pathObj=None):
+        """Export a live tree view, linked back to the source file.
+
+        Prompt user for path if not given in argument.
+        Return True on successful export.
+        Arguments:
+            pathObj -- use if given, otherwise prompt user
+        """
+        if not pathObj:
+            path = QFileDialog.getExistingDirectory(QApplication.
+                                                   activeWindow(),
+                                                   _('TreeLine - Export HTML'),
+                                                   str(self.defaultPathObj))
+            if not path:
+                return False
+            pathObj = pathlib.Path(path)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        control = globalref.mainControl
+        prefPath = templatePath + '/exports' if templatePath else ''
+        htmlPath = control.findResourceFile('live_tree_export.html',
+                                            'templates/exports', prefPath)
+        jsPath = control.findResourceFile('live_tree_export.js',
+                                          'templates/exports', prefPath)
+        cssPath = control.findResourceFile('live_tree_export.css',
+                                           'templates/exports', prefPath)
+        if not htmlPath or not jsPath or not cssPath:
+            QApplication.restoreOverrideCursor()
+            QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
+                                _('Error - export template files not found.\n'
+                                  'Check your TreeLine installation.'))
+            return False
+        refPath = globalref.mainControl.activeControl.filePathObj
+        if not refPath:
+            QApplication.restoreOverrideCursor()
+            QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
+                                _('Error - cannot link to unsaved TreeLine '
+                                  'file.\nSave the file and retry.'))
+            return False
+        try:
+            refPath = pathlib.Path(os.path.relpath(str(refPath), str(pathObj)))
+        except ValueError:
+            QApplication.restoreOverrideCursor()
+            msg = _('Warning - no relative path from "{0}" to "{1}".\n'
+                    'Continue with absolute path?').format(pathObj.as_posix(),
+                                                          refPath.as_posix())
+            ans = QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
+                                      msg, QMessageBox.Yes | QMessageBox.No,
+                                      QMessageBox.Yes)
+            if ans == QMessageBox.No:
+                return False
+            QApplication.setOverrideCursor(Qt.WaitCursor)
+        fileStem = refPath.stem
+        outPath = pathObj / (fileStem + '.html')
+        with htmlPath.open(encoding='utf-8') as fileIn:
+            with outPath.open('w', encoding='utf-8') as fileOut:
+                for line in fileIn:
+                    if '<title>' in line:
+                        line = re.sub(r'<title>.*</title>',
+                                      '<title>{0}</title>'.format(fileStem),
+                                      line)
+                    if 'dataFilePath' in line:
+                        line = line.replace('""', '"{0}"'.
+                                            format(refPath.parent.as_posix()))
+                    if 'dataFileName' in line:
+                        line = line.replace('""', '"{0}"'.format(refPath.name))
+                    fileOut.write(line)
+        shutil.copy(str(jsPath), str(pathObj))
+        shutil.copy(str(cssPath), str(pathObj))
+        return True
+
+    def exportHtmlLiveSingle(self, pathObj=None):
+        """Export a live tree view to a single file (embedded data).
+
+        Prompt user for path if not given in argument.
+        Return True on successful export.
+        Arguments:
+            pathObj -- use if given, otherwise prompt user
+        """
+        if not pathObj:
+            path = QFileDialog.getExistingDirectory(QApplication.
+                                                   activeWindow(),
+                                                   _('TreeLine - Export HTML'),
+                                                   str(self.defaultPathObj))
+            if not path:
+                return False
+            pathObj = pathlib.Path(path)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         return False
 
     def exportTextTitles(self, pathObj=None):
@@ -1451,7 +1548,7 @@ class ExportDialog(QWizard):
                           'xml': _('&XML (generic)'), 'odf': _('&ODF Outline'),
                           'bookmarks': _('Book&marks')}
     exportSubtypes = {'html': ['htmlSingle', 'htmlNavSingle','htmlPages',
-                               'htmlTables'],
+                               'htmlTables', 'htmlLiveLink', 'htmlLiveSingle'],
                       'text': ['textTitles', 'textPlain', 'textTableCsv',
                                'textTableTab'],
                       'treeline': ['oldTreeLine', 'treeLineSubtree'],
@@ -1465,6 +1562,10 @@ class ExportDialog(QWizard):
                        'htmlPages': _('Multiple HTML &pages with '
                                       'navigation pane'),
                        'htmlTables': _('Multiple HTML &data tables'),
+                       'htmlLiveLink': _('Live tree view, linked to '
+                                         'TreeLine file (for web server)'),
+                       'htmlLiveSingle': _('Live tree view, single file '
+                                           '(embedded data)'),
                        'textTitles': _('&Tabbed title text'),
                        'textPlain': _('&Unformatted output of all text'),
                        'textTableCsv': _('&Comma delimited (CSV) table '
@@ -1475,8 +1576,9 @@ class ExportDialog(QWizard):
                        'bookmarksHtml': _('&HTML format bookmarks'),
                        'bookmarksXbel': _('&XBEL format bookmarks')}
     disableEntireTree = {'textTableCsv', 'textTableTab', 'treeLineSubtree'}
-    disableSelBranches = set()
-    disableSelNodes = {'htmlNavSingle', 'htmlPages', 'htmlTables'}
+    disableSelBranches = {'htmlLiveLink'}
+    disableSelNodes = {'htmlNavSingle', 'htmlPages', 'htmlTables',
+                       'htmlLiveLink'}
     enableRootNode = {'htmlSingle', 'htmlNavSingle', 'textTitles',
                       'textPlain', 'ODF'}
     forceRootNodeOff = {'textTableCsv', 'textTableTab'}

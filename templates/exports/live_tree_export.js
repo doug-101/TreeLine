@@ -59,7 +59,7 @@ function loadData(textData) {
     });
     var rootElement = document.getElementById("rootlist");
     rootSpots.forEach(function(rootSpot) {
-        rootSpot.open = true;
+        if (rootSpot.nodeRef.childList.length > 0) rootSpot.open = true;
         rootSpot.outputElement(rootElement);
     });
 }
@@ -159,20 +159,23 @@ TreeSpot.prototype.select = function() {
 }
 TreeSpot.prototype.prevTreeSpot = function() {
     // return the previous open spot in tree order
-    if (!this.parentSpot) return null;
-    var node, sibling;
-    var pos = this.parentSpot.nodeRef.childList.indexOf(this.nodeRef);
-    if (pos > 0) {
+    var pos, node, sibling;
+    if (this.parentSpot) {
+        pos = this.parentSpot.nodeRef.childList.indexOf(this.nodeRef);
+        if (pos <= 0) return this.parentSpot;
         node = this.parentSpot.nodeRef.childList[pos - 1];
         sibling = node.matchedSpot(this.parentSpot);
-        while (sibling.open) {
-            node = sibling.nodeRef.childList[sibling.nodeRef.childList.
-                                             length - 1];
-            sibling = node.matchedSpot(sibling);
-        }
-        return sibling;
+    } else {
+        pos = rootSpots.indexOf(this);
+        if (pos <= 0) return null;
+        sibling = rootSpots[pos - 1];
     }
-    return this.parentSpot;
+    while (sibling.open) {
+        node = sibling.nodeRef.childList[sibling.nodeRef.childList.
+                                         length - 1];
+        sibling = node.matchedSpot(sibling);
+    }
+    return sibling;
 }
 TreeSpot.prototype.nextTreeSpot = function() {
     // return the next open spot in tree order
@@ -189,6 +192,9 @@ TreeSpot.prototype.nextTreeSpot = function() {
         }
         ancestor = ancestor.parentSpot;
     }
+    pos = rootSpots.indexOf(ancestor);
+    sibling = rootSpots[pos + 1];
+    if (sibling) return sibling;
     return null;
 }
 

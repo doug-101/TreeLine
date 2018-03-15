@@ -3,7 +3,7 @@
 #******************************************************************************
 # options.py, provides a class to manage config options
 #
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -586,6 +586,9 @@ class Options(OrderedDict):
                 templatePath = Options.basePath / 'templates'
                 if not templatePath.is_dir():
                     templatePath.mkdir()
+                templateExportPath = templatePath / 'exports'
+                if not templateExportPath.is_dir():
+                    templateExportPath.mkdir()
             except OSError:
                 Options.basePath = None
         if Options.basePath:
