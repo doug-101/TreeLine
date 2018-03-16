@@ -17,13 +17,15 @@ var openMarker = "\u2296";
 var closedMarker = "\u2295";
 var leafMarker = "\u25CB";
 
-if (dataFileName) {
-    if (dataFilePath) {
-        dataFileName = dataFilePath + "/" + dataFileName;
+function main() {
+    if (dataFileName) {
+        if (dataFilePath) {
+            dataFileName = dataFilePath + "/" + dataFileName;
+        }
+        loadFile(dataFileName);
+    } else {
+        loadData(document.getElementById("json").innerHTML);
     }
-    loadFile(dataFileName);
-} else if (inlineTextData) {
-    loadData(inlineTextData);
 }
 
 function loadFile(filePath) {
@@ -40,7 +42,7 @@ function loadFile(filePath) {
 }
 
 function loadData(textData) {
-    // initial load from text data file
+    // initial load from file data
     var fileData = JSON.parse(textData);
     fileData.formats.forEach(function(formatData) {
         var formatName = formatData.formatname;
@@ -431,7 +433,7 @@ FieldFormat.prototype.outputText = function(spot, titleMode, formatHtml) {
             value = value.split("<br />", 1)[0];
             break;
         case "SpacedText":
-            value = "<pre>" + value + "</pre";
+            value = "<pre>" + value + "</pre>";
             break;
         case "Number":
             var num = Number(value);
@@ -1082,3 +1084,5 @@ function formatBoolean(storedText, format) {
     if (value == undefined) value = "#####";
     return value;
 }
+
+main();

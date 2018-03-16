@@ -438,10 +438,10 @@ class ExportControl:
                         line = re.sub(r'<title>.*</title>',
                                       '<title>{0}</title>'.format(fileStem),
                                       line)
-                    if 'dataFilePath' in line:
+                    elif 'dataFilePath' in line:
                         line = line.replace('""', '"{0}"'.
                                             format(refPath.parent.as_posix()))
-                    if 'dataFileName' in line:
+                    elif 'dataFileName' in line:
                         line = line.replace('""', '"{0}"'.format(refPath.name))
                     fileOut.write(line)
         shutil.copy(str(jsPath), str(pathObj))
@@ -457,15 +457,64 @@ class ExportControl:
             pathObj -- use if given, otherwise prompt user
         """
         if not pathObj:
-            path = QFileDialog.getExistingDirectory(QApplication.
-                                                   activeWindow(),
-                                                   _('TreeLine - Export HTML'),
-                                                   str(self.defaultPathObj))
-            if not path:
+            pathObj = self.getFileName(_('TreeLine - Export HTML'), 'html')
+            if not pathObj:
                 return False
-            pathObj = pathlib.Path(path)
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        return False
+        control = globalref.mainControl
+        prefPath = templatePath + '/exports' if templatePath else ''
+        htmlPath = control.findResourceFile('live_tree_export.html',
+                                            'templates/exports', prefPath)
+        jsPath = control.findResourceFile('live_tree_export.js',
+                                          'templates/exports', prefPath)
+        cssPath = control.findResourceFile('live_tree_export.css',
+                                           'templates/exports', prefPath)
+        if not htmlPath or not jsPath or not cssPath:
+            QApplication.restoreOverrideCursor()
+            QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
+                                _('Error - export template files not found.\n'
+                                  'Check your TreeLine installation.'))
+            return False
+        if ExportDialog.exportWhat == ExportDialog.entireTree:
+            fileData = self.structure.fileData()
+        else:
+            self.structure = treestructure.TreeStructure(topNodes=self.
+                                                         selectedNodes,
+                                                         addSpots=False)
+            fileData = self.structure.fileData()
+            if ExportDialog.exportWhat == ExportDialog.selectNode:
+                topNodeIds = set([node.uId for node in
+                                  self.structure.childList])
+                nodeData = [data for data in fileData['nodes'] if data['uid']
+                            in topNodeIds]
+                for data in nodeData:
+                    data['children'] = []
+                fileData['nodes'] = nodeData
+        with htmlPath.open(encoding='utf-8') as htmlIn:
+            with pathObj.open('w', encoding='utf-8') as htmlOut:
+                for line in htmlIn:
+                    if 'stylesheet' in line:
+                        htmlOut.write('<style>\n')
+                        with cssPath.open(encoding='utf-8') as cssIn:
+                            for cssLine in cssIn:
+                                if not cssLine.startswith('/*'):
+                                    htmlOut.write(cssLine)
+                        htmlOut.write('</style>')
+                    elif '<title>' in line:
+                        line = re.sub(r'<title>.*</title>',
+                                      '<title>{0}</title>'.
+                                      format(pathObj.stem), line)
+                        htmlOut.write(line)
+                    elif 'application/json' in line:
+                        htmlOut.write(line)
+                        json.dump(fileData, htmlOut, indent=2, sort_keys=True)
+                    elif 'dataFileName' in line:
+                        htmlOut.write(line)
+                        with jsPath.open(encoding='utf-8') as jsIn:
+                            htmlOut.write(jsIn.read())
+                    elif 'script src=' not in line:
+                        htmlOut.write(line)
+        return True
 
     def exportTextTitles(self, pathObj=None):
         """Export tabbed title text, use ExportDialog options.
