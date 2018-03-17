@@ -472,6 +472,7 @@ class TreeMainControl(QObject):
             self.recentFiles.writeItems()
             localControl.windowList[0].saveToolbarPosition()
             globalref.histOptions.writeFile()
+        localControl.deleteLater()
 
     def updateConfigDialog(self):
         """Update the config dialog for changes if it exists.
