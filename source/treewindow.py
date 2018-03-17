@@ -300,7 +300,7 @@ class TreeWindow(QMainWindow):
     def removeFilterView(self):
         """Hide and delete the current filter view.
         """
-        if self.treeFilterView:
+        if self.treeFilterView != None:  # check for None since False if empty
             self.treeStack.removeWidget(self.treeFilterView)
             globalref.mainControl.currentStatusBar().removeWidget(self.
                                                                 treeFilterView.
