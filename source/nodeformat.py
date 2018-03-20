@@ -4,7 +4,7 @@
 # nodeformat.py, provides a class to handle node format objects
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -240,7 +240,7 @@ class NodeFormat:
         Arguments:
             nameList -- the list of names to add
             addFirstTitle -- if True, use first field for title output format
-            addToOutput -- repelace output lines with all fields if True
+            addToOutput -- replace output lines with all fields if True
         """
         for name in nameList:
             self.addFieldIfNew(name)

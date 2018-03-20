@@ -93,6 +93,7 @@ class ExportControl:
                          'htmlLiveSingle': self.exportHtmlLiveSingle,
                          'textTitles': self.exportTextTitles,
                          'textPlain': self.exportTextPlain,
+                         'textTableMultiCsv': self.exportTextTableMultiCsv,
                          'textTableCsv': self.exportTextTableCsv,
                          'textTableTab': self.exportTextTableTab,
                          'oldTreeLine': self.exportOldTreeLine,
@@ -581,6 +582,49 @@ class ExportControl:
                         lines.append('')
         with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
             f.writelines([(line + '\n') for line in lines])
+        return True
+
+    def exportTextTableMultiCsv(self, pathObj=None):
+        """Export descendant CSV delimited text table with level numbers.
+
+        Prompt user for path if not given in argument.
+        Return True on successful export.
+        Arguments:
+            pathObj -- use if given, otherwise prompt user
+        """
+        if not pathObj:
+            pathObj = self.getFileName(_('TreeLine - Export Text Tables'),
+                                       'csv')
+            if not pathObj:
+                return False
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        if ExportDialog.exportWhat == ExportDialog.entireTree:
+            self.selectedSpots = self.structure.rootSpots()
+        treeView = (globalref.mainControl.activeControl.activeWindow.treeView)
+        types = set()
+        headings = []
+        for rootSpot in self.selectedSpots:
+            for spot, level in rootSpot.levelSpotDescendantGen(treeView,
+                                              ExportDialog.includeRoot,
+                                              None, ExportDialog.openOnly):
+                nodeFormat = spot.nodeRef.formatRef
+                if nodeFormat not in types:
+                    for fieldName in nodeFormat.fieldNames():
+                        if fieldName not in headings:
+                            headings.append(fieldName)
+                    types.add(nodeFormat)
+        lines = [['Level'] + headings]
+        for rootSpot in self.selectedSpots:
+            for spot, level in rootSpot.levelSpotDescendantGen(treeView,
+                                              ExportDialog.includeRoot,
+                                              None, ExportDialog.openOnly):
+                newLine = [spot.nodeRef.data.get(head, '') for head in
+                           headings]
+                lines.append([repr(level)] + newLine)
+        with pathObj.open('w', newline='',
+                          encoding=globalref.localTextEncoding) as f:
+            writer = csv.writer(f)
+            writer.writerows(lines)
         return True
 
     def exportTextTableCsv(self, pathObj=None):
@@ -1598,8 +1642,8 @@ class ExportDialog(QWizard):
                           'bookmarks': _('Book&marks')}
     exportSubtypes = {'html': ['htmlSingle', 'htmlNavSingle','htmlPages',
                                'htmlTables', 'htmlLiveLink', 'htmlLiveSingle'],
-                      'text': ['textTitles', 'textPlain', 'textTableCsv',
-                               'textTableTab'],
+                      'text': ['textTitles', 'textPlain', 'textTableMultiCsv',
+                               'textTableCsv', 'textTableTab'],
                       'treeline': ['oldTreeLine', 'treeLineSubtree'],
                       'xml': ['xmlGeneric'],
                       'odf': ['odfText'],
@@ -1617,9 +1661,12 @@ class ExportDialog(QWizard):
                                            '(embedded data)'),
                        'textTitles': _('&Tabbed title text'),
                        'textPlain': _('&Unformatted output of all text'),
-                       'textTableCsv': _('&Comma delimited (CSV) table '
-                                         'of children'),
-                       'textTableTab': _('Tab &delimited table of children'),
+                       'textTableMultiCsv': _('&Comma delimited (CSV) table '
+                                             'of descendants (level numbers)'),
+                       'textTableCsv': _('Comma &delimited (CSV) table '
+                                         'of children (single level)'),
+                       'textTableTab': _('Tab &delimited table of children '
+                                         '(&single level)'),
                        'oldTreeLine': _('&Old TreeLine (2.0.x)'),
                        'treeLineSubtree': _('&TreeLine Subtree'),
                        'bookmarksHtml': _('&HTML format bookmarks'),
@@ -1627,12 +1674,12 @@ class ExportDialog(QWizard):
     disableEntireTree = {'textTableCsv', 'textTableTab', 'treeLineSubtree'}
     disableSelBranches = {'htmlLiveLink'}
     disableSelNodes = {'htmlNavSingle', 'htmlPages', 'htmlTables',
-                       'htmlLiveLink'}
+                       'htmlLiveLink', 'textTableMultiCsv'}
     enableRootNode = {'htmlSingle', 'htmlNavSingle', 'textTitles',
-                      'textPlain', 'ODF'}
+                      'textPlain', 'textTableMultiCsv', 'ODF'}
     forceRootNodeOff = {'textTableCsv', 'textTableTab'}
     enableOpenOnly = {'htmlSingle', 'htmlNavSingle', 'textTitles',
-                      'textPlain', 'ODF'}
+                      'textPlain', 'textTableMultiCsv', 'ODF'}
     enableHeader = {'htmlSingle', 'htmlNavSingle', 'htmlTables'}
     enableColumns = {'htmlSingle'}
     enableNavLevels = {'htmlNavSingle'}

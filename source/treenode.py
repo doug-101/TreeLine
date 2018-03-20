@@ -4,7 +4,7 @@
 # treenode.py, provides a class to store tree node data
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -507,24 +507,20 @@ class TreeNode:
             else:
                 self.childList[i].replaceClonedBranches(origStruct)
 
-    def loadChildLevels(self, textLevelList, structure, initLevel=0):
-        """Recursively add children from a list of text titles and levels.
+    def loadChildNodeLevels(self, nodeList, initLevel=-1):
+        """Recursively add children from a list of nodes and levels.
 
         Return True on success, False if data levels are not valid.
         Arguments:
-            textLevelList -- list of tuples with title text and level
-            structure -- a ref to the tree structure
+            nodeList -- list of tuples with node and level
             initLevel -- the level of this node in the structure
         """
-        while textLevelList:
-            text, level = textLevelList[0]
+        while nodeList:
+            child, level = nodeList[0]
             if level == initLevel + 1:
-                del textLevelList[0]
-                child = TreeNode(self.formatRef)
-                child.setTitle(text)
+                del nodeList[0]
                 self.childList.append(child)
-                structure.addNodeDictRef(child)
-                if not child.loadChildLevels(textLevelList, structure, level):
+                if not child.loadChildNodeLevels(nodeList, level):
                     return False
             else:
                 return -1 < level <= initLevel

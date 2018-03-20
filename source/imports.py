@@ -36,7 +36,9 @@ methods = collections.OrderedDict()
 methods.update([(_('Text'), None),
                 (_('&Tab indented text, one node per line'),
                  'importTabbedText'),
-                (_('Co&mma delimited (CSV) text table with header &row'),
+                (_('Co&mma delimited (CSV) text table with level column && '
+                   'header row'), 'importTableCsvLevels'),
+                (_('Comma delimited (CSV) text table &with header row'),
                  'importTableCsv'),
                 (_('Tab delimited text table with header &row'),
                  'importTableTabbed'),
@@ -48,11 +50,12 @@ methods.update([(_('Text'), None),
                 (_('&HTML bookmarks (Mozilla Format)'), 'importMozilla'),
                 (_('&XML bookmarks (XBEL format)'), 'importXbel'),
                 (_('Other'), None),
-                (_('Old TreeLine File (1.x or 2.x)'), 'importOldTreeLine'),
+                (_('Old Tree&Line File (1.x or 2.x)'), 'importOldTreeLine'),
                 (_('Treepad &file (text nodes only)'), 'importTreePad'),
                 (_('&Generic XML (non-TreeLine file)'), 'importXml'),
                 (_('Open &Document (ODF) outline'), 'importOdfText')])
 fileFilters = {'importTabbedText': 'txt',
+               'importTableCsvLevels': 'csv',
                'importTableCsv': 'csv',
                'importTableTabbed': 'txt',
                'importTextLines': 'txt',
@@ -152,23 +155,73 @@ class ImportControl:
 
         Return the structure if import is successful, otherwise None
         """
-        textLevelList = []
+        structure = treestructure.TreeStructure(addDefaults=True,
+                                                addSpots=False)
+        formatRef = structure.childList[0].formatRef
+        structure.removeNodeDictRef(structure.childList[0])
+        structure.childList = []
+        nodeList = []
         with self.pathObj.open(encoding=globalref.localTextEncoding) as f:
             for line in f:
                 text = line.strip()
                 if text:
                     level = line.count('\t', 0, len(line) - len(line.lstrip()))
-                    textLevelList.append((text, level))
-        if textLevelList:
-            structure = treestructure.TreeStructure(addDefaults=True,
-                                                    addSpots=False)
-            structure.formatRef = structure.childList[0].formatRef
-            structure.removeNodeDictRef(structure.childList[0])
-            structure.childList = []
-            if structure.loadChildLevels(textLevelList, structure, -1):
-                structure.formatRef = None
+                    node = treenode.TreeNode(formatRef)
+                    node.setTitle(text)
+                    structure.addNodeDictRef(node)
+                    nodeList.append((node, level))
+        if nodeList and structure.loadChildNodeLevels(nodeList):
                 structure.generateSpots(None)
                 return structure
+        return None
+
+    def importTableCsvLevels(self):
+        """Import a CSV-delimited table file with level column, header row.
+
+        Return the structure if import is successful, otherwise None.
+        """
+        structure = treestructure.TreeStructure(addSpots=False)
+        tableFormat = nodeformat.NodeFormat(_('TABLE'), structure.treeFormats)
+        structure.treeFormats.addTypeIfMissing(tableFormat)
+        nodeList = []
+        with self.pathObj.open(newline='',
+                               encoding=globalref.localTextEncoding) as f:
+            reader = csv.reader(f)
+            try:
+                headings = [self.correctFieldName(name) for name in
+                            next(reader)][1:]
+                tableFormat.addFieldList(headings, True, True)
+                for entries in reader:
+                    if entries:
+                        node = treenode.TreeNode(tableFormat)
+                        structure.addNodeDictRef(node)
+                        try:
+                            level = int(entries.pop(0))
+                        except ValueError:
+                            self.errorMessage = (_('Invalid level number on '
+                                                   'line {0}').
+                                                 format(reader.line_num))
+                            return None   # abort
+                        nodeList.append((node, level))
+                        try:
+                            for heading in headings:
+                                node.data[heading] = entries.pop(0)
+                        except IndexError:
+                            pass    # fewer entries than headings is OK
+                        if entries:
+                            self.errorMessage = (_('Too many entries on '
+                                                   'Line {0}').
+                                                 format(reader.line_num))
+                            return None   # abort if too few headings
+            except csv.Error:
+                self.errorMessage = (_('Bad CSV format on Line {0}').
+                                     format(reader.line_num))
+                return None   # abort
+        if nodeList:
+            if structure.loadChildNodeLevels(nodeList):
+                structure.generateSpots(None)
+                return structure
+            self.errorMessage = (_('Invalid level structure'))
         return None
 
     def importTableCsv(self):
