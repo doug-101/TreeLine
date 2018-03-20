@@ -1579,3 +1579,4 @@ class TreeLocalControl(QObject):
         self.activeWindow = window
         self.expandRootNodes()
         window.show()
+        window.updateRightViews()
