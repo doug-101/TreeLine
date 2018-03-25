@@ -4,7 +4,7 @@
 # dataeditors.py, provides classes for data editors in the data edit view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -16,18 +16,22 @@ import xml.sax.saxutils
 import os.path
 import sys
 import re
+import math
+import enum
+import datetime
 import subprocess
-from PyQt5.QtCore import (QDate, QDateTime, QPoint, QPointF, QSize, QTime, Qt,
-                          pyqtSignal)
-from PyQt5.QtGui import (QBrush, QFont, QPainter, QPainterPath, QPixmap,
-                         QTextCursor, QTextDocument)
-from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication,
-                             QButtonGroup, QCalendarWidget, QCheckBox,
-                             QColorDialog, QComboBox, QDialog, QFileDialog,
-                             QHBoxLayout, QHeaderView, QLabel, QLineEdit,
-                             QMenu, QPushButton, QRadioButton, QScrollArea,
-                             QTextEdit, QTreeWidget, QTreeWidgetItem,
-                             QVBoxLayout, QWidget)
+from PyQt5.QtCore import (QDate, QDateTime, QPoint, QPointF, QRect, QSize,
+                          QTime, Qt, pyqtSignal)
+from PyQt5.QtGui import (QBrush, QFont, QFontMetrics, QPainter, QPainterPath,
+                         QPixmap, QPen, QTextCursor, QTextDocument, QValidator)
+from PyQt5.QtWidgets import (QAbstractItemView, QAbstractSpinBox,
+                             QAction, QApplication, QButtonGroup,
+                             QCalendarWidget, QCheckBox, QColorDialog,
+                             QComboBox, QDialog, QFileDialog, QHBoxLayout,
+                             QHeaderView, QLabel, QLineEdit, QMenu,
+                             QPushButton, QRadioButton, QScrollArea,
+                             QSizePolicy, QSpinBox, QTextEdit, QTreeWidget,
+                             QTreeWidgetItem, QVBoxLayout, QWidget)
 import dataeditview
 import fieldformat
 import urltools
@@ -1300,7 +1304,7 @@ class DateEditor(ComboEditor):
 class TimeEditor(ComboEditor):
     """An editor widget for time fields.
 
-    Only adds a now right-click menu action.
+    Adds a clock popup dialog and a "now" right-click menu action.
     """
     def __init__(self, parent=None):
         """Initialize the editor class.
@@ -1309,15 +1313,464 @@ class TimeEditor(ComboEditor):
             parent -- the parent, if given
         """
         super().__init__(parent)
+        self.dialog = None
         nowAction = QAction(_('Set to &Now'), self)
         nowAction.triggered.connect(self.setNow)
         self.lineEdit().extraMenuActions = [nowAction]
+
+    def showPopup(self):
+        """Override to show a popup entry widget in place of a list view.
+        """
+        if not self.dialog:
+            self.dialog = TimeDialog(self)
+            self.dialog.contentsChanged.connect(self.setTime)
+        self.dialog.show()
+        pos = self.mapToGlobal(self.rect().bottomRight())
+        pos.setX(pos.x() - self.dialog.width() + 1)
+        screenBottom = QApplication.desktop().screenGeometry(self).bottom()
+        if pos.y() + self.dialog.height() > screenBottom:
+            pos.setY(pos.y() - self.rect().height() - self.dialog.height())
+        self.dialog.move(pos)
+        try:
+            storedText = self.fieldRef.storedText(self.currentText())
+        except ValueError:
+            storedText = ''
+        if storedText:
+            self.dialog.setFromText(storedText)
+
+    def hidePopup(self):
+        """Override to hide the popup entry widget.
+        """
+        if self.dialog:
+            self.dialog.hide()
+        super().hidePopup()
+
+    def setTime(self):
+        """Set the time fom the dialog.
+        """
+        if self.dialog:
+            timeStr = self.dialog.timeObject().isoformat() + '.000'
+            self.setEditText(self.fieldRef.formatEditorText(timeStr))
 
     def setNow(self):
         """Set to the current time.
         """
         timeStr = QTime.currentTime().toString('hh:mm:ss.zzz')
         self.setEditText(self.fieldRef.formatEditorText(timeStr))
+
+
+TimeElem = enum.Enum('TimeElem', 'hour minute second')
+
+class TimeDialog(QDialog):
+    """A popup clock dialog for time editing.
+    """
+    contentsChanged = pyqtSignal()
+    def __init__(self, parent=None):
+        """Initialize the dialog widgets.
+
+        Arguments:
+            parent -- the dialog's parent widget
+        """
+        super().__init__(parent)
+        self.focusElem = None
+        self.setWindowFlags(Qt.Popup)
+        vertLayout = QVBoxLayout(self)
+        upperLayout = QHBoxLayout()
+        vertLayout.addLayout(upperLayout)
+        upperLayout.addStretch(0)
+        self.hourBox = TimeSpinBox(TimeElem.hour, 1, 12, False)
+        upperLayout.addWidget(self.hourBox)
+        self.hourBox.valueChanged.connect(self.signalUpdate)
+        self.hourBox.focusChanged.connect(self.handleFocusChange)
+        colon = QLabel('<b>:</b>')
+        upperLayout.addWidget(colon)
+        self.minuteBox = TimeSpinBox(TimeElem.minute, 0, 59, True)
+        upperLayout.addWidget(self.minuteBox)
+        self.minuteBox.valueChanged.connect(self.signalUpdate)
+        self.minuteBox.focusChanged.connect(self.handleFocusChange)
+        colon = QLabel('<b>:</b>')
+        upperLayout.addWidget(colon)
+        self.secondBox = TimeSpinBox(TimeElem.second, 0, 59, True)
+        upperLayout.addWidget(self.secondBox)
+        self.secondBox.valueChanged.connect(self.signalUpdate)
+        self.secondBox.focusChanged.connect(self.handleFocusChange)
+        self.amPmBox = AmPmSpinBox()
+        upperLayout.addSpacing(4)
+        upperLayout.addWidget(self.amPmBox)
+        self.amPmBox.valueChanged.connect(self.signalUpdate)
+        upperLayout.addStretch(0)
+        lowerLayout = QHBoxLayout()
+        vertLayout.addLayout(lowerLayout)
+        self.clock = ClockWidget()
+        lowerLayout.addWidget(self.clock, Qt.AlignCenter)
+        self.clock.numClicked.connect(self.setFromClock)
+        self.hourBox.setFocus()
+        self.hourBox.selectAll()
+
+    def setFromText(self, text):
+        """Set the time dialog from a string.
+
+        Arguments:
+            text -- the time in ISO format
+        """
+        time = (datetime.datetime.
+                strptime(text, fieldformat.TimeField.isoFormat).time())
+        hour = time.hour if time.hour <= 12 else time.hour - 12
+        self.blockSignals(True)
+        self.hourBox.setValue(hour)
+        self.minuteBox.setValue(time.minute)
+        self.secondBox.setValue(time.second)
+        amPm = 'AM' if time.hour < 12 else 'PM'
+        self.amPmBox.setValue(amPm)
+        self.blockSignals(False)
+        self.updateClock()
+
+    def timeObject(self):
+        """Return a datetime time object for the current dialog setting.
+        """
+        hour = self.hourBox.value()
+        if self.amPmBox.value == 'PM':
+            if hour < 12:
+                hour += 12
+        elif hour == 12:
+            hour = 0
+        return datetime.time(hour, self.minuteBox.value(),
+                             self.secondBox.value())
+
+    def updateClock(self):
+        """Update the clock based on the current time and focused widget.
+        """
+        hands = [self.focusElem] if self.focusElem else [TimeElem.hour,
+                                                         TimeElem.minute,
+                                                         TimeElem.second]
+        self.clock.setDisplay(self.timeObject(), hands)
+
+    def handleFocusChange(self, elemType, isFocused):
+        """Update clock based on focus changes.
+
+        Arguments:
+            elemType -- the TimeElem of the focus change
+            isFocused -- True if focus is gained
+        """
+        if isFocused:
+            if elemType != self.focusElem:
+                self.focusElem = elemType
+                self.updateClock()
+        elif elemType == self.focusElem:
+            self.focusElem = None
+            self.updateClock()
+
+    def setFromClock(self, num):
+        """Set the active spin box value from a clock click.
+
+        Arguments:
+            num -- the number clicked
+        """
+        spinBox = getattr(self, self.focusElem.name + 'Box')
+        spinBox.setValue(num)
+        spinBox.selectAll()
+
+    def signalUpdate(self):
+        """Signal a time change and update the clock.
+        """
+        self.updateClock()
+        self.contentsChanged.emit()
+
+
+class TimeSpinBox(QSpinBox):
+    """A spin box for time values with optional leading zero.
+    """
+    focusChanged = pyqtSignal(TimeElem, bool)
+    def __init__(self, elemType, minValue, maxValue, leadZero=True,
+                 parent=None):
+        """Initialize the spin box.
+
+        Arguments:
+            elemType -- the TimeElem of this box
+            minValue -- the minimum allowed value
+            maxValue -- the maximum allowed value
+            leadZero -- true if a leading zero used with single digit values
+            parent -- the box's parent widget
+        """
+        self.elemType = elemType
+        self.leadZero = leadZero
+        super().__init__(parent)
+        self.setMinimum(minValue)
+        self.setMaximum(maxValue)
+        self.setWrapping(True)
+        self.setAlignment(Qt.AlignRight)
+
+    def textFromValue(self, value):
+        """Override to optionally add leading zero.
+
+        Arguments:
+            value -- the int value to convert
+        """
+        if self.leadZero and value < 10:
+            return '0' + repr(value)
+        return repr(value)
+
+    def focusInEvent(self, event):
+        """Emit a signal when focused.
+
+        Arguments:
+            event -- the focus event
+        """
+        super().focusInEvent(event)
+        self.focusChanged.emit(self.elemType, True)
+
+    def focusOutEvent(self, event):
+        """Emit a signal if focus is lost.
+
+        Arguments:
+            event -- the focus event
+        """
+        super().focusOutEvent(event)
+        self.focusChanged.emit(self.elemType, False)
+
+
+class AmPmSpinBox(QAbstractSpinBox):
+    """A spin box for AM/PM values.
+    """
+    valueChanged = pyqtSignal()
+    def __init__(self, parent=None):
+        """Initialize the spin box.
+
+        Arguments:
+            parent -- the box's parent widget
+        """
+        super().__init__(parent)
+        self.value = 'AM'
+        self.setDisplay()
+
+    def stepBy(self, steps):
+        """Step the spin box to the alternate value.
+
+        Arguments:
+            steps -- number of steps (ignored)
+        """
+        self.value = 'PM' if self.value == 'AM' else 'AM'
+        self.setDisplay()
+
+    def stepEnabled(self):
+        """Return enabled to show that stepping is always enabled.
+        """
+        return (QAbstractSpinBox.StepUpEnabled |
+                QAbstractSpinBox.StepDownEnabled)
+
+    def setValue(self, value):
+        """Set to text value if valid.
+
+        Arguments:
+            value -- the text value to set
+        """
+        if value in ('AM', 'PM'):
+            self.value = value
+            self.setDisplay()
+
+    def setDisplay(self):
+        """Update display to match value.
+        """
+        self.lineEdit().setText(self.value)
+        self.valueChanged.emit()
+        if self.hasFocus():
+            self.selectAll()
+
+    def validate(self, inputStr, pos):
+        """Check if the input string is acceptable.
+
+        Arguments:
+            inputStr -- the string to check
+            pos -- the pos in the string (ignored)
+        """
+        inputStr = inputStr.upper()
+        if inputStr in ('AM', 'A'):
+            self.value = 'AM'
+            self.setDisplay()
+            return (QValidator.Acceptable, 'AM', 2)
+        if inputStr in ('PM', 'P'):
+            self.value = 'PM'
+            self.setDisplay()
+            return (QValidator.Acceptable, 'PM', 2)
+        return (QValidator.Invalid, 'xx', 2)
+
+    def sizeHint(self):
+        """Set prefered size.
+        """
+        return super().sizeHint() + QSize(QFontMetrics(self.font()).
+                                          width('AM'), 0)
+
+    def focusInEvent(self, event):
+        """Set select all when focused.
+
+        Arguments:
+            event -- the focus event
+        """
+        super().focusInEvent(event)
+        self.selectAll()
+
+    def focusOutEvent(self, event):
+        """Remove selection if focus is lost.
+
+        Arguments:
+            event -- the focus event
+        """
+        super().focusOutEvent(event)
+        self.lineEdit().deselect()
+
+
+class ClockWidget(QWidget):
+    """A widget showing a clickable clock face.
+    """
+    radius = 80
+    margin = 10
+    handLengths = {TimeElem.hour: int(radius * 0.5),
+                   TimeElem.minute: int(radius * 0.9),
+                   TimeElem.second: int(radius * 0.95)}
+    handWidths = {TimeElem.hour: 7, TimeElem.minute: 5, TimeElem.second: 2}
+    divisor = {TimeElem.hour: 120, TimeElem.minute: 10, TimeElem.second: 1 / 6}
+    numClicked = pyqtSignal(int)
+    def __init__(self, parent=None):
+        """Initialize the clock.
+
+        Arguments:
+            parent -- the dialog's parent widget
+        """
+        super().__init__(parent)
+        self.time = datetime.time()
+        self.hands = []
+        self.highlightAngle = None
+        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.setMouseTracking(True)
+
+    def setDisplay(self, time, hands):
+        """Set the clock display.
+
+        Arguments:
+            time -- a datetime time value
+            hands -- a list of TimeElem clock hands to show
+        """
+        self.time = time
+        self.hands = hands
+        self.highlightAngle = None
+        self.update()
+
+    def paintEvent(self, event):
+        """Paint the clock face.
+
+        Arguments:
+            event -- the paint event
+        """
+        painter = QPainter(self)
+        painter.save()
+        painter.setBrush(QApplication.palette().base())
+        painter.setPen(Qt.NoPen)
+        painter.drawEllipse(self.rect())
+        painter.translate(ClockWidget.radius + ClockWidget.margin,
+                          ClockWidget.radius + ClockWidget.margin)
+        for timeElem in self.hands:
+            painter.save()
+            painter.setBrush(QApplication.palette().windowText())
+            painter.setPen(Qt.NoPen)
+            seconds = (self.time.hour * 3600 + self.time.minute * 60 +
+                       self.time.second)
+            angle = seconds / ClockWidget.divisor[timeElem] % 360
+            if len(self.hands) == 1:
+                painter.setBrush(QApplication.palette().highlight())
+                if self.hands[0] == TimeElem.hour:
+                    angle = int(angle // 30 * 30)  # truncate to whole hour
+                else:
+                    angle = int(angle // 6 * 6)  # truncate to whole min/sec
+            painter.rotate(angle)
+            points = (QPoint(0, -ClockWidget.handLengths[timeElem]),
+                      QPoint(ClockWidget.handWidths[timeElem], 8),
+                      QPoint(-ClockWidget.handWidths[timeElem], 8))
+            painter.drawConvexPolygon(*points)
+            painter.restore()
+        rect = QRect(0, 0, 20, 20)
+        if len(self.hands) != 1 or self.hands[0] == TimeElem.hour:
+            labels = [repr(num) for num in range(1, 13)]
+        else:
+            labels = ['{0:0>2}'.format(num) for num in range(5, 56, 5)]
+            labels.append('00')
+        for ang in range(30, 361, 30):
+            rect.moveCenter(self.pointOnRadius(ang))
+            painter.setPen(QPen())
+            if len(self.hands) == 1 and (ang == angle or
+                                         ang == self.highlightAngle):
+                painter.setPen(QPen(QApplication.palette().highlight(), 1))
+            painter.drawText(rect, Qt.AlignCenter, labels.pop(0))
+        painter.restore()
+        super().paintEvent(event)
+
+    def sizeHint(self):
+        """Set prefered size.
+        """
+        width = (ClockWidget.radius + ClockWidget.margin) * 2
+        return QSize(width, width)
+
+    def pointOnRadius(self, angle):
+        """Return a QPoint on the radius at the given angle.
+
+        Arguments:
+            angle -- the angle in dgrees from vertical (clockwise)
+        """
+        angle = math.radians(angle)
+        x = round(ClockWidget.radius * math.sin(angle))
+        y = 0 - round(ClockWidget.radius * math.cos(angle))
+        return QPoint(x, y)
+
+    def pointToPosition(self, point):
+        """Return a position (1 to 12) based on a screen point.
+
+        Return None if not on a position.
+        Arguments:
+            point -- a QPoint screen position
+        """
+        x = point.x() - ClockWidget.radius - ClockWidget.margin
+        y = point.y() - ClockWidget.radius - ClockWidget.margin
+        radius = math.sqrt(x**2 + y**2)
+        if (ClockWidget.radius - 2 * ClockWidget.margin <= radius <=
+            ClockWidget.radius + 2 * ClockWidget.margin):
+            angle = math.degrees(math.atan2(-x, y)) + 180
+            if angle % 30 <= 10 or angle % 30 >= 20:
+                pos = round(angle / 30)
+                if pos == 0:
+                    pos = 12
+                return pos
+        return None
+
+    def mousePressEvent(self, event):
+        """Signal user clicks on clock numbers if in single hand mode.
+
+        Arguments:
+            event -- the mouse press event
+        """
+        if len(self.hands) == 1 and event.button() == Qt.LeftButton:
+            pos = self.pointToPosition(event.pos())
+            if pos:
+                if self.hands[0] != TimeElem.hour:
+                    if pos == 12:
+                        pos = 0
+                    pos *= 5
+                self.numClicked.emit(pos)
+        super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event):
+        """Highlight clickable numbers if in single hand mode.
+
+        Arguments:
+            event -- the mouse move event
+        """
+        if len(self.hands) == 1:
+            pos = self.pointToPosition(event.pos())
+            if pos:
+                self.highlightAngle = pos * 30
+                self.update()
+            elif self.highlightAngle != None:
+                self.highlightAngle = None
+                self.update()
+        super().mouseMoveEvent(event)
 
 
 class DateTimeEditor(DateEditor):
@@ -1407,8 +1860,7 @@ class ExtLinkEditor(ComboEditor):
         self.dialog.show()
         pos = self.mapToGlobal(self.rect().bottomRight())
         pos.setX(pos.x() - self.dialog.width() + 1)
-        screenBottom =  (QApplication.desktop().screenGeometry(self).
-                         bottom())
+        screenBottom = QApplication.desktop().screenGeometry(self).bottom()
         if pos.y() + self.dialog.height() > screenBottom:
             pos.setY(pos.y() - self.rect().height() - self.dialog.height())
         self.dialog.move(pos)
