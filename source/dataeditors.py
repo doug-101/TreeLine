@@ -1238,9 +1238,9 @@ class DateEditor(ComboEditor):
         """
         super().__init__(parent)
         self.calendar = None
-        self.nowAction = QAction(_('Today\'s &Date'), self)
-        self.nowAction.triggered.connect(self.setNow)
-        self.lineEdit().extraMenuActions = [self.nowAction]
+        nowAction = QAction(_('Today\'s &Date'), self)
+        nowAction.triggered.connect(self.setNow)
+        self.lineEdit().extraMenuActions = [nowAction]
 
     def editorDate(self):
         """Return the date (as a QDate) set in the line editor.
@@ -1336,7 +1336,7 @@ class TimeEditor(ComboEditor):
         except ValueError:
             storedText = ''
         if storedText:
-            self.dialog.setFromText(storedText)
+            self.dialog.setTimeFromText(storedText)
 
     def hidePopup(self):
         """Override to hide the popup entry widget.
@@ -1365,7 +1365,7 @@ class TimeDialog(QDialog):
     """A popup clock dialog for time editing.
     """
     contentsChanged = pyqtSignal()
-    def __init__(self, parent=None):
+    def __init__(self, addCalendar=False, parent=None):
         """Initialize the dialog widgets.
 
         Arguments:
@@ -1374,7 +1374,18 @@ class TimeDialog(QDialog):
         super().__init__(parent)
         self.focusElem = None
         self.setWindowFlags(Qt.Popup)
-        vertLayout = QVBoxLayout(self)
+        horizLayout = QHBoxLayout(self)
+        if addCalendar:
+            self.calendar = QCalendarWidget()
+            horizLayout.addWidget(self.calendar)
+            weekStart = optiondefaults.daysOfWeek.index(globalref.
+                                                       genOptions['WeekStart'])
+            self.calendar.setFirstDayOfWeek(weekStart + 1)
+            self.calendar.setVerticalHeaderFormat(QCalendarWidget.
+                                                  NoVerticalHeader)
+            self.calendar.clicked.connect(self.contentsChanged)
+        vertLayout = QVBoxLayout()
+        horizLayout.addLayout(vertLayout)
         upperLayout = QHBoxLayout()
         vertLayout.addLayout(upperLayout)
         upperLayout.addStretch(0)
@@ -1404,10 +1415,14 @@ class TimeDialog(QDialog):
         self.clock = ClockWidget()
         lowerLayout.addWidget(self.clock, Qt.AlignCenter)
         self.clock.numClicked.connect(self.setFromClock)
-        self.hourBox.setFocus()
-        self.hourBox.selectAll()
+        if addCalendar:
+            self.calendar.setFocus()
+            self.updateClock()
+        else:
+            self.hourBox.setFocus()
+            self.hourBox.selectAll()
 
-    def setFromText(self, text):
+    def setTimeFromText(self, text):
         """Set the time dialog from a string.
 
         Arguments:
@@ -1424,6 +1439,16 @@ class TimeDialog(QDialog):
         self.amPmBox.setValue(amPm)
         self.blockSignals(False)
         self.updateClock()
+
+    def setDateFromText(self, text):
+        """Set the date dialog from a string.
+
+        Arguments:
+            text -- the date in ISO format
+        """
+        date = QDate.fromString(text, Qt.ISODate)
+        if date.isValid():
+            self.calendar.setSelectedDate(date)
 
     def timeObject(self):
         """Return a datetime time object for the current dialog setting.
@@ -1773,7 +1798,7 @@ class ClockWidget(QWidget):
         super().mouseMoveEvent(event)
 
 
-class DateTimeEditor(DateEditor):
+class DateTimeEditor(ComboEditor):
     """An editor widget for DateTimeFields.
 
     Uses a combo box with a clandar widget in place of the list popup.
@@ -1785,41 +1810,48 @@ class DateTimeEditor(DateEditor):
             parent -- the parent, if given
         """
         super().__init__(parent)
-        self.nowAction.setText(_('Set to &Now'))
+        self.dialog = None
+        nowAction = QAction(_('Set to &Now'), self)
+        nowAction.triggered.connect(self.setNow)
+        self.lineEdit().extraMenuActions = [nowAction]
 
-    def editorDate(self):
-        """Return the date set in the line editor.
-
-        If none or invalid, return an invalid date.
+    def showPopup(self):
+        """Override to show a popup entry widget in place of a list view.
         """
-        dateTime = self.editorDateTime()
-        if dateTime.isValid():
-            return dateTime.date()
-        return QDate()
-
-    def editorDateTime(self):
-        """Return the datetime set in the line editor.
-
-        If none or invalid, return an invalid date.
-        """
+        if not self.dialog:
+            self.dialog = TimeDialog(True, self)
+            self.dialog.contentsChanged.connect(self.setDateTime)
+        self.dialog.show()
+        pos = self.mapToGlobal(self.rect().bottomRight())
+        pos.setX(pos.x() - self.dialog.width() + 1)
+        screenBottom = QApplication.desktop().screenGeometry(self).bottom()
+        if pos.y() + self.dialog.height() > screenBottom:
+            pos.setY(pos.y() - self.rect().height() - self.dialog.height())
+        self.dialog.move(pos)
         try:
-            dateTimeStr = self.fieldRef.storedText(self.currentText())
+            storedText = self.fieldRef.storedText(self.currentText())
         except ValueError:
-            return QDateTime()
-        return QDateTime.fromString(dateTimeStr[:-3],
-                                    'yyyy-MM-dd HH:mm:ss.zzz')
+            storedText = ''
+        if storedText:
+            dateText, timeText = storedText.split(' ', 1)
+            self.dialog.setDateFromText(dateText)
+            self.dialog.setTimeFromText(timeText)
 
-    def setDate(self, date):
-        """Set the date based on a signal from the calendar popup.
-
-        Arguments:
-            date -- the QDate to be set
+    def hidePopup(self):
+        """Override to hide the popup entry widget.
         """
-        dateTime = self.editorDateTime()
-        dateTime.setDate(date)
-        dateTimeStr = dateTime.toString('yyyy-MM-dd HH:mm:ss.zzz')
-        self.setEditText(self.fieldRef.formatEditorText(dateTimeStr))
-        self.calendar.hide()
+        if self.dialog:
+            self.dialog.hide()
+        super().hidePopup()
+
+    def setDateTime(self):
+        """Set the date and time based on a signal from the dialog calendar.
+        """
+        if self.dialog:
+            dateStr = self.dialog.calendar.selectedDate().toString(Qt.ISODate)
+            timeStr = self.dialog.timeObject().isoformat() + '.000'
+            self.setEditText(self.fieldRef.formatEditorText(dateStr + ' ' +
+                                                            timeStr))
 
     def setNow(self):
         """Set to the current date and time.
