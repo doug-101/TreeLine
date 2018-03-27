@@ -4,7 +4,7 @@
 # recentfiles.py, classes to save recent file lists, states and actions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -157,16 +157,17 @@ class RecentFileList(list):
         """Load the initial list from the options file.
         """
         super().__init__()
-        self.updateNumEntries()
+        self.updateOptions()
         for data in globalref.histOptions['RecentFiles']:
             item = RecentFileItem(dataDict=data)
-            if item.pathIsValid():
+            if not self.purge or item.pathIsValid():
                 self.append(item)
 
-    def updateNumEntries(self):
-        """Get number of entries value from general options.
+    def updateOptions(self):
+        """Get number of entries and check exists from general options.
         """
         self.numEntries = globalref.genOptions['RecentFiles']
+        self.purge = globalref.genOptions['PurgeRecentFiles']
 
     def writeItems(self):
         """Write the recent items to the options file.

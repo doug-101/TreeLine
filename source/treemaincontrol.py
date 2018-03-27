@@ -861,7 +861,7 @@ class TreeMainControl(QObject):
         if (dialog.exec_() == QDialog.Accepted and
             globalref.genOptions.modified):
             globalref.genOptions.writeFile()
-            self.recentFiles.updateNumEntries()
+            self.recentFiles.updateOptions()
             autoSaveMinutes = globalref.genOptions['AutoSaveMinutes']
             for control in self.localControls:
                 for window in control.windowList:

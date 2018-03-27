@@ -41,6 +41,9 @@ def setGenOptionDefaults(generalOptions):
     BoolOptionItem(generalOptions, 'SaveTreeStates', True,
                    _('Startup Condition'),
                    _('Restore tree view states of recent files'))
+    BoolOptionItem(generalOptions, 'PurgeRecentFiles', True,
+                   _('Startup Condition'),
+                   _('Remove inaccessible recent file entries'))
     BoolOptionItem(generalOptions, 'SaveWindowGeom', True,
                    _('Startup Condition'),
                    _('Restore previous window geometry'))
