@@ -423,9 +423,9 @@ class TreeNode:
                 pos += 1
         self.childList.insert(pos, newNode)
         newNode.setInitDefaultData()
+        newNode.addSpotRef(self)
         if newTitle and not newNode.title():
             newNode.setTitle(newTitle)
-        newNode.addSpotRef(self)
         treeStructure.addNodeDictRef(newNode)
         return newNode
 

@@ -4,7 +4,7 @@
 # fieldformat.py, provides a class to handle field format types
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -2303,7 +2303,7 @@ class AncestorLevelField(TextField):
                 return ''
         try:
             field = spotRef.nodeRef.formatRef.fieldDict[self.name]
-        except KeyError:
+        except (AttributeError, KeyError):
             return ''
         return field.outputText(spotRef.nodeRef, titleMode, formatHtml,
                                 spotRef)
@@ -2342,7 +2342,7 @@ class AnyAncestorField(TextField):
             spotRef = spotRef.parentSpot
             try:
                 field = spotRef.nodeRef.formatRef.fieldDict[self.name]
-            except KeyError:
+            except (AttributeError, KeyError):
                 pass
             else:
                 return field.outputText(spotRef.nodeRef, titleMode, formatHtml,
