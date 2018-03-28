@@ -251,6 +251,8 @@ class TreeLocalControl(QObject):
                           [spot.prevSiblingSpot() for spot in selSpots])
         hasNextSibling = (len(selSpots) and None not in
                           [spot.nextSiblingSpot() for spot in selSpots])
+        hasChildren = (sum([len(spot.nodeRef.childList) for spot in selSpots])
+                       > 0)
         mime = QApplication.clipboard().mimeData()
         hasData = len(mime.data('application/json')) > 0
         hasText = len(mime.data('text/plain')) > 0
@@ -276,6 +278,9 @@ class TreeLocalControl(QObject):
         self.allActions['NodeMoveFirst'].setEnabled(hasPrevSibling)
         self.allActions['NodeMoveLast'].setEnabled(hasNextSibling)
         self.allActions['DataNodeType'].parent().setEnabled(hasSelect)
+        self.allActions['DataFlatCategory'].setEnabled(hasChildren)
+        self.allActions['DataAddCategory'].setEnabled(hasChildren)
+        self.allActions['DataSwapCategory'].setEnabled(hasChildren)
         if self.activeWindow.treeFilterView:
             self.allActions['NodeInsertBefore'].setEnabled(False)
             self.allActions['NodeInsertAfter'].setEnabled(False)
