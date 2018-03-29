@@ -157,9 +157,10 @@ class ExportControl:
                                              ExportDialog.selectNode,
                                              ExportDialog.openOnly)
         outputGroup.addAnchors()
+        if outputGroup.hasPrefixes():
+            outputGroup.combineAllSiblings()
         outputGroup.addBlanksBetween()
         outputGroup.addIndents()
-        outputGroup.addSiblingPrefixes()
         outGroups = outputGroup.splitColumns(ExportDialog.numColumns)
         htmlTitle = pathObj.stem
         indent = globalref.genOptions['IndentOffset']
@@ -210,9 +211,10 @@ class ExportControl:
                                              ExportDialog.includeRoot,
                                              True, ExportDialog.openOnly)
         outputGroup.addAnchors(ExportDialog.navPaneLevels)
+        if outputGroup.hasPrefixes():
+            outputGroup.combineAllSiblings()
         outputGroup.addBlanksBetween()
         outputGroup.addIndents()
-        outputGroup.addSiblingPrefixes()
         htmlTitle = pathObj.stem
         indent = globalref.genOptions['IndentOffset']
         lines = ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 '
