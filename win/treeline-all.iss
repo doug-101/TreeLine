@@ -5,13 +5,13 @@
 
 [Setup]
 AppName=TreeLine
-AppVersion=2.9.0
+AppVersion=2.9.1
 ChangesAssociations=yes
 DefaultDirName={pf}\TreeLine-3
 DefaultGroupName=TreeLine
 DisableProgramGroupPage=yes
 OutputDir=.
-OutputBaseFilename=treeline-2.9.0-install-all
+OutputBaseFilename=treeline-2.9.1-install-all
 PrivilegesRequired=poweruser
 SetupIconFile=treeline.ico
 Uninstallable=IsTaskSelected('adduninstall')
@@ -43,6 +43,7 @@ Source: "samples\*.trln"; DestDir: "{app}\samples"; Attribs: readonly; \
         Flags: overwritereadonly uninsremovereadonly
 Source: "icons\toolbar\32x32\*.png"; DestDir: "{app}\icons\toolbar\32x32"
 Source: "icons\tree\*.png"; DestDir: "{app}\icons\tree"
+Source: "templates\exports\*.*"; DestDir: "{app}\templates\exports"
 Source: "templates\*en_*.trln"; DestDir: "{app}\templates"; Attribs: readonly; \
         Flags: overwritereadonly uninsremovereadonly
 ; Source: "templates\*.trln"; DestDir: "{app}\templates"; Attribs: readonly; \

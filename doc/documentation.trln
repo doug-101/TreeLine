@@ -114,6 +114,15 @@
 {
 "children": [],
 "data": {
+"Name": "Right view update",
+"Text": "Properly update the right-hand views after using a new window command."
+},
+"format": "BULLETS",
+"uid": "145bd91a334c11e896b1d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
 "Name": "Remove unique ID",
 "Text": "To improve efficiency, user visible node unique IDs that depend on the node's data have been removed."
 },
@@ -132,11 +141,29 @@
 {
 "children": [],
 "data": {
+"Name": "Option to keep inaccessible recent files",
+"Text": "A new general option controls whether inaccessible files are removed from the recent file list at startup. The files are removed by default, but this can be changed to avoid losing listings of files stored on removable drives."
+},
+"format": "BULLETS",
+"uid": "283565ba334211e8a34bd66a6ab671cb"
+},
+{
+"children": [],
+"data": {
 "Name": "Breadcrumb View",
 "Text": "The top pane shows the parent and ancestors of the selected node. It is blank if no nodes or multiple nodes are selected. Ancestors with blue text can be clicked to select those nodes."
 },
 "format": "HEAD_PARA",
 "uid": "28f8844ab58711e79d173417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Conditional type copy/paste &amp; drag/drop",
+"Text": "Fixed problems with copy / paste and drag / drop on nodes with conditional type settings."
+},
+"format": "BULLETS",
+"uid": "299ba9e4334a11e881a6d66a6ab671cb"
 },
 {
 "children": [],
@@ -155,6 +182,15 @@
 },
 "format": "BULLETS",
 "uid": "3d2bb12eba3c11e79b223417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Relative paths",
+"Text": "Avoid issues resolving relative paths between different Windows drive letters in external link fields."
+},
+"format": "BULLETS",
+"uid": "46fc4054334b11e89299d66a6ab671cb"
 },
 {
 "children": [],
@@ -200,6 +236,15 @@
 },
 "format": "HEAD_PARA",
 "uid": "65289b36b97611e783eb3417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Custom time dialog",
+"Text": "Added a custom time select dialog box for editing Time and TimeDate fields."
+},
+"format": "BULLETS",
+"uid": "653f2f90334c11e8a7c9d66a6ab671cb"
 },
 {
 "children": [],
@@ -297,11 +342,93 @@
 {
 "children": [],
 "data": {
+"Name": "Number field formatting",
+"Text": "Fixed problems with number field formatting when using a \",\" radix with exponents."
+},
+"format": "BULLETS",
+"uid": "7716c96e334a11e896bfd66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Copy command errors",
+"Text": "Fix errors shown when using copy commands after closing TreeLine windows."
+},
+"format": "BULLETS",
+"uid": "90dbc4e4334b11e892d0d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
 "Name": "Old TreeLine Import",
 "Text": "Files from older versions of TreeLine (1.x or 2.x) can be imported. These files are in XML format and generally have a \".trl\" file extension (current files are in JSON format with a \".trln\" file extension). Unlike other file imports, these older files will import without showing the import dialog box when using the \"File &gt; Open\" command."
 },
 "format": "HEAD_PARA",
 "uid": "95547c38b97411e7a42a3417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Major rewrite",
+"Text": "This is a major rewrite of TreeLine. Once it becomes more stable, it will be released as TreeLine version 3.0.0. The 2.1.x unstable series is being discontinued (no stable 2.2.0 release is planned)."
+},
+"format": "BULLETS",
+"uid": "95a6e905333f11e886edd66a6ab671cb"
+},
+{
+"children": [
+"95a6e90b333f11e8976fd66a6ab671cb",
+"95a6e90e333f11e88696d66a6ab671cb",
+"b16866da333f11e88adbd66a6ab671cb"
+],
+"data": {
+"Name": "March 31, 2018 - Release 2.9.1 (unstable development snapshot)"
+},
+"format": "HEADINGS",
+"uid": "95a6e90a333f11e89efed66a6ab671cb"
+},
+{
+"children": [
+"95a6e90c333f11e8b766d66a6ab671cb",
+"95a6e905333f11e886edd66a6ab671cb",
+"95a6e90d333f11e8b88ed66a6ab671cb"
+],
+"data": {
+"Name": "Notes"
+},
+"format": "BULLET_HEADING",
+"uid": "95a6e90b333f11e8976fd66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Unstable snapshot",
+"Text": "This is an unstable development snapshot of TreeLine. It has improved but could still contain bugs. Testing and bug reports are appreciated, but those with very critical work should consider using the stable release (TreeLine 2.0.x)."
+},
+"format": "BULLETS",
+"uid": "95a6e90c333f11e8b766d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Translations",
+"Text": "The GUI and documentation translations are out of date and have not been included.  Volunteers are needed to update translations in several languages."
+},
+"format": "BULLETS",
+"uid": "95a6e90d333f11e8b88ed66a6ab671cb"
+},
+{
+"children": [
+"b1cd1f82334111e8b89ad66a6ab671cb",
+"dd22e382334111e894e6d66a6ab671cb",
+"653f2f90334c11e8a7c9d66a6ab671cb",
+"283565ba334211e8a34bd66a6ab671cb"
+],
+"data": {
+"Name": "New Features"
+},
+"format": "BULLET_HEADING",
+"uid": "95a6e90e333f11e88696d66a6ab671cb"
 },
 {
 "children": [],
@@ -324,11 +451,29 @@
 {
 "children": [],
 "data": {
+"Name": "Ancestor field references",
+"Text": "Fixed problems with advanced ancestor field output references in some tree locations."
+},
+"format": "BULLETS",
+"uid": "9a8a1400334c11e89838d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
 "Name": "Old TreeLine import/export",
 "Text": "Files from older versions of TreeLine (2.x and 1.x) can be imported and exported."
 },
 "format": "BULLETS",
 "uid": "9bd80f34b32b11e7be613417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Pull-downs on repeated dialog boxes",
+"Text": "Fixed issues on Windows with pull-down combo boxes not working after repeatedly showing some dialogs (mostly find and filter dialogs)."
+},
+"format": "BULLETS",
+"uid": "a7fa190c334911e88d18d66a6ab671cb"
 },
 {
 "children": [],
@@ -340,6 +485,26 @@
 "uid": "aa6f6ca4bb0711e7bbf43417ebd53aeb"
 },
 {
+"children": [
+"90dbc4e4334b11e892d0d66a6ab671cb",
+"299ba9e4334a11e881a6d66a6ab671cb",
+"e46163b4334b11e88512d66a6ab671cb",
+"a7fa190c334911e88d18d66a6ab671cb",
+"f817e5b6334a11e89349d66a6ab671cb",
+"7716c96e334a11e896bfd66a6ab671cb",
+"46fc4054334b11e89299d66a6ab671cb",
+"9a8a1400334c11e89838d66a6ab671cb",
+"145bd91a334c11e896b1d66a6ab671cb",
+"edd50b80334c11e8b5f5d66a6ab671cb",
+"b7ec7052334a11e88325d66a6ab671cb"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "b16866da333f11e88adbd66a6ab671cb"
+},
+{
 "children": [],
 "data": {
 "Name": "Breadcrumb view",
@@ -347,6 +512,24 @@
 },
 "format": "BULLETS",
 "uid": "b1b5d434b32911e780fd3417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Live tree HTML export",
+"Text": "A new HTML export uses Javascript and CSS to create a live tree view. Nodes in the tree can be expanded and collapsed, and a separate pane shows the output for all descendants of the selected node. One form of this export creates separate files that are linked to the existing TreeLine file. These files are intended for use on a web server (browser security usually prevents local access). Only the TreeLine file needs to be replaced to update the data (re-export is not required). The second form creates a single file (with embedded data) that can be accessed from a local web browser."
+},
+"format": "BULLETS",
+"uid": "b1cd1f82334111e8b89ad66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Output table spacing",
+"Text": "Fixed minor spacing issues for tables shown in output views and HTML exports."
+},
+"format": "BULLETS",
+"uid": "b7ec7052334a11e88325d66a6ab671cb"
 },
 {
 "children": [],
@@ -369,11 +552,38 @@
 {
 "children": [],
 "data": {
+"Name": "Multi-level CSV import / export",
+"Text": "New forms of CSV table text imports and exports can work with multiple levels of child nodes, preserving the tree structure.  The first column of the table includes a level number that is incremented for child relationships."
+},
+"format": "BULLETS",
+"uid": "dd22e382334111e894e6d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Error after empty filter",
+"Text": "Avoid problems showing the tree view after closing a filter command that found no matches."
+},
+"format": "BULLETS",
+"uid": "e46163b4334b11e88512d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
 "Name": "Breadcrumb view",
 "Text": "A new breadcrumb view pane above the other panes shows a sequence of ancestor titles for a selected node. The ancestors can be clicked to select them. For cloned nodes, multiple lines provide links to each instance's ancestor sequence."
 },
 "format": "BULLETS",
 "uid": "e6ad9f6eba4311e796bd3417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Category command disable",
+"Text": "Avoid problems running data category-based commands on selections without any child nodes."
+},
+"format": "BULLETS",
+"uid": "edd50b80334c11e8b5f5d66a6ab671cb"
 },
 {
 "children": [
@@ -409,7 +619,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 2.9.0, an unstable development snapshot, released January 28, 2018 by Doug Bell."
+"Text": "This document covers TreeLine, Version 2.9.1, an unstable development snapshot, released March 31, 2018 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -1884,7 +2094,7 @@
 "children": [],
 "data": {
 "Name": "Text Import",
-"Text": "There are five different text formats that can be selected for import. Tab indented text creates a node title from each line in the file, structured based on the number of tabs before each line. The comma-delimited (CSV) and the  tab delimited text tables use the first line as a header row to create field names, then each additional row becomes a node with field data taken from each column. The plain text, one node per line import creates a flat tree of node titles. Finally, the plain text paragraph import creates long text nodes from text separated by blank lines."
+"Text": "Several different text formats can be selected for import. Tab indented text creates a node title from each line in the file, structured based on the number of tabs before each line.<br />\n<br />\nThe comma-delimited (CSV) and the tab delimited text tables use the first line as a header row to create field names, then each additional row becomes a node with field data taken from each column. The CSV import with level numbers creates a tree structure from level numbers in the first column that are incremented to show child relationships.<br />\n<br />\nThe plain text, one node per line import creates a flat tree of node titles. <br />\n<br />\nFinally, the plain text paragraph import creates long text nodes from text separated by blank lines."
 },
 "format": "HEAD_PARA",
 "uid": "f170275ea25a11e7b7c67054d2175f18"
@@ -1954,7 +2164,7 @@
 "children": [],
 "data": {
 "Name": "HTML Export",
-"Text": "The HTML export subtypes can export to a single page or to multiple pages.  The single page export contains all of the indented output.  A navigation pane on the left with links to anchors at node positions is optional.<br />\n<br />\nThe multiple HTML pages export has one web page per node.  It includes a navigation pane on the left with links to the pages with sibling, parent and aunt/uncle nodes.<br />\n<br />\nMultiple HTML data tables export creates a table in each HTML file that contains the data for a set of siblings, as well as links to the parent and child pages."
+"Text": "The HTML export subtypes can export to a single page or to multiple pages. The single page export contains all of the indented output. A navigation pane on the left with links to anchors at node positions is optional.<br />\n<br />\nThe multiple HTML pages export has one web page per node. It includes a navigation pane on the left with links to the pages with sibling, parent and aunt/uncle nodes.<br />\n<br />\nMultiple HTML data tables export creates a table in each HTML file that contains the data for a set of siblings, as well as links to the parent and child pages.<br />\n<br />\nThe Live Tree HTML export uses Javascript and CSS to create an interactive view. Nodes in the tree can be expanded and collapsed, and a separate pane shows the output for all descendants of the selected node. The first form of this export creates separate files that are linked to the existing TreeLine file. These files are intended for use on a web server (browser security usually prevents local access). The HTML file stores the relative path from the TreeLine file to the initial export directory, so this relationship needs to be maintained on the web server. Only the TreeLine file needs to be replaced to update the data (re-export is not required).<br />\n<br />\nThe second form of Live Tree export creates a single file (with embedded data) that can be accessed from a local web browser.  It appears the same as the first form on the browser."
 },
 "format": "HEAD_PARA",
 "uid": "f1702e52a25a11e7b7c67054d2175f18"
@@ -1963,7 +2173,7 @@
 "children": [],
 "data": {
 "Name": "Text Export",
-"Text": "Data can be exported to tabbed title text, comma-delimited (CSV) tables and tab-delimited tables. These formats are the same as the corresponding import formats. When exporting to a table, only the first level of children is used, so you may wish to flatten the data before exporting.<br />\n<br />\nThere is also an unformatted text export the dumps all of the output into a text file without preserving the tree structure."
+"Text": "Data can be exported to tabbed title text, comma-delimited (CSV) tables and tab-delimited tables. These formats are the same as the corresponding import formats. <br />\n<br />\nThere is also an unformatted text export the dumps all of the output into a text file without preserving the tree structure."
 },
 "format": "HEAD_PARA",
 "uid": "f1702f60a25a11e7b7c67054d2175f18"
@@ -2056,6 +2266,7 @@
 },
 {
 "children": [
+"95a6e90a333f11e89efed66a6ab671cb",
 "6df9a0c5ba3b11e78e7e3417ebd53aeb",
 "f1703e7ea25a11e7b7c67054d2175f18",
 "f1704752a25a11e7b7c67054d2175f18",
@@ -4421,10 +4632,19 @@
 },
 "format": "BULLETS",
 "uid": "f5983b38bb0411e795e13417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "XML export",
+"Text": "Fixed problems with generic XML export from multiple root nodes."
+},
+"format": "BULLETS",
+"uid": "f817e5b6334a11e89349d66a6ab671cb"
 }
 ],
 "properties": {
-"tlversion": "2.9.0",
+"tlversion": "2.9.1",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]

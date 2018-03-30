@@ -312,6 +312,9 @@ def main():
                     'templatePath = None',
                     'templatePath = \'{0}\'   # modified by install script\n'
                     .format(templatePrefixDir))
+        if os.path.isdir('templates/exports'):
+            exportsBuildDir = os.path.join(templateBuildDir, 'exports')
+            copyDir('templates/exports', exportsBuildDir)
     if os.path.isdir('data'):
         dataPrefixDir = os.path.join(prefixDir, 'share', progName, 'data')
         dataBuildDir = os.path.join(buildRoot, dataPrefixDir[1:])
