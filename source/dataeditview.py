@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication,
                              QTableWidgetItem)
 import treenode
 import undo
-# import urltools
+import urltools
 import dataeditors
 import globalref
 
@@ -700,12 +700,16 @@ class DataEditView(QTableWidget):
                 self.prevHoverCell = cell
                 self.hoverFocusActive.emit()
                 self.setFocus()
-                if oldCell:
+                if oldCell and hasattr(oldCell, 'doc'):
                     # these lines result in two calls to moveEditor, but seems
                     # to be necessary to avoid race that leaves stray editors
                     self.moveEditor(None, oldCell)
                     self.setCurrentItem(None)
-                self.setCurrentItem(cell)
+                try:
+                    self.setCurrentItem(cell)
+                except RuntimeError:
+                    # catch error if view updates due to node rename ending
+                    pass
         else:
             self.prevHoverCell = None
 
