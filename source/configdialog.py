@@ -4,7 +4,7 @@
 # configdialog.py, provides classes for the type configuration dialog
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -1052,11 +1052,17 @@ class FieldConfigPage(ConfigPage):
 
         self.defaultCombo.blockSignals(True)
         self.defaultCombo.clear()
-        self.defaultCombo.addItem(currentField.getEditorInitDefault())
-        self.defaultCombo.addItems(currentField.initDefaultChoices())
+        initDefault = currentField.getEditorInitDefault()
+        self.defaultCombo.addItem(initDefault)
+        initDefaultList = currentField.initDefaultChoices()
+        if initDefaultList:
+            if initDefaultList[0] == initDefault:
+                initDefaultList[0] = ''   # don't duplicate first entry
+            self.defaultCombo.addItems(initDefaultList)
         self.defaultCombo.setCurrentIndex(0)
         self.defaultCombo.blockSignals(False)
-        self.defaultCombo.setEnabled(not self.currentFileInfoField)
+        self.defaultCombo.setEnabled(currentField.supportsInitDefault and
+                                     not self.currentFileInfoField)
 
         self.heightCtrl.blockSignals(True)
         self.heightCtrl.setValue(currentField.numLines)

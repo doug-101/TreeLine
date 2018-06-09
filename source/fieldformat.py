@@ -57,6 +57,7 @@ class TextField:
     defaultNumLines = 1
     editorClassName = 'RichTextEditor'
     sortTypeStr = '80_text'
+    supportsInitDefault = True
     formatHelpMenuList = []
     def __init__(self, name, formatData=None):
         """Initialize a field format type.
@@ -206,10 +207,14 @@ class TextField:
 
     def getEditorInitDefault(self):
         """Return initial value in editor format.
-
-        The function for default text field just returns the initial value.
         """
-        return self.formatEditorText(self.initDefault)
+        value = ''
+        if self.supportsInitDefault:
+            try:
+                value = self.formatEditorText(self.initDefault)
+            except ValueError:
+                pass
+        return value
 
     def initDefaultChoices(self):
         """Return a list of choices for setting the init default.
@@ -932,8 +937,6 @@ class DateField(HtmlTextField):
 
     def getEditorInitDefault(self):
         """Return initial value in editor format.
-
-        The function for default text field just returns the initial value.
         """
         if self.initDefault == _dateStampString:
             return _dateStampString
@@ -1123,8 +1126,6 @@ class TimeField(HtmlTextField):
 
     def getEditorInitDefault(self):
         """Return initial value in editor format.
-
-        The function for default text field just returns the initial value.
         """
         if self.initDefault == _timeStampString:
             return _timeStampString
@@ -1320,8 +1321,6 @@ class DateTimeField(HtmlTextField):
 
     def getEditorInitDefault(self):
         """Return initial value in editor format.
-
-        The function for default text field just returns the initial value.
         """
         if self.initDefault == _timeStampString:
             return _timeStampString
@@ -2012,6 +2011,7 @@ class InternalLinkField(ExternalLinkField):
     """
     typeName = 'InternalLink'
     editorClassName = 'IntLinkEditor'
+    supportsInitDefault = False
 
     def __init__(self, name, formatData=None):
         """Initialize a field format type.
@@ -2080,21 +2080,6 @@ class InternalLinkField(ExternalLinkField):
         if name == _errorStr:
             raise ValueError('invalid name', result)
         return result
-
-    def getEditorInitDefault(self):
-        """Return initial value in editor format.
-
-        The function for default text field just returns the initial value.
-        """
-        if not self.initDefault:
-            return ''
-        linkMatch = linkRegExp.search(self.initDefault)
-        if not linkMatch:
-            raise ValueError
-        address, name = linkMatch.groups()
-        if not name:
-            name = _errorStr
-        return 'LinkTo: {0} [{1}]'.format(_errorStr, name)
 
 
 class PictureField(HtmlTextField):
