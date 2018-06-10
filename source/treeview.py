@@ -46,6 +46,7 @@ class TreeView(QTreeView):
         self.incremSearchMode = False
         self.incremSearchString = ''
         self.noMouseSelectMode = False
+        self.mouseFocusNoEditMode = False
         self.prevSelSpot = None   # temp, to check for edit at mouse release
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
@@ -336,11 +337,13 @@ class TreeView(QTreeView):
             event.ignore()
             return
         if (event.button() == Qt.LeftButton and
+            not self.mouseFocusNoEditMode and
             self.selectionModel().selectedCount() == 1 and
             event.pos().x() > self.visualRect(clickedIndex).left() and
             globalref.genOptions['ClickRename']):
             # set for edit if single select and not an expand/collapse click
             self.prevSelSpot = self.selectionModel().selectedSpots()[0]
+        self.mouseFocusNoEditMode = False
         super().mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
@@ -378,6 +381,16 @@ class TreeView(QTreeView):
             event.accept()
         else:
             super().keyPressEvent(event)
+
+    def focusInEvent(self, event):
+        """Avoid editing a tree item with a get-focus click.
+
+        Arguments:
+            event -- the focus in event
+        """
+        if event.reason() == Qt.MouseFocusReason:
+            self.mouseFocusNoEditMode = True
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         """Stop incremental search on focus loss.
@@ -485,6 +498,7 @@ class TreeFilterView(QListWidget):
         self.allActions = allActions
         self.menu = None
         self.noMouseSelectMode = False
+        self.mouseFocusNoEditMode = False
         self.prevSelSpot = None   # temp, to check for edit at mouse release
         self.drivingSelectionChange = False
         self.conditionalFilter = None
@@ -734,9 +748,11 @@ class TreeFilterView(QListWidget):
             event.ignore()
             return
         if (event.button() == Qt.LeftButton and
+            not self.mouseFocusNoEditMode and
             self.selectionModel.selectedCount() == 1 and
             globalref.genOptions['ClickRename']):
             self.prevSelSpot = self.selectionModel.selectedSpots()[0]
+        self.mouseFocusNoEditMode = False
         super().mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
@@ -753,3 +769,13 @@ class TreeFilterView(QListWidget):
             return
         self.prevSelSpot = None
         super().mouseReleaseEvent(event)
+
+    def focusInEvent(self, event):
+        """Avoid editing a tree item with a get-focus click.
+
+        Arguments:
+            event -- the focus in event
+        """
+        if event.reason() == Qt.MouseFocusReason:
+            self.mouseFocusNoEditMode = True
+        super().focusInEvent(event)
