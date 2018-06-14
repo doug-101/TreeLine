@@ -14,8 +14,9 @@
 
 import re
 import unicodedata
-from PyQt5.QtCore import QEvent, QPoint, Qt, pyqtSignal
-from PyQt5.QtGui import QContextMenuEvent, QKeySequence, QTextDocument
+from PyQt5.QtCore import QEvent, QPoint, QPointF, Qt, pyqtSignal
+from PyQt5.QtGui import (QContextMenuEvent, QKeySequence, QMouseEvent,
+                         QTextDocument)
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QHeaderView,
                              QLabel, QListWidget, QListWidgetItem, QMenu,
                              QStyledItemDelegate, QTreeView)
@@ -318,6 +319,17 @@ class TreeView(QTreeView):
             active -- if True, activate noMouseSelectMode
         """
         self.noMouseSelectMode = active
+
+    def clearHover(self):
+        """Post a mouse move event to clear the mouse hover indication.
+
+        Needed to avoid crash when deleting nodes with hovered child nodes.
+        """
+        event = QMouseEvent(QEvent.MouseMove,
+                            QPointF(0.0, self.viewport().width()),
+                            Qt.NoButton, Qt.NoButton, Qt.NoModifier)
+        QApplication.postEvent(self.viewport(), event)
+        QApplication.processEvents()
 
     def mousePressEvent(self, event):
         """Skip unselecting click if in noMouseSelectMode.

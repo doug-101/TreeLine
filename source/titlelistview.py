@@ -4,7 +4,7 @@
 # titlelistview.py, provides a class for the title list view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -103,6 +103,8 @@ class TitleListView(QTextEdit):
                     treeStructure.undoList.removeLastUndo(undoObj)
         elif self.isChildView and (textList or parent != treeStructure):
             undo.ChildDataUndo(treeStructure.undoList, parent)
+            # clear hover to avoid crash if deleted child item was hovered over
+            self.treeView.clearHover()
             parent.replaceChildren(textList, treeStructure)
             for spot in parent.spotRefs & set(self.treeView.selectionModel().
                                               selectedSpots()):
