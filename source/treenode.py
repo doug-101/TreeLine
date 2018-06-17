@@ -429,22 +429,30 @@ class TreeNode:
         treeStructure.addNodeDictRef(newNode)
         return newNode
 
-    def changeParent(self, oldParent, newParent, newPos=-1):
+    def changeParent(self, oldParentSpot, newParentSpot, newPos=-1):
         """Move this node from oldParent to newParent.
 
         Used for indent and unindent commands.
         Arguments:
-            oldParent -- the original parent node
-            newParent -- the new parent node
+            oldParent -- the original parent spot
+            newParent -- the new parent spot
             newPos -- the position in the new childList, -1 for append
         """
+        oldParent = oldParentSpot.nodeRef
         oldParent.childList.remove(self)
+        newParent = newParentSpot.nodeRef
         if newPos >= 0:
             newParent.childList.insert(newPos, self)
         else:
             newParent.childList.append(self)
-        self.removeInvalidSpotRefs()
-        self.addSpotRef(newParent)
+        changeCount = 0
+        for spot in self.spotRefs:
+            if spot.parentSpot.nodeRef == oldParent:
+                spot.parentSpot = newParentSpot
+                changeCount += 1
+        # self.removeInvalidSpotRefs()
+        if len(newParent.spotRefs) > changeCount:
+            self.addSpotRef(newParent)
 
     def replaceChildren(self, titleList, treeStructure):
         """Replace child nodes with titles from a text list.

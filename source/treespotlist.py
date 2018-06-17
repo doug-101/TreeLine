@@ -4,7 +4,7 @@
 # treespotlist.py, provides a class to do operations on groups of spots
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -245,12 +245,18 @@ class TreeSpotList(list):
         undo.ChildListUndo(treeStruct.undoList, [spot.nodeRef for spot in
                                                  undoSpots])
         newSpots = []
+        expandedList = [treeView.isSpotExpanded(spot) for spot in self]
         for spot in self:
             node = spot.nodeRef
             newParentSpot = spot.prevSiblingSpot()
-            node.changeParent(spot.parentSpot.nodeRef, newParentSpot.nodeRef)
+            node.changeParent(spot.parentSpot, newParentSpot)
             newSpots.append(node.matchedSpot(newParentSpot))
             treeView.expandSpot(newParentSpot)
+        for spot, expanded in zip(self, expandedList):
+            if expanded:
+                treeView.expandSpot(spot)
+            else:
+                treeView.collapseSpot(spot)
         return newSpots
 
     def unindent(self, treeStruct):
@@ -272,8 +278,7 @@ class TreeSpotList(list):
             newParentSpot = oldParentSpot.parentSpot
             pos = (newParentSpot.nodeRef.childList.index(oldParentSpot.nodeRef)
                    + 1)
-            node.changeParent(oldParentSpot.nodeRef, newParentSpot.nodeRef,
-                              pos)
+            node.changeParent(oldParentSpot, newParentSpot, pos)
             newSpots.append(node.matchedSpot(newParentSpot))
         return newSpots
 
