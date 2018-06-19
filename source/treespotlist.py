@@ -259,19 +259,21 @@ class TreeSpotList(list):
                 treeView.collapseSpot(spot)
         return newSpots
 
-    def unindent(self, treeStruct):
+    def unindent(self, treeStruct, treeView):
         """Unindent these spots.
 
         Makes them their parent's next sibling.
         Return the new spots.
         Arguments:
             treeStruct -- a ref to the existing tree structure
+            treeView -- a ref to the tree view for expanding nodes
         """
         undoSpots = [spot.parentSpot for spot in self]
         undoSpots.extend([spot.parentSpot for spot in undoSpots])
         undo.ChildListUndo(treeStruct.undoList, [spot.nodeRef for spot in
                                                  undoSpots])
         newSpots = []
+        expandedList = [treeView.isSpotExpanded(spot) for spot in self]
         for spot in reversed(self):
             node = spot.nodeRef
             oldParentSpot = spot.parentSpot
@@ -280,6 +282,11 @@ class TreeSpotList(list):
                    + 1)
             node.changeParent(oldParentSpot, newParentSpot, pos)
             newSpots.append(node.matchedSpot(newParentSpot))
+        for spot, expanded in zip(self, expandedList):
+            if expanded:
+                treeView.expandSpot(spot)
+            else:
+                treeView.collapseSpot(spot)
         return newSpots
 
     def move(self, treeStruct, up=True):

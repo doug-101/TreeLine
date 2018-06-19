@@ -1035,40 +1035,88 @@ class TreeLocalControl(QObject):
         Makes them their parent's next sibling.
         """
         selSpots = self.currentSelectionModel().selectedSpots()
-        newSpots = selSpots.unindent(self.structure)
+        newSpots = selSpots.unindent(self.structure,
+                                     self.activeWindow.treeView)
         self.currentSelectionModel().selectSpots(newSpots, False)
         self.updateAll()
 
     def nodeMoveUp(self):
         """Move the selected nodes upward in the sibling list.
         """
+        treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
+        expandedSpots = []
+        for spot in selSpots:
+            expandedSpots.append((spot, treeView.isSpotExpanded(spot)))
+            siblingSpot = spot.prevSiblingSpot()
+            expandedSpots.append((siblingSpot,
+                                  treeView.isSpotExpanded(siblingSpot)))
         selSpots.move(self.structure)
         self.updateAll()
+        for spot, expanded in expandedSpots:
+            if expanded:
+                treeView.expandSpot(spot)
+            else:
+                treeView.collapseSpot(spot)
         self.currentSelectionModel().selectSpots(selSpots)
 
     def nodeMoveDown(self):
         """Move the selected nodes downward in the sibling list.
         """
+        treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
+        expandedSpots = []
+        for spot in selSpots:
+            expandedSpots.append((spot, treeView.isSpotExpanded(spot)))
+            siblingSpot = spot.nextSiblingSpot()
+            expandedSpots.append((siblingSpot,
+                                  treeView.isSpotExpanded(siblingSpot)))
         selSpots.move(self.structure, False)
         self.updateAll()
+        for spot, expanded in expandedSpots:
+            if expanded:
+                treeView.expandSpot(spot)
+            else:
+                treeView.collapseSpot(spot)
         self.currentSelectionModel().selectSpots(selSpots)
 
     def nodeMoveFirst(self):
         """Move the selected nodes to be the first children.
         """
+        treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
+        expandedSpots = []
+        for spot in selSpots:
+            expandedSpots.append((spot, treeView.isSpotExpanded(spot)))
+            firstSpot = spot.parentSpot.childSpots()[0]
+            expandedSpots.append((firstSpot,
+                                  treeView.isSpotExpanded(firstSpot)))
         selSpots.moveToEnd(self.structure)
         self.updateAll()
+        for spot, expanded in expandedSpots:
+            if expanded:
+                treeView.expandSpot(spot)
+            else:
+                treeView.collapseSpot(spot)
         self.currentSelectionModel().selectSpots(selSpots)
 
     def nodeMoveLast(self):
         """Move the selected nodes to be the last children.
         """
+        treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
+        expandedSpots = []
+        for spot in selSpots:
+            expandedSpots.append((spot, treeView.isSpotExpanded(spot)))
+            lastSpot = spot.parentSpot.childSpots()[-1]
+            expandedSpots.append((lastSpot, treeView.isSpotExpanded(lastSpot)))
         selSpots.moveToEnd(self.structure, False)
         self.updateAll()
+        for spot, expanded in expandedSpots:
+            if expanded:
+                treeView.expandSpot(spot)
+            else:
+                treeView.collapseSpot(spot)
         self.currentSelectionModel().selectSpots(selSpots)
 
     def dataSetType(self, action):

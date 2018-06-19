@@ -445,14 +445,10 @@ class TreeNode:
             newParent.childList.insert(newPos, self)
         else:
             newParent.childList.append(self)
-        changeCount = 0
-        for spot in self.spotRefs:
-            if spot.parentSpot.nodeRef == oldParent:
-                spot.parentSpot = newParentSpot
-                changeCount += 1
-        # self.removeInvalidSpotRefs()
-        if len(newParent.spotRefs) > changeCount:
-            self.addSpotRef(newParent)
+        # preserve one spot to maintain tree expand state
+        self.matchedSpot(oldParentSpot).parentSpot = newParentSpot
+        self.removeInvalidSpotRefs()
+        self.addSpotRef(newParent)
 
     def replaceChildren(self, titleList, treeStructure):
         """Replace child nodes with titles from a text list.
