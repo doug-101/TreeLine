@@ -128,6 +128,29 @@ class TreeView(QTreeView):
             if spot.nodeRef.childList:
                 self.collapse(spot.index(self.model()))
 
+    def savedExpandState(self, spots):
+        """Return a list of tuples of spots and expanded state (True/False).
+
+        Arguments:
+            spots -- an iterable of spots to save
+        """
+        return [(spot, self.isSpotExpanded(spot)) for spot in spots]
+
+    def restoreExpandState(self, expandState):
+        """Expand or collapse based on saved tuples.
+
+        Arguments:
+            expandState -- a list of tuples of spots and expanded state
+        """
+        for spot, expanded in expandState:
+            try:
+                if expanded:
+                    self.expandSpot(spot)
+                else:
+                    self.collapseSpot(spot)
+            except ValueError:
+                pass
+
     def spotAtTop(self):
         """If view is scrolled, return the spot at the top of the view.
 

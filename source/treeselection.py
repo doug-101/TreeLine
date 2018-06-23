@@ -4,7 +4,7 @@
 # treeselection.py, provides a class for the tree view's selection model
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -56,14 +56,15 @@ class TreeSelection(QItemSelectionModel):
                                           self.selectedIndexes()])
 
     def selectedBranchSpots(self):
-        """Return a list of spots at the top of selected branches.
+        """Return a SpotList of spots at the top of selected branches.
 
         Remvoves any duplicate spots that are already covered by the branches.
         """
         spots = self.selectedSpots()
         spotSet = set(spots)
-        return [spot for spot in spots if
-                spot.parentSpotSet().isdisjoint(spotSet)]
+        return treespotlist.TreeSpotList([spot for spot in spots if
+                                          spot.parentSpotSet().
+                                          isdisjoint(spotSet)])
 
     def selectedNodes(self):
         """Return a list of the currently selected tree nodes.

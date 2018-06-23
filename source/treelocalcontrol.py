@@ -18,6 +18,7 @@ import os
 import sys
 import gzip
 import operator
+from itertools import chain
 from PyQt5.QtCore import QObject, QTimer, Qt, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
                              QFileDialog, QMenu, QMessageBox)
@@ -919,8 +920,13 @@ class TreeLocalControl(QObject):
     def editPasteBefore(self):
         """Paste a sibling before selection.
         """
+        treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
+        saveSpots = chain.from_iterable([spot.parentSpot.childSpots() for
+                                         spot in selSpots])
+        expandState = treeView.savedExpandState(saveSpots)
         if selSpots.pasteSibling(self.structure):
+            treeView.restoreExpandState(expandState)
             self.currentSelectionModel().selectSpots(selSpots, False)
             self.updateAll()
             globalref.mainControl.updateConfigDialog()
@@ -928,8 +934,13 @@ class TreeLocalControl(QObject):
     def editPasteAfter(self):
         """Paste a sibling after selection.
         """
+        treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
+        saveSpots = chain.from_iterable([spot.parentSpot.childSpots() for
+                                         spot in selSpots])
+        expandState = treeView.savedExpandState(saveSpots)
         if selSpots.pasteSibling(self.structure, False):
+            treeView.restoreExpandState(expandState)
             self.currentSelectionModel().selectSpots(selSpots, False)
             self.updateAll()
             globalref.mainControl.updateConfigDialog()
@@ -985,37 +996,65 @@ class TreeLocalControl(QObject):
     def nodeInBefore(self):
         """Insert new sibling before selection.
         """
-        self.activeWindow.treeView.endEditing()
+        treeView = self.activeWindow.treeView
+        treeView.endEditing()
         selSpots = self.currentSelectionModel().selectedSpots()
+        saveSpots = chain.from_iterable([spot.parentSpot.childSpots() for
+                                         spot in selSpots])
+        expandState = treeView.savedExpandState(saveSpots)
         newSpots = selSpots.insertSibling(self.structure)
+        treeView.restoreExpandState(expandState)
         self.updateAll()
         if globalref.genOptions['RenameNewNodes']:
             self.currentSelectionModel().selectSpots(newSpots)
             if len(newSpots) == 1:
-                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
+                treeView.edit(newSpots[0].index(self.model))
 
     def nodeInAfter(self):
         """Insert new sibling after selection.
         """
-        self.activeWindow.treeView.endEditing()
+        treeView = self.activeWindow.treeView
+        treeView.endEditing()
         selSpots = self.currentSelectionModel().selectedSpots()
+        saveSpots = chain.from_iterable([spot.parentSpot.childSpots() for
+                                         spot in selSpots])
+        expandState = treeView.savedExpandState(saveSpots)
         newSpots = selSpots.insertSibling(self.structure, False)
+        treeView.restoreExpandState(expandState)
         self.updateAll()
         if globalref.genOptions['RenameNewNodes']:
             self.currentSelectionModel().selectSpots(newSpots)
             if len(newSpots) == 1:
-                self.activeWindow.treeView.edit(newSpots[0].index(self.model))
+                treeView.edit(newSpots[0].index(self.model))
 
     def nodeDelete(self):
         """Delete the selected nodes.
         """
-        selSpots = self.currentSelectionModel().selectedSpots()
+        treeView = self.activeWindow.treeView
+        selSpots = self.currentSelectionModel().selectedBranchSpots()
         if selSpots:
+            # collapse deleted items to avoid crash
+            for spot in selSpots:
+                treeView.collapseSpot(spot)
             # clear hover to avoid crash if deleted child item was hovered over
             self.activeWindow.treeView.clearHover()
             # clear selection to avoid invalid multiple selection bug
             self.currentSelectionModel().selectSpots([], False)
+            # clear selections in other windows that are about to be deleted
+            for window in self.windowList:
+                if window != self.activeWindow:
+                    selectModel = window.treeView.selectionModel()
+                    ancestors = set()
+                    for spot in selectModel.selectedBranchSpots():
+                        ancestors.update(set(spot.spotChain()))
+                    if ancestors & set(selSpots):
+                        selectModel.selectSpots([], False)
+            saveSpots = chain.from_iterable([spot.parentSpot.childSpots() for
+                                             spot in selSpots])
+            saveSpots = set(saveSpots) - set(selSpots)
+            expandState = treeView.savedExpandState(saveSpots)
             nextSel = selSpots.delete(self.structure)
+            treeView.restoreExpandState(expandState)
             self.currentSelectionModel().selectSpots([nextSel])
             self.updateAll()
 
@@ -1024,8 +1063,15 @@ class TreeLocalControl(QObject):
 
         Makes them children of their previous siblings.
         """
+        treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
-        newSpots = selSpots.indent(self.structure, self.activeWindow.treeView)
+        saveSpots = chain.from_iterable([spot.parentSpot.childSpots() for
+                                         spot in selSpots])
+        expandState = treeView.savedExpandState(saveSpots)
+        newSpots = selSpots.indent(self.structure)
+        treeView.restoreExpandState(expandState)
+        for spot in selSpots:
+            treeView.expandSpot(spot.parentSpot)
         self.currentSelectionModel().selectSpots(newSpots, False)
         self.updateAll()
 
@@ -1034,9 +1080,13 @@ class TreeLocalControl(QObject):
 
         Makes them their parent's next sibling.
         """
+        treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
-        newSpots = selSpots.unindent(self.structure,
-                                     self.activeWindow.treeView)
+        saveSpots = chain.from_iterable([spot.parentSpot.childSpots() for
+                                         spot in selSpots])
+        expandState = treeView.savedExpandState(saveSpots)
+        newSpots = selSpots.unindent(self.structure)
+        treeView.restoreExpandState(expandState)
         self.currentSelectionModel().selectSpots(newSpots, False)
         self.updateAll()
 
@@ -1045,19 +1095,12 @@ class TreeLocalControl(QObject):
         """
         treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
-        expandedSpots = []
-        for spot in selSpots:
-            expandedSpots.append((spot, treeView.isSpotExpanded(spot)))
-            siblingSpot = spot.prevSiblingSpot()
-            expandedSpots.append((siblingSpot,
-                                  treeView.isSpotExpanded(siblingSpot)))
+        saveSpots = chain.from_iterable([(spot, spot.prevSiblingSpot()) for
+                                         spot in selSpots])
+        expandState = treeView.savedExpandState(saveSpots)
         selSpots.move(self.structure)
         self.updateAll()
-        for spot, expanded in expandedSpots:
-            if expanded:
-                treeView.expandSpot(spot)
-            else:
-                treeView.collapseSpot(spot)
+        treeView.restoreExpandState(expandState)
         self.currentSelectionModel().selectSpots(selSpots)
 
     def nodeMoveDown(self):
@@ -1065,19 +1108,12 @@ class TreeLocalControl(QObject):
         """
         treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
-        expandedSpots = []
-        for spot in selSpots:
-            expandedSpots.append((spot, treeView.isSpotExpanded(spot)))
-            siblingSpot = spot.nextSiblingSpot()
-            expandedSpots.append((siblingSpot,
-                                  treeView.isSpotExpanded(siblingSpot)))
+        saveSpots = chain.from_iterable([(spot, spot.nextSiblingSpot()) for
+                                         spot in selSpots])
+        expandState = treeView.savedExpandState(saveSpots)
         selSpots.move(self.structure, False)
         self.updateAll()
-        for spot, expanded in expandedSpots:
-            if expanded:
-                treeView.expandSpot(spot)
-            else:
-                treeView.collapseSpot(spot)
+        treeView.restoreExpandState(expandState)
         self.currentSelectionModel().selectSpots(selSpots)
 
     def nodeMoveFirst(self):
@@ -1085,19 +1121,13 @@ class TreeLocalControl(QObject):
         """
         treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
-        expandedSpots = []
-        for spot in selSpots:
-            expandedSpots.append((spot, treeView.isSpotExpanded(spot)))
-            firstSpot = spot.parentSpot.childSpots()[0]
-            expandedSpots.append((firstSpot,
-                                  treeView.isSpotExpanded(firstSpot)))
+        saveSpots = chain.from_iterable([(spot,
+                                          spot.parentSpot.childSpots()[0])
+                                         for spot in selSpots])
+        expandState = treeView.savedExpandState(saveSpots)
         selSpots.moveToEnd(self.structure)
         self.updateAll()
-        for spot, expanded in expandedSpots:
-            if expanded:
-                treeView.expandSpot(spot)
-            else:
-                treeView.collapseSpot(spot)
+        treeView.restoreExpandState(expandState)
         self.currentSelectionModel().selectSpots(selSpots)
 
     def nodeMoveLast(self):
@@ -1105,18 +1135,13 @@ class TreeLocalControl(QObject):
         """
         treeView = self.activeWindow.treeView
         selSpots = self.currentSelectionModel().selectedSpots()
-        expandedSpots = []
-        for spot in selSpots:
-            expandedSpots.append((spot, treeView.isSpotExpanded(spot)))
-            lastSpot = spot.parentSpot.childSpots()[-1]
-            expandedSpots.append((lastSpot, treeView.isSpotExpanded(lastSpot)))
+        saveSpots = chain.from_iterable([(spot,
+                                          spot.parentSpot.childSpots()[-1])
+                                         for spot in selSpots])
+        expandState = treeView.savedExpandState(saveSpots)
         selSpots.moveToEnd(self.structure, False)
         self.updateAll()
-        for spot, expanded in expandedSpots:
-            if expanded:
-                treeView.expandSpot(spot)
-            else:
-                treeView.collapseSpot(spot)
+        treeView.restoreExpandState(expandState)
         self.currentSelectionModel().selectSpots(selSpots)
 
     def dataSetType(self, action):

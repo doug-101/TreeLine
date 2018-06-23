@@ -85,10 +85,10 @@ class TitleListView(QTextEdit):
         treeStructure = globalref.mainControl.activeControl.structure
         if self.isChildView:
             if not selSpots:
-                selSpots = [globalref.mainControl.activeControl.structure.
-                            structSpot()]
-            parent = selSpots[0].nodeRef
-            selSpots = selSpots[0].childSpots()
+                selSpots = [treeStructure.structSpot()]
+            parentSpot = selSpots[0]
+            parent = parentSpot.nodeRef
+            selSpots = parentSpot.childSpots()
         if len(selSpots) == len(textList):
             # collect changes first to skip false clone changes
             changes = [(spot.nodeRef, text) for spot, text in
@@ -105,10 +105,23 @@ class TitleListView(QTextEdit):
             undo.ChildDataUndo(treeStructure.undoList, parent)
             # clear hover to avoid crash if deleted child item was hovered over
             self.treeView.clearHover()
+            isDeleting = len(selSpots) > len(textList)
+            control = globalref.mainControl.activeControl
+            if isDeleting and len(control.windowList) > 1:
+                # clear other window selections that are about to be deleted
+                for window in control.windowList:
+                    if window != control.activeWindow:
+                        selectModel = window.treeView.selectionModel()
+                        ancestors = set()
+                        for spot in selectModel.selectedBranchSpots():
+                            ancestors.update(set(spot.spotChain()))
+                        if ancestors & set(selSpots):
+                            selectModel.selectSpots([], False)
+            expandState = self.treeView.savedExpandState(selSpots)
             parent.replaceChildren(textList, treeStructure)
-            for spot in parent.spotRefs & set(self.treeView.selectionModel().
-                                              selectedSpots()):
-                self.treeView.expandSpot(spot)
+            self.treeView.restoreExpandState(expandState)
+            if self.treeView.selectionModel().selectedSpots():
+                self.treeView.expandSpot(parentSpot)
             self.treeModified.emit()
         else:
             self.updateContents()  # remove illegal changes
