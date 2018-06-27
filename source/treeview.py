@@ -366,6 +366,7 @@ class TreeView(QTreeView):
         self.prevSelSpot = None
         clickedIndex = self.indexAt(event.pos())
         clickedSpot = clickedIndex.internalPointer()
+        selectModel = self.selectionModel()
         if self.noMouseSelectMode:
             if clickedSpot and event.button() == Qt.LeftButton:
                 self.skippedMouseSelect.emit(clickedSpot.nodeRef)
@@ -373,11 +374,12 @@ class TreeView(QTreeView):
             return
         if (event.button() == Qt.LeftButton and
             not self.mouseFocusNoEditMode and
-            self.selectionModel().selectedCount() == 1 and
+            selectModel.selectedCount() == 1 and
+            selectModel.currentSpot() == selectModel.selectedSpots()[0] and
             event.pos().x() > self.visualRect(clickedIndex).left() and
             globalref.genOptions['ClickRename']):
             # set for edit if single select and not an expand/collapse click
-            self.prevSelSpot = self.selectionModel().selectedSpots()[0]
+            self.prevSelSpot = selectModel.selectedSpots()[0]
         self.mouseFocusNoEditMode = False
         super().mousePressEvent(event)
 
@@ -414,6 +416,15 @@ class TreeView(QTreeView):
                 self.incremSearchString += event.text()
                 self.incremSearchRun()
             event.accept()
+        elif (event.key() in (Qt.Key_Return, Qt.Key_Enter) and
+              not self.itemDelegate().editor):
+            # enter key selects current item if not selected
+            selectModel = self.selectionModel()
+            if selectModel.currentSpot() not in selectModel.selectedSpots():
+                selectModel.selectSpots([selectModel.currentSpot()])
+                event.accept()
+            else:
+                super().keyPressEvent(event)
         else:
             super().keyPressEvent(event)
 
