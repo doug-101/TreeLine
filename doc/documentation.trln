@@ -123,6 +123,15 @@
 {
 "children": [],
 "data": {
+"Name": "Avoid unfocused title edit",
+"Text": "A click on a tree node to restore tree focus no longer starts editing the node title."
+},
+"format": "BULLETS",
+"uid": "15da7fde786a11e881c8a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Remove unique ID",
 "Text": "To improve efficiency, user visible node unique IDs that depend on the node's data have been removed."
 },
@@ -168,6 +177,15 @@
 {
 "children": [],
 "data": {
+"Name": "Live HTML Export",
+"Text": "A live tree HTML export creates an interactive view with expandable nodes and a descendant output pane."
+},
+"format": "BULLETS",
+"uid": "31304c06792b11e888cfa44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Multiple paste commands",
 "Text": "New paste commands have been added for adding nodes before and after siblings.  There are also multiple paste commands for adding clones of nodes."
 },
@@ -186,11 +204,106 @@
 {
 "children": [],
 "data": {
+"Name": "Title edit mouse move",
+"Text": "Fixed node title editing errors caused by moving the mouse to a data edit box with the title edit still active."
+},
+"format": "BULLETS",
+"uid": "45491730786a11e8b8e2a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Enter key selects current node",
+"Text": "The enter key now selects a tree node after the first title letter(s) are typed to make it current (shown with a box around the title)."
+},
+"format": "BULLETS",
+"uid": "456aa5ca793111e89a30a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Relative paths",
 "Text": "Avoid issues resolving relative paths between different Windows drive letters in external link fields."
 },
 "format": "BULLETS",
 "uid": "46fc4054334b11e89299d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Major rewrite",
+"Text": "This is a major rewrite of TreeLine. Once it becomes fully stable, it will be released as TreeLine version 3.0.0."
+},
+"format": "BULLETS",
+"uid": "4bc47247786711e88b26a44cc8e97404"
+},
+{
+"children": [
+"4bc47249786711e8a3d5a44cc8e97404",
+"4bc4724c786711e8a8d9a44cc8e97404",
+"4bc4724f786711e89bdca44cc8e97404"
+],
+"data": {
+"Name": "June 30, 2018 - Release 2.9.2 (unstable development snapshot)"
+},
+"format": "HEADINGS",
+"uid": "4bc47248786711e8a8bfa44cc8e97404"
+},
+{
+"children": [
+"4bc4724a786711e8a4dda44cc8e97404",
+"4bc47247786711e88b26a44cc8e97404",
+"4bc4724b786711e895e2a44cc8e97404"
+],
+"data": {
+"Name": "Notes"
+},
+"format": "BULLET_HEADING",
+"uid": "4bc47249786711e8a3d5a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Development snapshot",
+"Text": "This is a development snapshot of TreeLine that should be considered a release candidate for an upcoming stable release. Many bugs have been fixed. User testing and bug reports are appreciated."
+},
+"format": "BULLETS",
+"uid": "4bc4724a786711e8a4dda44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Translations",
+"Text": "A GUI translations is available in German.  All other translations are out of date and have not been included. Volunteers are needed to update translations in several languages."
+},
+"format": "BULLETS",
+"uid": "4bc4724b786711e895e2a44cc8e97404"
+},
+{
+"children": [
+"57c4de74786911e89c3fa44cc8e97404",
+"71b708ac786911e88d64a44cc8e97404",
+"a7d7f61e786911e89bbca44cc8e97404",
+"15da7fde786a11e881c8a44cc8e97404",
+"456aa5ca793111e89a30a44cc8e97404"
+],
+"data": {
+"Name": "Updates"
+},
+"format": "BULLET_HEADING",
+"uid": "4bc4724c786711e8a8d9a44cc8e97404"
+},
+{
+"children": [
+"e4fc680a786911e899d3a44cc8e97404",
+"45491730786a11e8b8e2a44cc8e97404",
+"f011a5d8786911e8ace3a44cc8e97404"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "4bc4724f786711e89bdca44cc8e97404"
 },
 {
 "children": [],
@@ -204,11 +317,29 @@
 {
 "children": [],
 "data": {
+"Name": "German translation",
+"Text": "The German GUI translation was updated (thanks to Maria Seliger)."
+},
+"format": "BULLETS",
+"uid": "57c4de74786911e89c3fa44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Linux menus",
 "Text": "Added a desktop specification file to the Linux installer for desktop environment menu support."
 },
 "format": "BULLETS",
 "uid": "58dddee4010f11e88925d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Setting types",
+"Text": "Each tree node can be set to a type format independently."
+},
+"format": "BULLETS",
+"uid": "5c1d58ac792a11e8b78ca44cc8e97404"
 },
 {
 "children": [],
@@ -329,6 +460,15 @@
 },
 "format": "BULLETS",
 "uid": "6df9a0caba3b11e78b283417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Maintain expanded nodes",
+"Text": "The expand/collapse status of nearby nodes is maintained while editing the node structure.  This includes adding, deleting, moving and indenting nodes."
+},
+"format": "BULLETS",
+"uid": "71b708ac786911e88d64a44cc8e97404"
 },
 {
 "children": [],
@@ -469,6 +609,15 @@
 {
 "children": [],
 "data": {
+"Name": "Save state for discarded files",
+"Text": "The expanded/collapsed and selected tree states are now saved even if changes were discarded in the previous session."
+},
+"format": "BULLETS",
+"uid": "a7d7f61e786911e89bbca44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Pull-downs on repeated dialog boxes",
 "Text": "Fixed issues on Windows with pull-down combo boxes not working after repeatedly showing some dialogs (mostly find and filter dialogs)."
 },
@@ -508,7 +657,7 @@
 "children": [],
 "data": {
 "Name": "Breadcrumb view",
-"Text": "An upper breadcrumb view shows titles of the selected node's ancestors that can be clicked to select them."
+"Text": "An upper breadcrumb view shows titles of the selected node's ancestors; the titles can be clicked to select them in the tree."
 },
 "format": "BULLETS",
 "uid": "b1b5d434b32911e780fd3417ebd53aeb"
@@ -570,6 +719,15 @@
 {
 "children": [],
 "data": {
+"Name": "Deletion errors",
+"Text": "Several errors occurring when deleting or removing nodes have been fixed.  These include problems when the mouse is pre-highlighting descendant nodes and when nodes to be deleted are selected in a separate window."
+},
+"format": "BULLETS",
+"uid": "e4fc680a786911e899d3a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Breadcrumb view",
 "Text": "A new breadcrumb view pane above the other panes shows a sequence of ancestor titles for a selected node. The ancestors can be clicked to select them. For cloned nodes, multiple lines provide links to each instance's ancestor sequence."
 },
@@ -584,6 +742,24 @@
 },
 "format": "BULLETS",
 "uid": "edd50b80334c11e8b5f5d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Initial field values",
+"Text": "Fixed errors occurring when field types are changed after initial default values have been set."
+},
+"format": "BULLETS",
+"uid": "f011a5d8786911e8ace3a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Cloned nodes",
+"Text": "Nodes that are duplicated by cloning show up as separate clickable paths in the upper breadcrumb view."
+},
+"format": "BULLETS",
+"uid": "f08b97be792b11e88588a44cc8e97404"
 },
 {
 "children": [
@@ -619,7 +795,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 2.9.1, an unstable development snapshot, released March 31, 2018 by Doug Bell."
+"Text": "This document covers TreeLine, Version 2.9.2, an unstable development snapshot, released June 30, 2018 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -747,7 +923,7 @@
 "children": [],
 "data": {
 "Name": "Tree view",
-"Text": "The left-hand view shows an indented list of titles"
+"Text": "The left-hand view shows an indented, expandable list of titles"
 },
 "format": "BULLETS",
 "uid": "f16f9744a25a11e7b7c67054d2175f18"
@@ -804,7 +980,7 @@
 "children": [],
 "data": {
 "Name": "Find commands",
-"Text": "Find commands can search node data for text or for more specific rules."
+"Text": "Find commands can search node data for text matches or for more specific rules."
 },
 "format": "BULLETS",
 "uid": "f16f9d2aa25a11e7b7c67054d2175f18"
@@ -830,6 +1006,7 @@
 {
 "children": [
 "f16fa130a25a11e7b7c67054d2175f18",
+"5c1d58ac792a11e8b78ca44cc8e97404",
 "f16fa220a25a11e7b7c67054d2175f18"
 ],
 "data": {
@@ -882,7 +1059,7 @@
 "children": [],
 "data": {
 "Name": "File formats",
-"Text": "TreeLine files are JSON by default, with options for automatically compressing or encrypting the files."
+"Text": "TreeLine files use a JSON format, with options for automatically compressing or encrypting the files."
 },
 "format": "BULLETS",
 "uid": "f16fa504a25a11e7b7c67054d2175f18"
@@ -908,6 +1085,7 @@
 {
 "children": [
 "f16fa8f6a25a11e7b7c67054d2175f18",
+"31304c06792b11e888cfa44cc8e97404",
 "f16fa9f0a25a11e7b7c67054d2175f18",
 "9bd80f34b32b11e7be613417ebd53aeb",
 "f16faaf4a25a11e7b7c67054d2175f18",
@@ -969,7 +1147,8 @@
 "children": [
 "f16faee6a25a11e7b7c67054d2175f18",
 "f16fafe0a25a11e7b7c67054d2175f18",
-"f16fb0daa25a11e7b7c67054d2175f18"
+"f16fb0daa25a11e7b7c67054d2175f18",
+"f08b97be792b11e88588a44cc8e97404"
 ],
 "data": {
 "Name": "Linking"
@@ -981,7 +1160,7 @@
 "children": [],
 "data": {
 "Name": "Internal links",
-"Text": "Internal link fields toggle the selection to a linked node when clicked."
+"Text": "Internal link fields select a linked node when clicked."
 },
 "format": "BULLETS",
 "uid": "f16faee6a25a11e7b7c67054d2175f18"
@@ -1024,7 +1203,7 @@
 "children": [],
 "data": {
 "Name": "Sorting",
-"Text": "Nodes can be sorted by title or by predefined node type criteria."
+"Text": "Nodes can be sorted by title or by predefined key fields."
 },
 "format": "BULLETS",
 "uid": "f16fb2cea25a11e7b7c67054d2175f18"
@@ -1069,7 +1248,7 @@
 "children": [],
 "data": {
 "Name": "Arranging data",
-"Text": "Data can be automatically arranged using categories from data fields."
+"Text": "Data can be automatically re-arranged using categories from data fields."
 },
 "format": "BULLETS",
 "uid": "f16fb7f6a25a11e7b7c67054d2175f18"
@@ -1118,7 +1297,7 @@
 "children": [],
 "data": {
 "Name": "Languages",
-"Text": "The user interface is available in English - translations into other languages are TBD."
+"Text": "The user interface is available in English and German.  Translations into other languages are TBD."
 },
 "format": "BULLETS",
 "uid": "f16fbd00a25a11e7b7c67054d2175f18"
@@ -2266,6 +2445,7 @@
 },
 {
 "children": [
+"4bc47248786711e8a8bfa44cc8e97404",
 "95a6e90a333f11e89efed66a6ab671cb",
 "6df9a0c5ba3b11e78e7e3417ebd53aeb",
 "f1703e7ea25a11e7b7c67054d2175f18",
@@ -4644,7 +4824,7 @@
 }
 ],
 "properties": {
-"tlversion": "2.9.1",
+"tlversion": "2.9.2",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
