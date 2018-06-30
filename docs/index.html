@@ -1,0 +1,4081 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="default.css" />
+
+    <title>TreeLine - News</title>
+</head>
+
+<body>
+
+    <div class="interior">
+
+        <div class="title">
+            <img src="logo.png" alt="TreeLine" />
+        </div>
+
+        <div class="toplinks">
+            <p>Version 2.0.2 (stable), 2.9.2 (development)</p>
+            <p><a href="http://www.bellz.org/progs.html">Other Programs</a></p>
+            <p><a href="http://www.bellz.org/contact.html">Contact Info</a></p>
+        </div>
+
+        <div class="navigation">
+            <span class="current-nav">Home&nbsp;/&nbsp;News</span>
+            <a href="feature.html">Features</a>
+            <a href="scrnsht.html">Screenshots</a>
+            <a href="require.html">Requirements</a>
+            <a href="download.html">Downloads</a>
+            <a href="install.html">Installation</a>
+            <a href="use.html">How&nbsp;to&nbsp;Use</a>
+        </div>
+
+        <div class="content">
+
+            <h1>What is TreeLine?</h1>
+
+            <p>Do you have lots of sticky notes lying around with various
+            useful information jotted down?  Or many lists of books, movies,
+            website logins, personal contacts, or things to do?  Can you find
+            them when you need them?  Well, I often couldn't.  So here's my
+            answer.</p>
+
+            <p>Some would call TreeLine an Outliner, others would call it a
+            PIM.  Basically, it just stores almost any kind of information.  A
+            tree structure makes it easy to keep things organized.  And each
+            node in the tree can contain several fields, forming a
+            mini-database.  The output format for each node can be defined,
+            and the output can be shown on the screen, printed, or exported to
+            html.</p>
+
+            <h1>News</h1>
+
+            <h2>June 30, 2018 - Release 2.9.2 (unstable development
+              snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is a development snapshot of TreeLine that should be
+                considered a release candidate for an upcoming stable release.
+                Many bugs have been fixed. User testing and bug reports are
+                appreciated.</li>
+
+              <li>This is a major rewrite of TreeLine. Once it becomes fully
+                stable, it will be released as TreeLine version 3.0.0.</li>
+
+              <li>A GUI translations is available in German.  All other
+                translations are out of date and have not been included.
+                Volunteers are needed to update translations in several
+                languages.</li>
+
+            <ul><b>Updates:</b>
+
+              <li>The German GUI translation was updated (thanks to Maria
+                Seliger).</li>
+
+              <li>The expand/collapse status of nearby nodes is maintained
+                while editing the node structure.  This includes adding,
+                deleting, moving and indenting nodes.</li>
+
+              <li>The expanded/collapsed and selected tree states are now
+                saved even if changes were discarded in the previous
+                session.</li>
+
+              <li>A click on a tree node to restore tree focus no longer
+                starts editing the node title.</li>
+
+              <li>The enter key now selects a tree node after the first title
+                letter(s) are typed to make it current (shown with a box
+                around the title).</li>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Several errors occurring when deleting or removing nodes
+                have been fixed.  These include problems when the mouse is
+                pre-highlighting descendant nodes and when nodes to be
+                deleted are selected in a separate window.</li>
+
+              <li>Fixed node title editing errors caused by moving the mouse
+                to a data edit box with the title edit still active.</li>
+
+              <li>Fixed errors occurring when field types are changed after
+                initial default values have been set.</li>
+
+            <h2>March 31, 2018 - Release 2.9.1 (unstable development
+              snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of TreeLine. It has
+                improved but could still contain bugs. Testing and bug reports
+                are appreciated, but those with very critical work should
+              consider using the stable release (TreeLine 2.0.x).</li>
+
+              <li>This is a major rewrite of TreeLine. Once it becomes more
+                stable, it will be released as TreeLine version 3.0.0. The
+                2.1.x unstable series is being discontinued (no stable 2.2.0
+              release is planned).</li>
+
+              <li>The GUI and documentation translations are out of date and
+                have not been included.  Volunteers are needed to update
+                translations in several languages.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>A new HTML export uses Javascript and CSS to create a live
+                tree view. Nodes in the tree can be expanded and collapsed,
+                and a separate pane shows the output for all descendants of
+                the selected node. One form of this export creates separate
+                files that are linked to the existing TreeLine file. These
+                files are intended for use on a web server (browser security
+                usually prevents local access). Only the TreeLine file needs
+                to be replaced to update the data (re-export is not required).
+                The second form creates a single file (with embedded data)
+              that can be accessed from a local web browser.</li>
+
+              <li>New forms of CSV table text imports and exports can work
+                with multiple levels of child nodes, preserving the tree
+                structure.  The first column of the table includes a level
+              number that is incremented for child relationships.</li>
+
+              <li>Added a custom time select dialog box for editing Time and
+                TimeDate fields.</li>
+
+              <li>A new general option controls whether inaccessible files are
+                removed from the recent file list at startup. The files are
+                removed by default, but this can be changed to avoid losing
+              listings of files stored on removable drives.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fix errors shown when using copy commands after closing
+                TreeLine windows.</li>
+
+              <li>Fixed problems with copy / paste and drag / drop on nodes
+                with conditional type settings.</li>
+
+              <li>Avoid problems showing the tree view after closing a filter
+                command that found no matches.</li>
+
+              <li>Fixed issues on Windows with pull-down combo boxes not
+                working after repeatedly showing some dialogs (mostly find and
+                filter dialogs).</li>
+
+              <li>Fixed problems with generic XML export from multiple root
+                nodes.</li>
+
+              <li>Fixed problems with number field formatting when using a ","
+                radix with exponents.</li>
+
+              <li>Avoid issues resolving relative paths between different
+                Windows drive letters in external link fields.</li>
+
+              <li>Fixed problems with advanced ancestor field output
+                references in some tree locations.</li>
+
+              <li>Properly update the right-hand views after using a new
+                window command.</li>
+
+              <li>Avoid problems running data category-based commands on
+                selections without any child nodes.</li>
+
+              <li>Fixed minor spacing issues for tables shown in output views
+                and HTML exports.</li>
+
+            </ul>
+
+            <h2>January 28, 2018 - Release 2.9.0 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of TreeLine. It
+                could contain bugs. Testing and bug reports are appreciated,
+                but the stable release (TreeLine 2.0.x) is recommended for
+              critical work.</li>
+
+              <li>This is a major rewrite of TreeLine. Once it becomes more
+                stable, it will be released as TreeLine version 3.0.0. The
+                2.1.x unstable series is being discontinued (no stable 2.2.0
+              release is planned).</li>
+
+              <li>The GUI and documentation translations are out of date and
+                have not been included.  Volunteers are needed to update
+                translations in several languages.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>TreeLine files now uses a new JSON format in place of the
+                old XML format. This provides more flexibility for structuring
+                new features like cloned nodes and multiple root nodes.  A new
+              file extension (".trln) helps to distinguish these files.</li>
+
+              <li>Import and export filters are provided for older TreeLine
+                version 2.x and 1.x files. The older files can be opened using
+                the standard "File &gt; Open" command.</li>
+
+              <li>Multiple top-level (root) nodes are now permitted. When no
+                nodes are selected in the tree (by clicking on a blank area or
+                Ctrl clicking to unselect), the right-hand view will show
+              information about all of the top-level nodes.</li>
+
+              <li>A new breadcrumb view pane above the other panes shows a
+                sequence of ancestor titles for a selected node. The ancestors
+                can be clicked to select them. For cloned nodes, multiple
+              lines provide links to each instance's ancestor sequence.</li>
+
+              <li>By default, the edit boxes in the data edit view now
+                activate when the mouse hovers over them. This eliminates the
+                need to click to activate them. This feature can be disabled
+              in general options if desired.</li>
+
+              <li>When a file is opened in an existing window, the window is
+                now reused (not just replaced) to eliminate flashing.</li>
+
+              <li>Cloned nodes now have a more native and efficient
+                implementation.  This allows the same nodes to have multiple
+                parents.  The new breadcrumb view shows a list of clones for
+              the selected node that can be clicked to select the other
+              instances.</li>
+
+              <li>New paste commands have been added for adding nodes before
+                and after siblings.  There are also multiple paste commands
+                for adding clones of nodes.</li>
+
+              <li>Cloned nodes can be created automatically from all identical
+                nodes by using the "Data &gt; Clone All Matched Nodes"
+                command.</li>
+
+              <li>The new "Data &gt; Detach Clones" command converts cloned
+                nodes in selected branches back into independent nodes.</li>
+
+              <li>A new "Swap Category Levels" command swaps child and
+                grandchild nodes beneath a selected node. A child node with
+                multiple nodes under it will become cloned under each one. Any
+              existing grandchild clones will become individual nodes with
+              multiple children.</li>
+
+              <li>Child node types that are available to be set can be
+                limited. A new pull-down list of child type limits is in the
+                "Type Config" tab of the configuration dialog if the advanced
+              functions are shown.</li>
+
+              <li>The Date, Time and DateTime fields  have new format strings
+                that enable extra text to be added to the date output.</li>
+
+              <li>To improve efficiency, user visible node unique IDs that
+                depend on the node's data have been removed.</li>
+
+              <li>Error handling has been improved.  For most errors, a dialog
+                box is shown with debugging information that can be copied
+                into an email.</li>
+
+              <li>Added a desktop specification file to the Linux installer
+                for desktop environment menu support.</li>
+
+            </ul>
+
+            <h2>March 26, 2017 - Release 2.1.2 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of TreeLine. It may
+                contain bugs. Testing and bug reports are appreciated, but the
+                stable release (TreeLine 2.0.x) should probably be used for
+              critical work.</li>
+
+              <li>The GUI and documentation translations have not yet been
+                updated.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li> Fix problems formatting DateTime fields in output
+                views.</li>
+
+              <li> Fix dialog issues with clicking on targets when creating
+                inline internal links.</li>
+
+              <li> Fix a regression that prevented using the tab key to cycle
+                between data edit view items.</li>
+
+              <li> Avoid opening two windows when restoring an auto-saved
+                backup file.</li>
+
+            </ul>
+
+            <h2>March 12, 2017 - Release 2.1.1 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Updates:</b>
+
+              <li> The Windows binary is now built using Python 3.6 and PyQt
+                5.8.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fix a crash when changing the icon on the Type Config page
+                of the Configure Data Types dialog box.</li>
+
+              <li>Fix inconsistent type selections on the Type List page of
+                the Configure Data Types dialog box.</li>
+
+              <li>Fix issues with restoring the placement of the TreeLine
+                window in some multiple monitor setups.</li>
+
+            </ul>
+
+            <h2>February 20, 2017 - Release 2.1.0 (unstable development
+            snapshot)</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>TreeLine has been ported from the Qt4 library to the Qt5
+                library. The system requirements have been updated to Python
+                3.4 or higher, PyQt 5.4 or higher and Qt 5.4 or higher.</li>
+
+              <li>Cloned nodes that can duplicate sections of the tree have
+                been added. Editing their data or child structure in one
+                location changes all locations. They are created by copying
+                nodes and then using the "Edit-&gt;Paste Cloned Node" command
+                to paste them elsewhere. The clone link can be removed by
+                deleting the nodes or by cutting them and pasting them back
+                using the regular paste command.</li>
+
+              <li>Added a new DateTime field that combines dates and times
+                into a single field that is useful for timestamps. The editor
+                format is a combination of the date and time formats from the
+                general options, separated by a space.</li>
+
+              <li>Added an option to allow HTML tags in Choice, AutoChoice,
+                Combination, AutoCombination and RegularExpression fields. The
+                control is in the Field Config tab of the Configure Data Types
+                dialog. This option is disabled by default. If enabled,
+                special characters (angled brackets and quotation marks) will
+                need to be escaped to show up in text.</li>
+
+              <li>Saved rules for Conditional Find and Conditional Filter
+                commands are listed directly in the dialog boxes, making them
+                easier to load and save.</li>
+
+              <li>Added comma-delimited (CSV) table import and export, similar
+                to existing tab-delimited table import and export. The export
+                only handles data from a single level of child nodes.</li>
+
+              <li>Added a quick, incremental search of node titles. By
+                default, it's bound to ctrl+/. Then, matching titles are found
+                as the search string is typed. The F3 and shift+F3 keys can be
+                used to go to the next or previous matches, respectively.</li>
+
+              <li>Multiple fields can now be selected in the Output page of
+                the Configuration dialog, so several fields can be added to
+                the formats simultaneously.</li>
+
+              <li>A pull-down selector for printers has been added to the
+                Print Setup dialog. This enables TreeLine to verify that the
+                page size and margin settings are supported by the current
+                printer.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li> The SpacedText Field now allows special HTML characters
+                (angled brackets and quotation marks) without requiring them
+                to be manually escaped.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>The code that splits content into pages when printing has
+                been improved. It now handles very long nodes better.</li>
+
+              <li>When formatted fields (dates, times, etc.) are used in node
+                titles, editing the titles in the tree or in the Title List
+                pane will now work if the edit and output formats are
+              similar.</li>
+
+            </ul>
+
+            <h2>October 3, 2015 - Release 2.0.2 (new stable release)</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a major regression in 2.0.1 that broke data editors
+                for most specialized field types (number, math, boolean,
+                choice, etc.)</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be fully compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>September 26, 2015 - Release 2.0.1 (new stable release)</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>Added methods to the plugin interface that allow general
+                program options to be queried and changed.</li>
+
+              <li>Improve text table import error messages by including the
+                line number where the problem is found.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Reduce the amount of work that a single undo command removes
+                from editors in the data edit view.</li>
+
+              <li>Fixed a bug that prevented setting the unique ID reference
+                field on a newly created data type.</li>
+
+              <li>Preserve hard newlines in text fields when converting
+                TreeLine 1.4.x files to this version.</li>
+
+              <li>Fix problems preserving expand/collapse node states when
+                indenting and unindenting nodes.</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be fully compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>May 17, 2015 - Release 2.0.0 (new stable release)</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>Modified the Treepad file import to use SpacedText fields to
+                more closely match Treepad formatting.</li>
+
+              <li>An optional plugin was written that can export files to the
+                Treepad text file format.</li>
+
+              <li>The TreeLine icon was replaced with a new one.  Thanks to
+                David Reimer for contributing the artwork.</li>
+
+              <li>The German and Portuguese GUI translations were
+                updated.</li>
+
+              <li>Updated the long text sample file to include the SpacedText
+                field type, and added a conditional equation to the math
+                sample file.</li>
+
+              <li>Updated the Math Field section of the documentation.</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be fully compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>March 29, 2015 - Release 1.9.7 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of a full rewrite
+                of TreeLine. It is nearly ready for a stable release, but it
+                could still contain bugs.  Testing and bug reports are
+              appreciated.</li>
+
+              <li>The GUI and documentation translations are not yet
+                complete.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>Added comparison operators and conditional if statements to
+                math field equations. The operators can be used with a new
+                boolean result type, or as a part of numeric, date, time or
+              text expressions.</li>
+
+              <li>Text operators were made available in math field equations,
+                and the result type can be set to text. This allows math
+                fields to combine text from other fields, replace substrings
+              and change capitalization.</li>
+
+              </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Added a "file saved" status bar message.</li>
+
+              <li>Added a German GUI translation.</li>
+
+              <li>Updated the Portuguese GUI translation.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a focus problem that made Combination and
+                AutoCombination field editor pull-downs unusable.</li>
+
+              <li>Fixed a focus problem that made the pull-downs in choice and
+                boolean field editors unusable on Linux.</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be fully compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>March 10, 2015 - Release 1.9.6 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of a full rewrite
+                of TreeLine. It could still contain bugs.  Testing and bug
+                reports are appreciated.</li>
+
+              <li>The GUI and documentation translations are not yet
+                complete.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>Added a new OneLineText field type that restricts the text
+                length to a single line.</li>
+
+              <li>Added an All Types option to the conditional find and filter
+                commands. This allows multiple node types to be found or
+                filtered at the same time. The fields from every type are
+                available for use in conditions. The conditions give a false
+                result for all node types that do not contain that field
+                name.</li>
+
+              <li>Added support for date and time calculations using math
+                fields. Math equation result types can be set to numeric, date
+                or time output. Date fields can be subtracted to give the
+                number of days elapsed, and numbers of days can be added to or
+                subtracted from dates, resulting in new dates. Time fields can
+                be subtracted to give the number of seconds elapsed, and
+                numbers of seconds can be added to or subtracted from times,
+                resulting in new times.</li>
+
+              <li>In math fields, added an equation reference level to
+                reference fields in the root node. This provides a place for
+                "constant" field values that can be referenced from any node
+                but only need to be changed in one location.</li>
+
+              <li>Support was added for plugin extension modules. Most of the
+                interface methods from TreeLine 1.4.x were duplicated to ease
+                porting of old plugins. Of course, old plugins must be ported
+                from Python 2.x to Python 3.x, and there are multi-window
+                implementation differences. New interfaces allow the creation
+                of new field types and the execution of any menu command.
+                Sample plugins are available on the TreeLine download
+                page.</li>
+
+              <li>Added text formatting and link commands for HTML fields that
+                add tags to the HTML content.</li>
+
+              <li>An open in folder command was added to external link field
+                editors to open the directory in a file manager.</li>
+
+              <li>Added the Select All command to global menus with a
+                different default shortcut key (ctrl-L) to avoid conflicts
+                with the add child shortcut.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Improved the focus handling for data edit view edit boxes.
+                This eliminates the blue outline for boxes in inactive data
+                edit views. It also makes tab-to-focus more predictable,
+                including fully selecting single-line field types when they
+                receive tab focus.</li>
+
+              <li>Data edit boxes are now automatically resized when editing
+                is complete and the focus moves to another row.</li>
+
+              <li>Allow files to be drag &amp; dropped on data edit boxes to
+                create external links.</li>
+
+              <li>Small, non-modal dialogs, such as those for sorting,
+                numbering, finding and filtering, have been set to stay on
+                top, so they won't be obscured by TreeLine windows.</li>
+
+              <li>Made opening associated programs from external file links
+                more consistent, especially in Linux.</li>
+
+              <li>The copy types from file command now supports encrypted and
+                compressed files.</li>
+
+              <li>Added wait cursors to TreeLine operations that could be time
+                consuming.</li>
+
+              <li>Improved the consistency of context menus and shortcut
+                commands used in edit boxes.</li>
+
+              <li>Added a nearly complete Portuguese GUI translation.</li>
+
+              <li>Added support for sample TreeLine files to be provided in
+                alternate languages.</li>
+
+              <li>Prepared the help file for translation into other
+                languages,</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Corrupted TreeLine files with the same unique ID assigned to
+                multiple nodes no longer fail to open. The user is warned that
+                unique IDs have been updated, which could break some internal
+                links.</li>
+
+              <li>Fixed missing fields in the pull-down list in the
+                conditional find and filter dialog boxes when a rule was
+                re-used after a node type change. </li>
+
+              <li>Fixed problems with math fields that reference non-existing
+                fields in parent or child nodes.</li>
+
+              <li>Made math fields update properly after node type
+                changes.</li>
+
+              <li>Fixed inconsistent updates after renaming fields used with
+                bulleted or tabled output.</li>
+
+              <li>Made node copy-paste and drag-and-drop work when the initial
+                selection includes both parent and child nodes. </li>
+
+              <li>When importing a tabbed text file with multiple top-level
+                nodes, create a single higher-level node to prevent
+                failure.</li>
+
+              <li>Fixed the availability of the move up button in the
+                customize toolbar dialog when the second command in the list
+                is selected.</li>
+
+            </ul>
+
+            <ul><b>Missing Features (not implemented yet):</b>
+
+              <li>Language translations for the GUI and documentation.</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be fully compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>December 31, 2014 - Release 1.9.5 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of a full rewrite
+              of TreeLine. It is not yet complete and could contain bugs.
+              Testing and bug reports are appreciated.</li>
+
+              <li>The GUI and documentation translations have not yet been
+              done.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>Added a math field type that is configured by defining an
+                equation. The field value is automatically calculated based on
+                references to numerical values in other nodes. See the
+              "sample_math_fields" file for a usage example.</li>
+
+              <li>Added a Clear Formatting command that removes font changes
+                and links from data editor text.</li>
+
+              <li>Made source code changes necessary to support user interface
+                translations into other languages. The actual translation work
+                remains to be done.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Add scroll bars to the pull-down editors for combination
+                fields with many entries.</li>
+
+              <li>Reduce the truncation of external link URLs when generating
+                default display names.</li>
+
+              <li>Use Unix-style newlines for saved TreeLine files to keep
+                files consistent across platforms.</li>
+
+              <li>Update the CSS code in exported HTML with navigation panes to
+                improve the appearance in some browsers.</li>
+
+              <li>Optimize some undo information to reduce the amount of data
+                in memory.</li>
+
+              <li>Move sample files into a separate directory to avoid future
+                translation conflicts.</li>
+
+              <li>Clarify a Linux installer error message when checking for
+                the Python 3 version of PyQt.</li>
+
+              <li>Include MSVCR DLL files in the Windows installer.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fix problems applying multiple configuration changes while
+                the Configure Data Types dialog box remains open.</li>
+
+              <li>In the Title List editor, splitting a title into two lines
+                now creates a new node without losing the children and
+                parameters of the original node.</li>
+
+              <li>Fix the undo command in the Title List View so that deleted
+                lines/nodes are properly restored. </li>
+
+              <li>When sorting nodes by fields, properly handle a reverse
+                direction.</li>
+
+              <li>Fix problems with the find and replace command when a
+                particular node type is specified.</li>
+
+              <li>Fix problems defining conditional types from the Configure
+                Data Types dialog box.</li>
+
+              <li>Correctly apply font size formatting to selections with
+                mixed font sizes.</li>
+
+              <li>Fix the height of long text field editors with customized
+                data editor fonts.</li>
+
+              <li>Fix HTML export of Base 64 images.</li>
+
+            </ul>
+
+            <ul><b>Missing Features (not implemented yet):</b>
+
+              <li>Support for plugin extension modules.</li>
+
+              <li>Language translations for the GUI and documentation.</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be fully compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>March 8, 2014 - Release 1.9.4 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of a full rewrite
+              of TreeLine. It is not yet complete and could contain bugs.
+              Testing and bug reports are appreciated.</li>
+
+              <li>The GUI and documentation translations have not yet been
+              done.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>Created new documentation, including a TreeLine file with
+              details and a text file with basic usage instructions. Both are
+              accessible from the help menu.</li>
+
+              <li>Added customizing of default fonts used in the tree, output
+              and editor views.</li>
+
+              <li>Added a new SpacedText field type that holds plain text and
+              preserves all spacing.</li>
+
+              <li>Combination and auto combination field types now use a
+              simpler checkbox style pull-down editor.</li>
+
+              <li>An autosave option was added.</li>
+
+              <li>A unique ID reference field was added to the file info
+              fields to allow node unique IDs to be included in output
+              formats.</li>
+
+              <li>A plain text paste command was added to paste non-formatted
+              text to data editors.</li>
+
+              <li>Added an option to set the child indent offset amount.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The last size and position of the print preview window are
+              remembered and restored.</li>
+
+              <li>When printing, nodes with long text content are split
+              between pages.</li>
+
+              <li>In multiple page HTML exports, relative links in the content
+              are adjusted based on the directory depth.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed problems outputting completely blank nodes.</li>
+
+              <li>Problems with the contains and true/false conditional rules
+              were fixed.</li>
+
+              <li>Fixed issues displaying several editor link dialogs in quick
+              succession.</li>
+
+              <li>In the configure data types dialog, the output format cursor
+              no longer moves when switching to other field references.</li>
+
+            </ul>
+
+            <ul><b>Missing Features (not implemented yet):</b>
+
+              <li>Support for plugin extension modules.</li>
+
+              <li>Language translations for the GUI and documentation.</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be fully compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>January 19, 2014 - Release 1.9.3 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of a full rewrite
+              of TreeLine. It is not feature complete and probably contains
+              bugs. Testing and bug reports are appreciated, but the stable
+              release (TreeLine 1.4.x) should be used for critical work.</li>
+
+              <li>The documentation is not included yet.  It needs to be
+              updated to cover the new features.</li>
+
+              <li>The GUI and documentation translations have not yet been
+              done.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>Added controls in the Tools menu for customizing TreeLine's
+              keyboard shortcuts.</li>
+
+              <li>Controls for customizing TreeLine's toolbar buttons were
+              added to the Tools menu.</li>
+
+              <li>New dialogs were created for conditional finding and
+              filtering of nodes.  Specific conditions can be applied to
+              individual types and fields, and the conditions can be
+              saved.</li>
+
+              <li>Find and replace functionality was added to search and
+              change nodes' text data.  The search can be limited to specific
+              types and fields.</li>
+
+              <li>A new option for output data in tables was added to the Type
+              Config pane of the Configure Data Types dialog.  Each line of
+              the output format becomes a column.  Any text at the start of
+              the format line that is followed by a colon becomes a table
+              heading.</li>
+
+              <li>An option to add bullets to the output of child nodes was
+              added to the Type Config pane of the Configure Data Types
+              dialog.</li>
+
+              <li>Added View &gt; Previous Selection and Next Selection
+              commands to step through the node selection history.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Nodes can now be reordered by dragging and dropping them
+              between sibling nodes.</li>
+
+              <li>The keyboard entry of dates and times into fields was made
+              more flexible by allowing entries such as 4-digit years that
+              don't exactly match the entry format.</li>
+
+              <li>Any text selection is now used as the default name for links
+              inserted into text fields.</li>
+
+              <li>Links to local named anchors in a node's HTML text content
+              now work if they don't conflict with any node unique IDs.</li>
+
+              <li>Line spacing in output views was made more consistent.</li>
+
+              <li>Improved the efficiency of restoring node open/close states
+              when opening files.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Errors when pasting text with varying font sizes into data
+              editors were fixed.</li>
+
+              <li>Various issues with conditional data types were fixed,
+              including problems with pasting conditional nodes and prompt
+              updating when the types change.</li>
+
+              <li>Problems with undoing the dragging and dropping of a node
+              were fixed.</li>
+
+              <li>Fix the extremely slow operation of the View &gt; Expand
+              Full Branch and Collapse Full Branch commands.</li>
+
+              <li>Fix improperly placed branch lines in printed output.</li>
+
+            </ul>
+
+            <ul><b>Missing Features (not implemented yet):</b>
+
+              <li>Plugin support.</li>
+
+              <li>Language translations.</li>
+
+              <li>Help documentation.</li>
+
+              <li>Font appearance options for views.</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be fully compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>October 22, 2013 - Release 1.9.2 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of a full rewrite
+              of TreeLine. It is not feature complete and probably contains
+              bugs. Testing and bug reports are appreciated, but the stable
+              release (TreeLine 1.4.x) should be used for critical work.</li>
+
+              <li>The documentation is not included yet.  It needs to be
+              updated to cover the new features.</li>
+
+              <li>The GUI and documentation translations have not yet been
+              done.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+   
+              <li>Added a spell check tool.  This requires either aspell,
+              ispell or hunspell to be installed.</li>
+
+              <li>Included a node numbering field type with several formatting
+              options.  An update numbering command fills in the sequence.</li>
+
+              <li>Added a command to add a category level based on a subset of
+              data fields.</li>
+
+              <li>Added a flatten by category command to combine parent fields
+              into child nodes.</li>
+
+              <li>A new flatten by link command flattens the structure and
+              provides internal links to the former parent nodes.</li>
+
+              <li>An arrange by link command restores the structure based on
+              parent internal links.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+   
+              <li>Allow file URL drag-and-drop on active external link data
+              edit widgets.</li>
+
+              <li>Change the Linux installer to use the 'share' directory in
+              place of 'lib' for python files.</li>
+
+              <li>Update the Windows binary to use version 3.3 of Python.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+   
+              <li>Fix out of sequence output lines when output formats are
+              longer than ten lines.</li>
+
+              <li>Fix problems with unique IDs and internal links when
+              indenting and unindenting nodes.</li>
+
+              <li>Avoid widget focus problems when editing data on conditional
+              types.</li>
+
+              <li>Maintain the output format cursor position when changing
+              fields in the configure dialog.</li>
+
+              <li>Fix importing of generic XML documents that have nodes with
+              no data.</li>
+
+            </ul>
+
+            <ul><b>Missing Features (not implemented yet):</b>
+
+              <li>Plugin support.</li>
+
+              <li>Language translations.</li>
+
+              <li>Help documentation.</li>
+
+              <li>Font appearance options for views.</li>
+
+              <li>Previous/next selection history commands.</li>
+
+              <li>Customized keyboard shortcuts.</li>
+
+              <li>Customized toolbars.</li>
+
+              <li>Prefix/suffix sibling tags for HTML tables, bullets,
+              etc.</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be fully compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>May 2, 2013 - Release 1.9.1 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of a full rewrite
+              of TreeLine. It is not feature complete and probably contains
+              bugs. Testing and bug reports are appreciated, but the stable
+              release (TreeLine 1.4.x) should be used for critical work.</li>
+
+              <li>The documentation is not included yet.  It needs to be
+              updated to cover the new features.</li>
+
+              <li>The GUI and documentation translations have not yet been
+              done.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Added TreeLine file compression and file encryption,
+              controlled from a File &gt; Properties dialog box.</li>
+
+              <li>Tree node open/close states are restored for recent
+              files.</li>
+
+              <li>Added derived data types that keep the field list of their
+              generic type.</li>
+
+              <li>Added conditional type setting that changes icons or output
+              format based on field contents.</li>
+
+              <li>Other field references (file info, ancestors, children) can
+              be used in node output formats and in print headers &amp;
+              footers.</li>
+
+              <li>Added an HTML file export to a single file with a navigation
+              pane on the side.</li>
+
+              <li>Allow embedded blank lines in non-HTML node output
+              formats.</li>
+
+              <li>Added an output separator config option for combination
+              fields and child references.</li>
+
+              <li>Add an option to set the first day of the week for calendar
+              widgets.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed problems with pasting or dragging multiple nodes.</li>
+
+              <li>Made removing fields from multi-line output formats work
+              properly.</li>
+
+              <li>Prevent duplicate unique IDs from being created after
+              undoing the deletion of a branch.</li>
+
+              <li>Fixed node sorting of non-text nodes (numbers, dates, times,
+              etc.)</li>
+
+              <li>Avoid placing calendar widgets partially off screen if near
+              the bottom.</li>
+
+              <li>Limit the automatic height increases for text edit cells to
+              avoid confusing double scroll bars.</li>
+
+            </ul>
+
+            <ul><b>Missing Features (not implemented yet):</b>
+
+              <li>Plugin support.</li>
+
+              <li>Language translations.</li>
+
+              <li>Help documentation.</li>
+
+              <li>Spell checking.</li>
+
+              <li>Font appearance options for views.</li>
+
+              <li>Previous/next selection history commands.</li>
+
+              <li>Customized keyboard shortcuts.</li>
+
+              <li>Customized toolbars.</li>
+
+              <li>Automatic node numbering.</li>
+
+              <li>Prefix/suffix sibling tags for HTML tables, bullets,
+              etc.</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>February 6, 2013 - Release 1.9.0 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot of a full rewrite
+              of TreeLine. It is far from feature complete and probably
+              contains bugs. Testing and bug reports are appreciated, but the
+              stable release (TreeLine 1.4.x) should be used for critical
+              work.</li>
+
+              <li>The documentation is not included yet.  It needs to be
+              updated to cover the new features.</li>
+
+              <li>The GUI and documentation translations have not yet been
+              done.</li>
+
+            </ul>
+
+            <ul><b>Major New Features:</b>
+
+              <li>TreeLine has been fully rewritten using Python 3.</li>
+
+              <li>Improved performance due to direct use of model-view classes
+              for views and ElementTree for input/output.</li>
+
+              <li>A table based data editor pane (much faster).</li>
+
+              <li>WYSIWYG formatting in the data editor view.</li>
+
+              <li>Real-time updates of the same file shown in multiple
+              windows.</li>
+
+              <li>Improved printing and print preview performance.</li>
+
+              <li>Saves print options with the TreeLine file.</li>
+
+              <li>Built-in print to PDF function.</li>
+
+              <li>More searching options.</li>
+
+              <li>A filtering command shows matches in a simple list.</li>
+
+              <li>Sorting parameters can be saved with each data type.</li>
+
+              <li>The basic text field type allows formatting, preserves line
+              breaks and allows HTML restricted characters.</li>
+
+              <li>A calendar widget can be used for editing date fields.</li>
+
+              <li>Internal link fields and inline internal links are easier to
+              use.</li>
+
+              <li>An external link type supports http, https, file and mailto
+              protocols.</li>
+
+              <li>Relative paths are supported for external links and
+              pictures.</li>
+
+              <li>A regular expression field type can match patterns (phone
+              numbers, email addresses, etc.)</li>
+              
+              <li>Unique node IDs are automatically generated and
+              updated.</li>
+
+              <li>A new windows installer allows a single-user,
+              non-administrator install.</li>
+
+              <li>Includes better support for portable installs.</li>
+
+            </ul>
+
+            <ul><b>Missing Features (not implemented yet):</b>
+
+              <li>File compression and file encryption.</li>
+
+              <li>Plugin support.</li>
+
+              <li>Language translations.</li>
+
+              <li>Help documentation.</li>
+
+              <li>Saving of tree open/close states.</li>
+
+              <li>Spell checking.</li>
+
+              <li>Font appearance options for views.</li>
+
+              <li>Previous/next selection history commands.</li>
+
+              <li>Customized keyboard shortcuts.</li>
+
+              <li>Customized toolbars.</li>
+
+              <li>Generic and derived data types.</li>
+
+              <li>Conditional type setting.</li>
+
+              <li>Automatic node numbering.</li>
+
+              <li>Other field references (file info, ancestors,
+              children).</li>
+
+              <li>Prefix/suffix sibling tags for HTML tables, bullets,
+              etc.</li>
+
+            </ul>
+
+            <ul><b>Compatibility Notes:</b>
+
+              <li>There are some file format changes between TreeLine 1.4.x
+              and this version of TreeLine.</li>
+
+              <li>Older files opened in this version are automatically
+              converted when saved.</li>
+
+              <li>Files saved in this version may not be compatible with
+              TreeLine 1.4.x.</li>
+
+            </ul>
+
+            <h2>November 11 2011 - Release 1.4.1 (stable release)</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed failures due to bad internal references when opening
+              encrypted files in multiple windows.</li>
+
+              <li>Avoid corruption of user option settings after attempting to
+              automatically open an imported file as the last file used.</li>
+
+              <li>Fix problems with imported files when the user sets new
+              files to be encrypted by default.</li>
+
+              <li>Prompt the user for a password when copying types from an
+              encrypted TreeLine file.</li>
+
+            </ul>
+
+            <h2>April 14, 2011 - Release 1.4.0 (new stable release)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is a new stable release, ending the 1.3.x development
+              series.</li>
+
+              <li>This release is available in English, French and German,
+              although the French documentation is not completely up to date.
+              Volunteers to do additional translations are welcome.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The file browser used for editing path-based fields now
+              remembers the previously used directory.</li>
+
+              <li>Added icons for the New Window and Close Window commands so
+              they can be added to toolbars.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a bug that could keep the column control from being
+              enabled during HTML export.</li>
+
+            </ul>
+
+            <ul><b>Major New Features Since 1.2.x:</b>
+
+              <li>Different files can be open in multiple TreeLine windows
+              within the same TreeLine session. This is controlled with
+              commands in the new "Window" menu.</li>
+
+              <li>The "Window-&gt;New Window" command creates a new window
+              with views of the same TreeLine file. Changes in either window
+              are saved in the same document.</li>
+
+              <li>Starting TreeLine (from a shortcut, file association or
+              command line) will activate an existing TreeLine session if it
+              is already running.</li>
+
+              <li>An "Add internal link" context menu has been added to text
+              boxes in the data editor. It prompts for another node to be
+              clicked with the mouse, then an inline internal link is added
+              with that node's reference information.</li>
+
+              <li>Added an "HTML directory pages" export option. This will
+              export a directory structure with an HTML file for every node. A
+              navigation pane on the left side of each page contains links to
+              nearby nodes.</li>
+
+              <li>New dialog buttons will restore the default configuration
+              when customizing toolbars or shortcuts.</li>
+
+              <li>A new text search function has been added to the help
+              viewer.</li>
+
+            </ul>
+
+            <h2>January 5, 2011 - Release 1.3.5 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It may contain
+              bugs. Testing and bug reports are appreciated, but the stable
+              release (TreeLine 1.2.x) should be used for critical work.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Incorporated some minor code clean-ups (thanks to Erik
+              Wegner for identifying them).</li>
+
+              <li>The Windows binary is now based on the Python 2.7, Qt 4.7
+              and PyQt 4.8 libraries.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed incorrect sorting by type with siblings of mixed
+              types.</li>
+
+              <li>Fixed problems showing child lines in print previews if the
+              lines option was changed with the preview open.</li>
+
+              <li>Really disable click-to-rename if the general option is
+              unselected.</li>
+
+            </ul>
+
+            <h2>September 22, 2010 - Release 1.3.4 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It may contain
+              bugs. Testing and bug reports are appreciated, but the stable
+              release (TreeLine 1.2.x) should be used for critical work.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Added ico and gif as valid tree icon types.</li>
+
+              <li>The French GUI translation has been updated, but the
+              documentation translation is still out of date.</li>
+
+              <li>Minor updates have been made to the German GUI
+              translation.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>The list of windows in the Window menu is now properly
+              updated after saving a file with a new name.</li>
+
+              <li>Fixed a bug that could cause spell checks to hang.</li>
+
+            </ul>
+
+            <h2>June 24, 2010 - Release 1.3.3 (unstable development
+            snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It may contain
+              bugs. Testing and bug reports are appreciated, but the stable
+              release (TreeLine 1.2.x) should be used for critical work.</li>
+
+              <li>German is the only GUI and documentation translation that
+              has been updated so far.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>A new text search function has been added to the help
+              viewer.</li>
+
+              <li>The keyboard shortcuts for scrolling the right-hand views
+              (Ctrl+Page Up and Ctrl+Page Down) now cycle through the Data
+              Editor view pages if there is no more room to scroll</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The Linux system requirements have been updated to indicate
+              that Qt 4.4 or higher is now required.</li>
+
+              <li>The Windows installer now sets the sample and readme
+              documents to read-only status.</li>
+
+              <li>The German GUI and documentation translation has been
+              updated.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>The cascading of new windows has been fixed. It now
+              references the current position of the previous window, and it
+              avoids cascading windows off of the screen.</li>
+
+              <li>The Data Editor widgets are now sized correctly when
+              TreeLine is started in Data Editor mode.</li>
+
+              <li>The spell checker and the Linux installation script have
+              been updated to avoid subprocess command depreciation
+              warnings.</li>
+
+            </ul>
+
+            <h2>May 14, 2010 - Release 1.3.2 (unstable development
+              snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It may contain
+                bugs. Testing and bug reports are appreciated, but the stable
+                release (TreeLine 1.2.x) should be used for critical
+                work.</li>
+
+              <li>The GUI and documentation translations have not yet been
+                updated.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Updated the ReadMe file to cover the new features added
+                during this development cycle.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a major bug that prevented files from being saved at
+              the "Save Changes?" dialog when closing a modified file.</li>
+
+            </ul>
+
+            <h2>April 8, 2010 - Release 1.3.1 (unstable development
+              snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It may contain
+              bugs. Testing and bug reports are appreciated, but the stable
+              release (TreeLine 1.2.x) should be used for critical work.</li>
+
+              <li>The documentation has not yet been updated to cover the new
+              features.</li>
+
+              <li>The GUI and documentation translations have not yet been
+              updated.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>Added a menu command that updates another window containing
+              the same file (without waiting for a focus change). This command
+              also has a keyboard shortcut (Ctrl+W).</li>
+
+              <li>A menu option has been added to hide the status bar.  There
+              is also a new general option to hide it at startup. A hidden
+              status bar is automatically shown temporarily for important
+              messages.</li>
+
+              <li>A new button on the toolbar editing dialog will restore the
+              default toolbar configuration.</li>
+
+              <li>A new button on the keyboard shortcuts editing dialog will
+              restore the default shortcut configuration.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Portability on Windows has been improved. A "treeline.ini"
+              config file in TreeLine's "lib" directory will be used if it's
+              present and there are no config files in the user's application
+              data directory.</li>
+
+              <li>The Change Selected Data command has been updated to use
+              Data Editor formats for dates and times.</li>
+
+              <li>An alternate TreeLine executable file (treeline_dos.exe) has
+              been added to make batch command-line operations work from
+              Windows.</li>
+
+              <li>Additional plugin methods have been added for handling files
+              and languages.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a problem spell checking with older versions of aspell
+              when Unicode characters were present.</li>
+
+            </ul>
+
+            <h2>October 14, 2009 - Release 1.3.0 (unstable development
+              snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It is not feature
+              complete and probably contains bugs. Testing and bug reports are
+              appreciated, but the stable release (TreeLine 1.2.x) should be
+              used for critical work.</li>
+
+              <li>The documentation has not yet been updated to cover the new
+              features.</li>
+
+              <li>The GUI and documentation translations have not yet been
+              updated.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>Multiple TreeLine windows with different files can be open
+              within the same TreeLine session. The "Open files in new
+              windows" general option controls whether new windows are used
+              when opening or creating files.</li>
+
+              <li>A "Window" menu has been added with commands to create new
+              windows, close windows, or select from a list of current
+              windows.</li>
+
+              <li>The "Window-&gt;New Window" command creates a new window
+              with views of the same TreeLine file. Changes in either window
+              are saved in the same document. This can be used to work in
+              different sections of the file simultaneously. For performance
+              reasons, the non-active window does not show the changes made in
+              the active window until the non-active window is focused.</li>
+
+              <li>Starting TreeLine (from a shortcut, file association or
+              command line) will activate an existing TreeLine session if it
+              is already running. A new window will be opened if an unopened
+              file was specified by file association or in the command
+              line.</li>
+
+              <li>An "Add internal link" context menu has been added to text
+              boxes in the data editor. It prompts for another node to be
+              clicked with the mouse, then an inline internal link is added
+              with that node's reference information.</li>
+
+              <li>Added an "HTML directory pages" export option. This will
+              export to a directory structure with an HTML file for every
+              node. A navigation pane on the left side of each page contains
+              links to the node's parent, uncles and children.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The general options dialog has been split into three columns
+              for better viewing on small, wide displays.</li>
+
+              <li>Additional export commands and export options have been
+              added to the plugin interface.</li>
+
+              <li>To avoid a problem on the Mac platform, when TreeLine is run
+              for the first time, it lets the OS determine the window
+              position.</li>
+
+            </ul>
+
+            <h2>October 12, 2009 - Release 1.2.4 (stable release)</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Added a work-around for a bug in PyQt 4.6's clipboard
+              support that can prevent TreeLine from starting.</li>
+
+              <li>Prevent an uncommanded horizontal scrolling to the left of
+              the tree view when changing the selection.</li>
+
+            </ul>
+
+            <h2>May 5, 2009 - Release 1.2.3 (stable release)</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>A new build has been created for use on the Windows 98
+              operating system. This fixes problems that made TreeLine
+              1.2.2 unusable on Windows 98.</li>
+
+              <li>Data copied to the Windows clipboard is now preserved after
+              exiting from TreeLine.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a bug on Windows that showed an error message at
+              program exit if the copy command had been used during the
+              session.</li>
+
+              <li>In an HTML directories export, characters that are illegal
+              in directory names are now correctly removed.</li>
+
+            </ul>
+
+            <h2>January 8, 2009 - Release 1.2.2 (stable release)</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>Added German translations of the GUI and the ReadMe
+              file.</li>
+
+              <li>Added a few missing strings to the translation files.</li>
+
+              <li>Substituted some imported modules to avoid deprecation
+              warnings in Python 2.6. Note that Python 2.3 is no longer
+              supported.</li>
+
+              <li>The windows binary has been updated to use Python
+              2.6, and the installer has been tweaked to reduce DLL
+                conflicts.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed problems using the tab key to change focus from the
+              tree to the data editor.</li>
+
+              <li>ID numbers are now properly assigned to new nodes with
+              UniqueID fields in the title.</li>
+
+              <li>Fixed problems creating nodes with child count fields in the
+              titles.</li>
+
+            </ul>
+
+            <h2>November 4, 2008 - Release 1.2.1 (stable release)</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fix the loss of entered text when the renaming of a node is
+              ended by a command that changes the selected node.</li>
+
+              <li>Problems with opening files with Unicode file names from the
+              command line or from a file association have been fixed.</li>
+
+              <li>Fixed problems with JPEG and GIF image support in the
+              Windows binary build.</li>
+
+              <li>When commands change the tree view, it no longer scrolls
+              vertically unless the current node is not visible.</li>
+
+              <li>Fixed problems with files set to both compressed and
+              encrypted modes. But note that compressing an encrypted file
+              still does not significantly reduce its size.</li>
+
+              <li>Problems on the Macintosh platform with detecting the text
+              encoding and with setting the default theme have been
+              fixed.</li>
+
+            </ul>
+
+            <h2>June 17, 2008 - Release 1.2.0 (new stable release)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is a new stable release, ending the 1.1.x development
+              series.</li>
+
+              <li>This release is only available in English and French. The
+              1.0.2 release is still available, including German, Portuguese,
+              Russian and Spanish translations. Volunteers to update the
+              translations are welcome.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The French translations of the GUI and the ReadMe file have
+              been updated.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>When restoring an auto-saved backup file, TreeLine no longer
+              replaces a the main file with the backup if the backup is not a
+              valid TreeLine file.</li>
+
+              <li>Fixed a minor bug in the Configure Data Types dialog caused
+              by unselecting a field in the Output pane.</li>
+
+            </ul>
+
+            <ul><b>Major New Features Since 1.0.x:</b>
+
+              <li>TreeLine was extensively rewritten to port it to the Qt4
+              library (previous versions used Qt3.x on Linux and Qt2.3 on
+              Windows). Benefits include updated widgets and removal of the
+              non-commercial license exception in Windows.</li>
+
+              <li>Preformatted templates have been added for new TreeLine
+              documents. User-created templates can also be added.</li>
+
+              <li>The content of right-hand views varies based on the
+              selection and other options. A single selection still shows
+              panes with the parent and its children, but a multiple selection
+              will show all of the selected nodes in a single pane. Also, the
+              Data Output view can optionally show an indented view of all
+              descendants, and the Data Editor view splits the display into
+              pages to speed up display.</li>
+
+              <li>More commands can make use of a multiple selection instead
+              of just using the single active node. Also, an option can set
+              the sequence of showing and exporting multiple selections to
+              either tree order or selection order.</li>
+
+              <li>There is a tab on the left-hand view for a flat node list
+              showing the selected nodes and all of their descendants. It is
+              most useful for showing the results of filtering. There is a
+              conditional filter for specific rules and a text filter that
+              searches all fields for a string.</li>
+
+              <li>Several dialogs have been reworked for usability. The
+              Configure Data Types and Print Options dialogs use tabs for
+              better organization. The Configure dialog also has initially
+              hidden advanced features and is now modeless, so it can be left
+              open while applying configuration changes. The Sort, Export and
+              Print Preview dialogs have also been updated.</li>
+
+              <li>Navigation through the tree is simplified by new commands
+              that step through the selection history. Also, search strings
+              are now highlighted in the Data Output view for text
+              searches.</li>
+
+              <li>New dialogs have been added to customize keyboard shortcuts
+              and tool bar buttons. There is also a directory for user-defined
+              tree icons.</li>
+
+              <li>New file import and export options convert between an
+              outline and an Open Document Format (ODF) text document,
+              compatible with OpenOffice.org and KWord. Formatting is not
+              maintained.</li>
+
+              <li>A Unique ID field type has been added that is automatically
+              loaded with unique numbers. It is useful for link
+              references.</li>
+
+            </ul>
+
+            <h2>January 15, 2008 - Release 1.1.10 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It is nearly ready
+              to become a stable release, but it could still contain bugs.
+              Testing and bug reports are appreciated.</li>
+
+              <li>The French translation of the GUI is the only one completed
+              so far. None of the documentation translations have been
+              updated.</li>
+
+              <li>On Linux, running TreeLine requires Qt version 4.1 or higher
+              and PyQt version 4.0 or higher. Binary packages may not be
+              available yet for these libraries in some distributions.</li>
+
+              <li>If you've installed previous development releases, it is
+              recommended that you delete the old configuration file
+              ("~/.treeline-1.1/treelinerc" on Linux, "Documents and
+              Settings\&lt;login&gt;\Application
+              Data\bellz\treeline-1.1\treeline.ini" on Windows) before running
+              this release.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Exporting to HTML directories has been improved. The file
+              names are generated from the reference field (were from the
+              first field). Internal links to nodes now work properly in the
+              exported files.</li>
+
+              <li>When saving a new file, the Save-As dialog now defaults to
+              the top directory in the recent file list.</li>
+
+              <li>A translation of the GUI in French is now available.  The
+              i18n installation file is a separate download.</li>
+
+              <li>The ReadMe documentation file has been updated to clarify
+              certain usage issues.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>The other controls in the configuration dialog are updated
+              immediately when setting a data type to be derived from a
+              generic.</li>
+
+              <li>A recent file list bug that affected the httpload plugin has
+              been fixed. Also, a library need by the plugin (urllib) has been
+              added to the Windows installation.</li>
+
+              <li>An error message about removing a status bar widget has been
+              eliminated.</li>
+
+              <li>An error on a Mac when setting the language encoding has
+              been fixed.</li>
+
+              <li>Various issues with file paths containing Unicode characters
+              have been fixed.</li>
+
+            </ul>
+
+            <h2>June 13, 2007 - Release 1.1.9 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It could contain
+              bugs. Testing and bug reports are appreciated, but the stable
+              release (TreeLine 1.0.x) should be used for critical work.</li>
+
+              <li>The translations of the GUI and of the documentation have
+              not been updated.</li>
+
+              <li>On Linux, running TreeLine requires Qt version 4.1 or higher
+              and PyQt version 4.0 or higher. Binary packages are not yet
+              available for these libraries in some distributions.</li>
+
+              <li>If you've installed previous development releases, it is
+              recommended that you delete the old configuration file
+              ("~/.treeline-1.1/treelinerc" on Linux, "Documents and
+              Settings\&lt;login&gt;\Application
+              Data\bellz\treeline-1.1\treeline.ini" on Windows) before running
+              this release.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Initially select the top filtering result in the flat view
+              to avoid issues with a blank selection.</li>
+
+              <li>Avoid entering rename mode when clicking on a multiple
+              selection in the flat view.</li>
+
+              <li>Maintain the size of the type icon dialog during a
+              session.</li>
+
+              <li>Remove the redundant printing units option from the general
+              options dialog.</li>
+
+              <li>Extensively update the ReadMe documentation to match the
+              current feature set.</li>
+
+              <li>Add a new file template for TODO lists.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fix incorrect internal references in groups of pasted
+              nodes.</li>
+
+              <li>Abort a tree rename operation if the new name does not match
+              the title format.</li>
+
+              <li>Correctly add a field to the generic type when numbering a
+              derived type.</li>
+
+              <li>Properly update the pull-down choices for a choice or
+              combination field after a configuration change.</li>
+
+              <li>Enable the conditional type button immediately after
+              defining a type as derived.</li>
+
+              <li>Remove the page number field from the available file
+              reference fields in the main configuration settings.</li>
+
+              <li>Properly update the Data menu after starting a filtering
+              operation.</li>
+
+              <li>Fix an error due to a missing system language setting.</li>
+
+              <li>Properly handle a file open error due to an unknown field
+              type.</li>
+
+            </ul>
+
+            <h2>June 1, 2007 - Release 1.0.2 (stable bug-fix release)</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>The environment variable LC_MESSAGES is now checked before
+              the LANG variable to determine the user's preferred
+              language.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Problems with automatically adding a new field to derived
+              data types when using the Data-&gt;Numbering and the
+              Data-&gt;Flatten... commands have been fixed.</li>
+
+              <li>Fixed a crash at file open if the file's owner is not found
+              in a Linux machine's user password database.</li>
+
+            </ul>
+
+            <h2>May 22, 2007 - Release 1.1.8 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It probably
+              contains bugs. Testing and bug reports are appreciated, but the
+              stable release (TreeLine 1.0.x) should be used for critical
+              work.</li>
+
+              <li>The documentation and GUI translations have not been
+              updated.</li>
+
+              <li>On Linux, running TreeLine requires Qt version 4.1 or higher
+              and PyQt version 4.0 or higher. Binary packages are not yet
+              available for these libraries in some distributions.</li>
+
+              <li>If you've installed previous development releases, it is
+              recommended that you delete the old configuration file
+              ("~/.treeline-1.1/treelinerc" on Linux, "Documents and
+              Settings\&lt;login&gt;\Application
+              Data\bellz\treeline-1.1\treeline.ini" on Windows) before running
+              this release.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Translation of ODF text documents has been added to the
+              command line batch processing options.</li>
+
+              <li>The environment variable LC_MESSAGES is now checked before
+              the LANG variable to determine the user's preferred
+              language.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Problems writing the options file when there are Unicode
+              characters in the username have been fixed.</li>
+
+              <li>Various minor bugs in Unicode handling have been fixed.</li>
+
+            </ul>
+
+            <h2>May 3, 2007 - Release 1.1.7 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It is not feature
+              complete and probably contains bugs. Testing and bug reports are
+              appreciated, but the stable release (TreeLine
+              1.0.x) should be used for critical work.</li>
+
+              <li>The documentation and GUI translations have not been
+              updated.</li>
+
+              <li>On Linux, running TreeLine requires Qt version 4.1 or higher
+              and PyQt version 4.0 or higher. Binary packages are not yet
+              available for these libraries in some distributions.</li>
+
+              <li>If you've installed previous development releases, it is
+              recommended that you delete the old configuration file
+              ("~/.treeline-1.1/treelinerc" on Linux, "Documents and
+              Settings\&lt;login&gt;\Application
+              Data\bellz\treeline-1.1\treeline.ini" on Windows) before running
+              this release.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>Preformatted templates have been added. The File-&gt;New
+              command brings up a dialog with a list of available templates.
+              The dialog is also shown at startup if the recent file list is
+              empty. Default templates are installed into TreeLine library
+              directories. New templates can be added to a user templates
+              directory in the user settings location.  Template file names
+              consist of a number for sorting, a language code and the name of
+              the template.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The Save As dialog in Windows is now the native dialog.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Problems exporting to an ODF text document when blank fields
+              are encountered have been fixed.</li>
+
+              <li>Added appropriate error messages to the Linux installer if
+              some installer files are not found.</li>
+
+            </ul>
+
+            <h2>April 17, 2007 - Release 1.1.6 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It is not feature
+              complete and probably contains bugs. Testing and bug reports are
+              appreciated, but the stable release (TreeLine
+              1.0.x) should be used for critical work.</li>
+
+              <li>The documentation and GUI translations have not been
+              updated.</li>
+
+              <li>On Linux, running TreeLine requires Qt version 4.1 or higher
+              and PyQt version 4.0 or higher. Binary packages are not yet
+              available for these libraries in some distributions.</li>
+
+              <li>If you've installed previous development releases, it is
+              recommended that you delete the old configuration file
+              ("~/.treeline-1.1/treelinerc" on Linux, "Documents and
+              Settings\&lt;login&gt;\Application
+              Data\bellz\treeline-1.1\treeline.ini" on Windows) before running
+              this release.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>A new command (View-&gt;Show Output Descendants) toggles the
+              Data Output child view from showing only child nodes to showing
+              an indented view of all descendant nodes. A button was added to
+              the default toolbar for this command. Also, a new general option
+              can make the descendant view the default at startup.</li>
+
+              <li>A new file export option converts an outline to an Open
+              Document Format (ODF) text document, compatible with
+              OpenOffice.org and KWord. The title of each node is assigned a
+              heading style at the appropriate level. Any other text in the
+              output of each node becomes normal text under the heading. Any
+              HTML formatting is stripped.</li>
+
+              <li>ODF text documents can be imported. The node structure is
+              based on the heading styles assigned in the document. Any text
+              under each heading is assigned to that heading's node.
+              Formatting is not maintained.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>New commands were added to the Data Editor context menus
+              that open the Configure Data Types dialog with the editor's type
+              and/or field already selected.</li>
+
+              <li>Keyboard shortcuts were added for the commands that add HTML
+              tags in the Data Editor. Icons were also added to these
+              commands, so the toolbar editor can be used to place them on a
+              toolbar if desired.</li>
+
+              <li>The interface for writing plugin modules was improved by
+              adding interfaces to the keyboard shortcut editor and the
+              toolbar editor. Also, a plugin interface to get the plugin's
+              directory was added.</li>
+
+              <li>Any default text for new fields is added when a node's data
+              type is changed (not just to a new node), as long as there isn't
+              already data in a field with the same name.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a problem with the automatic opening of the last file
+              used if there are no valid recent files.</li>
+
+              <li>Fixed a crash at file open if the file's owner is not found
+              in a Linux machine's user password database.</li>
+
+              <li>Issues with the display of text have been fixed if the Qt
+              library being used is version 4.2.3 or greater (the Windows
+              build now uses 4.2.3). These issues showed up when scroll bars
+              were shown and could hide the right edge of the text or the last
+              line.</li>
+
+              <li>Multiple issues with dragging or pasting nodes between
+              sessions of TreeLine were fixed.</li>
+
+              <li>If the Configure Data Types dialog is open, it is properly
+              updated after the use of the undo command.</li>
+
+              <li>The find dialog is properly focused when repeatedly
+              shown.</li>
+
+              <li>Fixed problems occurring when attempting to print an empty
+              branch or an empty selection.</li>
+
+              <li>Fixed problems with the export of HTML directories. It now
+              removes illegal characters from directory names created from
+              field contents.</li>
+
+              <li>Auto choice fields are now properly updated after
+              configuration changes.</li>
+
+              <li>A missing help menu was added to the Unique ID field format
+              editor.</li>
+
+            </ul>
+
+            <h2>March 8, 2007 - Release 1.0.1 (stable bug-fix release)</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>A Russian translation of the GUI and ReadMe file has been
+              added. As a result, there are now six supported languages
+              (English, French, German, Portuguese, Russian and Spanish).</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a problem using drag &amp; drop on a node with a
+              conditional type.</li>
+
+              <li>Avoid problems caused by using the Edit-&gt;Cut command with
+              the root node included in the selection.</li>
+
+              <li>The importing of files with bad Unicode characters has been
+              improved.</li>
+
+            </ul>
+
+            <h2>February 22, 2007 - Release 1.1.5 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+            <li>This is an unstable development snapshot. It is not feature
+            complete and probably contains bugs. Testing and bug reports are
+            appreciated, but the stable release (TreeLine
+            1.0.0) should be used for critical work.</li>
+
+            <li>The documentation and GUI translations have not been
+            updated.</li>
+
+            <li>On Linux, running TreeLine requires Qt version 4.1 or higher
+            and PyQt version 4.0 or higher. Binary packages are not yet
+            available for these libraries in some distributions.</li>
+
+            <li>If you've installed previous development releases, it is
+            recommended that you delete the old configuration file
+            ("~/.treeline-1.1/treelinerc" on Linux, "Documents and
+            Settings\&lt;login&gt;\Application
+            Data\bellz\treeline-1.1\treeline.ini" on Windows) before running
+            this release.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>A Unique ID field type has been added. The field is
+              automatically loaded with unique numbers. Initially, the field's
+              format string is set to the desired first number in the series,
+              with optional leading zeros and optional leading or trailing
+              characters. All nodes of the data type will get an automatically
+              assigned ID. The field format string will always show the next
+              available number, which will be given to the next new node of
+              that type.</li>
+
+              <li>The node sorting commands have been consolidated into a
+              single new dialog. This provides more options for selecting what
+              to sort (all nodes, branches, children or siblings) and how (by
+              types and fields or by titles).</li>
+
+              <li>An option has been added to the numbering dialog to only
+              number nodes where the number field already exists. This allows
+              node types in the branch that do not have the number field to be
+              skipped.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The tree view no longer scrolls horizontally when the
+              selection is changed.</li>
+
+              <li>The focus behavior of the Data Editor view has been tweaked
+              to allow easier tabbing between widgets.</li>
+
+              <li>Clicking on a selected node to rename it is now disabled
+              when multiple nodes are selected. This avoids initiating a
+              rename when the intent was to modify a multiple selection.</li>
+
+              <li>The Insert Sibling Before command has been added to the node
+              right-click context menu for consistency.</li>
+
+              <li>The Spell Check dialog is no longer hidden and re-shown
+              between each misspelled word, resulting in smoother
+              operation.</li>
+
+              <li>The Output tab of the Configure Data Types dialog has been
+              adjusted to avoid changing the dialog size when toggling the
+              advanced options.</li>
+
+              <li>The fonts in the Print Options dialog are sorted case
+              insensitively, and the size of the dialog is fixed regardless of
+              the selected font.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a crash when opening a file with the flat view
+              shown.</li>
+
+              <li>Fixed problems occurring when the number of toolbars was set
+              to zero.</li>
+
+              <li>Fixed undo operations for Numbering, data Add Category Level
+              and Arrange by Reference commands.</li>
+
+              <li>Fixed problems with undo and delete commands issued while a
+              node is being renamed.</li>
+
+              <li>Fixed problems with renaming data types and fields in the
+              Configure Data Types dialog.</li>
+
+              <li>Avoid adding duplicate types to Other Field References in
+              the advanced Output tab of the Configure Data Types dialog.</li>
+
+              <li>No longer allow the Edit Cut command to operate if the root
+              node is selected.</li>
+
+              <li>Fixed a freeze of the spell checker on some platforms.</li>
+
+              <li>An empty rectangle that was sometimes shown on the status
+              line at the bottom of the main window has been removed.</li>
+
+              <li>An occasional problem with the import of generic XML was
+              fixed.</li>
+
+              <li>The importing of files with bad Unicode characters has been
+              improved.</li>
+
+              <li>The restoring of tree states when opening a file has been
+              made more robust.</li>
+
+              <li>Fixed several other minor tracebacks that can show up in a
+              terminal or log file.</li>
+
+            </ul>
+
+            <h2>January 18, 2007 - Release 1.1.4 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It is not feature
+              complete and is sure to contain bugs. Testing and bug reports
+              are appreciated, but the stable release (TreeLine
+              1.0.0) should be used for critical work.</li>
+
+              <li>The documentation and GUI translations have not been
+              updated.</li>
+
+              <li>On Linux, running TreeLine requires Qt version 4.1 or higher
+              and PyQt version 4.0 or higher. Binary packages are not yet
+              available for these libraries in some distributions.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>Previous and Next Selection commands have been added to the
+              View menu. These commands step through a history of tree
+              selections for quicker navigation.</li>
+
+              <li>When using the Find command with the Data Output view
+              visible, the search string occurrences are highlighted in the
+              output. Note: in Linux, this feature requires Qt v4.2 or greater
+              and PyQt v4.1 or greater.</li>
+
+              <li>An icons directory has been added to the user configuration
+              directory ("~/.treeline-1.1/icons" on Linux, "Documents and
+              Settings\&lt;user&gt;\Application Data\bellz\treeline-1.1\icons"
+              on Windows). Image files (PNG or BMP) placed into this directory
+              are available for use as tree icons.</li>
+
+              <li>"Move First" and "Move Last" commands have been added to the
+              Edit menu. These commands move a child node to be the first or
+              last child of its parent.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Horizontal scrolling of the tree view when the contents are
+              wide is now supported.</li>
+
+              <li>The non-interactive command line options have been ported
+              from the stable version. These options allow batch processing of
+              file imports and exports.</li>
+
+              <li>Support for plugin extension modules has been ported from
+              the stable version. The interfaces to TreeLine functions are
+              unchanged, but existing plugins will need to be ported to the
+              Qt4 library. An updated version of the httpLoad plugin is
+              available.</li>
+
+              <li>A plugins directory has been added to the user configuration
+              directory. This allows plugin installation without elevated
+              privileges.</li>
+
+              <li>The code required to support GUI translations has been
+              ported from the stable version, but the actual translations have
+              not yet been updated.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>The problem with cut/copy/paste operations in Windows that
+              produced an error message at application exit was fixed.</li>
+
+              <li>Fixed several problems with the undo of changes to the Data
+              Type Configuration.</li>
+
+              <li>A bug that could sometimes add an extra node during renaming
+              in the Tree View has been fixed.</li>
+
+              <li>Problems encountered when typing a replacement word during
+              spell check have been fixed.</li>
+
+              <li>A spell check language setting in File Options that is not
+              available on the system is now ignored.</li>
+
+            </ul>
+
+            <h2>December 21, 2006 - Release 1.1.3 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It is not feature
+              complete and is sure to contain bugs. Testing and bug reports
+              are appreciated, but the stable release (TreeLine
+              1.0.0) should be used for any critical work.</li>
+
+              <li>Some features from the stable release are not yet
+              implemented here. These include command line options, plugin
+              support and translation support. Also, the documentation has not
+              been updated.</li>
+
+              <li>On Linux, running TreeLine requires Qt version 4.1 or higher
+              and PyQt version 4.0 or higher. Binary packages are not yet
+              available for these libraries in some distributions.</li>
+
+              <li>One known bug in the Windows version produces an error
+              message at application exit if cut/copy/paste operations were
+              done during the session.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>A new built-in editor for keyboard shortcuts has been added
+              to the Tools menu. It has two tabs: one for menu commands and
+              one for other commands. Simply press the desired key combination
+              to change the shortcut in the selected entry.  In general,
+              printable characters without Ctrl or Alt modifiers should not be
+              used for shortcuts.  Although the editor will accept them, they
+              may not work properly when certain widgets are focused.</li>
+
+              <li>A dialog to customize the tool bars has been added. It is
+              accessed from the Tools menu. This allows the user to select
+              small or large icons, define the number of tool bars, and define
+              the commands included in each tool bar.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The saving of node open/close states for recently opened
+              files has been ported from the stable version.</li>
+
+              <li>The restoring of splitter sizes and the active right-hand
+              tab from the previous session has been ported from the stable
+              version.</li>
+
+              <li>The TreeLine configuration files now include a version
+              number (.treeline-1.1 on Linux, treeline-1.1.ini on Windows) to
+              avoid incompatibility issues with previous versions.</li>
+
+              <li>The default non-menu keyboard shortcuts have been changed to
+              control-key sequences that function regardless of the focused
+              widget.</li>
+
+              <li>The incremental node title search has been ported from the
+              stable version. The default keyboard shortcut is now
+              Ctrl+/.</li>
+
+              <li>The option to add a node when pressing the enter key has
+              been ported from the stable version.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Searching for nodes with the flat view active now only finds
+              nodes actually present in the flat view.</li>
+
+              <li>Problems with drag &amp; drop of nodes with Unicode content
+              were fixed.</li>
+
+              <li>The Icon Selection dialog under Configure Data Types now
+              scrolls to the currently selected icon when opened.</li>
+
+            </ul>
+
+            <h2>November 22, 2006 - Release 1.1.2 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>All of the notes listed for Version 1.1.1 still apply.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a serious bug that caused TreeLine to crash when using
+              a pull-down combo box on a field in the Data Editor view.</li>
+
+            </ul>
+
+            <h2>November 21, 2006 - Release 1.1.1 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It is not feature
+              complete and is sure to contain bugs. Testing and bug reports
+              are appreciated, but the stable release (TreeLine 1.0.0) should
+              be used for any critical work.</li>
+
+              <li>Several features from the stable release are not yet
+              implemented here. These include keyboard shortcuts for non-menu
+              items, command line options, plugin support and translation
+              support. Also, restoring of tree node open/close states, window
+              split locations and active tabs are not yet available. And the
+              documentation has not been updated.</li>
+
+              <li>On Linux, running TreeLine requires Qt version 4.1 or higher
+              and PyQt version 4.0 or higher. Binary packages are not yet
+              available for these libraries in some distributions.</li>
+
+              <li>One known bug in the Windows version produces an error
+              message at application exit if cut/copy/paste operations were
+              done during the session.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>Printing functionality has been added to the development
+              series. It now includes options to print the entire tree, the
+              selected branches, or just the selected nodes.</li>
+
+              <li>A new Print Options dialog box is tabbed to give easier
+              access to all of the options. There are buttons that give a more
+              logical progression from the options to the print preview and to
+              the print dialog.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The buttons at the bottom of the Configure Data Types dialog
+              have been changed to OK/Apply/Reset/Cancel. This can reduce the
+              number of mouse clicks.</li>
+
+              <li>The Configure Data Types dialog now defaults to the selected
+              node's type when it is shown.</li>
+
+              <li>On Windows, the TreeLine.ini file has been moved from the
+              installation directory to a location under the "Documents and
+              Settings" folder. This avoids problems on multi-user systems and
+              for users with limited access rights.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>The Configure Data Types dialog now updates properly after
+              copying types from another file, adding numbering, and
+              rearranging by category and reference.</li>
+
+              <li>Various problems with node drag &amp; drop that could result
+              in inadvertent drops were fixed.</li>
+
+              <li>A bug that caused the right-hand view splitter to reset to
+              even sizes was fixed.</li>
+
+              <li>Problems with saving changes to the format of file
+              information fields were fixed.</li>
+
+              <li>Issues with some internal links and pictures in the help
+              viewer were fixed.</li>
+
+            </ul>
+
+            <h2>September 15, 2006 - Translation Updates</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>Spanish and Portuguese translations of the GUI and ReadMe
+              file have been added for the stable version of TreeLine.  A typo
+              in the German translation was also fixed.  The French
+              translation remains unchanged.</li>
+
+              <li>The httpload plugin has been updated with French, German,
+              Spanish and Portuguese translations.</li>
+
+            </ul>
+
+            <h2>September 12, 2006 - Release 1.1.0 (unstable development
+                snapshot)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is an unstable development snapshot. It is not feature
+              complete and is sure to contain bugs. Testing and bug reports
+              are appreciated, but the stable release (TreeLine 1.0.0) should
+              be used for any critical work.</li>
+
+              <li>Several features from the stable release are not yet
+              implemented here. These include printing, keyboard shortcuts for
+              non-menu items, command line options, plugin support and
+              translation support. Also, restoring of tree node open/close
+              states, window split locations and active tabs are not yet
+              available. And the documentation has not been updated.</li>
+
+              <li>On Linux, running TreeLine requires Qt version 4.1 or higher
+              and PyQt version 4.0 or higher. Binary packages are not yet
+              available for these libraries in some distributions.</li>
+
+              <li>One known bug in the Windows version produces an error
+              message at application exit if cut/copy/paste operations were
+              done during the session.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>TreeLine was ported to the Qt4 library. This involved a
+              major rewrite of the code. The previous versions used Qt3.x on
+              Linux and Qt2.3 on Windows. Benefits include updated widgets and
+              removal of the non-commercial license exception in Windows.</li>
+
+              <li>The Configure Data Types dialog uses tabs for better
+              organization. Many tabs contain advanced features that can be
+              shown if desired. The dialog is also modeless, so it can be left
+              open while applying configuration changes.</li>
+
+              <li>The content of the right-hand view varies based on the kinds
+              of nodes selected. With a single parent node selected, it splits
+              the view, showing the parent and its children (same as version
+              1.0.0). With a multiple selection or with a childless node
+                selected, it shows all of the selected nodes in a single
+                pane.</li>
+
+              <li>A general option sets the sequence for multiple selection to
+              either tree order or selected order. When nodes are selected
+              with control-click under the selected order option, they show in
+              the right-hand view in the order they were picked. This sequence
+              also applies to copy and export commands.</li>
+
+              <li>More commands make use of a multiple selection instead of
+              just using the single active node. For example, the paste
+              command will add duplicate children under each selected
+              destination node.</li>
+
+              <li>The export command includes options to export the entire
+              tree, the selected branches, or just the selected nodes.</li>
+
+              <li>In order to render the Data Editor right-hand view faster,
+              there is a general option to set the number of "pages" initially
+              shown. By default, only one page is shown.  Buttons allow
+              toggling to the next page or all pages.</li>
+
+              <li>There is a tab on the left-hand view to show a flat node
+              list. It shows the initially selected nodes and all of their
+              descendants. It is probably most useful when using filtering
+              commands.</li>
+
+              <li>A conditional filter selects nodes based on rules for
+              specific data types and fields, and a text filter selects based
+              on finding the given text in any field. Both filters show their
+              results in the tabbed "Flat View" and remain in effect until
+              removed.</li>
+
+              <li>In the advanced mode, a child count field reference can be
+              added to the output configuration. It shows the number of
+              children at a specified descendant level.</li>
+
+            </ul>
+
+            <h2>July 6, 2006 - Release 1.0.0</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>A new version numbering system is being introduced. This
+              release is 1.0.0, to better indicate its stability. The 1.1.x
+              series will be started soon for less stable development
+              releases.</li>
+
+              <li>The German translation of the ReadMe file has been
+              updated.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a problem with duplicate nodes showing up when pasting
+              multiple nodes on Windows.</li>
+
+              <li>Deriving types from other derived types is no longer
+              allowed, since it did not function properly.</li>
+
+              <li>A problem with saving an encrypted file in the German
+              version of TreeLine has been fixed.</li>
+
+            </ul>
+
+            <h2>February 16, 2006 - Release 0.14.1</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>Exported XSLT files now support field prefixes and suffixes.
+              Thanks to Roland Meister for supplying patches.</li>
+
+              <li>Added functions to the plugin interface to allow plugins to
+              open and close nodes.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a problem with displaying output from fields with
+              non-ASCII characters in their names.</li>
+
+              <li>Auto save now works properly with encrypted files.</li>
+
+            </ul>
+
+            <ul><b>Notes:</b>
+
+              <li>The French and German UI translation files and the French
+              ReadMe files have been updated, but the German ReadMe files are
+              not complete (but still usable).  Updated files will be made
+              available soon.</li>
+
+            </ul>
+
+            <h2>December 20, 2005 - Release 0.14.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Data types can be set to derive their field settings from a
+              generic type. This allows types with different output formatting
+              to always use the same field data. Any changes to the generic's
+              list of fields and field types are automatically reflected in
+              the fields of all derived types.  A derived option can be
+              selected when copying a type, or a generic type can be specified
+              from the derived type's "Advanced Configuration" dialog
+              box.</li>
+
+              <li>Conditional expressions can be used to automatically assign
+              a data type based on each node's content. Conditions are
+              assigned to a generic type and its associated derived types.
+              This allows the automatic assignment of different output
+              formatting or different icons depending on each node's field
+              data. Conditions are specified from each type's "Advanced
+              Configuration" dialog box. Conditions do not have to be set for
+              all types in a family, since, if no conditions are true for a
+              node, the program will select a blank condition over a false
+              one. In addition, conditions that are always "True" or "False"
+              are available to toggle the output format of all nodes of a
+              certain type simultaneously by modifying the condition.</li>
+
+              <li>By default, the spell check uses dictionaries for the
+              current operating system language. A new option under
+              "Tools-&gt;File Options" can be used to specify an alternate
+              two-letter language code for the current TreeLine file. This
+              only works with aspell and with the appropriate aspell
+              dictionaries available.</li>
+
+              <li>A new menu item, "File-&gt;Open Sample", is a shortcut to
+              the directory containing sample template files.</li>
+
+              <li>A new menu item, "Help-&gt;Help Contents", directly opens
+              the "Using TreeLine" section of the ReadMe file.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>When changing a node's type, if the result would have been a
+              blank title, TreeLine now adjusts the new title fields to
+              maintain the original title text.</li>
+
+              <li>Picture links with relative paths now resolve their
+              reference based on the directory containing the current TreeLine
+              file.</li>
+
+              <li>When applying a font tag in the editor view, the selection
+              is maintained. This allows multiple tags to be applied.</li>
+
+              <li>HTML tags in field prefixes and suffixes are now removed in
+              node titles.</li>
+
+              <li>Exported HTML has been made somewhat more compliant with
+              standards.</li>
+
+              <li>A new option on the windows installer toggles the writing of
+              installation directory and uninstall information to the
+              registry. When this and other options are disabled, TreeLine can
+              be installed without modifying the registry.</li>
+
+              <li>Four more sample files have been included. These files
+              provide examples of using TreeLine's features and can be used as
+              templates.</li>
+
+              <li>The ReadMe file has been updated with descriptions of the
+              sample files, with more internal links, and with
+              screenshots.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>A problem with saving reference field settings for unused
+              node types was fixed.</li>
+
+              <li>Formats copied from another file are now available
+              immediately.</li>
+
+              <li>Node titles from HTML-enabled fields that contain escaped
+              characters (&lt;, &gt;, &amp;) are now properly displayed.</li>
+
+              <li>Fixed some minor bugs concerning setting the default field
+              value for new nodes.</li>
+
+              <li>A problem with exporting HTML directories with very recent
+              versions of the PyQt library was fixed.</li>
+
+              <li>When displaying child data in node output, extra separators
+              between blank entries are no longer shown.</li>
+
+            </ul>
+
+            <ul><b>Notes:</b>
+
+              <li>The French and German UI translation files have been
+              updated, but the French and German ReadMe files are not complete
+              (but still usable).  Updated files will be made available
+              soon.</li>
+
+            </ul>
+
+            <h2>November 4, 2005 - German Translation Update</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>Updated German translations are now available on the
+              download page.</li>
+
+            </ul>
+
+            <h2>November 1, 2005 - Release 0.13.1</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>The number of recently used files listed in the File menu
+              can be set using a new general option. Note that this also
+              controls how many files have their tree states (open/closed
+              nodes, etc.) saved.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>TreeLine now sets the interface language using the LANG
+              environment variable (if set) before falling back to other
+              locale settings. This allows the operating system's locale
+              settings to be overridden.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Problems starting TreeLine when the locale's LANG variable
+              ends with "@euro" have been fixed.</li>
+
+              <li>Problems with the display of the rename edit box when
+              creating new nodes in a long, scrolled tree view have been
+              fixed.</li>
+
+            </ul>
+
+            <ul><b>Notes:</b>
+
+              <li>The French translation files have been updated, but the
+              German files are not complete (but still usable).  Updated files
+              will be made available soon.</li>
+
+            </ul>
+
+            <h2>August 29, 2005 - Release 0.13.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>The TreeLine user interface and documentation have been
+              internationalized. Currently, translations are available for
+              French and German. Volunteers to translate into additional
+              languages are welcome.</li>
+
+              <li>Number formats can be internationalized. Periods and commas
+              are supported as radix characters, and commas, periods or spaces
+              can be set as thousands separators.</li>
+
+              <li>A new general option can set printing units to either inches
+              or centimeters.</li>
+
+              <li>An external editor can be invoked from a Data Editor text
+              field context menu. The EDITOR environment variable can be used
+              to specify the editor to start, or, if the variable doesn't
+              exist, TreeLine will prompt for an executable to set as the
+              default.</li>
+              
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The general option for a number editing format has been
+              removed. Instead, the output format is displayed in the editor.
+              Of course, any new entry with a reasonable format is correctly
+              interpreted (but the correct radix character must be used).</li>
+
+              <li>Handling of spaces in filenames for the linking fields have
+              been improved. Paths with spaces selected in the file browser
+              are properly quoted (Windows) or escaped (Linux).</li>
+
+              <li>Page Up/Down commands in the Data Output view now leave a
+              one-line overlap.</li>
+
+              <li>A Ctrl-C interrupt in a terminal is now ignored.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>A dummy field has been added to imported bookmark separator
+              formats to avoid configuration problems.</li>
+
+              <li>Paths in links to XSLT files are now properly handled when
+              not in the same directory as the XML file.</li>
+
+              <li>Format text is now immediately updated when renaming
+              fields.</li>
+
+              <li>Problems with undo after complex data changes have been
+              fixed.</li>
+
+              <li>Errors due to having ASCII control characters in TreeLine
+              text have been fixed.</li>
+
+              <li>Problems with spell check of unicode characters have been
+              fixed.</li>
+
+            </ul>
+
+            <h2>May 4, 2005 - Release 0.12.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>A new AutoChoice field type provides pull-down selection of
+              previously used entries. Any new entries are automatically added
+              to the pull-down.</li>
+
+              <li>A new ExecuteLink field type runs an external program when
+              its link is clicked. The command to run is given by the text of
+              the field. Or the field's prefix may contain the program name,
+              so that the field's text is used for arguments or file names.
+              There is also a general option to disable these links when
+              security is a concern.</li>
+
+              <li>A button that brings up a file browsing dialog has been
+              added to the editor for Path, ExecuteLink and Picture field
+              types.</li>
+
+              <li>Link fields can display alternate text in place of the
+              target URL. This is done by specifying an alternate text field
+              in the Advanced Field Format dialog.</li>
+
+              <li>Fields from child nodes can be embedded in their parent's
+              output. Select a child reference from the Other Fields dialog.
+              The child data is delimited with a separator string defined as a
+              file option.</li>
+
+              <li>A new file option allows the removal of line breaks from
+              each output line. This allows other HTML tags to be used to
+              separate the output lines.</li>
+
+              <li>A "contains" rule to check for substrings has been added to
+              the rules for node filtering and selective type changes.</li>
+
+              <li>The right-hand view that was previously used is now selected
+              automatically on startup. This can be disabled using the general
+              restore window geometry option.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Toolbar and tree icons are loaded from individual PNG files
+              instead of from an XPM file. This improves icon quality.</li>
+
+              <li>Some features from the dialogs for data types and fields
+              have been moved to advanced dialogs for simplicity.</li>
+
+              <li>Unicode characters are accepted for first-letter tree
+              searches.</li>
+
+              <li>All calls to the eval() function have been replaced for
+              improved security. Thanks to Roland Meister for providing
+              patches.</li>
+
+              <li>The HTML version of the ReadMe file is now exported from the
+              TreeLine version.</li>
+
+              <li>Spaces are permitted in Linux command line arguments.</li>
+
+              <li>Qt command line options are supported.</li>
+
+              <li>There have been several minor improvements to the plugin
+              module interface.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>A serious problem with deleting the last child under the
+              root item has been fixed.</li>
+
+              <li>Some keyboard shortcuts for incremental searching have been
+              fixed.</li>
+
+              <li>Open nodes are restored more consistently when opening
+              files.</li>
+
+              <li>A font issue on early versions of Qt3 has been fixed.</li>
+
+              <li>The search for dtd files linked from XML files has been
+              disabled to eliminate errors.</li>
+
+              <li>Visibility problems with long unbroken text lines in data
+              editors have been fixed in Qt3.</li>
+
+            </ul>
+
+            <h2>February 16, 2005 - Release 0.11.1</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a compatibility issue in the toolbar code that would
+              prevent TreeLine from starting when PyQt was built against the
+              newest versions of the sip library (versions 4.2rc1 and
+              4.2rc2).</li>
+
+              <li>Problems with editing the data of combination field types
+              have been fixed.</li>
+
+              <li>A bug in the plugin interface for setting field formats has
+              been fixed.</li>
+
+            </ul>
+
+            <h2>February 4, 2005 - Release 0.11.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Icons have been added to the tree view.  The icon assigned
+              to each data type can be changed from the Configure Data Types
+              dialog box.  There are several generic icons available within
+              TreeLine, and plugin modules can be written to add additional
+              ones.  A general option to disable the tree icons has also been
+              added.</li>
+
+              <li>A command has been added to the data menu to copy type
+              formatting from another TreeLine file.  All types from the
+              chosen file are copied.  Any types in the current file with a
+              matching name are overwritten, but types with unique names are
+              retained.</li>
+
+              <li>Functions to import and export generic XML files have been
+              added.  These routines do not have much intelligence - each XML
+              element becomes a node and each XML attribute becomes a field.
+              This lets TreeLine function as a crude XML editor.</li>
+
+              <li>An editor height parameter has been added to text fields.
+              This allows the number of lines in the data editor to be set for
+              each field in each data type.  As a result, the LongText field
+              type becomes redundant and has been removed.</li>
+
+              <li>A field parameter has been added for fields that are
+              required to be filled.  Fields with this parameter set are
+              marked with an asterisk in the data editor view.</li>
+
+              <li>Another field parameter has been added to allow certain
+              fields to be hidden in the data editor view.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>A fair amount of TreeLine code has been rewritten to improve
+              efficiency and to ease future changes.  Users should see
+              improved speed with large files, especially noticeable when
+              repainting during editing.</li>
+
+              <li>TreeLine now requires Python Version 2.3 or higher on Linux
+              systems.  The previous version of TreeLine will remain available
+              for those stuck with older versions of Python.</li>
+
+              <li>HTML tags are now stripped from node titles in the left-hand
+              tree view if the fields are set to output HTML rich text.</li>
+
+              <li>The plugin extension module interface has been expanded.
+              Several added functions deal with node and field formatting.
+              There is also a new callback trigger called whenever a node's
+              data is modified.</li>
+
+              <li>A user plugin directory can now be specified in the
+              configuration file.  This allows plugins to be installed without
+              root/administrator access.</li>
+
+              <li>An option has been added to the Linux installer to allow a
+              different documentation directory to be specified.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a drag-and-drop bug that wouldn't allow nodes to be
+              moved instead of copied in the Linux version.</li>
+
+              <li>Fixed the output of fields that include dashes and periods
+              in their names.</li>
+
+              <li>A problem retaining the font setting for edit views has been
+              fixed.</li>
+
+              <li>A rare startup failure due to problems with the encryption
+              engine has been fixed.</li>
+
+              <li>A rare problem with foreign language encodings has been
+              fixed.</li>
+
+            </ul>
+
+            <h2>November 8, 2004 - Release 0.10.2</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a major bug that could prevent new nodes that contain
+              date or time fields from being created.</li>
+
+            </ul>
+
+            <h2>October 28, 2004 - Release 0.10.1</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a major bug that caused TreeLine to hang when
+              attempting to open a recent file that no longer exists.  This
+              bug also caused startup failures if automatic opening was
+              enabled with nonexistent files.</li>
+
+              <li>A bug in the plugin interface's getRootNode function was
+              fixed.</li>
+
+              <li>Fixed a problem with file encryption on 64-bit systems.</li>
+
+            </ul>
+
+            <h2>October 15, 2004 - Release 0.10.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>One of the fields in a data type can be tagged as a
+              reference field in the field-type dialog box. It defaults to the
+              first field.  This field is now used as the reference for the
+              arrange and flatten by reference commands. It is also used by
+              the new internal link feature, described below.</li>
+
+              <li>There is a new internal link field type. It creates a
+              clickable link in the Data Output window that selects the next
+              node with matching text in its reference field. If link or
+              reference fields contain multiple lines, each line is treated as
+              a separate link or reference, respectively. If desired, the same
+              field can be used as both the link and reference fields, so that
+              clicking on a keyword in one node's field selects the next node
+              that also has that keyword.  If exported to HTML, the internal
+              links function as links to page anchors, but, in cases with
+              duplicate references, they only find the uppermost reference on
+              the page instead of the next one.</li>
+
+              <li>File encryption has been added as an option to password
+              protect TreeLine files.  Individual files can be set to
+              encrypted mode from either "Tools-&gt;File Options" or from the
+              save-as dialog.  There is also a general option to set the
+              default for new files.  The encryption uses the SHA hash
+              function as a stream cipher - it should be fairly secure.</li>
+
+              <li>A default initial field value can now be specified for a
+              field type.  Any new nodes get this value for the given data
+              field when they are created.  Also, in date and time fields, an
+              initial value of "Now" can be used to get a time-stamp of node
+              creation.</li>
+
+              <li>An interface to plugin extension modules has been added to
+              TreeLine.  This allows extensions to be written by various
+              coders that provide functionality needed by a few users without
+              adding bloat to the main application.  Currently available
+              plugins are listed on the "Downloads" page of the TreeLine web
+              site.  The plugins are installed by copying their Python file
+              (*.py) to the plugins directory
+              ("&lt;prefix&gt;/lib/treeline/plugins/" on Linux or
+              "TreeLine\lib\plugins\" on Windows).  A list of loaded plugins
+              can be found using the "Help-&gt;About Plugins" command.
+              Information about writing plugins can be found in the
+              "plugininterface.py" file in the TreeLine source code.</li>
+
+              <li>Options have been added under "Tools-&gt;General Options" to
+              set the fonts used for the tree view and for the right-pane
+              editor views.</li>
+
+              <li>When printing, TreeLine will now avoid breaking pages
+              between a parent and its first child.  This behavior can be
+              disabled by changing the "Keep first child with parent" print
+              option.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Unicode text handling has been improved. Unicode can now be
+              used in TreeLine file names, node data type names and field
+              names. Also, imported and exported text files now use the proper
+              encoding based on the system's locale settings.</li>
+
+              <li>A new sample TreeLine file with internal link fields has
+              been added to the documentation.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>An occasional problem bringing up the field-type dialog for
+              file-info fields was fixed.</li>
+
+              <li>Avoid showing an oddly-named internal file-info data type in
+              the dialogs after the file-info format is changed.</li>
+
+              <li>The option to restore the view state when opening recently
+              used files now works more consistently.</li>
+
+            </ul>
+
+            <h2>September 16, 2004 - Release 0.9.1</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>Unicode text is now supported without requiring
+              modifications of the Python sitecustomize file.  The
+              sitecustomize change has been eliminated from the
+              installer.</li>
+
+              <li>The compressed ".trl.gz" extension has been added to the
+              file open filter.</li>
+
+              <li>Information about the new TreeLine mailing list has been
+              added to the documentation.</li>
+
+            </ul>
+              
+            <ul><b>Bug Fixes:</b>
+
+              <li>A bug that prevented XSLT file export under Linux has been
+              fixed.</li>
+
+              <li>Special characters in bookmark URL's are now properly
+              escaped during export to XBEL format.</li>
+
+            </ul>
+
+            <h2>September 9, 2004 - New Mailing List</h2>
+
+            <p>A mailing list has been created for users to discuss anything
+            and everything about TreeLine.  This is the place for development
+            discussions (from roadmaps to feature suggestions to beta
+            testing), release announcements, bug reports, and general user
+            discussions (from new uses to tips &amp; tricks to configuration
+            samples).</p>
+
+            <p>To subscribe, go to <a
+                href="http://bellz.org/mailman/listinfo/treeline"> this
+                page</a>.  I expect this to be a low-volume mailing list.</p>
+
+
+            <h2>September 1, 2004 - Release 0.9.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Import and export of bookmarks in both the Mozilla HTML
+              format (Mozilla, Firefox and Netscape browsers) and the XBEL
+              format (Konqueror, Galeon and Elinks browsers) have been
+              added.</li>
+
+              <li>An new option exports a portion of a tree to another
+              TreeLine file.</li>
+
+              <li>Command line options have been added to allow
+              non-interactive file importing and exporting.  This allows
+              automated runs to be scheduled.  For more details, run "treeline
+              -h" from the command line.  If using a windows binary, output is
+              supressed, so it must be directed to a log file ("treeline -h
+              &gt; log.txt").</li>
+
+              <li>Options have been added to work with compressed TreeLine
+              files.  Individual files can be set to compressed mode from
+              either "Tools-&gt;File Options" or from the save-as dialog.
+              There is also a general option to set the default for new files.
+              Thanks to Mathieu Girard for contributing code.</li>
+
+              <li>A field reference to show data from any ancestor node has
+              been added.  The closest one with a matching field is used.</li>
+
+              <li>Fields containing file meta-data have been added.  These
+              include file name, path, size, and modified time.</li>
+
+              <li>Headers and footers for printing have been added.  They can
+              contain the file meta-data mentioned above.  The headers and
+              footers can also be shown in exported HTML files.</li>
+
+              <li>HTML character formatting tags can be automatically added to
+              text using a new data editor context menu.  Available tags
+              include bold, italics, underline, size and color.  Note that the
+              fields must be set to display HTML content for this to be
+              effective.</li>
+
+              <li>A new general option makes new fields default to HTML
+              content.  This allows for easier display of HTML formatting.
+              This option is not enabled by default, since it does not
+              preserve carriage returns and does not show non-escaped "&lt;",
+              "&gt;" and "&amp;" symbols.</li>
+
+              <li>When opening a recently used file, TreeLine will now restore
+              the states of open and selected nodes.  If desired, this feature
+              can be disabled with a new general option.  Thanks to Jan Hustak
+              for contributing this code.</li>
+
+              <li>The toolbar has been split into two separate bars (general
+              commands and node commands) that can be shown and moved
+              independently.  Again, thanks to Jan Hustak for contributing
+              this code.</li>
+
+              <li>A new auto-save feature stores unsaved files with a "~"
+              appended to the name.  The backup files are automatically
+              removed when the file is saved or TreeLine exits cleanly.  The
+              auto-save time interval is set in the general options.</li>
+
+              <li>New key bindings, set to Shift+Page-Up and Shift+Page-Down
+              by default, scroll the current right-hand child view.</li>
+
+              <li>The XSL export command now prompts for the name of an
+              optional style sheet (css).  This name is stored in the TreeLine
+              file as the default for future exports.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>There have been some general improvements to the handling of
+              imported and exported files.</li>
+
+              <li>File option settings can now be restored with undo/redo
+              commands.</li>
+
+              <li>The README documentation files have been revised to be more
+              organized and readable.</li>
+
+              <li>More sample files are provided.  See the "sample_*.trl"
+              files in the "doc" directory of the installation.</li>
+
+              <li>The Linux install script now includes an option for a
+              temporary build root directory.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>The up-arrow key binding did not work as expected in a
+              deeply nested tree.</li>
+
+              <li>Some problems with auto-completion on data editor combo
+              boxes have been fixed.</li>
+
+              <li>Problems in windows with some option spin boxes accepting
+              new values have been fixed.</li>
+
+              <li>Fixed a compatibility issue with older versions of
+              Python.</li>
+
+            </ul>
+
+            <h2>June 23, 2004 - Release 0.8.1</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed crashes that sometimes occurred when switching focus
+              or views after renaming a new or existing node.</li>
+
+              <li>Fixed a compatibility issue with older versions of Qt
+              (3.0.x).</li>
+
+            </ul>
+
+            <h2>June 3, 2004 - Release 0.8.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Added undo and redo commands and an option for the number of
+              undo levels that are stored.</li>
+
+              <li>Added the ability to show parent and grandparent data within
+              a node's formatted output.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>When changing node types with the menu, check marks now show
+              the current type(s).</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed crashes caused by right-clicking in the edit area or
+              using the Alt-Tab key combination when renaming a node
+              title.</li>
+
+              <li>Fixed problems occurring when several similar data type
+              names were defined.</li>
+
+              <li>A rare problem with the installation script choking on image
+              thumbnail directories was fixed.</li>
+
+            </ul>
+
+            <h2>May 18, 2004 - Release 0.7.3</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Spell checking of the tree data has been implemented.  This
+              feature requires an external program, either aspell or ispell
+              (see the System Requirements section).</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The size and position of the print preview window are now
+              saved.</li>
+
+              <li>Added an option for including only open descendants when
+              exporting tabbed title text.</li>
+
+            </ul>
+
+            <h2>April 1, 2004 - Release 0.7.2</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>For faster keyboard navigation, the left arrow key now
+              closes the selected node's parent if the selected node has no
+              children or is already closed.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Some tree item drag-and-drop bugs have been fixed.</li>
+
+              <li>Problems when some dialogs were closed using the escape key
+              have been fixed.</li>
+
+              <li>Fixed some rare Linux install script problems with some
+              systems.</li>
+
+            </ul>
+
+            <h2>March 9, 2004 - Release 0.7.1</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>The open file dialog now uses the directory of the most
+              recently opened file as its initial directory.</li>
+
+              <li>To improve performance, some unnecessary refreshes of the
+              right-hand view were eliminated.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed problems with repeated uses of the search dialog
+              command and the command to set the types of descendants.</li>
+
+              <li>Fixed problems with the data editor view in the mode that
+              does not show children.</li>
+
+            </ul>
+
+            <h2>March 2, 2004 - Release 0.7.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Added prefix and suffix tag formatting for groups of
+              siblings.  These tags allow output to be formatted in tables or
+              with bullets.  See the "sample_table.trl" file for an example of
+              table formatting.</li>
+
+              <li>The size and position of the window and its splitters are
+              now saved at exit.  A new option will disable this feature if
+              desired.</li>
+
+              <li>An import filter has been added to open Treepad files (text
+              nodes only).</li>
+
+              <li>An install program has been added for windows.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed Linux install script problems with certain versions of
+              Python.</li>
+
+              <li>Fixed some text exports where improper end-of-line
+              characters were used on windows.</li>
+
+            </ul>
+
+            <h2>November 19, 2003 - Release 0.6.2</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>Cursor changes were added to indicate time-consuming
+              operations.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Eliminated inadvertent scrolling of the tree view when
+              editing in the right-hand view.</li>
+
+              <li>Fixed problems encountered when the Linux install script
+              attempted to delete old TreeLine directories under certain
+              versions of Python.</li>
+
+            </ul>
+
+            <h2>November 7, 2003 - Release 0.6.1</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Incremental searching has been improved by adding keyboard
+              commands to repeat the search forward (F3 by default) and
+              backward (Shift-F3 by default).</li>
+
+              <li>The sorting commands now contain options for reverse
+              sorting.</li>
+
+              <li>The importing of text files has been improved.  Imports of
+              plain text were added, with items for each line or each
+              paragraph.  A prompt for the type of text file was also
+              added.</li>
+
+              <li>A new option setting avoids going into title renaming mode
+              when adding a new node.  This also keeps the selection unchanged
+              as nodes are added.</li>
+
+              <li>Dragging files to the TreeLine window in order to open them
+              is now supported.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The rename command was added to the tree context menu.</li>
+
+              <li>The right view now scrolls to the top when the item selected
+              in the tree view changes.</li>
+
+              <li>When opening the configure types dialog, the current tree
+              item's type is initially selected.</li>
+
+              <li>A TreeLine formatted version of the ReadMe file has been
+              added.</li>
+
+              <li>An install script was added for Linux and Unix systems.</li>
+
+              <li>The windows build now uses Python version 2.3 and PyQt
+              version 3.8.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Keyboard commands are disabled during tree rename operations
+              to avoid unpredictable results.</li>
+
+              <li>The right views now update properly when the parent of the
+              selected tree item is closed.</li>
+
+              <li>Problems involving copying with multiple nodes selected were
+              fixed.</li>
+
+              <li>Problems with drag-and-drop on some Linux systems were
+              fixed.</li>
+
+            </ul>
+
+            <h2>September 16, 2003 - Release 0.6.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>The three right views are now divided into upper sections
+              for the selection's data and lower sections for the data from
+              the selection's children.  View commands can be used to hide the
+              display of children if desired.</li>
+
+              <li>Keyboard shortcuts can be customized by editing the TreeLine
+              configuration file ("~/.treeline" on Linux, "treeline.ini" on
+              windows).  Any configuration files from previous versions should
+              be deleted when installing TreeLine
+              0.6.0.</li>
+
+              <li>A new command will quickly set a node's data type.</li>
+
+              <li>Parent nodes will automatically open and close when found
+              with the two search methods, by typing the first letter and with
+              the "next sibling" keyboard command.  This behavior can be
+              disabled with a new general option.</li>
+
+              <li>Typing a lowercase letter will move forward through the
+              visible tree items that start with that letter.  An uppercase
+              letter will move backward.</li>
+
+              <li>Tree items (including those not visible) can be
+              incrementally searched by typing "/" followed by the search
+              string.</li>
+
+              <li>The Find dialog box is now modeless (the program may be
+              operated while the dialog is open).</li>
+
+              <li>A "Choice" field type has been added that allows selection
+              from a user-defined list of strings.</li>
+
+              <li>A "Combination" field type has been added that allows
+              selection of several items from a user-defined list of
+              strings.</li>
+
+              <li>Several linking field types have been added, including
+              "URL", "Path", "Email", and "Picture".  Clicking on a "URL" or
+              "Path" in the output window will open the link in an external
+              browser.  The "Picture" fields are shown on in the output window
+              for certain image formats.</li>
+
+              <li>Pull-down editors have been added for the "Choice",
+              "Combination", "Date", "Time", and "Boolean" field types.</li>
+
+              <li>A font selection for the data output view has been added to
+              the general options.</li>
+
+              <li>New printing options include setting the print font and
+              setting a default page size.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Configuration information is properly saved for unused node
+              data types.</li>
+
+              <li>TreeLine is now more keyboard-friendly in many ways.</li>
+
+              <li>Window captions now put the file name first.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed problems with data edit view resizing (on Qt3
+              only).</li>
+
+              <li>Fixed file corruption problems caused by the use of HTML
+              characters in the field format's prefix and suffix areas.</li>
+
+            </ul>
+
+            <h2>March 14, 2003 - Release 0.5.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>When configuring node data types, a default type for that
+              type's new children can be set.</li>
+
+              <li>An added form of HTML export creates a directory structure
+              with a separate page for each parent node.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>A shortcut (Ctrl-B) has been added to the command to insert
+              a sibling node.</li>
+
+              <li>Icon files have been added to the distribution files.</li>
+
+            </ul>
+
+            <h2>August 26, 2002 - Release 0.4.2</h2>
+            
+            <ul><b>Bug Fixes:</b>
+              
+              <li>Fixed another (oops) incompatablity problem with Python
+              2.1.x.  This change is also not needed when using Python 2.2 or
+                higher.</li>
+            
+            </ul>
+
+            <h2>August 23, 2002 - Release 0.4.1</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed an incompatablity problem with Python versions
+              2.1.x.  This change is not needed when using Python 2.2 or
+                higher.</li>
+
+            </ul>
+
+            <h2>August 22, 2002 - Release 0.4.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Data fields can be formatted as specific types, including
+              short and long text, numbers, dates, times, and boolean
+              values.</li>
+
+              <li>Individual fields can be specified as plain text or HTML.
+              Line breaks are preserved in plain text mode.</li>
+
+              <li>Text prefixes and suffixes can be assigned to fields.  The
+              extra text does not display for blank fields.</li>
+
+              <li>Options for spaces between nodes and allowing HTML in
+              formats are saved with the file instead of being global
+              options.</li>
+
+              <li>Node titles are truncated after the first line of text
+              data.</li>
+
+              <li>Node types can be set conditionally.</li>
+
+              <li>A new option allows the number of lines in a long text edit
+              field to be set.</li>
+
+              <li>Missing fields can be updated from a separate file by
+              matching unique values of the first data field.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Clicking on an unselected current item no longer initiates
+              title renaming.</li>
+
+              <li>Rare problems with opening or pasting content with complex
+              text strings were fixed.</li>
+
+            </ul>
+
+            <h2>May 28, 2002 - Release 0.3.4a</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>A fix of the Windows binary only.  Fixes major problems by
+              upgrading the library version to PyQt 3.2.4.</li>
+
+            </ul>
+
+            <h2>May 15, 2002 - Release 0.3.4</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>TreeLine has been ported to Qt 3.  It now works with both Qt
+              2.x and 3.x using the same source code.</li>
+
+              <li>The binaries for windows have been updated to Python 2.2 and
+              PyQt 3.2 (but are still using Qt 2.3 Non-commercial).</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>A selection bug that caused problems with the up/down and
+              indent/unindent commands has been fixed.</li>
+
+              <li>Errors in the initial user preference file were fixed.</li>
+
+            </ul>
+
+            <h2>March 19, 2002 - Website Update</h2>
+
+            <ul>This website now looks a little better.  Hopefully, it's more
+                user-friendly, too.</ul>
+
+            <ul>Stay tuned - I'll soon be porting these programs to use PyQt
+                with Qt 3.0.</ul>
+
+
+            <h2>March 6, 2002 - Release 0.3.3</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Multiple nodes in the tree can now be selected using the
+              shift and control keys - most commands will operate on multiple
+              nodes.</li>
+
+              <li>A new command will copy node titles as text, not just as
+              XML.</li>
+
+              <li>Options have been added to print and export only nodes which
+              are open in the tree.</li>
+
+              <li>A new option allows the numbering command to start with a
+              number greater than one.</li>
+
+              <li>A tool to remove the XSLT reference from a file has been
+              added.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The command to arrange a tree by reference has been made
+              more robust.</li>
+
+              <li>Errors when opening files are now handled better.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>The export of Unicode characters to HTML has been
+              fixed.</li>
+
+              <li>A problem with the set data types dialog under Python 2.2
+              has been fixed.</li>
+
+            </ul>
+
+            <h2>January 7, 2002 - Release 0.3.2</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Unicode is now supported in both data and format strings,
+              allowing the entry of foreign text and symbols (note that there
+              is an extra step in the Linux installation to enable this
+              feature).</li>
+
+              <li>A new sort command allows all nodes of a given type to be
+              sorted.</li>
+
+              <li>A preference setting now controls the initial state of the
+              right-hand view.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed crashes caused by tool-bar use while renaming a
+              node.</li>
+
+              <li>Occasional problems with deleting or renaming fields have
+              been fixed.</li>
+
+              <li>Fixed crashes resulting from very large data edit
+              views.</li>
+
+            </ul>
+
+            <h2>December 12, 2001 - Release 0.3.1</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Parent/child lines can now be added to printouts for better
+              tree visualization.</li>
+
+              <li>An option was added to compress the format into a single
+              line of output.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Problems with sorting full branches were fixed.</li>
+
+              <li>Fixed improper indentation on an HTML export file.</li>
+
+            </ul>
+
+            <h2>November 27, 2001 - Release 0.3.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Added filtering of descendant nodes.</li>
+
+              <li>Added a data node numbering feature with both outline and
+              section styles.</li>
+
+              <li>Added a feature to export the format to an XSLT file.</li>
+
+              <li>Added table of contents links to the help file.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Improved the handling and editing of long data strings.</li>
+
+              <li>Improved the handling of HTML tags in data formats.</li>
+
+              <li>Improved XML parser error handling.</li>
+
+            </ul>
+
+            <h2>October 23, 2001 - Release 0.2.1</h2>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a major bug that caused errors when new node types
+              were created.</li>
+
+            </ul>
+
+            <h2>October 17, 2001 - Release 0.2.0</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>TreeLine has been extensively rewritten to include database
+              field information in each node.</li>
+
+              <li>The file format is now XML.</li>
+
+              <li>Added additional views in the right-hand pane.</li>
+
+              <li>Added options for data formatting and manipulation.</li>
+
+              <li>Added more file import and export options, including HTML
+              export.</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

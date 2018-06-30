@@ -1,0 +1,856 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="default.css" />
+
+    <title>TreeLine - How to Use</title>
+</head>
+
+<body>
+
+    <div class="interior">
+
+        <div class="title">
+            <img src="logo.png" alt="TreeLine" />
+        </div>
+
+        <div class="toplinks">
+            <p>Version 2.0.2 (stable), 2.9.2 (development)</p>
+            <p><a href="http://www.bellz.org/progs.html">Other Programs</a></p>
+            <p><a href="http://www.bellz.org/contact.html">Contact Info</a></p>
+        </div>
+
+        <div class="navigation">
+            <a href="index.html">Home&nbsp;/&nbsp;News</a>
+            <a href="feature.html">Features</a>
+            <a href="scrnsht.html">Screenshots</a>
+            <a href="require.html">Requirements</a>
+            <a href="download.html">Downloads</a>
+            <a href="install.html">Installation</a>
+            <span class="current-nav">How&nbsp;to&nbsp;Use</span>
+        </div>
+
+        <div class="content">
+
+<h1>How to Use TreeLine</h1>
+
+<h2>Contents</h2>
+
+<p><a href="#basic_usage">Basic Usage</a>
+<ul>
+  <li><a href="#views">Views</a></li>
+  <li><a href="#editing">Editing</a></li>
+  <li><a href="#files">Files</a></li>
+  <li><a href="#data_types">Data Types</a></li>
+</ul></p>
+
+<p><a href="#detailed_usage">Detailed Usage</a>
+<ul>
+  <li><a href="#tree_navigation_and_search">Tree Navigation and Search</a></li>
+  <li><a href="#defining_node_types">Defining Node Types</a></li>
+  <li><a href="#field_types">Field Types</a></li>
+  <li><a href="#output_formatting_details">Output Formatting Details</a></li>
+  <li><a href="#type_format_details">Type Format Details</a></li>
+  <li><a href="#tree_data_operations">Tree Data Operations</a></li>
+  <li><a href="#printing_1">Printing</a></li>
+  <li><a href="#file_handling_1">File Handling</a></li>
+  <li><a href="#file_import">File Import</a></li>
+  <li><a href="#file_export">File Export</a></li>
+  <li><a href="#customizations">Customizations</a></li>
+  <li><a href="#plugins">Plugins</a></li>
+</ul></p>
+
+<a id="basic_usage"></a> <h2>Basic Usage</h2>
+
+<a id="views"></a> <h3>Views</h3>
+
+<p><b>Tree View - </b>The left-hand view shows a tree of node titles. Parent
+nodes can be opened and closed to display or hide their indented descendant
+nodes. Clicking on an already selected node allows the title to be edited.
+Right-click context menus are available for commonly used functions.</p>
+
+<p><b>Right-hand Views - </b>The right pane is tabbed to show one of three
+different views of the data. The "Data Output" view shows the formatted text,
+the "Data Edit" view shows a text edit boxes, and the "Title List" view shows
+an editable list of node titles.</p>
+
+<p>When a parent node is selected in the tree, the right view will default to
+showing information about the selected node in an upper pane and information
+about the selected node's children in a lower pane. The "View &gt; Show Child
+Pane" command will toggle the display of the child nodes. If the selected node
+has no children, the view will show a single pane with information about the
+selected node only.</p>
+
+<p>When multiple nodes are selected in the tree (by holding down the shift or
+Ctrl keys while clicking), the right view will not display any child node
+information. It will instead show information about every selected node.</p>
+
+<p><b>Data Output View - </b>The "Data Output" view shows formatted output
+text. It cannot be edited from this view.</p>
+
+<p>When the "View &gt; Show Output Descendants" command is toggled, the "Data
+Output" view will show an indented list with information about every
+descendant of a single selected node.</p>
+
+<p><b>Data Edit View - </b>The "Data Edit" view shows a text edit box for each
+data field within a node.  It also shows the node types and the node titles.
+The types of edit boxes vary based on the field type.  Some are just text
+editors, while others (such as choice fields, date fields, links, etc.) have
+pull-down menus or dialogs.</p>
+
+<p><b>Title List View - </b>The "Title List" view shows a list of node titles
+that can be modified using typical text editor methods.  If a new line is
+typed, a new node is created with that title.  If a line is deleted, the
+corresponding node is removed from the tree.</p>
+
+<a id="editing"></a> <h3>Editing</h3>
+
+<p><b>Node Menu - </b>The commands in the "Node" menu operate on the selected
+nodes in the left tree view. There are commands to add or insert nodes, rename
+node titles and delete nodes. There are also commands to rearrange the tree by
+changing indent levels or moving nodes up or down. For many of the commands,
+the descendants of the selected nodes are also affected.</p>
+
+<p><b>Edit Menu - </b>The edit menu includes undo and redo commands that can
+fix problems.  Cut, copy and paste commands can operate either on text in the
+right-hand view (if selected or active) or to tree nodes.  It also has text
+formatting commands that are active when using edit boxes in the Data Edit
+view.</p>
+
+<p><b>Shortcuts - </b>There are several shortcuts for use in tree editing.
+Drag and drop will move (or copy if the Ctrl button is held) nodes. Clicking
+on a selected node will rename it. Pressing the delete key will remove the
+selected nodes. If desired, these shortcuts can be disabled in "Tools &gt;
+General Options".</p>
+
+<a id="files"></a> <h3>Files</h3>
+
+<p><b>Templates - </b>When starting a new file, a dialog box offers a choice
+of templates. The default has only a single text field for each node that
+contains the title. The Long Text template adds a second long text field for
+more output text. Other templates have various fields for contacts, book lists
+and to-do lists.</p>
+
+<p><b>Sample Files - </b>Various TreeLine sample files can be opened by using
+the "File &gt; Open Sample" command.  These have more detail and example
+content than the new file templates.</p>
+
+<a id="data_types"></a> <h3>Data Types</h3>
+
+<p><b>Node Types - </b>Multiple node data types can be defined in a TreeLine
+file. Each can contain different data fields and have different output
+formats. See the template and sample files for examples. Nodes can be set to a
+specific type using the "Data &gt; Set Node Type" command.</p>
+
+<p><b>Type Config - </b>The "Data &gt; Configure Data Types" command is used
+to modify node data types, fields and output formatting.  Refer to the
+Detailed Usage section of the full documentation for details.</p>
+
+<a id="detailed_usage"></a> <h2>Detailed Usage</h2>
+
+<a id="tree_navigation_and_search"></a> <h3>Tree Navigation and Search</h3>
+
+<p><b>Keyboard Shortcuts - </b>There are several keyboard commands that can be
+used for tree navigation. The up and down arrow keys move the selection. The
+left and right arrows open and close the current node. Holding the CTRL and
+SHIFT keys with "J" or "K" moves between siblings, skipping children. The
+"Home", "End", "Page Up" and "Page Down" keys can be used to move quickly
+through the tree. The CTRL and SHIFT keys can be held with the "Page Up" and
+"Page Down" keys to move the tree view even when a different pane is
+focused.</p>
+
+<p>Another way to move through the tree is to type the first letter of a
+visible node title. Hitting the letter again moves to the next
+possibility.</p>
+
+<p><b>Selection - </b>Multiple nodes can be selected by holding down the CTRL
+or the SHIFT key when changing the active node. Individual nodes are added or
+removed from the selection when the CTRL key is held. The selection of all
+nodes between the old and new active nodes are toggled when SHIFT is held. The
+active node can be changed by using the mouse or by using any of the keyboard
+navigation methods.</p>
+
+<p>Note that multiple nodes selected with the CTRL key are output in the order
+selected.</p>
+
+<p>The "View &gt; Previous Selection" and "View &gt; Next Selection" commands
+can be used to toggle through a history of selections, allowing faster
+navigation through the tree.</p>
+
+<p><b>Searching - </b>The "Tools &gt; Find Text" command will search for text
+within the tree structure. The dialog box has options for searching all of the
+node data or only the node titles. There are also options for how to interpret
+the search text. Key words will match nodes with the search words found
+anywhere in the node. Key full words will only match complete words anywhere
+in the node. Full phrase will only match the complete phrase in the proper
+sequence. Finally, the regular expression option will search using Python
+regular expressions.</p>
+
+<p>The "Tools &gt; Conditional Find" command will search in particular node
+types and node fields. Various comparison operators can be selected to exactly
+match, to match a greater or lesser value, or part of the value. And the
+True/False operators give the same result regardless of the values. In
+general, the value is interpreted using the edit format for special field
+types. Multiple rules can be added, connected with logical "and" or "or"
+operators.  The "All Types" option makes fields from every type are available,
+so that multiple node types to be part of the same search.  The condition will
+be false for node types that do not contain that field name.</p>
+
+<p><b>Filtering - </b>There are two filtering commands, "Tools &gt; Text
+Filter" and "Tools &gt; Conditional Filter".  They work like the corresponding
+search commands above, except that they show all of the matching nodes in a
+flat list that replaces the tree view.  The nodes can be selected and edited
+from this view.  Use the "End Filter" button to restore the full tree
+view.</p>
+
+<a id="defining_node_types"></a> <h3>Defining Node Types</h3>
+
+<p><b>Type List - </b>The "Type List" is the first tab of the "Data &gt;
+Configure Types Dialog". The list of data types can be modified by the buttons
+on the right. New types can be added, and existing types can be copied,
+renamed or deleted.</p>
+
+<p><b>Type Config - </b>"Type Config" is the second tab of the Configure Types
+Dialog. It contains a selection for the default child type. If set, this will
+be the initial type used for new children with this type of parent. If set to
+"[None]", children will default to either the type of their siblings or their
+parent.</p>
+
+<p>The "Change Icon" button allows the selection of a custom tree icon for
+this data type. The "Clear Select" button on the icon dialog can be used to
+set the icon to "None", so that no icon will be displayed for this type. To
+avoid showing any tree icons, the "Show icons in the tree view" general option
+can be unset.</p>
+
+<p>There are also options here for adding blanks lines between nodes, allowing
+HTML tags in the common format text, and changing the output  to add bullets
+or tables.</p>
+
+<p><b>Field List - </b>The "Field List" is the third tab of the Configure
+Types Dialog. The list of fields within a data type can be modified by using
+the buttons on the right. New fields can be added, and existing fields can be
+moved, renamed or deleted.</p>
+
+<p><b>Field Config - </b>"Field Config" is the fourth tab of the Configure
+Types Dialog. The field type and its output format string can be set, if
+applicable to the field. Extra prefix and suffix text to be output with the
+field can also be set, and a default field value for new nodes can be entered.
+Finally, the number of lines displayed in the editor for the field can be
+specified.</p>
+
+<p><b>Output - </b>"Output" is the last tab of the Configure Types Dialog. The
+left half of the dialog shows the fields. The right half shows the formatting
+for the title (used for the node text in the tree view) and the node output.
+The formatting consists of text lines with embedded fields. The fields are
+shown as "{*field_name*}". The field that is selected in the list can be added
+to a format at the cursor position with the "&gt;&gt;" keys. The field
+reference at the cursor can be removed with the "&lt;&lt;" keys.</p>
+
+<a id="field_types"></a> <h3>Field Types</h3>
+
+<p><b>Field Options - </b>The field type and options are set in the "Field
+Config" tab of the "Data &gt; Configure Types Dialog". The many different
+field types are described in the paragraphs below.</p>
+
+<p>Several of the field types use a formatting string to define their output.
+For a list of available formatting characters, use the "Format Help" button.
+Entries in the data editor which do not match the format will cause a blue
+triangle to show in the upper left corner of the edit box, and the output for
+that field will be replaced with "#####".</p>
+
+<p><b>Text Type - </b>The default field type is a text field. It is the most
+commonly used field.  These fields are edited using edit boxes in the data
+editor view. There are several commands in the Edit menu (and also in the
+context menu) for setting the font style and adding external or internal
+links. The edit box height expands when re-displayed after adding several
+lines of text. The minimum edit box height can also be set explicitly in the
+"Field Config" tab.</p>
+
+<p><b>HTML Text Type - </b>This type allows simple HTML tags to be used in the
+text. Commonly used tags include "&lt;b&gt;bold&lt;/b&gt;",
+"&lt;u&gt;underline&lt;/u&gt;", "line break&lt;br/&gt;", "horizontal
+line&lt;hr/&gt;", and various font tags. Complex block tags should generally
+be avoided. Carriage returns are ignored and non-escaped "&lt;", "&gt;" and
+"&amp;" symbols do not display. </p>
+
+<p><b>One Line Text Type - </b>This type restricts the text length to a single
+line.  It does not allow carriage returns, but does not restrict line wrapping
+of a single long line.</p>
+
+<p><b>Spaced Text Type - </b>This type holds plain text and preserves all
+spacing.  Other formatting of the text is not permitted.  It could be useful
+to use the "Tools &gt; Customize Fonts" command to set the editor font to a
+mono-spaced font when using this field type.</p>
+
+<p><b>Number Type - </b>In the number type, special characters in the format
+define the display of the numbers. The format uses a string of "#" (optional
+digit) and "0" (required digit) characters to define the output formatting.
+For example, pi formatted with "#.#" is "3.1" and formatted with "00.00" is
+"03.14". Regardless of the formatting, digits to the left of the decimal point
+are not truncated, since that would display an incorrect result. But use care
+to show enough decimal places (either optional or required) to avoid problems
+with round-off error.</p>
+
+<p>The radix character can be specified as either "." or "," to handle
+internationalization. For use as a thousands separator, use "\," or "\.". For
+example, a large number may be formatted as "#\,###\,###.##" or as
+"#\.###\.###,##". Press the "Format Help" button from the field format dialog
+for more formatting details. </p>
+
+<p>Unlike most other formats, the number type also uses the output format for
+display in the Data Editor. Of course, any new entry with a reasonable format
+is correctly interpreted (but the correct radix character must be used).</p>
+
+<p><b>Boolean Type - </b>This type gives two choices corresponding to
+true/false values. The format help menu includes typical values such as
+"yes/no", "true/false" and "1/0", but users can also enter their own word
+pair. The data editor boxes will accept either the currently set format or any
+of the typical values.</p>
+
+<p><b>Date Type - </b>In the date field type, special characters in the format
+are replaced by elements of the data, similar to number fields. Press the
+"Format Help" button from the field format dialog for formatting details. </p>
+
+<p>There is also an edit format under "Tools &gt; General Options &gt; Data
+Editor Formats". This controls how date fields are displayed in the Data
+Editor view. Generally, entries in the data editor with various formats will
+be correctly interpreted regardless of this setting, but dates must use the
+correct day-month-year sequence. Also note that the date editor format does
+not support days of the week.</p>
+
+<p>A default initial field value of "Now" can be used to enter the date of
+node creation.</p>
+
+<p><b>Time Type - </b>In the time field type, special characters in the format
+are replaced by elements of the data, similar to number fields. Press the
+"Format Help" button from the field format dialog for formatting details. </p>
+
+<p>There is also an edit format under "Tools &gt; General Options &gt; Data
+Editor Formats". This controls how time fields are displayed in the Data
+Editor view. Generally, entries in the data editor with various formats will
+be correctly interpreted regardless of this setting.</p>
+
+<p>A default initial field value of "Now" can be used to enter the time of
+node creation.</p>
+
+<p><b>Choice Type - </b>The choice field type allows for the selection of text
+items from a pull-down edit list. The formatting strings for these types list
+the items separated with the "/" character (use "//" to get a literal "/" in
+an item).  Entries in the data editor which do not match the choices will
+cause a blue triangle to show in the upper left corner of the edit box, and
+the output for that field will be replaced with "#####".</p>
+
+<p><b>Auto Choice Type - </b>This field type is similar to the choice type,
+but without a format string. The entries in the pull-down menu are
+automatically generated from all previously used entries. Any entries that are
+typed will be available in the pull-down menu for future use. </p>
+
+<p><b>Combination Type - </b>This is basically the equivalent of the choice
+type with multiple selection. The formatting string entries are separated by
+the "/" character. The pull-down menu shows check-boxes that are checked for
+currently selected nodes. By default, the selected entries are output
+separated by a comma and a space. This can be changed in the "Type Config" tab
+of the "Data &gt; Configure Types Dialog". Click the "Show Advanced" button to
+see the separator setting.</p>
+
+<p><b>Auto Combination Type - </b>This field type is similar to the
+combination type, but without a format string. The entries in the pull-down
+menu are automatically generated from all previously used entries. Any entries
+that are typed will be available in the pull-down menu for future use. </p>
+
+<p><b>External Link Type - </b>This type can support various link protocols,
+including http and https for web pages, mailto for email addresses and file
+for local files.  A pull down dialog in the data editor allows the selection
+of the protocol type and the entry of an address and a display name.  In the
+edit boxes, the display name shows up in [brackets], and it is used as the
+text of the link in the output view.  The "file" protocol also provides a
+button to browse for a path and buttons to choose either absolute or relative
+path names.</p>
+
+<p>Clicking on the link in the output view or choosing "Open Link" from the
+right-click context menu in the edit box will open the link in a web browser.
+In Linux, setting the "BROWSER" environment variable to a string like "mozilla
+%s" will result in the desired browser being used.</p>
+
+<p><b>Internal Link Type - </b>These links create shortcuts to select nodes
+elsewhere in the tree structure. The unique ID of the referenced node is
+entered along with a display name. The pull down dialog in the data editor has
+an "Enable click on target" button. Once clicked, the target node can be
+selected and the appropriate unique node ID will be entered. Like external
+links, this link can be clicked in the output view, or "Open Link" can be
+chosen from the right-click context menu.</p>
+
+<p><b>Picture Type - </b>These links add referenced pictures to the output
+view. A pull down dialog in the data editor has a button to browse for picture
+files to be linked. It also allows absolute or relative paths to be used and
+has a small image preview.</p>
+
+<p><b>Math Type - </b>Math field types are configured by defining equations.
+The equations can reference number fields, date fields, time fields, boolean
+fields, text fields and/or other math fields. The resulting values of math
+fields are automatically calculated for each node.</p>
+
+<p>To define a math field equation, press the "Define Equation" button in the
+"Field Config" tab of the "Data &gt; Configure Types Dialog". This brings up a
+dialog with fields to reference on the left and math operators on the right.
+The "Reference Level" pull-down determines whether the reference is from the
+same node, the node's parent, the root node, or the node's children. The
+"Result Type" pull-down allows numeric, date, time, boolean or text results to
+be chosen. The "Operator Type" pull-down allows numeric, comparison or text
+operators to be shown in the operator list. The down-arrow buttons below the
+references and operators add the selected item to the equation text below.
+Portions of equations can also be typed directly in the equation text line
+editor.</p>
+
+<p>References to child nodes must be enclosed in a grouping function, such as
+sum, max, min, mean or join. A math field can contain a parent or child
+reference to itself, but not a same-level reference to itself (a circular
+reference). The references only contain the field name, so they will reference
+a parent or child field with that name even if it is a different node
+type.</p>
+
+<p>In equations, date fields are represented by the number of days since
+January 1, 1970, and time fields are the number of seconds since midnight. So
+date fields can be subtracted to give the number of days elapsed, and numbers
+of days can be added to or subtracted from dates to result in new dates. Time
+fields can be subtracted to give the number of seconds elapsed, and numbers of
+seconds can be added to or subtracted from times to result in new times.</p>
+
+<p>The "if" comparison operator can be used to make the result depend on the
+value of another field. The expression is written as "true_value if condition
+else false_value".  Of course, the "true_value", "condition" and "false_value"
+strings must be replaced with valid fields or expressions.  If this operator
+is inserted from the operator list (under comparisons), it will include
+parenthesis as placeholders.  These parenthesis are optional in the
+equations.</p>
+
+<p>The "join" text function is used to combine text from several other fields
+(or from child nodes). The first argument to the function is a separator
+string that is placed between each piece of text. The remaining argument(s)
+are the text to be joined.</p>
+
+<p>By default, math fields are shown in the data edit view, but they are
+read-only. To hide them, uncheck the "Show math fields in the Data Edit View"
+box under "Tools &gt; General Options &gt; Features Available".</p>
+
+<p>There is also an option under "File &gt; Properties" that toggles whether
+blank fields are treated as zeros. If checked (the default), a blank field
+that is referenced by a math field has a value of zero (for numeric
+operations) or blank (for text operations). If unchecked, any blank references
+also cause equations that reference them to be blank.</p>
+
+<p> <a id="numbering_type"></a><b>Numbering Type - </b>This type (not to be
+  confused with the number type above) provides fields that are automatically
+  filled in with the "Data &gt; Update Numbering" command. The "Format Help"
+  button in the field format dialog shows the output format options. A single
+  format level will result in a simple sequential numbering scheme. Use of the
+  "/" level separator will result in an outline-type numbering with different
+  sequences at different levels. Use of the "." section separator will result
+  in a "2.3.5" type numbering scheme.</p>
+
+<p>Since numbering fields are automatically populated, by default they are not
+shown in the data edit view.  To show them, check the "Show numbering fields
+in the Data Edit View" box under "Tools &gt; General Options &gt; Features
+Available".  When they are shown in the data edit view, they show up in
+section numbering style, regardless of the output format.</p>
+
+<p><b>Regular Expression Type - </b>This type allows arbitrary format strings
+to be matched that restrict the data to a particular format. It uses Python
+regular expression syntax. Entries in the data editor which do not match the
+format string expression will cause a blue triangle to show in the upper left
+corner of the edit box, and the output for that field will be replaced with
+"#####".</p>
+
+<a id="output_formatting_details"></a> <h3>Output Formatting Details</h3>
+
+<p><b>Output Format Examples - </b>Here is an example of output formatting for
+a book list:</p>
+
+<p>"{*Title*}" (c) {*Copyright*}, Rating: {*Rating*} {*PlotDescription*}</p>
+
+<p>Each of the field names in enclosed in {* *}, curly brackets and asterisks.
+For more examples, see the sample files that can be opened using the "File
+&gt; Open Sample" command.</p>
+
+<p><b>Title Formats - </b>When a node in the tree is renamed, the program
+attempts to match the title formatting pattern to set the appropriate fields
+(the same title matching occurs when editing lines in the "Title List" view).
+If the title formatting is too complex, it may not correctly guess the intent.
+Things like adjacent fields with no characters separating them should be
+avoided unless you do not wish to rename nodes from the tree.</p>
+
+<p>If the text data used for a tree view title has multiple lines, only the
+first line will be used as the title.</p>
+
+<p><b>Skipped Output Lines - </b>If a line in the output formatting contains
+one or more fields and all of those fields for a given node are empty, the
+line is skipped. No blank line or embedded text will be output for that line.
+Note that this does not apply to a line without any fields (only embedded
+text). Also, when a line ending with a &lt;br/&gt; or an &lt;hr/&gt; tag is
+skipped, the ending tag is retained.</p>
+
+<p><b>HTML Tags - </b>By default, the "Allow HTML rich text in formats" option
+is unchecked  in the "Type Config"  tab of the Configure Types Dialog.  So any
+HTML tags are treated as plain text.  If the option is enabled, simple HTML
+formatting tags can be used in node output formats.</p>
+
+<p>Commonly used tags include "&lt;b&gt;bold&lt;/b&gt;",
+"&lt;u&gt;underline&lt;/u&gt;", "line break&lt;br/&gt;", "horizontal
+line&lt;hr/&gt;", and various font tags. Complex block tags should generally
+be avoided.</p>
+
+<p><b>Other Field References - </b>References to fields that are not contained
+within the node can be added to the output. Pushing the "Show Advanced" button
+on the "Output" tab of the configure dialog makes a reference level selection
+become visible.</p>
+
+<p>If the reference level is changed to "File Info Reference", fields
+containing file meta-data can be added to the output. These include the file
+name, path, size, modified day and modified time. A field referencing the
+node's unique ID is also included here.  These special fields are shown as
+"{*!field_name*}" in the title and output format editors.</p>
+
+<p>There are field references to various ancestor nodes (parents,
+grandparents, etc.). These require the data type of the reference to be
+specified. This selection determines the field names that are available, but
+the data from any type with a matching field name will be shown in the output.
+References to fields from parent and grandparent nodes are shown as
+"{**field_name*}" and "{***field_name*}", respectively. There are also general
+ancestor references, shown as "{*?field_name*}", that take data from the
+closest ancestor with a matching field.</p>
+
+<p>References to child nodes can also be added. These also require that the
+child data type be specified. The child data becomes embedded in the parent
+output. The child data is delimited with a separator string defined on the
+"Type Config" tab (with show advanced active). The separator defaults to a
+comma and a space, but can be set to &lt;br/&gt; or anything else.</p>
+
+<p>Finally, a "Child Count" reference can be added. This field will show the
+number of children ("Level1" field) or grandchildren ("Level2" field) of a
+node. These are shown as {*#Level1*} in the format editors.</p>
+
+<p>For examples of these fields, see the "sample_other_fields" file (by using
+the "File &gt; Open Sample" command).</p>
+
+<a id="type_format_details"></a> <h3>Type Format Details</h3>
+
+<p><b>Unique IDs - </b>Every node has a Unique ID string associated with it.
+The IDs are used for addresses in internal links and in other places where
+TreeLine needs to identify a particular node.By default, the text in the first
+field is used to generate the ID. This can be changed in the "Type Config" tab
+of the "Data &gt; Configure Types Dialog". Click the "Show Advanced" button to
+see the "Unique ID Reference Field" setting. </p>
+
+<p>To create the Unique ID, text in the reference field is modified by
+removing spaces and other special characters, shortening long entries, and
+adding extra characters if required to be unique in the file. If the content
+of the reference field changes, the Unique ID is updated, along with any links
+that reference it.</p>
+
+<p>The Unique IDs can be shown in the data edit view by checking the "Show
+node unique IDs in the Data Edit View" box under "Tools &gt; General Options
+&gt; Features Available". </p>
+
+<p><b>Generic and Derived Types - </b>Data types can be set to derive their
+field settings from a generic type. This allows types with different output
+formatting to always use the same set of fields. Any changes to the generic's
+list of fields and field types are automatically reflected in the fields of
+all derived types. This does not apply to a field's output formatting, which
+can still be set independently.</p>
+
+<p>There are two methods for creating derived types. First, a derived option
+can be selected when copying a type on the "Type List" tab of the "Data &gt;
+Configure Types Dialog". Alternately, a generic type can be specified from the
+derived type's "Type Config" tab of the dialog if the advanced functions are
+shown.</p>
+
+<p><b>Conditional Types - </b>Conditional expressions can be used to
+automatically assign a data type based on each node's content. Conditions can
+be assigned only to a generic type and its associated derived types. This
+allows the automatic assignment of different output formatting or different
+icons depending on each node's field data.</p>
+
+<p>The conditional dialog box is accessed from a button on the "Type Config"
+tab of the "Data-&gt;Configure Types Dialog" if the advanced functions are
+shown. Each line of the condition includes a field, an operator and a
+comparison value. The operators include equality, greater than, less than,
+starts with, ends with, and contains. There are also True and False operators
+that will toggle the type of all nodes simultaneously.</p>
+
+<p>For special field types such as dates, times, and booleans, the comparison
+value should be entered in the same format that is used in the Data Editor
+window. In general, the starts with, ends with, and contains operators should
+not be used for these special fields, since the comparison is done using an
+internal data representation. Dates and times also support a special
+comparison value of "now", which is always interpreted as the current date and
+time.</p>
+
+<p>The "Add New Rule" button is used to add additional condition lines. The
+lines can be joined with "and" or "or" operators. The "Remove Rule" button
+deletes the last condition line. If only a single line is present, the "Remove
+Rule" button completely removes the condition.</p>
+
+<p>Conditions do not have to be set for all types in a family. If no
+conditions are true for a node, the program will select a blank condition over
+a false one.</p>
+
+<p>For an example, see the "sample_conditional_todo" file (by using the "File
+&gt; Open Sample" command).</p>
+
+<p><b>Copying Formats - </b>Another method for changing data type formatting
+is to copy the formats from another TreeLine file. This is done with the "Data
+&gt; Copy Types from File" command. All types from the chosen file are copied.
+Any types in the current file with matching names are overwritten, but types
+with unique names are retained.</p>
+
+<a id="tree_data_operations"></a> <h3>Tree Data Operations</h3>
+
+<p><b>Sorting - </b>The "Data &gt; Sort Nodes" command can sort nodes based on
+either node titles or key fields predefined in the node type configuration.
+The predefined sort fields can be changed in the "Field Config" tab of the
+Configure Types Dialog. The "Sort Keys" button brings up a list of fields that
+define a sort key sequence.  The fields higher in the sequence have a higher
+priority.  The direction for each key field can be flipped.</p>
+
+<p><b>Numbering - </b>The "Data &gt; Update Numbering" command updates the
+contents of fields with a special numbering field type. The field's output
+format defines how the numbers are displayed in the output, including whether
+individual numbers, outline numbers or a section numbering scheme are shown.
+See the <a href="#numbering_type">Numbering Field Type</a> for more
+information.</p>
+
+<p>Note that numbering fields are not shown in the data edit view unless "Show
+numbering fields in the Data Edit View" is checked under "Tools &gt; General
+Options &gt; Features Available". When they are shown in the data edit view,
+they show up in section numbering style, regardless of the output format.</p>
+
+<p><b>Find and Replace - </b>The "Tools &gt; Find and Replace" command can be
+used to change the text in several nodes. The search text and replacement text
+are entered. Searching can be based on any match, full words only, or a Python
+regular expression. The operation can optionally be restricted to a particular
+node type and to a particular node field.</p>
+
+<p>Replacement using regular expressions is quite powerful. Searching for ".*"
+will match all of the text in the field. The replacement string can contain
+back references that consist of a backslash and a number. The back references
+get replaced with the corresponding parenthesized group from the match. For
+example, "\2" will be replaced with the text that matched the second group of
+parenthesis. The "\g&lt;0&gt;" back-reference can be used to substitute the
+entire matching string.</p>
+
+<p><b>Spell Check - </b>There is a spell check command in the "Tools" menu.
+Use of this command requires an external program to be installed (either
+aspell, ispell or hunspell- see the <a href="#system_requirements">System
+Requirements</a> section). If there are any misspelled words in the selected
+branch, a dialog will allow the word to be ignored, added to the dictionary,
+replaced with a suggestion or edited. This will spell check the text in all
+data fields of each node.</p>
+
+<p><b>Category-Based Arrangement - </b>The "Data" menu contains commands for
+arranging and flattening the data by category and by internal links. These
+methods are used to automatically add and remove levels of nodes below the
+current node in the tree.</p>
+
+<p>The "Add Category Level" command allows you to select one or more of the
+fields that the child nodes have in common. These fields are used to create
+new parent nodes for the children, grouping them by common categories. For
+example, in a list of books, picking the "author_first_name" and
+"author_last_name" fields will result in a tree with the books under new nodes
+for each unique author.</p>
+
+<p>The "Flatten by Category" command is almost the opposite of "Add Category
+Level". It eliminates any descendant nodes with children, transferring their
+data fields to their children. It will rename fields instead of overwriting
+data with the same field names, but this command is most useful when the
+children and parents are different types with unique field names.</p>
+
+<p><b>Link-Based Arrangement - </b>The "Data &gt; Flatten by Link" command
+will move all descendant nodes directly under a root node in a flat structure.
+It will add an internal link field to each node that points to the node's
+former parent.</p>
+
+<p>The "Data &gt; Arrange by Link" command does the opposite, placing each
+node under a parent node that is referenced by an internal link field.</p>
+
+<a id="printing_1"></a> <h3>Printing</h3>
+
+<p><b>Print Setup - </b>The dialog for print setup contains four tabs. The
+first, General Options, includes settings for what part of the tree to print,
+whether to include lines to child nodes and whether to allow page breaks
+between a parent an its first child node. The second tab, Page Setup, includes
+paper size, orientation, margins and columns. The third tab selects the font
+for printing. The last tab, Header/Footer, defines text and file data
+meta-fields for inclusion in headers and footers.</p>
+
+<p><b>Print Preview - </b>The Print Preview window shows how the printout will
+look with current print settings.  It can be dragged larger to show more
+detail, or the zoom settings can be changed.  It also includes buttons for the
+Print Setup dialog and for printing.</p>
+
+<p><b>Print to PDF - </b>This command prompts for a path and file name to
+export a PDF file.  It uses the current printer settings.</p>
+
+<a id="file_handling_1"></a> <h3>File Handling</h3>
+
+<p><b>File Compression - </b>A TreeLine file is in an XML text format. There
+are also options to work with compressed files (gzip format) to save storage
+space. Individual files can be set to compressed mode from either "File &gt;
+Properties" or from the file type pull-down in the save-as dialog.</p>
+
+<p><b>File Encryption - </b>There is a file encryption option to password
+protect TreeLine files. Individual files can be set to encrypted mode from
+either "File &gt; Properties" or from the file type pull-down in the save-as
+dialog. The encryption uses an SHA hash function as a stream cipher - it
+should be fairly secure.</p>
+
+<p><b>Auto-Save - </b>An auto-save feature can store unsaved files with a "~"
+appended to the file name. The backup files are automatically removed when the
+file is saved or TreeLine exits cleanly. The auto-save time interval is set in
+the general options. Setting the interval to zero disables this feature.</p>
+
+<p><b>Saved Tree States - </b>When opening a recently used file, TreeLine will
+restore the states of open and selected nodes. This information is stored in
+the user's TreeLine configuration files. If desired, this feature can be
+disabled with a general option.</p>
+
+<a id="file_import"></a> <h3>File Import</h3>
+
+<p><b>General Information - </b>A TreeLine file is in a specific XML text
+format. Other types of files can be imported using the "File &gt; Import"
+command, which will show a dialog box where the type of import can be
+selected.  Alternatively, using the "File &gt; Open" command with a
+non-TreeLine file will also show this dialog.</p>
+
+<p><b>Text Import - </b>There are four different text formats that can be
+selected for import.  Tab indented text creates a node title from each line in
+the file, structured based on the number of tabs before each line.  A tab
+delimited text table uses the first line as a header row to create field
+names, then each additional row becomes a node with field data taken from each
+column. The plain text, one node per line import creates a flat tree of node
+titles.  Finally, the plain text paragraph import creates long text nodes from
+text separated by blank lines.</p>
+
+<p><b>Treepad Import - </b>Files from the Treepad shareware program can be
+imported. Only Treepad text nodes are supported.</p>
+
+<p><b>XML Import - </b>TreeLine will import and export generic XML files.
+These routines do not have much intelligence - each XML element becomes a node
+and each XML attribute becomes a field. XML text content become fields named
+"Element_Data". This lets TreeLine function as a crude XML editor.</p>
+
+<p><b>ODF Import - </b>TreeLine will import Open Document Format (ODF) text
+documents, from applications such as Apache OpenOffice and LibreOffice. The
+node structure is formed based on the heading styles assigned in the document.
+Any text under each heading is assigned to that heading's node. The import
+filter is intended for simple text outlines only. No formatting is maintained,
+and objects such as tables and pictures are not imported.</p>
+
+<p><b>Bookmarks Import - </b>TreeLine will import bookmark files in both the
+Mozilla HTML format (Firefox browser) and the XBEL format (Konqueror, Galeon
+and Elinks browsers). Each bookmark becomes a node with a name and a link
+field. Some information in the files, such as visited dates and icon
+references, is not imported. For an example, see the "sample_bookmarks" file
+(by using the "File &gt; Open Sample" command).</p>
+
+<p> <a id="file_export"></a> <h3>File Export</h3>
+
+<p><b>General Information - </b>Files are exported using the "File &gt;
+Export" command. This will show a dialog box of available export types and
+options.</p>
+
+<p><b>HTML Export - </b>The HMTL export subtypes can export to a single page
+or to multiple pages.  The single page export contains all of the indented
+output.  A navigation pane on the left with links to anchors at node positions
+is optional.</p>
+
+<p>The multiple HTML pages export has one web page per node.  It includes a
+navigation pane on the left with links to the pages with sibling, parent and
+aunt/uncle nodes.</p>
+
+<p>Multiple HTML data tables export creates a table in each HTML file that
+contains the data for a set of siblings, as well as links to the parent and
+child pages.</p>
+
+<p><b>Text Export - </b>Data can be exported to tabbed title text and
+tab-delimited tables. These formats are the same as the corresponding import
+formats. When exporting to a table, only the first level of children is used,
+so you may wish to flatten the data before exporting.</p>
+
+<p>There is also an unformatted text export the dumps all of the output into a
+text file without preserving the tree structure.</p>
+
+<p><b>XML Export - </b>TreeLine will import and export generic XML files.
+These routines do not have much intelligence - each node becomes an XML
+element and each field becomes an XML attribute, except for fields named
+"Element_Data" that become the element's text. This lets TreeLine function as
+a crude XML editor.</p>
+
+<p><b>ODF Export - </b>TreeLine will export an outline to an Open Document
+Format (ODF) text document, compatible with Apache OpenOffice and LibreOffice.
+The title of each node is assigned a heading style at the appropriate level.
+Any other text in the output of each node becomes normal text under the
+heading. The export filter is intended for simple text outlines only. Any HTML
+formatting is stripped, and objects such as tables and pictures are not
+supported.</p>
+
+<p><b>Bookmarks Export - </b>TreeLine will export bookmark files in both the
+Mozilla HTML format (Firefox browser) and the XBEL format (Konqueror, Galeon
+and Elinks browsers). TreeLine will look for a link field in each node that
+becomes the target of the bookmark.</p>
+
+<a id="customizations"></a> <h3>Customizations</h3>
+
+<p><b>Options - </b>TreeLine's behavior can be modified with several settings
+available in "Tools &gt; General Options". Most of these options are covered
+elsewhere in this document.</p>
+
+<p><b>Keyboard Shortcuts - </b>Keyboard shortcuts can be customized by using
+the "Tools &gt; Set Keyboard Shortcuts" command. Simply type the new key
+sequence with the appropriate field selected.</p>
+
+<p><b>Toolbars - </b>An editor to customize the toolbars is available from
+"Tools &gt; Customize Toolbars". The number of toolbars can be set, and the
+buttons on each can be defined.</p>
+
+<p><b>Fonts - </b>Fonts used in the tree views, the output view and the editor
+views can be set in the "Tools &gt; Customize Fonts" menu.</p>
+
+<p><b>Tree Icons - </b>There is an icons directory in the user configuration
+directory ("~/.treeline-x.x/icons" on Linux,
+"Users\&lt;user&gt;\AppData\roaming\bellz\treeline-x.x\icons" on Windows).
+Image files (PNG or BMP) placed into this directory are available for use as
+tree icons.</p>
+
+<a id="plugins"></a> <h3>Plugins</h3>
+
+<p><b>Description - </b>TreeLine has an interface for plugin extension
+modules. This allows extensions to be written by various programmers to
+provide features needed by a few users without adding bloat to the main
+application. The plugins can add new menu items, access and modify TreeLine
+data, and read and write TreeLine Files.</p>
+
+<p>Currently available plugins are listed on the "Downloads" page of the
+TreeLine web site.</p>
+
+<p><b>Installation - </b>The plugins are installed by copying their Python
+file (*.py) to a plugins directory. This can be a directory in the TreeLine
+installation ("&lt;prefix&gt;/share/treeline/plugins/" on Linux or
+"TreeLine-2\plugins\" under the Program Files or Application Data folders on
+Windows) or in the user configuration directory ("~/.treeline-2.x/plugins/" on
+Linux, "Documents and Settings\&lt;user&gt;\Application
+Data\bellz\treeline-2.x\plugins\" on Windows). A list of loaded plugins can be
+found using the "Help &gt;About Plugins" command.</p>
+
+<p><b>Programming Interface - </b>Information needed to write new plugins can
+be found in the "plugininterface.py" file in the TreeLine source code.</p>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

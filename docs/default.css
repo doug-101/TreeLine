@@ -1,0 +1,119 @@
+/*  bellz.org style sheet  */
+
+body {
+    background: #033;
+    color: white;
+}
+
+a {
+    color: #0f9;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+hr {
+    height: 4px;
+}
+
+h1 {
+    text-align: center;
+    border-top: thick double #ccc;
+    padding: .3em;
+    margin: 1em 0 0;
+    clear: both;
+}
+
+h2 {
+    border-top: thin solid #ccc;
+    padding: .3em 0 0;
+    margin: 1em 0 0;
+}
+
+ul {
+    margin-left: 0;
+}
+
+li {
+    list-style-type: square;
+    padding: .2em 0;
+    margin-left: 2em;
+}
+
+img {
+    border: 0;
+}
+
+.interior {
+    margin: 0 auto;
+    width: 90%;
+}
+
+.title {
+    margin: 0;
+    padding: 4px 0;
+    float: left;
+}
+
+.title h1 {
+    font-size: 4em;
+    margin: 0;
+    padding: 0;
+}
+
+.toplinks {
+    float: right;
+    text-align: right;
+}
+
+.toplinks p {
+    margin: 0;
+    padding: 0;
+}
+
+.navigation {
+    clear: both;
+    line-height: 3em;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation a {
+    background: #366;
+    margin-right: 3px;
+    padding: .4em .4em;
+}
+
+.navigation a:hover {
+    background: #099;
+    text-decoration: none;
+}
+
+.current-nav {
+    background: #366;
+    margin-right: 3px;
+    padding: .4em .4em 1em;
+}
+
+.content {
+    background: #366;
+    margin: 0 0 2em;
+    padding: .5em 1.5em;
+    zoom: 1;   /* fixes IE layout bug */
+    /* height: 1%;   /* fixes IE layout bug */
+}
+
+.centered {
+    text-align: center;
+}
+
+.smallimage {
+    float: left;
+    margin: 0 1em;
+}
+
+.clearer {
+    clear: both;
+}
