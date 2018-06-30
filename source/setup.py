@@ -27,7 +27,8 @@ if sys.platform == 'win32':
 
 extraFiles =  [('../doc', 'doc'), ('../icons', 'icons'),
                ('../samples', 'samples'), ('../source', 'source'),
-               ('../templates', 'templates'), ('../win', '.')]
+               ('../templates', 'templates'),
+               ('../translations', 'translations'), ('../win', '.')]
 
 setup(name = 'treeline',
       version = __version__,
