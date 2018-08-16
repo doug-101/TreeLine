@@ -20,6 +20,7 @@ import gzip
 import zlib
 import platform
 from PyQt5.QtCore import QIODevice, QObject, Qt, PYQT_VERSION_STR, qVersion
+from PyQt5.QtGui import QFont
 from PyQt5.QtNetwork import QLocalServer, QLocalSocket
 from PyQt5.QtWidgets import (QAction, QApplication, QDialog, QFileDialog,
                              QMessageBox, qApp)
@@ -134,6 +135,8 @@ class TreeMainControl(QObject):
             if recentPath:
                 pathObjects = [recentPath]
         self.setupActions()
+        self.systemFont = QApplication.font()
+        self.updateAppFont()
         qApp.focusChanged.connect(self.updateActionsAvail)
         if pathObjects:
             for pathObj in pathObjects:
@@ -905,12 +908,22 @@ class TreeMainControl(QObject):
     def updateCustomFonts(self):
         """Update fonts in all windows based on a dialog signal.
         """
+        self.updateAppFont()
         for control in self.localControls:
             for window in control.windowList:
                 window.updateFonts()
             control.printData.setDefaultFont()
         for control in self.localControls:
             control.updateAll(False)
+
+    def updateAppFont(self):
+        """Update application default font from settings.
+        """
+        appFont = QFont(self.systemFont)
+        appFontName = globalref.miscOptions['AppFont']
+        if appFontName:
+            appFont.fromString(appFontName)
+        QApplication.setFont(appFont)
 
     def formatSelectAll(self):
         """Select all text in any currently focused editor.

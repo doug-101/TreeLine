@@ -1025,7 +1025,6 @@ class ComboEditor(QComboBox):
         self.setModel(self.listView.model())
         self.setView(self.listView)
         self.setModelColumn(0)
-        # self.lineEdit().setFont(dataeditview.defaultFont)
         self.modified = False
         self.fieldRef = None
         self.nodeRef = None

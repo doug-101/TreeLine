@@ -4,7 +4,7 @@
 # printdialogs.py, provides print preview and print settings dialogs
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -893,12 +893,12 @@ class SmallListWidget(QListWidget):
 class FontPage(QWidget):
     """Font selection print option dialog page.
     """
-    def __init__(self, printData, useSysDfltLabel=False, parent=None):
+    def __init__(self, printData, defaultLabel='', parent=None):
         """Create the font settings page.
 
         Arguments:
             printData -- a reference to the PrintData class
-            useSysDfltLabel -- default is system if True, o/w TreeLine output
+            defaultLabel -- default font label if given, o/w TreeLine output
             parent -- the parent dialog
         """
         super().__init__(parent)
@@ -910,9 +910,9 @@ class FontPage(QWidget):
         defaultBox = QGroupBox(_('Default Font'))
         topLayout.addWidget(defaultBox)
         defaultLayout = QVBoxLayout(defaultBox)
-        defaultText = (_('&Use system default font') if useSysDfltLabel else
-                       _('&Use TreeLine output view font'))
-        self.defaultCheck = QCheckBox(defaultText)
+        if not defaultLabel:
+            defaultLabel = _('&Use TreeLine output view font')
+        self.defaultCheck = QCheckBox(defaultLabel)
         defaultLayout.addWidget(self.defaultCheck)
         self.defaultCheck.setChecked(self.printData.useDefaultFont)
         self.defaultCheck.clicked.connect(self.setFontSelectAvail)

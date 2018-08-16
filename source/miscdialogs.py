@@ -21,7 +21,7 @@ import datetime
 import platform
 import traceback
 from PyQt5.QtCore import Qt, pyqtSignal, PYQT_VERSION_STR, qVersion
-from PyQt5.QtGui import QKeySequence, QTextDocument
+from PyQt5.QtGui import QFont, QKeySequence, QTextDocument
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
                              QCheckBox, QComboBox, QDialog, QGridLayout,
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit,
@@ -1810,17 +1810,21 @@ class CustomFontData:
 
     Acts as a stand-in for PrintData class in the font page of the dialog.
     """
-    def __init__(self, fontOption):
+    def __init__(self, fontOption, useAppDefault=True):
         """Initialize the font data.
 
         Arguments:
             fontOption -- the name of the font setting to retrieve
+            useAppDefault -- use app default if true, o/w use sys default
         """
         self.fontOption = fontOption
-        self.defaultFont = QTextDocument().defaultFont()
+        if useAppDefault:
+            self.defaultFont = QTextDocument().defaultFont()
+        else:
+            self.defaultFont = QFont(globalref.mainControl.systemFont)
         self.useDefaultFont = True
-        self.mainFont = QTextDocument().defaultFont()
-        fontName = globalref.miscOptions[fontOption]
+        self.mainFont = QFont(self.defaultFont)
+        fontName = globalref.miscOptions[self.fontOption]
         if fontName:
             self.mainFont.fromString(fontName)
             self.useDefaultFont = False
@@ -1850,25 +1854,34 @@ class CustomFontDialog(QDialog):
         super().__init__(parent)
         self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
                             Qt.WindowCloseButtonHint)
-        self.setWindowTitle(_('Customize Toolbars'))
+        self.setWindowTitle(_('Customize Fonts'))
 
         topLayout = QVBoxLayout(self)
         self.setLayout(topLayout)
-        tabs = QTabWidget()
-        topLayout.addWidget(tabs)
+        self.tabs = QTabWidget()
+        topLayout.addWidget(self.tabs)
+        self.tabs.setUsesScrollButtons(False)
+        self.tabs.currentChanged.connect(self.updateTabDefault)
 
         self.pages = []
-        treeFontPage = printdialogs.FontPage(CustomFontData('TreeFont'), True)
+        defaultLabel = _('&Use system default font')
+        appFontPage = printdialogs.FontPage(CustomFontData('AppFont', False),
+                                            defaultLabel)
+        self.pages.append(appFontPage)
+        self.tabs.addTab(appFontPage, _('App Default Font'))
+        defaultLabel = _('&Use app default font')
+        treeFontPage = printdialogs.FontPage(CustomFontData('TreeFont'),
+                                             defaultLabel)
         self.pages.append(treeFontPage)
-        tabs.addTab(treeFontPage, _('Tree View Font'))
+        self.tabs.addTab(treeFontPage, _('Tree View Font'))
         outputFontPage = printdialogs.FontPage(CustomFontData('OutputFont'),
-                                               True)
+                                               defaultLabel)
         self.pages.append(outputFontPage)
-        tabs.addTab(outputFontPage, _('Output View Font'))
+        self.tabs.addTab(outputFontPage, _('Output View Font'))
         editorFontPage = printdialogs.FontPage(CustomFontData('EditorFont'),
-                                               True)
+                                               defaultLabel)
         self.pages.append(editorFontPage)
-        tabs.addTab(editorFontPage, _('Editor View Font'))
+        self.tabs.addTab(editorFontPage, _('Editor View Font'))
 
         ctrlLayout = QHBoxLayout()
         topLayout.addLayout(ctrlLayout)
@@ -1882,6 +1895,22 @@ class CustomFontDialog(QDialog):
         cancelButton = QPushButton(_('&Cancel'))
         ctrlLayout.addWidget(cancelButton)
         cancelButton.clicked.connect(self.reject)
+
+    def updateTabDefault(self):
+        """Update the default font on the newly shown page.
+        """
+        appFontWidget = self.tabs.widget(0)
+        currentWidget = self.tabs.currentWidget()
+        if appFontWidget is not currentWidget:
+            if appFontWidget.defaultCheck.isChecked():
+                defaultFont = QFont(globalref.mainControl.systemFont)
+            else:
+                defaultFont = appFontWidget.readFont()
+            currentWidget.printData.defaultFont = defaultFont
+            if currentWidget.defaultCheck.isChecked():
+                currentWidget.printData.mainFont = QFont(defaultFont)
+                currentWidget.currentFont = currentWidget.printData.mainFont
+                currentWidget.setFont(defaultFont)
 
     def applyChanges(self):
         """Apply any changes from the dialog.

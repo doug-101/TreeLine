@@ -87,6 +87,7 @@ def setMiscOptionDefaults(miscOptions):
     StringOptionItem = options.StringOptionItem
     StringOptionItem(miscOptions, 'PrintUnits', 'in', False, True)
     StringOptionItem(miscOptions, 'SpellCheckPath', '')
+    StringOptionItem(miscOptions, 'AppFont', '', True, True)
     StringOptionItem(miscOptions, 'TreeFont', '', True, True)
     StringOptionItem(miscOptions, 'OutputFont', '', True, True)
     StringOptionItem(miscOptions, 'EditorFont', '', True, True)
