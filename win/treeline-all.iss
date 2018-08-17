@@ -5,13 +5,13 @@
 
 [Setup]
 AppName=TreeLine
-AppVersion=2.9.2
+AppVersion=3.0.0
 ChangesAssociations=yes
 DefaultDirName={pf}\TreeLine-3
 DefaultGroupName=TreeLine
 DisableProgramGroupPage=yes
 OutputDir=.
-OutputBaseFilename=treeline-2.9.2-install-all
+OutputBaseFilename=treeline-3.0.0-install-all
 PrivilegesRequired=poweruser
 SetupIconFile=treeline.ico
 Uninstallable=IsTaskSelected('adduninstall')
@@ -27,9 +27,10 @@ Name: "source"; Description: "Include source code"
 
 [Files]
 Source: "treeline.exe"; DestDir: "{app}"
-Source: "python3*.zip"; DestDir: "{app}"
 Source: "*.dll"; DestDir: "{app}"
-Source: "*.pyd"; DestDir: "{app}"
+Source: "lib\*.dll"; DestDir: "{app}\lib"
+Source: "lib\*.pyd"; DestDir: "{app}\lib"
+Source: "lib\*.zip"; DestDir: "{app}\lib"
 Source: "imageformats\*.dll"; DestDir: "{app}\imageformats"
 Source: "platforms\*.dll"; DestDir: "{app}\platforms"
 Source: "doc\LICENSE"; DestDir: "{app}\doc"

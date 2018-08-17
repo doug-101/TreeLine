@@ -18,7 +18,7 @@
         </div>
 
         <div class="toplinks">
-            <p>Version 2.0.2 (stable), 2.9.2 (development)</p>
+            <p>Version 3.0.0 (stable)</p>
             <p><a href="http://www.bellz.org/progs.html">Other Programs</a></p>
             <p><a href="http://www.bellz.org/contact.html">Contact Info</a></p>
         </div>
@@ -45,137 +45,46 @@
             <p>On a Linux system that has the libraries noted on the <a
               href="require.html">requirements</a> page, all that is needed
             is the source code (with an installer script), included in <a
-              href="http://sourceforge.net/projects/treeline/files/2.0.2/treeline-2.0.2.tar.gz/download">
-              <tt>treeline-2.0.2.tar.gz</tt></a> (444 KB).</p>
+            href="https://github.com/doug-101/TreeLine/releases/download/v3.0.0/treeline-3.0.0.tar.gz">
+            <tt>treeline-3.0.0.tar.gz</tt></a> (496 KB).</p>
 
             <p>Alternately, TreeLine packages are available from the
             repositories in many popular distrobutions.</p>
 
-            <p>But please read about the <a
+            <p>Also, please read about the <a
               href="install.html">installation</a> and <a
               href="use.html">use</a> of TreeLine.</p>
 
             <h2>Windows</h2>
 
             <p>Two windows installers are available.  Use <a
-              href="http://sourceforge.net/projects/treeline/files/2.0.2/treeline-2.0.2-install-all.exe/download">
-              <tt>treeline-2.0.2-install-all.exe</tt></a> (9.7 MB) to install
-            for all users (administrator permissions are required).  Use <a
-              href="http://sourceforge.net/projects/treeline/files/2.0.2/treeline-2.0.2-install-user.exe/download">
-              <tt>treeline-2.0.2-install-user.exe</tt></a> (9.7 MB) to install
+            href="https://github.com/doug-101/TreeLine/releases/download/v3.0.0/treeline-3.0.0-install-all.exe">
+              <tt>treeline-3.0.0-install-all.exe</tt></a> (14 MB) to install
+             for all users (administrator permissions are required).  Use <a
+            href="https://github.com/doug-101/TreeLine/releases/download/v3.0.0/treeline-3.0.0-install-user.exe">
+              <tt>treeline-3.0.0-install-user.exe</tt></a> (14 MB) to install
             for a single user (administrator rights are not required).  The
             source code for the libraries used to build the Windows binaries
             is available upon request.</p>
 
-            <p>But please read about the <a
+            <p>Also, please read about the <a
               href="install.html">installation</a> and <a
-              href="use.html">use</a> of TreeLine.  There is also
-            information about some alternate downloads if you wish to
-            play around with the source code.</p>
-
-            <h2>Plugin Extension Modules</h2>
-
-            <p>TreeLine has an interface to plugin extension modules.  This
-            allows extensions to be written by various coders that provide
-            functionality needed by a few users without adding bloat to the
-            main application.  The plugins can add new menu items, access the
-            TreeLine data and read and write TreeLine Files.</p>
-
-            <p>The plugins are installed by copying their Python file (*.py)
-            to the plugins directory.  This can be a directory in the TreeLine
-            installation ("&lt;prefix&gt;/share/treeline/plugins/" on Linux or
-            "TreeLine-2\plugins\" under the Program Files or Application Data
-            folders on Windows) or in the user configuration directory
-            ("~/.treeline-2.x/plugins/" on Linux, "Documents and
-            Settings\&lt;user&gt;\Application
-            Data\bellz\treeline-2.x\plugins\" on Windows). The same plugin
-            file works for both Linux and Windows.</p>
-
-            <ul>The following sample plugins are available for
-              TreeLine-1.9.6+ and TreeLine-2.0.x:
-              <li><b>httpLoad</b> -
-                this is a sample plugin that can open a file directly
-                from a web server.  It adds an "Open from web" menu item
-                to the "File" menu.  Download <a
-              href="plugins2/httpload.py"><tt>httpload.py</tt></a>.</li>
-
-              <li><b>updateref</b> - this plugin updates empty fields
-                from another file, using unique IDs to match nodes with
-                fields to update.  Download <a
-              href="plugins2/updateref.py"><tt>updateref.py</tt></a>.</li>
-
-              <li><b>treepadexport</b> - this plugin exports from TreeLine to
-                Treepad text file format.  It adds an "Export to Treepad"
-              menu item to the "File" menu.  Download <a
-              href="plugins2/treepadexport.py"><tt>treepadexport.py</tt></a>.
-              </li></ul>
-
+              href="use.html">use</a> of TreeLine.</p>
 
             <a id="unstable" name="unstable"></a>
             <h1>Development Snapshots (unstable)</h1>
 
-            <!--<p>There is no new development version (yet).</p>-->
-
-            <p>This is an unstable development snapshot of TreeLine. It could
-            contain bugs. Testing and bug reports are appreciated.</p>
-
-            <h2>Linux</h2>
-
-            <p>On a Linux system that has the libraries noted in the change
-            log, all that is needed is the source code (with an installer
-            script), included in <a
-            href="https://github.com/doug-101/TreeLine/releases/download/v2.9.2/treeline-2.9.2.tar.gz">
-            <tt>treeline-2.9.2.tar.gz</tt></a> (496 KB).</p>
-
-            <h2>Windows</h2>
-
-            <p>Two windows installers are available.  Use <a
-            href="https://github.com/doug-101/TreeLine/releases/download/v2.9.2/treeline-2.9.2-install-all.exe">
-              <tt>treeline-2.9.2-install-all.exe</tt></a> (14 MB) to install
-            for all users (administrator permissions are required).  Use <a
-            href="https://github.com/doug-101/TreeLine/releases/download/v2.9.2/treeline-2.9.2-install-user.exe">
-              <tt>treeline-2.9.2-install-user.exe</tt></a> (14 MB) to install
-            for a single user (administrator rights are not required).  The
-            source code for the libraries used to build the Windows binaries
-            is available upon request.</p>
-
-
-            <a id="older" name="older"></a>
-            <h1>Older Version (1.4.1)</h1>
-
-            <p>For use with older plugins or for a French translation,
-            Version 1.4.1 of TreeLine is still available.</p>
-            
-            <h2>Linux</h2>
-
-            <p>Download <a
-              href="http://sourceforge.net/projects/treeline/files/1.4.1/treeline-1.4.1.tar.gz/download">
-              <tt>treeline-1.4.1.tar.gz</tt></a> (356 KB).  For translations,
-            also download <a
-              href="http://sourceforge.net/projects/treeline/files/1.4.1/treeline-i18n-1.4.1a.tar.gz/download">
-              <tt>treeline-i18n-1.4.1a.tar.gz</tt></a> (460 KB).</p>
-
-            <h2>Windows</h2>
-
-            <p>Download <a
-              href="http://sourceforge.net/projects/treeline/files/1.4.1/treeline-1.4.1-install.exe/download">
-              <tt>treeline-1.4.1-install.exe</tt></a> (3.2 MB).  For
-            translations, also download <a
-              href="http://sourceforge.net/projects/treeline/files/1.4.1/treeline-i18n-1.4.1a.exe/download">
-              <tt>treeline-i18n-1.4.1a.exe</tt></a> (432 KB).</p>
-
-            <ul>The following plugins are available for version 1.4.1:
-                <li><b>httpLoad</b> - this is a sample plugin that can open a
-                file directly from a web server.  It adds an "Open from web"
-                menu item to the "File" menu.  Download <a
-                  href="plugins/httpload2.py"><tt>httpload2.py</tt></a>.</li>
-                <li><b>typesearch</b> - this plugin finds all nodes with a
-                chosen data type.  It opens and closes nodes and temporarily
-                changes icons to highlight matching nodes.  It adds "Find
-                Items by Type" to the "Tools" menu.  Download <a
-                href="plugins/typesearch2.py"><tt>typesearch2.py</tt></a>.</li>
-            </ul>
-
+            <p>There is no new development version (yet).</p>
+ 
+            <!--<p>This is an unstable development snapshot of TreeLine. It could
+            contain bugs. Testing and bug reports are appreciated.</p>-->
+ 
+             <a id="older" name="older"></a>
++            <h1>Older Versions</h1>
+ 
++            <p>Previous versions of TreeLine are available from <a
++              href="http://sourceforge.net/projects/treeline/files/">
++            SourceForge</a>.</p>
 
         </div>
 

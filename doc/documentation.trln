@@ -737,6 +737,95 @@
 {
 "children": [],
 "data": {
+"Name": "Windows binary",
+"Text": "The Windows binary is now built using updated libraries (Qt 5.11 and PyQt 5.11)."
+},
+"format": "BULLETS",
+"uid": "e7776f4da14511e88aefa44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Major rewrite",
+"Text": "This is the first stable release of a major TreeLine rewrite. It includes all of the new features shown below in the 2.1.x and 2.9.x development series."
+},
+"format": "BULLETS",
+"uid": "e8e10d32a14311e8ab90a44cc8e97404"
+},
+{
+"children": [
+"e8e10d34a14311e899cca44cc8e97404",
+"e8e10d38a14311e8a0c3a44cc8e97404",
+"e8e10d37a14311e8b0b3a44cc8e97404"
+],
+"data": {
+"Name": "August 19, 2018 - Release 3.0.0 (new stable release)"
+},
+"format": "HEADINGS",
+"uid": "e8e10d33a14311e88e24a44cc8e97404"
+},
+{
+"children": [
+"e8e10d32a14311e8ab90a44cc8e97404",
+"e8e10d35a14311e8aca9a44cc8e97404",
+"e8e10d36a14311e8b832a44cc8e97404"
+],
+"data": {
+"Name": "Notes"
+},
+"format": "BULLET_HEADING",
+"uid": "e8e10d34a14311e899cca44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Compatibility",
+"Text": "TreeLine files now use a JSON format in place of the old XML format. This provides more flexibility for structuring new features like cloned nodes and multiple root nodes. A new file extension (\".trln) helps to distinguish files with the new format. Import and export filters are provided for older TreeLine version 2.x and 1.x files. The older files can be opened using the standard \"File &gt; Open\" command."
+},
+"format": "BULLETS",
+"uid": "e8e10d35a14311e8aca9a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Translations",
+"Text": "A GUI translations is available in German.  All other translations are out of date and have not been included. Volunteers are needed to update translations in several languages."
+},
+"format": "BULLETS",
+"uid": "e8e10d36a14311e8b832a44cc8e97404"
+},
+{
+"children": [
+"e7776f4da14511e88aefa44cc8e97404"
+],
+"data": {
+"Name": "Updates"
+},
+"format": "BULLET_HEADING",
+"uid": "e8e10d37a14311e8b0b3a44cc8e97404"
+},
+{
+"children": [
+"e8e10d3ca14311e8b71da44cc8e97404"
+],
+"data": {
+"Name": "New Features"
+},
+"format": "BULLET_HEADING",
+"uid": "e8e10d38a14311e8a0c3a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Default font",
+"Text": "The default font for the application can now be set in Tools &gt; Customize Fonts. This is useful for enlarging fonts on some systems with high screen resolutions. Options still exist to individually specify tree view, output view and editor fonts."
+},
+"format": "BULLETS",
+"uid": "e8e10d3ca14311e8b71da44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Category command disable",
 "Text": "Avoid problems running data category-based commands on selections without any child nodes."
 },
@@ -795,7 +884,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 2.9.2, an unstable development snapshot, released June 30, 2018 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.0.0, a stable release, dated August 19, 2018 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -1288,7 +1377,7 @@
 "children": [],
 "data": {
 "Name": "Fonts",
-"Text": "Fonts used for editing and output can be customized."
+"Text": "Fonts used in the GUI, editors and output views can be customized."
 },
 "format": "BULLETS",
 "uid": "f16fbc06a25a11e7b7c67054d2175f18"
@@ -2429,7 +2518,7 @@
 "children": [],
 "data": {
 "Name": "Fonts",
-"Text": "Fonts used in the tree views, the output view and the editor views can be set in the \"Tools &gt; Customize Fonts\" menu."
+"Text": "The default font used in the application  can be set using the \"Tools &gt; Customize Fonts\" menu.  There are also options to specify fonts used in the tree views, the output view and the editor views."
 },
 "format": "HEAD_PARA",
 "uid": "f1703744a25a11e7b7c67054d2175f18"
@@ -2445,6 +2534,7 @@
 },
 {
 "children": [
+"e8e10d33a14311e88e24a44cc8e97404",
 "4bc47248786711e8a8bfa44cc8e97404",
 "95a6e90a333f11e89efed66a6ab671cb",
 "6df9a0c5ba3b11e78e7e3417ebd53aeb",
@@ -4824,7 +4914,7 @@
 }
 ],
 "properties": {
-"tlversion": "2.9.2",
+"tlversion": "3.0.0",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
