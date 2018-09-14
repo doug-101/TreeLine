@@ -409,6 +409,11 @@ class ImportControl:
                 startPos = match.start(1)
             node.data[fieldName] = text
         structure.generateSpots(None)
+        if nodeformat.FileInfoFormat.typeName in structure.treeFormats:
+            fileFormat = structure.treeFormats[nodeformat.FileInfoFormat.
+                                               typeName]
+            structure.treeFormats.fileInfoFormat.duplicateFileInfo(fileFormat)
+            del structure.treeFormats[nodeformat.FileInfoFormat.typeName]
         structure.treeFormats.updateDerivedRefs()
         for nodeFormat in structure.treeFormats.values():
             nodeFormat.updateLineParsing()
@@ -502,7 +507,7 @@ class ImportControl:
         lineKeyRe = re.compile(r'line\d+$')
         lineNums = sorted([int(key[4:]) for key in attrib.keys()
                            if lineKeyRe.match(key)])
-        if lineNums[0] == 0:
+        if lineNums and lineNums[0] == 0:
             del lineNums[0]
         attrib['outputlines'] = [attrib['line{0}'.format(keyNum)] for
                                  keyNum in lineNums]
