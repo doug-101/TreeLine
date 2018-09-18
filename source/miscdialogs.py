@@ -21,14 +21,15 @@ import datetime
 import platform
 import traceback
 from PyQt5.QtCore import Qt, pyqtSignal, PYQT_VERSION_STR, qVersion
-from PyQt5.QtGui import QFont, QKeySequence, QTextDocument
+from PyQt5.QtGui import QFont, QKeySequence, QTextDocument, QTextOption
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
                              QCheckBox, QComboBox, QDialog, QGridLayout,
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit,
                              QListWidget, QListWidgetItem, QMenu, QMessageBox,
-                             QPushButton, QRadioButton, QScrollArea, QSpinBox,
-                             QTabWidget, QTextEdit, QTreeWidget,
-                             QTreeWidgetItem, QVBoxLayout, QWidget)
+                             QPlainTextEdit, QPushButton, QRadioButton,
+                             QScrollArea, QSpinBox, QTabWidget, QTextEdit,
+                             QTreeWidget, QTreeWidgetItem, QVBoxLayout,
+                             QWidget)
 import options
 import printdialogs
 import undo
@@ -1929,3 +1930,48 @@ class CustomFontDialog(QDialog):
         """
         self.applyChanges()
         super().accept()
+
+
+class AboutDialog(QDialog):
+    """Show program info in a text box.
+    """
+    def __init__(self, title, textLines, icon=None, parent=None):
+        """Create the dialog.
+
+        Arguments:
+            title -- the window title text
+            textLines -- a list of lines to show
+            icon -- an icon to show if given
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
+                            Qt.WindowCloseButtonHint)
+        self.setWindowTitle(title)
+
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        mainLayout = QHBoxLayout()
+        topLayout.addLayout(mainLayout)
+        iconLabel = QLabel()
+        iconLabel.setPixmap(icon.pixmap(128, 128))
+        mainLayout.addWidget(iconLabel)
+        textBox = QPlainTextEdit()
+        textBox.setReadOnly(True)
+        textBox.setWordWrapMode(QTextOption.NoWrap)
+        textBox.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        textBox.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        text = '\n'.join(textLines)
+        textBox.setPlainText(text)
+        size = textBox.fontMetrics().size(0, text)
+        size.setHeight(size.height() + 10)
+        size.setWidth(size.width() + 10)
+        textBox.setMinimumSize(size)
+        mainLayout.addWidget(textBox)
+
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch()
+        okButton = QPushButton(_('&OK'))
+        ctrlLayout.addWidget(okButton)
+        okButton.clicked.connect(self.accept)

@@ -974,5 +974,7 @@ class TreeMainControl(QObject):
                      '   Qt:  {0}'.format(qVersion()),
                      '   PyQt:  {0}'.format(PYQT_VERSION_STR),
                      '   OS:  {0}'.format(platform.platform())]
-        QMessageBox.about(QApplication.activeWindow(), 'TreeLine',
-                          '\n'.join(textLines))
+        dialog = miscdialogs.AboutDialog('TreeLine', textLines,
+                                         QApplication.windowIcon(),
+                                         QApplication.activeWindow())
+        dialog.exec_()
