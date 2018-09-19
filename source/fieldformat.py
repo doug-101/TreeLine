@@ -1037,7 +1037,9 @@ class TimeField(HtmlTextField):
         try:
             time = datetime.datetime.strptime(storedText,
                                               TimeField.isoFormat).time()
-            text = time.strftime(adjOutDateFormat(self.format))
+            outFormat = adjOutDateFormat(self.format)
+            outFormat = adjTimeAmPm(outFormat, time)
+            text = time.strftime(outFormat)
         except ValueError:
             text = _errorStr
         return super().formatOutput(text, titleMode, formatHtml)
@@ -1054,6 +1056,7 @@ class TimeField(HtmlTextField):
         time = datetime.datetime.strptime(storedText,
                                           TimeField.isoFormat).time()
         editorFormat = adjOutDateFormat(globalref.genOptions['EditTimeFormat'])
+        editorFormat = adjTimeAmPm(editorFormat, time)
         return time.strftime(editorFormat)
 
     def storedText(self, editorText):
@@ -1239,7 +1242,9 @@ class DateTimeField(HtmlTextField):
         try:
             dateTime = datetime.datetime.strptime(storedText,
                                                   DateTimeField.isoFormat)
-            text = dateTime.strftime(adjOutDateFormat(self.format))
+            outFormat = adjOutDateFormat(self.format)
+            outFormat = adjTimeAmPm(outFormat, dateTime)
+            text = dateTime.strftime(outFormat)
         except ValueError:
             text = _errorStr
         return super().formatOutput(text, titleMode, formatHtml)
@@ -1258,6 +1263,7 @@ class DateTimeField(HtmlTextField):
         editorFormat = '{0} {1}'.format(globalref.genOptions['EditDateFormat'],
                                         globalref.genOptions['EditTimeFormat'])
         editorFormat = adjOutDateFormat(editorFormat)
+        editorFormat = adjTimeAmPm(editorFormat, dateTime)
         return dateTime.strftime(editorFormat)
 
     def storedText(self, editorText):
@@ -2445,3 +2451,15 @@ def adjInDateFormat(dateFormat):
         dateFormat -- the format to modify
     """
     return dateFormat.replace('%-', '%')
+
+def adjTimeAmPm(timeFormat, time):
+    """Add AM/PM to timeFormat if in format and locale skips it.
+
+    Arguments:
+        timeFormat -- the format to modify
+        time -- the datetime object to check for AM/PM
+    """
+    if '%p' in timeFormat and time.strftime('%I (%p)').endswith('()'):
+        amPm = 'AM' if time.hour < 12 else 'PM'
+        timeFormat = re.sub(r'(?<!%)%p', amPm, timeFormat)
+    return timeFormat
