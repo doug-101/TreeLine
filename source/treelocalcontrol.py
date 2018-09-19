@@ -122,6 +122,13 @@ class TreeLocalControl(QObject):
             self.windowList.append(window)
             window.setCaption(self.filePathObj)
             self.activeWindow = window
+        if fileObj and self.structure.childRefErrorNodes:
+            msg = _('Warning - file corruption!\n'
+                    'Skipped bad child references in the following nodes:')
+            for node in self.structure.childRefErrorNodes:
+                msg += '\n   "{}"'.format(node.title())
+            QMessageBox.warning(self.activeWindow, 'TreeLine', msg)
+            self.structure.childRefErrorNodes = []
 
     def setWindowSignals(self, window, removeOld=False):
         """Setup signals between the window and this controller.

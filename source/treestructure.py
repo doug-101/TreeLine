@@ -4,7 +4,7 @@
 # treestructure.py, provides a class to store the tree's data
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -49,6 +49,7 @@ class TreeStructure(treenode.TreeNode):
         self.redoList = None
         self.configDialogFormats = None
         self.mathZeroBlanks = True
+        self.childRefErrorNodes = []
         if fileData:
             self.treeFormats = treeformats.TreeFormats(fileData['formats'])
             self.treeFormats.loadGlobalSavedConditions(fileData['properties'])
@@ -58,6 +59,9 @@ class TreeStructure(treenode.TreeNode):
                 self.nodeDict[node.uId] = node
             for node in self.nodeDict.values():
                 node.assignRefs(self.nodeDict)
+                if node.tmpChildRefs:
+                    self.childRefErrorNodes.append(node)
+                    node.tmpChildRefs = []
             for uId in fileData['properties']['topnodes']:
                 node = self.nodeDict[uId]
                 self.childList.append(node)

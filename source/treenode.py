@@ -46,13 +46,23 @@ class TreeNode:
         self.spotRefs = set()
 
     def assignRefs(self, nodeDict):
-        """Add actual refs to child nodes.
+        """Add actual refs to child nodes from data in self.tmpChildRefs.
 
+        Any bad node refs (corrupt file data) are left in self.tmpChildRefs.
         Arguments:
             nodeDict -- all nodes stored by uid
         """
-        self.childList = [nodeDict[uid] for uid in self.tmpChildRefs]
-        self.tmpChildRefs = []
+        try:
+            self.childList = [nodeDict[uid] for uid in self.tmpChildRefs]
+            self.tmpChildRefs = []
+        except KeyError:   # due to corrupt file data
+            badChildRefs = []
+            for uid in self.tmpChildRefs:
+                if uid in nodeDict:
+                    self.childList.append(nodeDict[uid])
+                else:
+                    badChildRefs.append(uid)
+            self.tmpChildRefs = badChildRefs
 
     def generateSpots(self, parentSpot):
         """Recursively generate spot references for this branch.
