@@ -177,6 +177,15 @@
 {
 "children": [],
 "data": {
+"Name": "Open with bad references",
+"Text": "Allow TreeLine files with invalid child references to open. Provide a warning message about the missing child nodes in the corrupt file."
+},
+"format": "BULLETS",
+"uid": "2df5b030bbf711e88a1ca44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Live HTML Export",
 "Text": "A live tree HTML export creates an interactive view with expandable nodes and a descendant output pane."
 },
@@ -200,6 +209,15 @@
 },
 "format": "BULLETS",
 "uid": "3d2bb12eba3c11e79b223417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Time field AM/PM",
+"Text": "Force references to AM/PM in time field formats to be output regardless of system locale settings."
+},
+"format": "BULLETS",
+"uid": "40ec6d5cbbf711e8bb93a44cc8e97404"
 },
 {
 "children": [],
@@ -376,6 +394,57 @@
 },
 "format": "BULLETS",
 "uid": "653f2f90334c11e8a7c9d66a6ab671cb"
+},
+{
+"children": [
+"67e95a5fbbf611e8b8bda44cc8e97404",
+"67e95a60bbf611e8a80ca44cc8e97404"
+],
+"data": {
+"Name": "September 22, 2018 - Release 3.0.1 (stable release)"
+},
+"format": "HEADINGS",
+"uid": "67e95a5bbbf611e891f7a44cc8e97404"
+},
+{
+"children": [
+"67e95a61bbf611e8989ca44cc8e97404"
+],
+"data": {
+"Name": "Updates"
+},
+"format": "BULLET_HEADING",
+"uid": "67e95a5fbbf611e8b8bda44cc8e97404"
+},
+{
+"children": [
+"67e95a64bbf611e8960fa44cc8e97404",
+"2df5b030bbf711e88a1ca44cc8e97404",
+"40ec6d5cbbf711e8bb93a44cc8e97404"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "67e95a60bbf611e8a80ca44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "About dialog text box",
+"Text": "Added a read-only text box to the Help &gt; About dialog to allow copying of the version and library information."
+},
+"format": "BULLETS",
+"uid": "67e95a61bbf611e8989ca44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Old file import",
+"Text": "Fixed a problem opening old TreeLine files that had format changes in File Info fields."
+},
+"format": "BULLETS",
+"uid": "67e95a64bbf611e8960fa44cc8e97404"
 },
 {
 "children": [],
@@ -884,7 +953,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 3.0.0, a stable release, dated August 19, 2018 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.0.1, a stable release, dated September 22, 2018 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -2534,6 +2603,7 @@
 },
 {
 "children": [
+"67e95a5bbbf611e891f7a44cc8e97404",
 "e8e10d33a14311e88e24a44cc8e97404",
 "4bc47248786711e8a8bfa44cc8e97404",
 "95a6e90a333f11e89efed66a6ab671cb",
@@ -4914,7 +4984,7 @@
 }
 ],
 "properties": {
-"tlversion": "3.0.0",
+"tlversion": "3.0.1",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
