@@ -1046,7 +1046,7 @@ class SortDialog(QDialog):
         control = globalref.mainControl.activeControl
         selSpots = control.currentSelectionModel().selectedSpots()
         if self.whatButtons.checkedId() == SortWhat.fullTree:
-            selSpots = control.structure.rootSpots()
+            selSpots = [control.structure.spotByNumber(0)]
         elif self.whatButtons.checkedId() == SortWhat.selectSiblings:
             selSpots = [spot.parentSpot for spot in selSpots]
         if self.whatButtons.checkedId() in (SortWhat.fullTree,
