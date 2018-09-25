@@ -1290,8 +1290,7 @@ class TreeLocalControl(QObject):
                             if len(child.spotRefs) <= numSpots:
                                 titleDict[child.title()].remove(child)
                                 self.structure.removeNodeDictRef(child)
-                            else:
-                                child.removeInvalidSpotRefs(False)
+                            child.removeInvalidSpotRefs(False)
         if numChanges:
             msg = _('Converted {0} branches into clones').format(numChanges)
             self.currentSelectionModel().selectSpots([spot for spot in selSpots

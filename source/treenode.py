@@ -670,20 +670,20 @@ class TreeNode:
                 if restartSetting and child.formatRef.name not in fieldDict:
                     childSequence[-1] = 1
 
-    def isIdentical(self, node):
+    def isIdentical(self, node, checkParents=True):
         """Return True if node format, data and descendants are identical.
 
-        Also returns False if the nodes have parents in common.
+        Also returns False if checkParents & the nodes have parents in common.
         Arguments:
             node -- the node to check
         """
         if (self.formatRef != node.formatRef or
             len(self.childList) != len(node.childList) or
-            self.data != node.data or not
-            self.parents().isdisjoint(node.parents())):
+            self.data != node.data or
+            (checkParents and not self.parents().isdisjoint(node.parents()))):
             return False
         for thisChild, otherChild in zip(self.childList, node.childList):
-            if not thisChild.isIdentical(otherChild):
+            if not thisChild.isIdentical(otherChild, False):
                 return False
         return True
 
