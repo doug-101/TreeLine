@@ -4,7 +4,7 @@
 # treespot.py, provides a class to store locations of tree node instances
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -45,7 +45,10 @@ class TreeSpot:
 
         Should never be called from the imaginary root spot.
         """
-        return self.parentSpot.nodeRef.childList.index(self.nodeRef)
+        try:
+            return self.parentSpot.nodeRef.childList.index(self.nodeRef)
+        except ValueError:
+            return 0  #  avoid error message from interim view updates
 
     def instanceNumber(self):
         """Return this spot's rank in the node's spot list.

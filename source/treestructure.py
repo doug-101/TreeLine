@@ -125,6 +125,13 @@ class TreeStructure(treenode.TreeNode):
         except KeyError:
             pass
 
+    def rebuildNodeDict(self):
+        """Remove and re-create the entire node dictionary.
+        """
+        self.nodeDict = {}
+        for node in self.descendantGen():
+            self.nodeDict[node.uId] = node
+
     def replaceAllSpots(self, removeUnusedNodes=True):
         """Remove and regenerate all spot refs for the tree.
 
@@ -268,6 +275,43 @@ class TreeStructure(treenode.TreeNode):
             else:
                 parent.childList.append(node)
             node.addSpotRef(parent)
+
+    def debugCheck(self):
+        """Run debugging checks on structure nodeDict, nodes and spots.
+
+        Reports results to std output. Not to be run in production releases.
+        """
+        print('\nChecking nodes in nodeDict:')
+        nodeIds = set()
+        errorCount = 0
+        for node in self.descendantGen():
+            nodeIds.add(node.uId)
+            if node.uId not in self.nodeDict:
+                print('    Node not in nodeDict, ID: {}, Title: {}'.
+                      format(node.uId, node.title()))
+                errorCount += 1
+        for uId in set(self.nodeDict.keys()) - nodeIds:
+            node = self.nodeDict[uId]
+            print('    Node not in structure, ID: {}, Title: {}'.
+                  format(node.uId, node.title()))
+            errorCount += 1
+        print('  {} errors found in nodeDict'.format(errorCount))
+
+        print('\nChecking spots:')
+        errorCount = 0
+        for topNode in self.childList:
+            for node in topNode.descendantGen():
+                for spot in node.spotRefs:
+                    if node not in spot.parentSpot.nodeRef.childList:
+                        print('    Invalid spot in node, ID: {}, Title: {}'.
+                              format(node.uId, node.title()))
+                        errorCount += 1
+                for child in node.childList:
+                    if len(child.spotRefs) < len(node.spotRefs):
+                        print('    Missing spot in node, ID: {}, Title: {}'.
+                              format(child.uId, child.title()))
+                        errorCount += 1
+        print('  {} errors found in spots'.format(errorCount))
 
 
 ####  Utility Functions  ####
