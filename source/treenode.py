@@ -93,19 +93,20 @@ class TreeNode:
             for child in self.childList:
                 child.addSpotRef(self)
 
-    def removeInvalidSpotRefs(self, includeChildren=True):
+    def removeInvalidSpotRefs(self, includeChildren=True, forceDesend=False):
         """Verify existing spot refs and remove any that aren't valid.
 
         If changed and includeChilderen, propogate to descendant nodes.
         Arguments:
-            includeChildren -- if True, propogate to descendant nodes
+            includeChildren -- if True, propogate to descendants if changes
+            forceDesend -- if True, force propogate to descendant nodes
         """
         goodSpotRefs = {spot for spot in self.spotRefs if
                         (self in spot.parentSpot.nodeRef.childList and
                          spot.parentSpot in spot.parentSpot.nodeRef.spotRefs)}
         changed = len(self.spotRefs) != len(goodSpotRefs)
         self.spotRefs = goodSpotRefs
-        if includeChildren and changed:
+        if includeChildren and (changed or forceDesend):
             for child in self.childList:
                 child.removeInvalidSpotRefs(includeChildren)
 
@@ -756,7 +757,7 @@ class TreeNode:
             newParent.childList.append(child)
         self.childList = newParents
         for child in self.childList:
-            child.removeInvalidSpotRefs()
+            child.removeInvalidSpotRefs(True, True)
             child.addSpotRef(self)
 
     def findEqualFields(self, fieldNames, nodes):
