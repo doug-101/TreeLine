@@ -655,7 +655,7 @@ class TreeLocalControl(QObject):
         localActions['DataSwapCategory'] = dataSwapCatAct
 
         toolsSpellCheckAct = QAction(_('&Spell Check...'), self,
-                             statusTip=_('Spell check the tree\')s text data'))
+                             statusTip=_('Spell check the tree\'s text data'))
         toolsSpellCheckAct.triggered.connect(self.toolsSpellCheck)
         localActions['ToolsSpellCheck'] = toolsSpellCheckAct
 

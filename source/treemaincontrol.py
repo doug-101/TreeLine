@@ -844,7 +844,7 @@ class TreeMainControl(QObject):
                                               ConditionDialog(dialogType,
                                                       _('Conditional Filter')))
                 toolsFilterConditionAct = (self.
-                                        allActions[_('ToolsFilterCondition')])
+                                           allActions['ToolsFilterCondition'])
                 (self.filterConditionDialog.dialogShown.
                  connect(toolsFilterConditionAct.setChecked))
             else:

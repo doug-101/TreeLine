@@ -1,131 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="es">
+<!DOCTYPE TS>
+<TS version="2.0" language="es">
 <context>
     <name>conditional</name>
     <message>
         <location filename="conditional.py" line="26"/>
         <source>starts with</source>
-        <translation type="unfinished">comienza con</translation>
+        <translation>comienza con</translation>
     </message>
     <message>
         <location filename="conditional.py" line="27"/>
         <source>ends with</source>
-        <translation type="unfinished">termina con</translation>
+        <translation>termina con</translation>
     </message>
     <message>
         <location filename="conditional.py" line="27"/>
         <source>contains</source>
-        <translation type="unfinished">contiene</translation>
+        <translation>contiene</translation>
     </message>
     <message>
         <location filename="conditional.py" line="27"/>
         <source>True</source>
-        <translation type="unfinished">Verdadero</translation>
+        <translation>Verdadero</translation>
     </message>
     <message>
         <location filename="conditional.py" line="28"/>
         <source>False</source>
-        <translation type="unfinished">Falso</translation>
+        <translation>Falso</translation>
     </message>
     <message>
         <location filename="conditional.py" line="32"/>
         <source>and</source>
-        <translation type="unfinished">y</translation>
+        <translation>y</translation>
     </message>
     <message>
         <location filename="conditional.py" line="33"/>
         <source>or</source>
-        <translation type="unfinished">o</translation>
+        <translation>o</translation>
     </message>
     <message>
         <location filename="conditional.py" line="34"/>
         <source>[All Types]</source>
-        <translation type="unfinished"></translation>
+        <translation>[Todos los tipos]</translation>
     </message>
     <message>
         <location filename="conditional.py" line="238"/>
         <source>Node Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de nodo</translation>
     </message>
     <message>
         <location filename="conditional.py" line="250"/>
         <source>&amp;Add New Rule</source>
-        <translation type="unfinished">&amp;Añadir regla nueva</translation>
+        <translation>Añadir &amp;Nueva Regla</translation>
     </message>
     <message>
         <location filename="conditional.py" line="253"/>
         <source>&amp;Remove Rule</source>
-        <translation type="unfinished">&amp;Eliminar Regla</translation>
+        <translation>&amp;Eliminar Regla</translation>
     </message>
     <message>
         <location filename="conditional.py" line="259"/>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Aceptar</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location filename="conditional.py" line="262"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation>&amp;Cancelar</translation>
     </message>
     <message>
         <location filename="conditional.py" line="300"/>
         <source>Find &amp;Previous</source>
-        <translation type="unfinished">Buscar &amp;Anterior</translation>
+        <translation>B&amp;uscar Anterior</translation>
     </message>
     <message>
         <location filename="conditional.py" line="303"/>
         <source>Find &amp;Next</source>
-        <translation type="unfinished">Buscar &amp;Siguiente</translation>
+        <translation>Buscar &amp;Siguiente</translation>
     </message>
     <message>
         <location filename="conditional.py" line="308"/>
         <source>&amp;Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Filtro</translation>
     </message>
     <message>
         <location filename="conditional.py" line="311"/>
         <source>&amp;End Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Terminar filtro</translation>
     </message>
     <message>
         <location filename="conditional.py" line="316"/>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Cerrar</translation>
+        <translation>Ce&amp;rrar</translation>
     </message>
     <message>
         <location filename="conditional.py" line="559"/>
         <source>No conditional matches were found</source>
-        <translation type="unfinished"></translation>
+        <translation>Coincidencias condicionales no encontradas</translation>
     </message>
     <message>
         <location filename="conditional.py" line="609"/>
         <source>Rule {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Regla {0}</translation>
     </message>
     <message>
         <location filename="conditional.py" line="267"/>
         <source>Saved Rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Reglas Guardadas</translation>
     </message>
     <message>
         <location filename="conditional.py" line="275"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre:</translation>
     </message>
     <message>
         <location filename="conditional.py" line="282"/>
         <source>&amp;Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Car&amp;gar</translation>
     </message>
     <message>
         <location filename="conditional.py" line="285"/>
         <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Guar&amp;dar</translation>
     </message>
     <message>
         <location filename="conditional.py" line="289"/>
         <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Borrar</translation>
     </message>
 </context>
 <context>
@@ -133,868 +134,868 @@
     <message>
         <location filename="configdialog.py" line="55"/>
         <source>Configure Data Types</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurar Tipos de Datos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="66"/>
         <source>T&amp;ype List</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de &amp;Tipos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="70"/>
         <source>Field &amp;List</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de &amp;Campos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="72"/>
         <source>&amp;Field Config</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuración de &amp;Campos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="170"/>
         <source>&amp;Show Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mostrar Avanzado</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2320"/>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Aceptar</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="87"/>
         <source>&amp;Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Aplicar</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="90"/>
         <source>&amp;Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Reiniciar</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2324"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation>&amp;Cancelar</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="294"/>
         <source>Add or Remove Data Types</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir o Quitar Datos de Tipos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="304"/>
         <source>&amp;New Type...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nuevo Tipo...</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="307"/>
         <source>Co&amp;py Type...</source>
-        <translation type="unfinished"></translation>
+        <translation>Co&amp;piar Tipo...</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="313"/>
         <source>&amp;Delete Type</source>
-        <translation type="unfinished">&amp;Eliminar tipo</translation>
+        <translation>&amp;Eliminar tipo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="330"/>
         <source>Add Type</source>
-        <translation type="unfinished">Añadir tipo</translation>
+        <translation>Añadir tipo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="346"/>
         <source>Enter new type name:</source>
-        <translation type="unfinished">Introducir el nombre del nuevo tipo:</translation>
+        <translation>Establecer nombre del nuevo tipo:</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="367"/>
         <source>Rename Type</source>
-        <translation type="unfinished">Renombrar tipo</translation>
+        <translation>Renombrar tipo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="408"/>
         <source>Cannot delete data type being used by nodes</source>
-        <translation type="unfinished">No se puede eliminar un tipo de datos que esté siendo usado por algún nodo</translation>
+        <translation>No se puede eliminar un tipo de datos que esté siendo usado por algún nodo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1230"/>
         <source>&amp;Data Type</source>
-        <translation type="unfinished">T&amp;ipo de datos</translation>
+        <translation>Tipo de &amp;Datos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="456"/>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Icono</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="462"/>
         <source>Change &amp;Icon</source>
-        <translation type="unfinished">Cambiar &amp;icono</translation>
+        <translation>Cambiar &amp;Icono</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="496"/>
         <source>Derived from &amp;Generic Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Derivado del Tipo &amp;Genérico</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="506"/>
         <source>Automatic Types</source>
-        <translation type="unfinished">Tipos automáticos</translation>
+        <translation>Tipos Automáticos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="641"/>
         <source>Modify Co&amp;nditional Types</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificar Tipos Co&amp;ndicionales</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="645"/>
         <source>Create Co&amp;nditional Types</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear Tipos Co&amp;ndicionales</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="653"/>
         <source>Set Types Conditionally</source>
-        <translation type="unfinished">Configurar tipos condicionalmente</translation>
+        <translation>Configurar Tipos Condicionalmente</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2282"/>
         <source>Name</source>
-        <translation type="unfinished">Nombre</translation>
+        <translation>Nombre</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2247"/>
         <source>Type</source>
-        <translation type="unfinished">Tipo</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1967"/>
         <source>Move &amp;Up</source>
-        <translation type="unfinished">Mover a&amp;rriba</translation>
+        <translation>Mover A&amp;rriba</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="733"/>
         <source>Move Do&amp;wn</source>
-        <translation type="unfinished">Mover a&amp;bajo</translation>
+        <translation>Mover Aba&amp;jo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="736"/>
         <source>&amp;New Field...</source>
-        <translation type="unfinished">&amp;Nuevo campo...</translation>
+        <translation>&amp;Nuevo Campo...</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="835"/>
         <source>Add Field</source>
-        <translation type="unfinished">Añadir campo</translation>
+        <translation>Añadir Campo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="835"/>
         <source>Enter new field name:</source>
-        <translation type="unfinished">Introduzca el nombre del nuevo campo:</translation>
+        <translation>Introduzca el nombre del nuevo campo:</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="850"/>
         <source>Rename Field</source>
-        <translation type="unfinished">Renombrar campo</translation>
+        <translation>Renombrar Campo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="929"/>
         <source>F&amp;ield</source>
-        <translation type="unfinished"></translation>
+        <translation>Cam&amp;po</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="952"/>
         <source>Format &amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayuda sobre &amp;Formato</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="956"/>
         <source>Extra Text</source>
-        <translation type="unfinished">Texto adicional</translation>
+        <translation>Texto Adicional</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="960"/>
         <source>&amp;Prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>P&amp;refijo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="967"/>
         <source>Suffi&amp;x</source>
-        <translation type="unfinished"></translation>
+        <translation>Sufi&amp;jo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="983"/>
         <source>Editor Height</source>
-        <translation type="unfinished">Altura del editor</translation>
+        <translation>Altura del editor</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="986"/>
         <source>Num&amp;ber of text lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de líneas de te&amp;xto</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="909"/>
         <source>File Info Reference</source>
-        <translation type="unfinished">Referencia de información de archivo</translation>
+        <translation>Referencia de información de archivo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2131"/>
         <source>Parent Reference</source>
-        <translation type="unfinished">Referencia del padre</translation>
+        <translation>Referencia Padre</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2132"/>
         <source>Child Reference</source>
-        <translation type="unfinished">Referencia de hijo</translation>
+        <translation>Referencia Hija</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2134"/>
         <source>Child Count</source>
-        <translation type="unfinished"></translation>
+        <translation>Recuento de Hijos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1237"/>
         <source>F&amp;ield List</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Lista de Campos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1295"/>
         <source>Other Field References</source>
-        <translation type="unfinished"></translation>
+        <translation>Otras Referencias de Campos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="346"/>
         <source>Copy Type</source>
-        <translation type="unfinished">Copiar tipo</translation>
+        <translation>Copiar Tipo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1840"/>
         <source>Set Data Type Icon</source>
-        <translation type="unfinished">Configurar icono de tipo de datos</translation>
+        <translation>Establecer el Icono del Tipo de Datos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1853"/>
         <source>Clear &amp;Select</source>
-        <translation type="unfinished">Borrar &amp;selección</translation>
+        <translation>&amp;Deseleccionar</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="68"/>
         <source>Typ&amp;e Config</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurar &amp;Tipo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="74"/>
         <source>O&amp;utput</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Salida de Datos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="168"/>
         <source>&amp;Hide Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ocultar Avanzado</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="195"/>
         <source>Error - circular reference in math field equations</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - referencia circular en ecuaciones de campo matemático</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="310"/>
         <source>Rena&amp;me Type...</source>
-        <translation type="unfinished"></translation>
+        <translation>Renom&amp;brar Tipo...</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="348"/>
         <source>&amp;Derive from original</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Derivado del original</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="851"/>
         <source>Rename from {} to:</source>
-        <translation type="unfinished"></translation>
+        <translation>Renombrar de {} a:</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="430"/>
         <source>[None]</source>
         <comment>no type set</comment>
-        <translation type="unfinished">[Nada]</translation>
+        <translation>[Nada]</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="448"/>
         <source>Default Child &amp;Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo Hi&amp;jo por Defecto</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="466"/>
         <source>Output Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opciones de Salida</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="470"/>
         <source>Add &amp;blank lines between nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Agregar líneas en &amp;blanco entre nodos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="473"/>
         <source>Allow &amp;HTML rich text in format</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir &amp;HTML con formato de texto enriquecido</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="476"/>
         <source>Add text bullet&amp;s</source>
-        <translation type="unfinished"></translation>
+        <translation>Agregar &amp;viñetas al texto</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="479"/>
         <source>Use a table for field &amp;data</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar datos de campo en tab&amp;la</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="485"/>
         <source>Combination &amp;&amp; Child List Output &amp;Separator</source>
-        <translation type="unfinished"></translation>
+        <translation>Combinación &amp;&amp; &amp;separador lista de hijos de Salida</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="552"/>
         <source>None</source>
-        <translation type="unfinished">Nada</translation>
+        <translation>Nada</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="717"/>
         <source>Modify &amp;Field List</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificar &amp;Lista de Campos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="725"/>
         <source>Sort Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Clave de Clasificación</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="730"/>
         <source>Move U&amp;p</source>
-        <translation type="unfinished"></translation>
+        <translation>Mo&amp;ver Arriba</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="739"/>
         <source>Rena&amp;me Field...</source>
-        <translation type="unfinished"></translation>
+        <translation>Renombrar Cam&amp;po...</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="742"/>
         <source>Dele&amp;te Field</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Borrar Campo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="745"/>
         <source>Sort &amp;Keys...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ord&amp;enar Claves...</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="771"/>
         <source>fwd</source>
-        <translation type="unfinished"></translation>
+        <translation>Adelante</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="772"/>
         <source>rev</source>
-        <translation type="unfinished"></translation>
+        <translation>Atrás</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="937"/>
         <source>&amp;Field Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tip&amp;o de Campo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="946"/>
         <source>Outpu&amp;t Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato de Sa&amp;lida</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="974"/>
         <source>Default &amp;Value for New Nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Valor por Defecto para Nuevos Nodos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="995"/>
         <source>Math Equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Ecuación matemática</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1001"/>
         <source>Define Equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Definir Ecuación</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1261"/>
         <source>&amp;Title Format</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Formato de Título</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1283"/>
         <source>Out&amp;put Format</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Formato de Salida</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1302"/>
         <source>Reference Le&amp;vel</source>
-        <translation type="unfinished"></translation>
+        <translation>Niv&amp;el de Referencia</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1312"/>
         <source>Refere&amp;nce Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de Refere&amp;ncia</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1802"/>
         <source>The name cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>El nombre no puede estar vacío</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1804"/>
         <source>The name must start with a letter</source>
-        <translation type="unfinished"></translation>
+        <translation>El nombre debe comenzar con una letra</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1806"/>
         <source>The name cannot start with &quot;xml&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>El nombre no puede comenzar con &quot;xml&quot;</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1808"/>
         <source>The name cannot contain spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>El nombre no puede contener espacios</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1810"/>
         <source>The following characters are not allowed: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Los siguientes caracteres no están permitidos: {}</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1814"/>
         <source>The name was already used</source>
-        <translation type="unfinished"></translation>
+        <translation>El nombre ya está en uso</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1914"/>
         <source>forward</source>
-        <translation type="unfinished"></translation>
+        <translation>adelante</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1915"/>
         <source>reverse</source>
-        <translation type="unfinished"></translation>
+        <translation>atrás</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1929"/>
         <source>Sort Key Fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordenar Campos Clave</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1933"/>
         <source>Available &amp;Fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Campos &amp;Disponibles</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1955"/>
         <source>&amp;Sort Criteria</source>
-        <translation type="unfinished"></translation>
+        <translation>C&amp;riterio de Ordenación</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1962"/>
         <source>Field</source>
-        <translation type="unfinished"></translation>
+        <translation>Campo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1962"/>
         <source>Direction</source>
-        <translation type="unfinished">Dirección</translation>
+        <translation>Dirección</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1970"/>
         <source>&amp;Move Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover Aba&amp;jo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1973"/>
         <source>Flip &amp;Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>Cam&amp;biar Dirección</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2131"/>
         <source>Self Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoreferencia</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2132"/>
         <source>Root Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Referencia Raíz</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2135"/>
         <source>Date Result</source>
-        <translation type="unfinished"></translation>
+        <translation>Resultado de Fecha</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2135"/>
         <source>Time Result</source>
-        <translation type="unfinished"></translation>
+        <translation>Resultado de Tiempo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2139"/>
         <source>add</source>
-        <translation type="unfinished"></translation>
+        <translation>sumar</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2140"/>
         <source>subtract</source>
-        <translation type="unfinished"></translation>
+        <translation>restar</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2141"/>
         <source>multiply</source>
-        <translation type="unfinished"></translation>
+        <translation>multiplicar</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2142"/>
         <source>divide</source>
-        <translation type="unfinished"></translation>
+        <translation>dividir</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2143"/>
         <source>floor divide</source>
-        <translation type="unfinished"></translation>
+        <translation>división por redondeo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2144"/>
         <source>modulus</source>
-        <translation type="unfinished"></translation>
+        <translation>módulo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2145"/>
         <source>power</source>
-        <translation type="unfinished"></translation>
+        <translation>potencia</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2146"/>
         <source>sum of items</source>
-        <translation type="unfinished"></translation>
+        <translation>suma de ítems</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2147"/>
         <source>maximum</source>
-        <translation type="unfinished"></translation>
+        <translation>máximo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2148"/>
         <source>minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>mínimo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2149"/>
         <source>average</source>
-        <translation type="unfinished"></translation>
+        <translation>promedio</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2150"/>
         <source>absolute value</source>
-        <translation type="unfinished"></translation>
+        <translation>valor absoluto</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2151"/>
         <source>square root</source>
-        <translation type="unfinished"></translation>
+        <translation>raíz cuadrada</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2152"/>
         <source>natural logarithm</source>
-        <translation type="unfinished"></translation>
+        <translation>logaritmo natural</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2153"/>
         <source>base-10 logarithm</source>
-        <translation type="unfinished"></translation>
+        <translation>logaritmo en base 10</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2154"/>
         <source>factorial</source>
-        <translation type="unfinished"></translation>
+        <translation>factorial</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2155"/>
         <source>round to num digits</source>
-        <translation type="unfinished"></translation>
+        <translation>redondear a número de dígitos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2156"/>
         <source>lower integer</source>
-        <translation type="unfinished"></translation>
+        <translation>entero menor</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2157"/>
         <source>higher integer</source>
-        <translation type="unfinished"></translation>
+        <translation>entero mayor</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2158"/>
         <source>truncated integer</source>
-        <translation type="unfinished"></translation>
+        <translation>entero truncado</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2159"/>
         <source>floating point</source>
-        <translation type="unfinished"></translation>
+        <translation>punto flotante</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2160"/>
         <source>sine of radians</source>
-        <translation type="unfinished"></translation>
+        <translation>seno de radián</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2161"/>
         <source>cosine of radians</source>
-        <translation type="unfinished"></translation>
+        <translation>coseno de radián</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2162"/>
         <source>tangent of radians</source>
-        <translation type="unfinished"></translation>
+        <translation>Tangente de Radián</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2163"/>
         <source>arc sine</source>
-        <translation type="unfinished"></translation>
+        <translation>arcoseno</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2164"/>
         <source>arc cosine</source>
-        <translation type="unfinished"></translation>
+        <translation>arcocoseno</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2165"/>
         <source>arc tangent</source>
-        <translation type="unfinished"></translation>
+        <translation>arcotangente</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2166"/>
         <source>radians to degrees</source>
-        <translation type="unfinished"></translation>
+        <translation>radianes a grados</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2167"/>
         <source>degrees to radians</source>
-        <translation type="unfinished"></translation>
+        <translation>grados a radianes</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2168"/>
         <source>pi constant</source>
-        <translation type="unfinished"></translation>
+        <translation>número pi (constante)</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2169"/>
         <source>natural log constant</source>
-        <translation type="unfinished"></translation>
+        <translation>constante logaritmo natural</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2211"/>
         <source>Define Math Field Equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Definir el Campo de Ecuación Matemática</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2214"/>
         <source>Field References</source>
-        <translation type="unfinished"></translation>
+        <translation>Referencias de Campo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2220"/>
         <source>Reference &amp;Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Referencia de &amp;Nivel</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2230"/>
         <source>Reference &amp;Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Referencia de &amp;Tipo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2240"/>
         <source>Available &amp;Field List</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de &amp;Campos Disponible</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2249"/>
         <source>&amp;Result Type</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Resultado Tipo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2282"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2308"/>
         <source>&amp;Equation</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ecuación</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2465"/>
         <source>Equation error: {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Erron en ecuación: {}</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2136"/>
         <source>Boolean Result</source>
-        <translation type="unfinished"></translation>
+        <translation>Resultado Booleano</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2137"/>
         <source>Text Result</source>
-        <translation type="unfinished"></translation>
+        <translation>Texto Resultante</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2137"/>
         <source>Arithmetic Operators</source>
-        <translation type="unfinished"></translation>
+        <translation>Operadores Aritméticos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2137"/>
         <source>Comparison Operators</source>
-        <translation type="unfinished"></translation>
+        <translation>Operadores Comparativos</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2139"/>
         <source>Text Operators</source>
-        <translation type="unfinished"></translation>
+        <translation>Operadores de Texto</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2170"/>
         <source>equal to</source>
-        <translation type="unfinished"></translation>
+        <translation>igual a</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2171"/>
         <source>less than</source>
-        <translation type="unfinished"></translation>
+        <translation>menor que</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2172"/>
         <source>greater than</source>
-        <translation type="unfinished"></translation>
+        <translation>mayor que</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2173"/>
         <source>less than or equal to</source>
-        <translation type="unfinished"></translation>
+        <translation>menor o igual que</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2174"/>
         <source>greater than or equal to</source>
-        <translation type="unfinished"></translation>
+        <translation>mayor o igual que</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2175"/>
         <source>not equal to</source>
-        <translation type="unfinished"></translation>
+        <translation>distinto a</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2177"/>
         <source>true value, condition, false value</source>
-        <translation type="unfinished"></translation>
+        <translation>valor verdadero, condición, valor falso</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2181"/>
         <source>true if 1st text arg starts with 2nd arg</source>
-        <translation type="unfinished"></translation>
+        <translation>verdadero si el argumentdo del primer texto comienza con un segundo argumento</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2183"/>
         <source>true if 1st text arg ends with 2nd arg</source>
-        <translation type="unfinished"></translation>
+        <translation>verdadero si el argumentdo del primer texto termina con un segundo argumento</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2185"/>
         <source>true if 1st text arg contains 2nd arg</source>
-        <translation type="unfinished"></translation>
+        <translation>verdadero si el argumentdo del primer texto contiene un segundo argumento</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2186"/>
         <source>concatenate text</source>
-        <translation type="unfinished"></translation>
+        <translation>concatenar texto</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2187"/>
         <source>join text using 1st arg as separator</source>
-        <translation type="unfinished"></translation>
+        <translation>unir texto usando como primer argumento un separador</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2188"/>
         <source>convert text to upper case</source>
-        <translation type="unfinished"></translation>
+        <translation>convertir texto a mayúsculas</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2189"/>
         <source>convert text to lower case</source>
-        <translation type="unfinished"></translation>
+        <translation>convertir texto a minúsculas</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2190"/>
         <source>in 1st arg, replace 2nd arg with 3rd arg</source>
-        <translation type="unfinished"></translation>
+        <translation>en primer argumento, reemplazar segundo argumento con tercer argumento</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2259"/>
         <source>Operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Operaciones</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2265"/>
         <source>O&amp;perator Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de O&amp;perador</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2275"/>
         <source>Oper&amp;ator List</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de Oper&amp;adores</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2178"/>
         <source>logical and</source>
-        <translation type="unfinished"></translation>
+        <translation>lógico y</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2179"/>
         <source>logical or</source>
-        <translation type="unfinished"></translation>
+        <translation>lógico o</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1005"/>
         <source>Output HTML</source>
-        <translation type="unfinished"></translation>
+        <translation>Salida HTML</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1008"/>
         <source>Evaluate &amp;HTML tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Evaluar etiquetas &amp;HTML</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="514"/>
         <source>Child Type Limits</source>
-        <translation type="unfinished"></translation>
+        <translation>Límites de los Tipos Hijo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1639"/>
         <source>[All Types Available]</source>
-        <translation type="unfinished"></translation>
+        <translation>[Todos los Tipos Disponibles]</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1739"/>
         <source>&amp;Select All</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Seleccionar Todo</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1740"/>
         <source>Select &amp;None</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar &amp;Ninguno</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2135"/>
         <source>Number Result</source>
-        <translation type="unfinished"></translation>
+        <translation>Resultado Numérico</translation>
     </message>
 </context>
 <context>
@@ -1002,117 +1003,117 @@
     <message>
         <location filename="dataeditors.py" line="1240"/>
         <source>Today&apos;s &amp;Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha de &amp;Hoy</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="1878"/>
         <source>&amp;Open Link</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Abrir Enlace</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="1880"/>
         <source>Open &amp;Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir &amp;Carpeta</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2006"/>
         <source>External Link</source>
-        <translation type="unfinished"></translation>
+        <translation>Enlace Externo</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2009"/>
         <source>Scheme</source>
-        <translation type="unfinished"></translation>
+        <translation>Esquema</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2602"/>
         <source>&amp;Browse for File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Seleccionar Archivo</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2608"/>
         <source>File Path Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de ruta de archivo</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2614"/>
         <source>Absolute</source>
-        <translation type="unfinished"></translation>
+        <translation>Absoluta</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2617"/>
         <source>Relative</source>
-        <translation type="unfinished"></translation>
+        <translation>Relativa</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2624"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Dirección</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2451"/>
         <source>Display Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar Nombre</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2638"/>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Aceptar</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2641"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation>&amp;Cancelar</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2210"/>
         <source>TreeLine - External Link File</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Enlace a archivo externo</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2237"/>
         <source>&amp;Go to Target</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ir al Destino</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2443"/>
         <source>Internal Link</source>
-        <translation type="unfinished"></translation>
+        <translation>Enlace Interno</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2525"/>
         <source>&amp;Open Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Abrir Imagen</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2591"/>
         <source>Picture Link</source>
-        <translation type="unfinished"></translation>
+        <translation>Enlace de Imagen</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2740"/>
         <source>TreeLine - Picture File</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Archivo de Imagen</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="1813"/>
         <source>Set to &amp;Now</source>
-        <translation type="unfinished"></translation>
+        <translation>Establecer A&amp;hora</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2239"/>
         <source>Clear &amp;Link</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar En&amp;lace</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2448"/>
         <source>(Click link target in tree)</source>
-        <translation type="unfinished"></translation>
+        <translation>(Clicar objeto a enlazar en el árbol)</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2508"/>
         <source>link</source>
-        <translation type="unfinished"></translation>
+        <translation>enlace</translation>
     </message>
 </context>
 <context>
@@ -1120,157 +1121,157 @@
     <message>
         <location filename="exports.py" line="51"/>
         <source>Bookmarks</source>
-        <translation type="unfinished">Favoritos</translation>
+        <translation>Favoritos</translation>
     </message>
     <message>
         <location filename="exports.py" line="463"/>
         <source>TreeLine - Export HTML</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Exportar HTML</translation>
     </message>
     <message>
         <location filename="exports.py" line="531"/>
         <source>TreeLine - Export Text Titles</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Exportar Textos de Títulos</translation>
     </message>
     <message>
         <location filename="exports.py" line="562"/>
         <source>TreeLine - Export Plain Text</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Exportar Texto Plano</translation>
     </message>
     <message>
         <location filename="exports.py" line="679"/>
         <source>TreeLine - Export Text Tables</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Exportar Tablas de Texto</translation>
     </message>
     <message>
         <location filename="exports.py" line="798"/>
         <source>TreeLine - Export Generic XML</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Exportar XML Genérico</translation>
     </message>
     <message>
         <location filename="exports.py" line="768"/>
         <source>TreeLine - Export TreeLine Subtree</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Exportar Subárbol TreeLine</translation>
     </message>
     <message>
         <location filename="exports.py" line="825"/>
         <source>TreeLine - Export ODF Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar Texto ODF</translation>
     </message>
     <message>
         <location filename="exports.py" line="965"/>
         <source>TreeLine - Export HTML Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Exportar Favoritos HTML</translation>
     </message>
     <message>
         <location filename="exports.py" line="996"/>
         <source>TreeLine - Export XBEL Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Exportar Favoritos XBEL</translation>
     </message>
     <message>
         <location filename="exports.py" line="1641"/>
         <source>&amp;HTML</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;HTML</translation>
     </message>
     <message>
         <location filename="exports.py" line="1641"/>
         <source>&amp;Text</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Texto</translation>
     </message>
     <message>
         <location filename="exports.py" line="1643"/>
         <source>&amp;ODF Outline</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;ODF Texto (esquema)</translation>
     </message>
     <message>
         <location filename="exports.py" line="1645"/>
         <source>Book&amp;marks</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Favoritos</translation>
     </message>
     <message>
         <location filename="exports.py" line="1654"/>
         <source>&amp;Single HTML page</source>
-        <translation type="unfinished"></translation>
+        <translation>Página HTML &amp;Simple</translation>
     </message>
     <message>
         <location filename="exports.py" line="1656"/>
         <source>Single &amp;HTML page with navigation pane</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Página HTML simple con panel de navegación</translation>
     </message>
     <message>
         <location filename="exports.py" line="1658"/>
         <source>Multiple HTML &amp;pages with navigation pane</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Multiples páginas HTML con panel de navegación</translation>
     </message>
     <message>
         <location filename="exports.py" line="1659"/>
         <source>Multiple HTML &amp;data tables</source>
-        <translation type="unfinished"></translation>
+        <translation>Múltiples &amp;HTML con tablas de datos</translation>
     </message>
     <message>
         <location filename="exports.py" line="1664"/>
         <source>&amp;Tabbed title text</source>
-        <translation type="unfinished">&amp;Texto de título tabulado</translation>
+        <translation>&amp;Texto con tabulación por títulos</translation>
     </message>
     <message>
         <location filename="exports.py" line="1665"/>
         <source>&amp;Unformatted output of all text</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Salida sin formato para todo el texto</translation>
     </message>
     <message>
         <location filename="exports.py" line="1674"/>
         <source>&amp;HTML format bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato &amp;HTML de favoritos</translation>
     </message>
     <message>
         <location filename="exports.py" line="1676"/>
         <source>&amp;XBEL format bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato &amp;XBEL de favoritos</translation>
     </message>
     <message>
         <location filename="exports.py" line="1699"/>
         <source>File Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar Archivo</translation>
     </message>
     <message>
         <location filename="exports.py" line="1720"/>
         <source>Choose export format type</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar tipo de formato para exportar</translation>
     </message>
     <message>
         <location filename="exports.py" line="1764"/>
         <source>Choose export format subtype</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar subtipo de formato para exportar</translation>
     </message>
     <message>
         <location filename="exports.py" line="1811"/>
         <source>Choose export options</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar opciones para exportar</translation>
     </message>
     <message>
         <location filename="exports.py" line="1813"/>
         <source>What to Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Qué exportar</translation>
     </message>
     <message>
         <location filename="exports.py" line="1817"/>
         <source>&amp;Entire tree</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Todo el Árbol</translation>
     </message>
     <message>
         <location filename="exports.py" line="1820"/>
         <source>Selected &amp;branches</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ramas Seleccionadas</translation>
     </message>
     <message>
         <location filename="exports.py" line="1823"/>
         <source>Selected &amp;nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nodos Seleccionados</translation>
     </message>
     <message>
         <location filename="exports.py" line="1829"/>
         <source>Other Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Otras Opciones</translation>
     </message>
     <message>
         <location filename="exports.py" line="971"/>
@@ -1280,100 +1281,103 @@
     <message>
         <location filename="exports.py" line="1837"/>
         <source>&amp;Only open node children</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir s&amp;olo nodos hijos</translation>
     </message>
     <message>
         <location filename="exports.py" line="1843"/>
         <source>Include &amp;print header &amp;&amp; footer</source>
-        <translation type="unfinished"></translation>
+        <translation>Incluir im&amp;presión de encabezado y pie</translation>
     </message>
     <message>
         <location filename="exports.py" line="1855"/>
         <source>&amp;Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Columnas</translation>
     </message>
     <message>
         <location filename="exports.py" line="1867"/>
         <source>Navigation pane &amp;levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Nive&amp;les del Panel de Navegación</translation>
     </message>
     <message>
         <location filename="exports.py" line="479"/>
         <source>Error - export template files not found.
 Check your TreeLine installation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - Exportar archivos de plantilla no encontrados.
+Verifique la instalación de su TreeLine.</translation>
     </message>
     <message>
         <location filename="exports.py" line="420"/>
         <source>Error - cannot link to unsaved TreeLine file.
 Save the file and retry.</source>
-        <translation type="unfinished"></translation>
+        <translation>Error: No se puede vincular al archivo TreeLine no guardado.
+Guarde el archivo y vuelva a intentarlo.</translation>
     </message>
     <message>
         <location filename="exports.py" line="427"/>
         <source>Warning - no relative path from &quot;{0}&quot; to &quot;{1}&quot;.
 Continue with absolute path?</source>
-        <translation type="unfinished"></translation>
+        <translation>Advertencia: no hay una ruta relativa entre &quot;{0}&quot; y &quot;{1}&quot;.
+Continuar con la ruta absoluta?</translation>
     </message>
     <message>
         <location filename="exports.py" line="1184"/>
         <source>Parent</source>
-        <translation type="unfinished"></translation>
+        <translation>Padre</translation>
     </message>
     <message>
         <location filename="exports.py" line="1642"/>
         <source>Tree&amp;Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Tree&amp;Line</translation>
     </message>
     <message>
         <location filename="exports.py" line="1643"/>
         <source>&amp;XML (generic)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;XML (genérico)</translation>
     </message>
     <message>
         <location filename="exports.py" line="1661"/>
         <source>Live tree view, linked to TreeLine file (for web server)</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista de árbol en tiempo real, vinculada al archivo TreeLine (para servidor web)</translation>
     </message>
     <message>
         <location filename="exports.py" line="1663"/>
         <source>Live tree view, single file (embedded data)</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista de árbol en tiempo real, archivo único (datos incrustados)</translation>
     </message>
     <message>
         <location filename="exports.py" line="1667"/>
         <source>&amp;Comma delimited (CSV) table of descendants (level numbers)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabla &amp;de descendientes delimitada por comas (CSV) (número de niveles)</translation>
     </message>
     <message>
         <location filename="exports.py" line="1669"/>
         <source>Comma &amp;delimited (CSV) table of children (single level)</source>
-        <translation type="unfinished"></translation>
+        <translation>T&amp;abla de hijos delimitada por comas (CSV) (nivel único)</translation>
     </message>
     <message>
         <location filename="exports.py" line="1671"/>
         <source>Tab &amp;delimited table of children (&amp;single level)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta&amp;bla delimitada por tabulaciones según nodos hijos (nivel único)</translation>
     </message>
     <message>
         <location filename="exports.py" line="1672"/>
         <source>&amp;Old TreeLine (2.0.x)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Antiguos TreeLine (2.0.x)</translation>
     </message>
     <message>
         <location filename="exports.py" line="1673"/>
         <source>&amp;TreeLine Subtree</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Subárbol TreeLine</translation>
     </message>
     <message>
         <location filename="exports.py" line="1832"/>
         <source>&amp;Include root nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Incluir noddos principales</translation>
     </message>
     <message>
         <location filename="exports.py" line="1888"/>
         <source>Must select nodes prior to export</source>
-        <translation type="unfinished"></translation>
+        <translation>Debe seleccionar nodos antes de exportar</translation>
     </message>
 </context>
 <context>
@@ -1401,392 +1405,392 @@ Continue with absolute path?</source>
     <message>
         <location filename="fieldformat.py" line="27"/>
         <source>Text</source>
-        <translation type="unfinished">Texto</translation>
+        <translation>Texto</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="27"/>
         <source>HtmlText</source>
-        <translation type="unfinished"></translation>
+        <translation>Texto Html</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="27"/>
         <source>OneLineText</source>
-        <translation type="unfinished"></translation>
+        <translation>Texto de una línea</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="27"/>
         <source>SpacedText</source>
-        <translation type="unfinished"></translation>
+        <translation>Texto espaciado</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="28"/>
         <source>Number</source>
-        <translation type="unfinished">Nombre</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="28"/>
         <source>Math</source>
-        <translation type="unfinished"></translation>
+        <translation>Matemáticas</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="28"/>
         <source>Numbering</source>
-        <translation type="unfinished"></translation>
+        <translation>Numeración</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="29"/>
         <source>Boolean</source>
-        <translation type="unfinished">Booleano</translation>
+        <translation>Booleano</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="29"/>
         <source>Date</source>
-        <translation type="unfinished">Fecha</translation>
+        <translation>Fecha</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="29"/>
         <source>Time</source>
-        <translation type="unfinished">Hora</translation>
+        <translation>Hora</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="30"/>
         <source>Choice</source>
-        <translation type="unfinished">Elección</translation>
+        <translation>Elección</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="30"/>
         <source>AutoChoice</source>
-        <translation type="unfinished">AutoElección</translation>
+        <translation>AutoElección</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="30"/>
         <source>Combination</source>
-        <translation type="unfinished">Combinación</translation>
+        <translation>Combinación</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="31"/>
         <source>AutoCombination</source>
-        <translation type="unfinished"></translation>
+        <translation>AutoCombinación</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="31"/>
         <source>ExternalLink</source>
-        <translation type="unfinished"></translation>
+        <translation>Enlace Externo</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="31"/>
         <source>InternalLink</source>
-        <translation type="unfinished">EnlaceInterno</translation>
+        <translation>EnlaceInterno</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="32"/>
         <source>Picture</source>
-        <translation type="unfinished">Imagen</translation>
+        <translation>Imagen</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="33"/>
         <source>RegularExpression</source>
-        <translation type="unfinished"></translation>
+        <translation>Expresión regular</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="36"/>
         <source>Now</source>
-        <translation type="unfinished">Ahora</translation>
+        <translation>Ahora</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="425"/>
-        <source>Optional Digit<byte value="x9"/>#</source>
-        <translation type="unfinished"></translation>
+        <source>Optional Digit	#</source>
+        <translation>Dígito Opcional	#</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="426"/>
-        <source>Required Digit<byte value="x9"/>0</source>
-        <translation type="unfinished"></translation>
+        <source>Required Digit	0</source>
+        <translation>Dígito Requerido	0</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="427"/>
-        <source>Digit or Space (external)<byte value="x9"/>&lt;space&gt;</source>
-        <translation type="unfinished"></translation>
+        <source>Digit or Space (external)	&lt;space&gt;</source>
+        <translation>Dígito o Espacio (externo)	&lt;space&gt;</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="429"/>
-        <source>Decimal Point<byte value="x9"/>.</source>
-        <translation type="unfinished"></translation>
+        <source>Decimal Point	.</source>
+        <translation>Punto decimalt	.</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="430"/>
-        <source>Decimal Comma<byte value="x9"/>,</source>
-        <translation type="unfinished"></translation>
+        <source>Decimal Comma	,</source>
+        <translation>Decimal Coma	,</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="432"/>
-        <source>Comma Separator<byte value="x9"/>,</source>
-        <translation type="unfinished"></translation>
+        <source>Comma Separator	,</source>
+        <translation>Separador Coma	,</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="433"/>
-        <source>Dot Separator<byte value="x9"/>.</source>
-        <translation type="unfinished"></translation>
+        <source>Dot Separator	.</source>
+        <translation>Separador Punto	.</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="434"/>
-        <source>Space Separator (internal)<byte value="x9"/>&lt;space&gt;</source>
-        <translation type="unfinished"></translation>
+        <source>Space Separator (internal)	&lt;space&gt;</source>
+        <translation>Separador Espacio (interno)	&lt;space&gt;</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="436"/>
-        <source>Optional Sign<byte value="x9"/>-</source>
-        <translation type="unfinished"></translation>
+        <source>Optional Sign	-</source>
+        <translation>Signo Opcional	-</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="437"/>
-        <source>Required Sign<byte value="x9"/>+</source>
-        <translation type="unfinished"></translation>
+        <source>Required Sign	+</source>
+        <translation>Signo Requrido	+</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="439"/>
-        <source>Exponent (capital)<byte value="x9"/>E</source>
-        <translation type="unfinished"></translation>
+        <source>Exponent (capital)	E</source>
+        <translation>Exponente (mayúscula)	E</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="440"/>
-        <source>Exponent (small)<byte value="x9"/>e</source>
-        <translation type="unfinished"></translation>
+        <source>Exponent (small)	e</source>
+        <translation>Exponent (minúscula)	e</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="745"/>
-        <source>Number<byte value="x9"/>1</source>
-        <translation type="unfinished"></translation>
+        <source>Number	1</source>
+        <translation>Número	1</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="746"/>
-        <source>Capital Letter<byte value="x9"/>A</source>
-        <translation type="unfinished"></translation>
+        <source>Capital Letter	A</source>
+        <translation>Mayúsculas	A</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="747"/>
-        <source>Small Letter<byte value="x9"/>a</source>
-        <translation type="unfinished"></translation>
+        <source>Small Letter	a</source>
+        <translation>Minúsculas	a</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="748"/>
-        <source>Capital Roman Numeral<byte value="x9"/>I</source>
-        <translation type="unfinished"></translation>
+        <source>Capital Roman Numeral	I</source>
+        <translation>Números Romanos (mayúsculas)	I</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="749"/>
-        <source>Small Roman Numeral<byte value="x9"/>i</source>
-        <translation type="unfinished"></translation>
+        <source>Small Roman Numeral	i</source>
+        <translation>Números romanos (minúsculas)	i</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="751"/>
-        <source>Level Separator<byte value="x9"/>/</source>
-        <translation type="unfinished"></translation>
+        <source>Level Separator	/</source>
+        <translation>Separador de nivel	/</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="752"/>
-        <source>Section Separator<byte value="x9"/>.</source>
-        <translation type="unfinished"></translation>
+        <source>Section Separator	.</source>
+        <translation>Separador de sección	.</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1400"/>
-        <source>&quot;/&quot; Character<byte value="x9"/>//</source>
-        <translation type="unfinished"></translation>
+        <source>&quot;/&quot; Character	//</source>
+        <translation>&quot;/&quot; Carácter	//</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="755"/>
-        <source>&quot;.&quot; Character<byte value="x9"/>..</source>
-        <translation type="unfinished"></translation>
+        <source>&quot;.&quot; Character	..</source>
+        <translation>&quot;.&quot; Carácter	..</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="757"/>
-        <source>Outline Example<byte value="x9"/>I../A../1../a)/i)</source>
-        <translation type="unfinished"></translation>
+        <source>Outline Example	I../A../1../a)/i)</source>
+        <translation>Ejemplo de esquema	I../A../1../a)/i)</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="759"/>
-        <source>Section Example<byte value="x9"/>1.1.1.1</source>
-        <translation type="unfinished"></translation>
+        <source>Section Example	1.1.1.1</source>
+        <translation>Ejemplo de sección	1.1.1.1</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1399"/>
-        <source>Separator<byte value="x9"/>/</source>
-        <translation type="unfinished"></translation>
+        <source>Separator	/</source>
+        <translation>Separador	/</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1401"/>
-        <source>Example<byte value="x9"/>1/2/3/4</source>
-        <translation type="unfinished"></translation>
+        <source>Example	1/2/3/4</source>
+        <translation>Ejemplo	1/2/3/4</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2184"/>
-        <source>Any Character<byte value="x9"/>.</source>
-        <translation type="unfinished"></translation>
+        <source>Any Character	.</source>
+        <translation>Cualquier Carácter	.</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2185"/>
-        <source>End of Text<byte value="x9"/>$</source>
-        <translation type="unfinished"></translation>
+        <source>End of Text	$</source>
+        <translation>Final del Texto	$</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2187"/>
-        <source>0 Or More Repetitions<byte value="x9"/>*</source>
-        <translation type="unfinished"></translation>
+        <source>0 Or More Repetitions	*</source>
+        <translation>0 o más repeticiones	*</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2188"/>
-        <source>1 Or More Repetitions<byte value="x9"/>+</source>
-        <translation type="unfinished"></translation>
+        <source>1 Or More Repetitions	+</source>
+        <translation>1 o más repeticiones	+</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2189"/>
-        <source>0 Or 1 Repetitions<byte value="x9"/>?</source>
-        <translation type="unfinished"></translation>
+        <source>0 Or 1 Repetitions	?</source>
+        <translation>0 ó 1 Repeticiones	?</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2191"/>
-        <source>Set of Numbers<byte value="x9"/>[0-9]</source>
-        <translation type="unfinished"></translation>
+        <source>Set of Numbers	[0-9]</source>
+        <translation>Conjunto de Números	[0-9]</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2192"/>
-        <source>Lower Case Letters<byte value="x9"/>[a-z]</source>
-        <translation type="unfinished"></translation>
+        <source>Lower Case Letters	[a-z]</source>
+        <translation>Minúsculas	[a-z]</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2193"/>
-        <source>Upper Case Letters<byte value="x9"/>[A-Z]</source>
-        <translation type="unfinished"></translation>
+        <source>Upper Case Letters	[A-Z]</source>
+        <translation>Mayúsculas	[A-Z]</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2194"/>
-        <source>Not a Number<byte value="x9"/>[^0-9]</source>
-        <translation type="unfinished"></translation>
+        <source>Not a Number	[^0-9]</source>
+        <translation>No es un número [^0-9]</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2196"/>
-        <source>Or<byte value="x9"/>|</source>
-        <translation type="unfinished"></translation>
+        <source>Or	|</source>
+        <translation>O	|</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="2197"/>
-        <source>Escape a Special Character<byte value="x9"/>\</source>
-        <translation type="unfinished"></translation>
+        <source>Escape a Special Character	\</source>
+        <translation>Escape carácter especial	\</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="29"/>
         <source>DateTime</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha y hora</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1203"/>
-        <source>Day (1 or 2 digits)<byte value="x9"/>%-d</source>
-        <translation type="unfinished"></translation>
+        <source>Day (1 or 2 digits)	%-d</source>
+        <translation>Día (1 ó 2 dígitos)	%-d</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1204"/>
-        <source>Day (2 digits)<byte value="x9"/>%d</source>
-        <translation type="unfinished"></translation>
+        <source>Day (2 digits)	%d</source>
+        <translation>Día (2 dígitos)	%d</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1205"/>
-        <source>Weekday Abbreviation<byte value="x9"/>%a</source>
-        <translation type="unfinished"></translation>
+        <source>Weekday Abbreviation	%a</source>
+        <translation>Día de la semana abreviado		%a</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1206"/>
-        <source>Weekday Name<byte value="x9"/>%A</source>
-        <translation type="unfinished"></translation>
+        <source>Weekday Name	%A</source>
+        <translation>Día de la semana	%A</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1207"/>
-        <source>Month (1 or 2 digits)<byte value="x9"/>%-m</source>
-        <translation type="unfinished"></translation>
+        <source>Month (1 or 2 digits)	%-m</source>
+        <translation>Mes (1 o 2 dígitos)	%-m</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1208"/>
-        <source>Month (2 digits)<byte value="x9"/>%m</source>
-        <translation type="unfinished"></translation>
+        <source>Month (2 digits)	%m</source>
+        <translation>Mes (2 dígitos)	%m</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1209"/>
-        <source>Month Abbreviation<byte value="x9"/>%b</source>
-        <translation type="unfinished"></translation>
+        <source>Month Abbreviation	%b</source>
+        <translation>Mes (abreviado)	%b</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1210"/>
-        <source>Month Name<byte value="x9"/>%B</source>
-        <translation type="unfinished"></translation>
+        <source>Month Name	%B</source>
+        <translation>Mes (nombre completo)	%B</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1211"/>
-        <source>Year (2 digits)<byte value="x9"/>%y</source>
-        <translation type="unfinished"></translation>
+        <source>Year (2 digits)	%y</source>
+        <translation>Año (2 dígitos)	%y</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1212"/>
-        <source>Year (4 digits)<byte value="x9"/>%Y</source>
-        <translation type="unfinished"></translation>
+        <source>Year (4 digits)	%Y</source>
+        <translation>Año (4 dígitos)	%Y</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1213"/>
-        <source>Week Number (0 to 53)<byte value="x9"/>%-U</source>
-        <translation type="unfinished"></translation>
+        <source>Week Number (0 to 53)	%-U</source>
+        <translation>Semana (0 a 53)	%-U</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1214"/>
-        <source>Day of year (1 to 366)<byte value="x9"/>%-j</source>
-        <translation type="unfinished"></translation>
+        <source>Day of year (1 to 366)	%-j</source>
+        <translation>Día del año (1 to 366)	%-j</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1215"/>
-        <source>Hour (0-23, 1 or 2 digits)<byte value="x9"/>%-H</source>
-        <translation type="unfinished"></translation>
+        <source>Hour (0-23, 1 or 2 digits)	%-H</source>
+        <translation>Hora (0-23, 1 ó 2 dígitos)	%-H</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1216"/>
-        <source>Hour (00-23, 2 digits)<byte value="x9"/>%H</source>
-        <translation type="unfinished"></translation>
+        <source>Hour (00-23, 2 digits)	%H</source>
+        <translation>Hora (00-23, 2 dígitos)	%H</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1217"/>
-        <source>Hour (1-12, 1 or 2 digits)<byte value="x9"/>%-I</source>
-        <translation type="unfinished"></translation>
+        <source>Hour (1-12, 1 or 2 digits)	%-I</source>
+        <translation>Hora (1-12, 1 ó 2 dígitos)	%-I</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1218"/>
-        <source>Hour (01-12, 2 digits)<byte value="x9"/>%I</source>
-        <translation type="unfinished"></translation>
+        <source>Hour (01-12, 2 digits)	%I</source>
+        <translation>Hora (01-12, 2 dígitos)	%I</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1219"/>
-        <source>Minute (1 or 2 digits)<byte value="x9"/>%-M</source>
-        <translation type="unfinished"></translation>
+        <source>Minute (1 or 2 digits)	%-M</source>
+        <translation>Minutos (1 ó 2 dígitos)	%-M</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1220"/>
-        <source>Minute (2 digits)<byte value="x9"/>%M</source>
-        <translation type="unfinished"></translation>
+        <source>Minute (2 digits)	%M</source>
+        <translation>Minutos (2 dígitos)	%M</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1221"/>
-        <source>Second (1 or 2 digits)<byte value="x9"/>%-S</source>
-        <translation type="unfinished"></translation>
+        <source>Second (1 or 2 digits)	%-S</source>
+        <translation>Segundos (1 ó 2 dígitos)	%-S</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1222"/>
-        <source>Second (2 digits)<byte value="x9"/>%S</source>
-        <translation type="unfinished"></translation>
+        <source>Second (2 digits)	%S</source>
+        <translation>Segundos (2 dígitos)	%S</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1223"/>
-        <source>Microseconds (6 digits)<byte value="x9"/>%f</source>
-        <translation type="unfinished"></translation>
+        <source>Microseconds (6 digits)	%f</source>
+        <translation>Microsegundos (6 dígitos)	%f</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="1224"/>
-        <source>AM/PM<byte value="x9"/>%p</source>
-        <translation type="unfinished"></translation>
+        <source>AM/PM	%p</source>
+        <translation>AM/PM	%p</translation>
     </message>
 </context>
 <context>
@@ -1817,67 +1821,67 @@ Continue with absolute path?</source>
     <message>
         <location filename="globalref.py" line="32"/>
         <source>TreeLine Files</source>
-        <translation type="unfinished">Archivos TreeLine</translation>
+        <translation>Archivos TreeLine</translation>
     </message>
     <message>
         <location filename="globalref.py" line="34"/>
         <source>TreeLine Files - Compressed</source>
-        <translation type="unfinished">Archivos TreeLine - Comprimido</translation>
+        <translation>Archivos TreeLine - Comprimido</translation>
     </message>
     <message>
         <location filename="globalref.py" line="36"/>
         <source>TreeLine Files - Encrypted</source>
-        <translation type="unfinished">Archivos TreeLine - Codificado</translation>
+        <translation>Archivos TreeLine - Encriptado</translation>
     </message>
     <message>
         <location filename="globalref.py" line="38"/>
         <source>All Files</source>
-        <translation type="unfinished">Todos los archivos</translation>
+        <translation>Todos los Archivos</translation>
     </message>
     <message>
         <location filename="globalref.py" line="39"/>
         <source>HTML Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivos HTML</translation>
     </message>
     <message>
         <location filename="globalref.py" line="40"/>
         <source>Text Files</source>
-        <translation type="unfinished">Archivos de texto</translation>
+        <translation>Archivos de Texto</translation>
     </message>
     <message>
         <location filename="globalref.py" line="41"/>
         <source>XML Files</source>
-        <translation type="unfinished">Archivos XML</translation>
+        <translation>Archivos XML</translation>
     </message>
     <message>
         <location filename="globalref.py" line="43"/>
         <source>ODF Text Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivos de Texto ODF</translation>
     </message>
     <message>
         <location filename="globalref.py" line="44"/>
         <source>Treepad Files</source>
-        <translation type="unfinished">Archivos de Treepad</translation>
+        <translation>Archivos de Treepad</translation>
     </message>
     <message>
         <location filename="globalref.py" line="45"/>
         <source>PDF Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivos PDF</translation>
     </message>
     <message>
         <location filename="globalref.py" line="42"/>
         <source>CSV (Comma Delimited) Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivos CSV (Delimitado por Comas)</translation>
     </message>
     <message>
         <location filename="globalref.py" line="30"/>
         <source>All TreeLine Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos los Archivos TreeLine</translation>
     </message>
     <message>
         <location filename="globalref.py" line="37"/>
         <source>Old TreeLine Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivos TreeLine Antiguos</translation>
     </message>
 </context>
 <context>
@@ -1900,27 +1904,27 @@ Continue with absolute path?</source>
     <message>
         <location filename="helpview.py" line="70"/>
         <source> Find: </source>
-        <translation type="unfinished"></translation>
+        <translation> Buscar: </translation>
     </message>
     <message>
         <location filename="helpview.py" line="77"/>
         <source>Find &amp;Previous</source>
-        <translation type="unfinished">Buscar &amp;Anterior</translation>
+        <translation>Buscar &amp;Anterior</translation>
     </message>
     <message>
         <location filename="helpview.py" line="84"/>
         <source>Find &amp;Next</source>
-        <translation type="unfinished">Buscar &amp;Siguiente</translation>
+        <translation>&amp;Buscar Siguiente</translation>
     </message>
     <message>
         <location filename="helpview.py" line="123"/>
         <source>Text string not found</source>
-        <translation type="unfinished">Cadena de texto no encontrada</translation>
+        <translation>Cadena de texto no encontrada</translation>
     </message>
     <message>
         <location filename="helpview.py" line="42"/>
         <source>Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Herramientas</translation>
     </message>
 </context>
 <context>
@@ -1928,159 +1932,161 @@ Continue with absolute path?</source>
     <message>
         <location filename="imports.py" line="37"/>
         <source>&amp;Tab indented text, one node per line</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Sangrado de texto por tabulaciones, un nodo por línea</translation>
     </message>
     <message>
         <location filename="imports.py" line="43"/>
         <source>Tab delimited text table with header &amp;row</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabl&amp;a de texto delimitada por tabulaciones con fila de encabezado</translation>
     </message>
     <message>
         <location filename="imports.py" line="47"/>
         <source>Plain text &amp;paragraphs (blank line delimited)</source>
-        <translation type="unfinished"></translation>
+        <translation>Texto &amp;plano en párrafos (delimitado por línea en blanco)</translation>
     </message>
     <message>
         <location filename="imports.py" line="54"/>
         <source>Treepad &amp;file (text nodes only)</source>
-        <translation type="unfinished">&amp;Archivo Treepad (únicamente nodos de texto)</translation>
+        <translation>&amp;Archivo Treepad (únicamente nodos de texto)</translation>
     </message>
     <message>
         <location filename="imports.py" line="55"/>
         <source>&amp;Generic XML (non-TreeLine file)</source>
-        <translation type="unfinished"></translation>
+        <translation>XML &amp;genérico (No es un archivo TreeLine)</translation>
     </message>
     <message>
         <location filename="imports.py" line="56"/>
         <source>Open &amp;Document (ODF) outline</source>
-        <translation type="unfinished"></translation>
+        <translation>Open &amp;Document (ODF)</translation>
     </message>
     <message>
         <location filename="imports.py" line="50"/>
         <source>&amp;HTML bookmarks (Mozilla Format)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;HTML favoritos (Formato Mozilla)</translation>
     </message>
     <message>
         <location filename="imports.py" line="51"/>
         <source>&amp;XML bookmarks (XBEL format)</source>
-        <translation type="unfinished">favoritos en &amp;XML (formato XBEL)</translation>
+        <translation>Favoritos en &amp;XML (Formato XBEL)</translation>
     </message>
     <message>
         <location filename="imports.py" line="77"/>
         <source>FOLDER</source>
-        <translation type="unfinished">CARPETA</translation>
+        <translation>CARPETA</translation>
     </message>
     <message>
         <location filename="imports.py" line="78"/>
         <source>BOOKMARK</source>
-        <translation type="unfinished">FAVORITO</translation>
+        <translation>FAVORITO</translation>
     </message>
     <message>
         <location filename="imports.py" line="79"/>
         <source>SEPARATOR</source>
-        <translation type="unfinished">SEPARADOR</translation>
+        <translation>SEPARADOR</translation>
     </message>
     <message>
         <location filename="imports.py" line="80"/>
         <source>Link</source>
-        <translation type="unfinished">Enlace</translation>
+        <translation>Enlace</translation>
     </message>
     <message>
         <location filename="imports.py" line="81"/>
         <source>Text</source>
-        <translation type="unfinished">Texto</translation>
+        <translation>Texto</translation>
     </message>
     <message>
         <location filename="imports.py" line="108"/>
         <source>Import File</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar Archivo</translation>
     </message>
     <message>
         <location filename="imports.py" line="109"/>
         <source>Choose Import Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Escoger Método de Importación</translation>
     </message>
     <message>
         <location filename="imports.py" line="115"/>
         <source>Invalid File</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivo no Válido</translation>
     </message>
     <message>
         <location filename="imports.py" line="117"/>
         <source>&quot;{0}&quot; is not a valid TreeLine file.
 
 Use an import filter?</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;{0}&quot; no es un archivo válido TreeLine.
+
+¿Usar filtro de importación de archivo?</translation>
     </message>
     <message>
         <location filename="imports.py" line="127"/>
         <source>TreeLine - Import File</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Importar archivo</translation>
     </message>
     <message>
         <location filename="imports.py" line="141"/>
         <source>Error - could not read file {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error-no se puede leer archivo {0}</translation>
     </message>
     <message>
         <location filename="imports.py" line="145"/>
         <source>Error - improper format in {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - formato incorrecto en {0}</translation>
     </message>
     <message>
         <location filename="imports.py" line="272"/>
         <source>TABLE</source>
-        <translation type="unfinished"></translation>
+        <translation>TABLA</translation>
     </message>
     <message>
         <location filename="imports.py" line="895"/>
         <source>Bookmarks</source>
-        <translation type="unfinished">Favoritos</translation>
+        <translation>Favoritos</translation>
     </message>
     <message>
         <location filename="imports.py" line="292"/>
         <source>Too many entries on Line {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Demasiadas entradas en la Línea {0}</translation>
     </message>
     <message>
         <location filename="imports.py" line="45"/>
         <source>Plain text, one &amp;node per line (CR delimited)</source>
-        <translation type="unfinished"></translation>
+        <translation>Text&amp;o plano, un &amp;nodo por línea (delimitado por retorno de carro -CR-)</translation>
     </message>
     <message>
         <location filename="imports.py" line="259"/>
         <source>Bad CSV format on Line {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato CSV.erróneo en Línea {0}</translation>
     </message>
     <message>
         <location filename="imports.py" line="40"/>
         <source>Co&amp;mma delimited (CSV) text table with level column &amp;&amp; header row</source>
-        <translation type="unfinished"></translation>
+        <translation>T&amp;exto delimitado por comas (CSV) tabla de texto con nivel de columna y fila de encabezado</translation>
     </message>
     <message>
         <location filename="imports.py" line="41"/>
         <source>Comma delimited (CSV) text table &amp;with header row</source>
-        <translation type="unfinished"></translation>
+        <translation>Texto &amp;delimitado por comas (CSV) tabla con fila de encabezado</translation>
     </message>
     <message>
         <location filename="imports.py" line="52"/>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Otro</translation>
     </message>
     <message>
         <location filename="imports.py" line="53"/>
         <source>Old Tree&amp;Line File (1.x or 2.x)</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivo Antiguo de Tree&amp;Line (1.x o 2.x)</translation>
     </message>
     <message>
         <location filename="imports.py" line="202"/>
         <source>Invalid level number on line {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de nivel no válido en la línea {0}</translation>
     </message>
     <message>
         <location filename="imports.py" line="224"/>
         <source>Invalid level structure</source>
-        <translation type="unfinished"></translation>
+        <translation>Estructura de nivel no válida</translation>
     </message>
 </context>
 <context>
@@ -2088,27 +2094,27 @@ Use an import filter?</source>
     <message>
         <location filename="matheval.py" line="192"/>
         <source>Illegal &quot;{}&quot; characters</source>
-        <translation type="unfinished"></translation>
+        <translation>Caracteres &quot;{}&quot; no permitidos</translation>
     </message>
     <message>
         <location filename="matheval.py" line="204"/>
         <source>Child references must be combined in a function</source>
-        <translation type="unfinished"></translation>
+        <translation>Las referencias secundarias deben combinarse en una función</translation>
     </message>
     <message>
         <location filename="matheval.py" line="548"/>
         <source>Illegal syntax in equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Sintaxis ilegar en la ecuación</translation>
     </message>
     <message>
         <location filename="matheval.py" line="560"/>
         <source>Illegal function present: {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Función ilegal presente: {0}</translation>
     </message>
     <message>
         <location filename="matheval.py" line="572"/>
         <source>Illegal object type or operator: {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de objeto u operador no permitido: {0}</translation>
     </message>
 </context>
 <context>
@@ -2116,553 +2122,554 @@ Use an import filter?</source>
     <message>
         <location filename="miscdialogs.py" line="1975"/>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Aceptar</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1896"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation>&amp;Cancelar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="134"/>
         <source>Fields</source>
-        <translation type="unfinished">Campos</translation>
+        <translation>Campos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="190"/>
         <source>File Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Propiedades de Archivo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="194"/>
         <source>File Storage</source>
-        <translation type="unfinished">Almacenamiento de ficheros</translation>
+        <translation>Almacenamiento de Ficheros</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="197"/>
         <source>&amp;Use file compression</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Comprimir Archivo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="200"/>
         <source>Use file &amp;encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Encriptar Archivo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="204"/>
         <source>Spell Check</source>
-        <translation type="unfinished">Comprobación de la ortografía</translation>
+        <translation>Comprobación de la ortografía</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="207"/>
         <source>Language code or
 dictionary (optional)</source>
-        <translation type="unfinished"></translation>
+        <translation>Código de idioma o
+diccionario (opcional)</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="213"/>
         <source>Math Fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Campos Matemáticos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="216"/>
         <source>&amp;Treat blank fields as zeros</source>
-        <translation type="unfinished"></translation>
+        <translation>Considerar los espacios en blanco como ceros (&amp;0)</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="268"/>
         <source>Encrypted File Password</source>
-        <translation type="unfinished">Contraseña del archivo</translation>
+        <translation>Contraseña del Archivo Encriptado</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="273"/>
         <source>Type Password for &quot;{0}&quot;:</source>
-        <translation type="unfinished"></translation>
+        <translation>Escriba la Contraseña para &quot;{0}&quot;:</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="276"/>
         <source>Type Password:</source>
-        <translation type="unfinished">Introduzca la contraseña:</translation>
+        <translation>Escriba la Contraseña:</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="279"/>
         <source>Re-Type Password:</source>
-        <translation type="unfinished">Introduzca de nuevo la contraseña:</translation>
+        <translation>Escriba de nuevo la contraseña:</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="284"/>
         <source>Remember password during this session</source>
-        <translation type="unfinished">Recuerde la contraseña durante esta sesión</translation>
+        <translation>Recordar la contraseña durante esta sesión</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="321"/>
         <source>Zero-length passwords are not permitted</source>
-        <translation type="unfinished">No se permiten contraseñas de longitud cero</translation>
+        <translation>No se permiten contraseñas de longitud cero</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="324"/>
         <source>Re-typed password did not match</source>
-        <translation type="unfinished">La contraseña introducida la segunda vez no coincide</translation>
+        <translation>La contraseña reescrita no coincide</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="398"/>
         <source>Default - Single Line Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Predeterminado - Texto Simple</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="727"/>
         <source>&amp;Search Text</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Buscar texto</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="545"/>
         <source>What to Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Qué Buscar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="549"/>
         <source>Full &amp;data</source>
-        <translation type="unfinished"></translation>
+        <translation>To&amp;do</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="552"/>
         <source>&amp;Titles only</source>
-        <translation type="unfinished"></translation>
+        <translation>Sólo en &amp;títulos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="740"/>
         <source>How to Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Cómo Buscar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="561"/>
         <source>&amp;Key words</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Contiene</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="564"/>
         <source>Key full &amp;words</source>
-        <translation type="unfinished"></translation>
+        <translation>Texto E&amp;xacto</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="567"/>
         <source>F&amp;ull phrase</source>
-        <translation type="unfinished"></translation>
+        <translation>Frase co&amp;mpleta</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="570"/>
         <source>&amp;Regular expression</source>
-        <translation type="unfinished"></translation>
+        <translation>Exp&amp;resión regular</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="578"/>
         <source>Find</source>
-        <translation type="unfinished">Buscar</translation>
+        <translation>Buscar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="772"/>
         <source>Find &amp;Previous</source>
-        <translation type="unfinished">Buscar &amp;Anterior</translation>
+        <translation>Buscar &amp;Anterior</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="582"/>
         <source>Find &amp;Next</source>
-        <translation type="unfinished">Buscar &amp;Siguiente</translation>
+        <translation>Buscar &amp;Siguiente</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="589"/>
         <source>Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtro</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="590"/>
         <source>&amp;Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Filtro</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="593"/>
         <source>&amp;End Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>C&amp;errar Filtro</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1161"/>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Cerrar</translation>
+        <translation>&amp;Cerrar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="884"/>
         <source>Error - invalid regular expression</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - Expresión regular no válida</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="660"/>
         <source>Search string &quot;{0}&quot; not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar cadena &quot;{0}&quot;. No encontrada</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="721"/>
         <source>Find and Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar y reemplazar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="734"/>
         <source>Replacement &amp;Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Reemplazar Te&amp;xto</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="744"/>
         <source>Any &amp;match</source>
-        <translation type="unfinished"></translation>
+        <translation>Contien&amp;e</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="747"/>
         <source>Full &amp;words</source>
-        <translation type="unfinished"></translation>
+        <translation>Coinci&amp;de</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="750"/>
         <source>Re&amp;gular expression</source>
-        <translation type="unfinished"></translation>
+        <translation>Expresión re&amp;gular</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="756"/>
         <source>&amp;Node Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de &amp;Nodo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="763"/>
         <source>N&amp;ode Fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Campos de N&amp;odo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="775"/>
         <source>&amp;Find Next</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar &amp;Siguiente</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="779"/>
         <source>&amp;Replace</source>
-        <translation type="unfinished">&amp;Reemplazar</translation>
+        <translation>&amp;Reemplazar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="782"/>
         <source>Replace &amp;All</source>
-        <translation type="unfinished"></translation>
+        <translation>Reemplazar &amp;Todo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="822"/>
         <source>[All Types]</source>
-        <translation type="unfinished"></translation>
+        <translation>[Todos los tipos]</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="844"/>
         <source>[All Fields]</source>
-        <translation type="unfinished"></translation>
+        <translation>[Todos los campos]</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="894"/>
         <source>Search text &quot;{0}&quot; not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda del texto &quot;{0}&quot; no encontrado</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="918"/>
         <source>Error - replacement failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - reemplazo fallido</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="932"/>
         <source>Replaced {0} matches</source>
-        <translation type="unfinished"></translation>
+        <translation>Reemplazadas {0} coincidencias</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="961"/>
         <source>Sort Nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordenar Nodos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="967"/>
         <source>What to Sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Qué ordenar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1116"/>
         <source>&amp;Entire tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Árbol compl&amp;eto</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1119"/>
         <source>Selected &amp;branches</source>
-        <translation type="unfinished"></translation>
+        <translation>Ramas &amp;Seleccionadas</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="977"/>
         <source>Selection&apos;s childre&amp;n</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Hijos seleccionados</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="980"/>
         <source>Selection&apos;s &amp;siblings</source>
-        <translation type="unfinished"></translation>
+        <translation>Her&amp;manos seleccionados</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="987"/>
         <source>Sort Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Método de ordenado</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="991"/>
         <source>&amp;Predefined Key Fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombres de Campos &amp;Predefinidos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="994"/>
         <source>Node &amp;Titles</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Títulos de Nodos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="999"/>
         <source>Sort Direction</source>
-        <translation type="unfinished"></translation>
+        <translation>Dirección de Ordenado</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1003"/>
         <source>&amp;Forward</source>
-        <translation type="unfinished">&amp;Siguiente</translation>
+        <translation>&amp;Adelante</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1006"/>
         <source>&amp;Reverse</source>
-        <translation type="unfinished"></translation>
+        <translation>At&amp;rás</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1893"/>
         <source>&amp;Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;plicar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1108"/>
         <source>Update Node Numbering</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar Numeración de Nodo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1112"/>
         <source>What to Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Qué Actualizar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1122"/>
         <source>&amp;Selection&apos;s children</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Selección de Hijos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1127"/>
         <source>Root Node</source>
-        <translation type="unfinished">Nodo raíz</translation>
+        <translation>Nodo Principal</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1130"/>
         <source>Include top-level nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Incluir nodos de nivel superior</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1135"/>
         <source>Handling Nodes without Numbering Fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Manejar nodos sin Campos de Numeración</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1139"/>
         <source>&amp;Ignore and skip</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ignorar y omitir</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1142"/>
         <source>&amp;Restart numbers for next siblings</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Reiniciar números para los siguientes hermanos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1146"/>
         <source>Reserve &amp;numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>Reserva &amp;números</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1188"/>
         <source>TreeLine Numbering</source>
-        <translation type="unfinished"></translation>
+        <translation>Numeración TreeLine</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1189"/>
         <source>No numbering fields were found in data types</source>
-        <translation type="unfinished"></translation>
+        <translation>No se encontraron campos de numeración en los tipos de datos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1239"/>
         <source>File Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menú de Archivo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1239"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1240"/>
         <source>Edit Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menú Edición</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1240"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1241"/>
         <source>Node Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menú de Nodo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1241"/>
         <source>Node</source>
-        <translation type="unfinished"></translation>
+        <translation>Nodo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1242"/>
         <source>Data Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menú de datos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1242"/>
         <source>Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Datos</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1243"/>
         <source>Tools Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menú de Herramientas</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1243"/>
         <source>Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Herramientas</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1245"/>
         <source>View Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menú Ver</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1245"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation>Ver</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1246"/>
         <source>Window Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menú Ventana</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1246"/>
         <source>Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Ventana</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1247"/>
         <source>Help Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menú Ayuda</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1247"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayuda</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1262"/>
         <source>Keyboard Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Atajos de Teclado</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1583"/>
         <source>&amp;Restore Defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Restaurar Valores por Defecto</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1431"/>
         <source>Key {0} is already used</source>
-        <translation type="unfinished"></translation>
+        <translation>Clave {0} ya está en uso</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1442"/>
         <source>Clear &amp;Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar Cla&amp;ve</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1491"/>
         <source>--Separator--</source>
-        <translation type="unfinished"></translation>
+        <translation>--Separador--</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1502"/>
         <source>Customize Toolbars</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizar Barra de Herramientas</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1516"/>
         <source>Toolbar &amp;Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño Barra de Herramienta&amp;s</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1521"/>
         <source>Small Icons</source>
-        <translation type="unfinished"></translation>
+        <translation>Iconos Pequeños</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1521"/>
         <source>Large Icons</source>
-        <translation type="unfinished"></translation>
+        <translation>Iconos Grandes</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1524"/>
         <source>Toolbar Quantity</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantidad de barras de herramientas</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1530"/>
         <source>&amp;Toolbars</source>
-        <translation type="unfinished">&amp;Barras de herramientas</translation>
+        <translation>Barras de herramien&amp;tas</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1535"/>
         <source>A&amp;vailable Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Comandos Dis&amp;ponibles</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1559"/>
         <source>Tool&amp;bar Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Comandos de la &amp;barra de herramientas</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1574"/>
         <source>Move &amp;Up</source>
-        <translation type="unfinished">Mover a&amp;rriba</translation>
+        <translation>Mover &amp;Arriba</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1577"/>
         <source>Move &amp;Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover Aba&amp;jo</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1877"/>
         <source>Tree View Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuente del Árbol</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1881"/>
         <source>Output View Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuente de Salida</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1885"/>
         <source>Editor View Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuente del Editor</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1853"/>
@@ -2677,12 +2684,12 @@ dictionary (optional)</source>
     <message>
         <location filename="miscdialogs.py" line="1275"/>
         <source>No menu</source>
-        <translation type="unfinished"></translation>
+        <translation>No.menu</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="479"/>
         <source>TreeLine - Serious Error</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Error Grave</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="489"/>
@@ -2692,37 +2699,41 @@ Recommend saving any file changes under another filename and restart TreeLine.
 The debugging info shown below can be copied and emailed to doug101@bellz.org along with
 an explanation of the circumstances.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Se ha producido un error grave. TreeLine podría estar en un estado inestable.
+Se recomienda guardar cualquier cambio de archivo con otro nombre de archivo y reiniciar TreeLine.
+
+La información de depuración que se muestra a continuación se puede copiar y enviar por correo electrónico a doug101@bellz.org junto con una explicación de las circunstancias del error.
+</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1244"/>
         <source>Format Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menú Formato</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1244"/>
         <source>Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1858"/>
         <source>Customize Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizar Fuentes</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1869"/>
         <source>&amp;Use system default font</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Usar fuente por defecto del sistema</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1872"/>
         <source>App Default Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuente por defecto de la aplicación</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1874"/>
         <source>&amp;Use app default font</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Usar la fuente predeterminada de la aplicación</translation>
     </message>
 </context>
 <context>
@@ -2730,7 +2741,7 @@ an explanation of the circumstances.
     <message>
         <location filename="nodeformat.py" line="30"/>
         <source>Name</source>
-        <translation type="unfinished">Nombre</translation>
+        <translation>Nombre</translation>
     </message>
 </context>
 <context>
@@ -2738,166 +2749,168 @@ an explanation of the circumstances.
     <message>
         <location filename="optiondefaults.py" line="18"/>
         <source>Monday</source>
-        <translation type="unfinished">Lunes</translation>
+        <translation>Lunes</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="18"/>
         <source>Tuesday</source>
-        <translation type="unfinished">Martes</translation>
+        <translation>Martes</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="18"/>
         <source>Wednesday</source>
-        <translation type="unfinished">Miércoles</translation>
+        <translation>Miércoles</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="18"/>
         <source>Thursday</source>
-        <translation type="unfinished">Jueves</translation>
+        <translation>Jueves</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="19"/>
         <source>Friday</source>
-        <translation type="unfinished">Viernes</translation>
+        <translation>Viernes</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="19"/>
         <source>Saturday</source>
-        <translation type="unfinished">Sábado</translation>
+        <translation>Sábado</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="22"/>
         <source>Sunday</source>
-        <translation type="unfinished">Domingo</translation>
+        <translation>Domingo</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="48"/>
         <source>Startup Condition</source>
-        <translation type="unfinished">Situación de inicio</translation>
+        <translation>Condición de Inicio</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="31"/>
         <source>Automatically open last file used</source>
-        <translation type="unfinished">Abrir automáticamente el último archivo usado</translation>
+        <translation>Abrir automáticamente el último archivo usado</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="40"/>
         <source>Show descendants in output view</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar hijos en la vista de salida</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="43"/>
         <source>Restore tree view states of recent files</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurar estados de vista en árbol de archivos recientes</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="49"/>
         <source>Restore previous window geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurar la geometría de la ventana anterior</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="67"/>
         <source>Features Available</source>
-        <translation type="unfinished">Funcionalidades disponibles</translation>
+        <translation>Funcionalidades disponibles</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="52"/>
         <source>Open files in new windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir archivos en una nueva ventana</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="57"/>
         <source>Click node to rename</source>
-        <translation type="unfinished"></translation>
+        <translation>Clicar en nodo para renombrar</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="59"/>
         <source>Rename new nodes when created</source>
-        <translation type="unfinished">Renombrar los nodos nuevos cuando sean creados</translation>
+        <translation>Renombrar los nodos nuevos cuando sean creados</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="61"/>
         <source>Tree drag &amp;&amp; drop available</source>
-        <translation type="unfinished">Disponible la opción de pulsar y arrastrar en el árbol</translation>
+        <translation>Disponible la opción de pulsar y arrastrar en el árbol</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="63"/>
         <source>Show icons in the tree view</source>
-        <translation type="unfinished">Mostrar iconos en la vista de árbol</translation>
+        <translation>Mostrar iconos en la vista de árbol</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="65"/>
         <source>Show math fields in the Data Edit view</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar campos matemáticos en la vista de Edición de Datos</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="68"/>
         <source>Show numbering fields in the Data Edit view</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar campos de numeración en la vista de Edición de Datos</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="69"/>
         <source>Undo Memory</source>
-        <translation type="unfinished">Memoria usada por la opción &quot;deshacer&quot;</translation>
+        <translation>Memoria usada por la opción &quot;deshacer&quot;</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="70"/>
         <source>Number of undo levels</source>
-        <translation type="unfinished">Número de niveles de deshacer</translation>
+        <translation>Número de niveles de deshacer</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="71"/>
         <source>Auto Save</source>
-        <translation type="unfinished">Grabación automática</translation>
+        <translation>Guardado Automático</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="72"/>
         <source>Minutes between saves
 (set to 0 to disable)</source>
-        <translation type="unfinished"></translation>
+        <translation>Minutos entre respaldos (establecer 0 para desactivar)</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="73"/>
         <source>Recent Files</source>
-        <translation type="unfinished">Archivos recientes</translation>
+        <translation>Archivos recientes</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="74"/>
         <source>Number of recent files 
 in the file menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Cantidad de archivos recientes
+en el menú de archivo</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="80"/>
         <source>Data Editor Formats</source>
-        <translation type="unfinished">Formatos del editor de datos</translation>
+        <translation>Formatos del editor de datos</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="76"/>
         <source>Times</source>
-        <translation type="unfinished">Horas</translation>
+        <translation>Horas</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="78"/>
         <source>Dates</source>
-        <translation type="unfinished">Fechas</translation>
+        <translation>Fechas</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="80"/>
         <source>First day
 of week</source>
-        <translation type="unfinished"></translation>
+        <translation>Primer día de la semana</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="81"/>
         <source>Appearance</source>
-        <translation type="unfinished">Apariencia</translation>
+        <translation>Apariencia</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="82"/>
         <source>Child indent offset
 (in font height units) </source>
-        <translation type="unfinished"></translation>
+        <translation>Corrección de sangrado de hijos
+(en unidades de altura de fuente) </translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="85"/>
@@ -2907,22 +2920,22 @@ of week</source>
     <message>
         <location filename="optiondefaults.py" line="34"/>
         <source>Show breadcrumb ancestor view</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar panel de navegación</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="37"/>
         <source>Show child pane in right hand views</source>
-        <translation type="unfinished"></translation>
+        <translation>Motrar paneles hijos en la vista derecha</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="46"/>
         <source>Remove inaccessible recent file entries</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar archivos inaccesibles en la vista de archivos recientes</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="55"/>
         <source>Activate data editors on mouse hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar editores de datos cuando el puntero del ratón esté encima</translation>
     </message>
 </context>
 <context>
@@ -2930,27 +2943,27 @@ of week</source>
     <message>
         <location filename="options.py" line="571"/>
         <source>Choose configuration file location</source>
-        <translation type="unfinished"></translation>
+        <translation>Elija la ubicación del archivo de configuración</translation>
     </message>
     <message>
         <location filename="options.py" line="572"/>
         <source>User&apos;s home directory (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Directorio de inicio de usuario (recomendado)</translation>
     </message>
     <message>
         <location filename="options.py" line="573"/>
         <source>Program directory (for portable use)</source>
-        <translation type="unfinished"></translation>
+        <translation>Carpeta del programa (para uso portable)</translation>
     </message>
     <message>
         <location filename="options.py" line="706"/>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Aceptar</translation>
+        <translation>&amp;Aceptar</translation>
     </message>
     <message>
         <location filename="options.py" line="709"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation>&amp;Cancelar</translation>
     </message>
 </context>
 <context>
@@ -2958,30 +2971,33 @@ of week</source>
     <message>
         <location filename="printdata.py" line="362"/>
         <source>Error initializing printer</source>
-        <translation type="unfinished"></translation>
+        <translation>Error inicializando la impresora</translation>
     </message>
     <message>
         <location filename="printdata.py" line="573"/>
         <source>TreeLine - Export PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Exportar a PDF</translation>
     </message>
     <message>
         <location filename="printdata.py" line="339"/>
         <source>Warning: Page size and margin settings unsupported on current printer.
 Save page adjustments?</source>
-        <translation type="unfinished"></translation>
+        <translation>Advertencia: configuración de tamaño de página y margen no admitida en la impresora actual.
+ ¿Guardar los ajustes de página?</translation>
     </message>
     <message>
         <location filename="printdata.py" line="342"/>
         <source>Warning: Page size setting unsupported on current printer.
 Save adjustment?</source>
-        <translation type="unfinished"></translation>
+        <translation>Advertencia: configuración de tamaño de página no admitida en la impresora actual.
+ ¿Guardar ajustes?</translation>
     </message>
     <message>
         <location filename="printdata.py" line="345"/>
         <source>Warning: Margin settings unsupported on current printer.
 Save adjustments?</source>
-        <translation type="unfinished"></translation>
+        <translation>Advertencia: configuración de margen no compatible en la impresora actual.
+¿Guardar los ajustes?</translation>
     </message>
 </context>
 <context>
@@ -2989,428 +3005,429 @@ Save adjustments?</source>
     <message>
         <location filename="printdialogs.py" line="50"/>
         <source>Print Preview</source>
-        <translation type="unfinished">Vista previa de impresión</translation>
+        <translation>Vista Previa de Impresión</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="349"/>
         <source>&amp;Print...</source>
-        <translation type="unfinished">&amp;Imprimir....</translation>
+        <translation>&amp;Imprimir...</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="331"/>
         <source>&amp;General Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opciones &amp;Generales</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="336"/>
         <source>&amp;Font Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Selección de &amp;Fuente</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="338"/>
         <source>&amp;Header/Footer</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Encabezado y pie</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="346"/>
         <source>Print Pre&amp;view...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vista Previa...</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1379"/>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Aceptar</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1382"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation>&amp;Cancelar</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="424"/>
         <source>What to print</source>
-        <translation type="unfinished"></translation>
+        <translation>Qué imprimir</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="428"/>
         <source>&amp;Entire tree</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Árbol completo</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="431"/>
         <source>Selected &amp;branches</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ramas seleccionadas</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="435"/>
         <source>Selected &amp;nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nodos seleccionados</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="465"/>
         <source>Features</source>
-        <translation type="unfinished">Funcionalidades</translation>
+        <translation>Características</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="444"/>
         <source>&amp;Include root node</source>
-        <translation type="unfinished">&amp;Incluir el nodo raíz</translation>
+        <translation>Incluir el nodo rai&amp;z</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="471"/>
         <source>&amp;Keep first child with parent</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mantener el primer hijo con el padre</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="537"/>
         <source>Letter (8.5 x 11 in.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Carta (8.5 x 11 in.)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="538"/>
         <source>Legal (8.5 x 14 in.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Legal (8.5 x 14 in.)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="539"/>
         <source>Tabloid (11 x 17 in.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabloide (11 x 17 in.)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="540"/>
         <source>A3 (279 x 420 mm)</source>
-        <translation type="unfinished"></translation>
+        <translation>A3 (279 x 420 mm)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="541"/>
         <source>A4 (210 x 297 mm)</source>
-        <translation type="unfinished"></translation>
+        <translation>A4 (210 x 297 mm)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="542"/>
         <source>A5 (148 x 210 mm)</source>
-        <translation type="unfinished"></translation>
+        <translation>A5 (148 x 210 mm)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="582"/>
         <source>Paper &amp;Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño del Pape&amp;l</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="614"/>
         <source>Orientation</source>
-        <translation type="unfinished"></translation>
+        <translation>Orientación</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="570"/>
         <source>&amp;Units</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Unidades</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="677"/>
         <source>Columns</source>
-        <translation type="unfinished">Columnas</translation>
+        <translation>Columnas</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="680"/>
         <source>&amp;Number of columns</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Número de columnas</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="910"/>
         <source>Default Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuente predeterminada</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="920"/>
         <source>Select Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar Fuente</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="926"/>
         <source>&amp;Font</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fuente</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="942"/>
         <source>Font st&amp;yle</source>
-        <translation type="unfinished"></translation>
+        <translation>E&amp;stilo de fuente</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="972"/>
         <source>Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>Ejemplo</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1126"/>
         <source>&amp;Header Left</source>
-        <translation type="unfinished">Cabecera a la &amp;izquierda</translation>
+        <translation>Cabecera a la I&amp;zquierda</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1126"/>
         <source>Header C&amp;enter</source>
-        <translation type="unfinished">Cabecera &amp;centrada</translation>
+        <translation>Cabecera cen&amp;trada</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1127"/>
         <source>Footer &amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Pie a la Iz&amp;quierda</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1127"/>
         <source>Footer Ce&amp;nter</source>
-        <translation type="unfinished">Pie de página ce&amp;ntrado</translation>
+        <translation>Pie de página ce&amp;ntrado</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1144"/>
         <source>Fiel&amp;ds</source>
-        <translation type="unfinished">Cam&amp;pos</translation>
+        <translation>Campo&amp;s</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1165"/>
         <source>Header and Footer</source>
-        <translation type="unfinished">Cabecera y pie de página</translation>
+        <translation>Encabezado y pie de página</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1359"/>
         <source>Extra Text</source>
-        <translation type="unfinished">Texto adicional</translation>
+        <translation>Texto adicional</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1364"/>
         <source>&amp;Prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Prefijo</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1355"/>
         <source>Format &amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;yuda de Formato</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="62"/>
         <source>Fit Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajuste de ancho</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="69"/>
         <source>Fit Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajuste de página</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="86"/>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoom Aumentar</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="93"/>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Zorrm Reducir</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="101"/>
         <source>Previous Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Página anterior</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="119"/>
         <source>Next Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Página Siguiente</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="127"/>
         <source>Single Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Página sencilla</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="135"/>
         <source>Facing Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Páginas enfrentadas</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="145"/>
         <source>Print Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuración de Impresión</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="152"/>
         <source>Print</source>
-        <translation type="unfinished"></translation>
+        <translation>Imprimir</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="322"/>
         <source>Printing Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuración de Impresión</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="334"/>
         <source>Page &amp;Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuración de &amp;Página</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="441"/>
         <source>Included Nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Nodos Incluídos</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="447"/>
         <source>Onl&amp;y open node children</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir únicamente nodos &amp;hijos</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="468"/>
         <source>&amp;Draw lines to children</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dibujar líneas para los hijos</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="475"/>
         <source>Indent</source>
-        <translation type="unfinished"></translation>
+        <translation>Sangrar</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="478"/>
         <source>Indent Offse&amp;t
 (line height units)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sangrado de &amp;Salida
+(unidades de altura de línea)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="543"/>
         <source>Custom Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño Personalizado</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="544"/>
         <source>Inches (in)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pulgadas (in)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="545"/>
         <source>Millimeters (mm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Milímetros (mm)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="546"/>
         <source>Centimeters (cm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Centímetros (cm)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="597"/>
         <source>&amp;Width:</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;nchura:</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="604"/>
         <source>Height:</source>
-        <translation type="unfinished"></translation>
+        <translation>Altura:</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="617"/>
         <source>Portra&amp;it</source>
-        <translation type="unfinished"></translation>
+        <translation>Retra&amp;to</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="619"/>
         <source>Lan&amp;dscape</source>
-        <translation type="unfinished"></translation>
+        <translation>Paisa&amp;je</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="632"/>
         <source>Margins</source>
-        <translation type="unfinished"></translation>
+        <translation>Márgenes</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="639"/>
         <source>&amp;Left:</source>
-        <translation type="unfinished"></translation>
+        <translation>Iz&amp;quierda:</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="644"/>
         <source>&amp;Top:</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;rriba:</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="649"/>
         <source>&amp;Right:</source>
-        <translation type="unfinished"></translation>
+        <translation>Derec&amp;ha:</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="654"/>
         <source>&amp;Bottom:</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;bajo:</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="664"/>
         <source>He&amp;ader:</source>
-        <translation type="unfinished"></translation>
+        <translation>Encabe&amp;zado:</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="670"/>
         <source>Foot&amp;er:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pie:</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="688"/>
         <source>Space between colu&amp;mns</source>
-        <translation type="unfinished"></translation>
+        <translation>Espacio entre colu&amp;mnas</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="915"/>
         <source>&amp;Use TreeLine output view font</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Usar visor de salida fuente TreeLine</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="955"/>
         <source>Si&amp;ze</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tamaño</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="978"/>
         <source>AaBbCcDdEeFfGg...TtUuVvWvXxYyZz</source>
-        <translation type="unfinished"></translation>
+        <translation>AaBbCcDdEeFfGg...TtUuVvWvXxYyZz</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1126"/>
         <source>Header &amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Encabezado &amp;Derecho</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1127"/>
         <source>Footer Righ&amp;t</source>
-        <translation type="unfinished"></translation>
+        <translation>Pie De&amp;recho</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1149"/>
         <source>Field For&amp;mat</source>
-        <translation type="unfinished"></translation>
+        <translation>For&amp;mato de Campo</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1346"/>
         <source>Field Format for &quot;{0}&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato de Campo para &quot;{0}&quot;</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1350"/>
         <source>Output &amp;Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Salida &amp;Formato</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="1370"/>
         <source>&amp;Suffix</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Sufijo</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="379"/>
         <source>Error:  Page size or margins are invalid</source>
-        <translation type="unfinished"></translation>
+        <translation>Error: Tamaño de página o márgenes inválidos</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="400"/>
         <source>TreeLine PDF Printer</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine Impresora PDF</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="455"/>
         <source>Select &amp;Printer</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar Im&amp;presora</translation>
     </message>
 </context>
 <context>
@@ -3427,28 +3444,30 @@ Save adjustments?</source>
         <location filename="spellcheck.py" line="202"/>
         <source>Could not find either aspell.exe, ispell.exe or hunspell.exe
 Browse for location?</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - Exportar archivos de plantilla no encontrados.
+¿Buscar la ubicacion?</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="204"/>
         <source>Spell Check Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Error ortográfico</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="213"/>
         <source>Locate aspell.exe, ipsell.exe or hunspell.exe</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubique aspell.exe, ipsell.exe o hunspell.exe</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="215"/>
         <source>Program (*.exe)</source>
-        <translation type="unfinished">Programa (*.exe)</translation>
+        <translation>Programa (*.exe)</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="225"/>
         <source>TreeLine Spell Check Error
 Make sure aspell, ispell or hunspell is installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Error de comprobación ortográfica TreeLine
+Comprobar que esté instalado aspell, ispell o hunspell</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="243"/>
@@ -3460,78 +3479,79 @@ Continue from the root branch?</source>
     <message>
         <location filename="spellcheck.py" line="257"/>
         <source>TreeLine Spell Check</source>
-        <translation type="unfinished">Comprobación ortográfica de TreeLIne</translation>
+        <translation>Comprobación ortográfica de TreeLIne</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="258"/>
         <source>Finished spell checking</source>
-        <translation type="unfinished"></translation>
+        <translation>Comprobación ortográfica finalizada</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="310"/>
         <source>Spell Check</source>
-        <translation type="unfinished">Comprobación de la ortografía</translation>
+        <translation>Comprobación de la ortografía</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="322"/>
         <source>Not in Dictionary</source>
-        <translation type="unfinished">No está en el diccionario</translation>
+        <translation>No está en el diccionario</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="325"/>
         <source>Word:</source>
-        <translation type="unfinished">Palabra:</translation>
+        <translation>Palabra:</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="331"/>
         <source>Context:</source>
-        <translation type="unfinished">Contexto:</translation>
+        <translation>Contexto:</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="337"/>
         <source>Suggestions</source>
-        <translation type="unfinished">Sugerencias</translation>
+        <translation>Sugerencias</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="346"/>
         <source>Ignor&amp;e</source>
-        <translation type="unfinished">Ignor&amp;ar</translation>
+        <translation>Ignor&amp;ar</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="349"/>
         <source>&amp;Ignore All</source>
-        <translation type="unfinished">&amp;Ignorar todo</translation>
+        <translation>&amp;Ignorar todo</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="353"/>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Añadir</translation>
+        <translation>&amp;Añadir</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="356"/>
         <source>Add &amp;Lowercase</source>
-        <translation type="unfinished">Añadir &amp;minúscula</translation>
+        <translation>Añadir &amp;minúscula</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="360"/>
         <source>&amp;Replace</source>
-        <translation type="unfinished">&amp;Reemplazar</translation>
+        <translation>&amp;Reemplazar</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="363"/>
         <source>Re&amp;place All</source>
-        <translation type="unfinished">Reem&amp;plazar todo</translation>
+        <translation>Reem&amp;plazar todo</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="367"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation>&amp;Cancelar</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="245"/>
         <source>Finished checking the branch
 Continue from the top?</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminada revisión de la rama
+Continuar desde la parte superior?</translation>
     </message>
 </context>
 <context>
@@ -3539,606 +3559,612 @@ Continue from the top?</source>
     <message>
         <location filename="treeformats.py" line="24"/>
         <source>DEFAULT</source>
-        <translation type="unfinished">PREDETERMINADO</translation>
+        <translation>PREDETERMINADO</translation>
     </message>
 </context>
 <context>
     <name>treelocalcontrol</name>
     <message>
-        <location filename="treelocalcontrol.py" line="422"/>
+        <location filename="treelocalcontrol.py" line="423"/>
         <source>Error - could not delete backup file {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="373"/>
-        <source>Save changes to {}?</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - No se puede borrar el archivo de respaldo {}</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="374"/>
+        <source>Save changes to {}?</source>
+        <translation>¿Guardar cambios en {}?</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="375"/>
         <source>Save changes?</source>
-        <translation type="unfinished">¿Grabar los cambios?</translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="458"/>
-        <source>&amp;Save</source>
-        <translation type="unfinished">&amp;Grabar</translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="458"/>
-        <source>Save File</source>
-        <translation type="unfinished">Grabar archivo</translation>
+        <translation>¿Guardar cambios?</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="459"/>
-        <source>Save the current file</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Save</source>
+        <translation>&amp;Guardar</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="464"/>
-        <source>Save &amp;As...</source>
-        <translation type="unfinished">Grabar &amp;como...</translation>
+        <location filename="treelocalcontrol.py" line="459"/>
+        <source>Save File</source>
+        <translation>Guardar archivo</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="460"/>
+        <source>Save the current file</source>
+        <translation>Guardar el archivo actual</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="465"/>
-        <source>Save the file with a new name</source>
-        <translation type="unfinished">Grabar el archivo con un nombre nuevo</translation>
+        <source>Save &amp;As...</source>
+        <translation>Guardar &amp;Como...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="469"/>
-        <source>&amp;Export...</source>
-        <translation type="unfinished">&amp;Exportar...</translation>
+        <location filename="treelocalcontrol.py" line="466"/>
+        <source>Save the file with a new name</source>
+        <translation>Guardar el archivo con un nombre nuevo</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="470"/>
-        <source>Export the file in various other formats</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Export...</source>
+        <translation>&amp;Exportar...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="474"/>
-        <source>Prop&amp;erties...</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="471"/>
+        <source>Export the file in various other formats</source>
+        <translation>Exportar el archivo en varios formatos</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="475"/>
-        <source>Set file parameters like compression and encryption</source>
-        <translation type="unfinished"></translation>
+        <source>Prop&amp;erties...</source>
+        <translation>&amp;Propiedades...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="479"/>
-        <source>P&amp;rint Setup...</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="476"/>
+        <source>Set file parameters like compression and encryption</source>
+        <translation>Establecer parámetros de archivo como compresión y encriptación</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="480"/>
-        <source>Set margins, page size and other printing options</source>
-        <translation type="unfinished"></translation>
+        <source>P&amp;rint Setup...</source>
+        <translation>Config&amp;uración de Impresión...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="484"/>
-        <source>Print Pre&amp;view...</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="481"/>
+        <source>Set margins, page size and other printing options</source>
+        <translation>Establecer márgenes, tamaño de página y otras opciones de impresión</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="485"/>
-        <source>Show a preview of printing results</source>
-        <translation type="unfinished"></translation>
+        <source>Print Pre&amp;view...</source>
+        <translation>&amp;Vista Previa de Impresión...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="489"/>
-        <source>&amp;Print...</source>
-        <translation type="unfinished">&amp;Imprimir....</translation>
+        <location filename="treelocalcontrol.py" line="486"/>
+        <source>Show a preview of printing results</source>
+        <translation>Vista previa de los resultados de impresión</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="490"/>
-        <source>Print tree output based on current options</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Print...</source>
+        <translation>&amp;Imprimir...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="494"/>
-        <source>Print &amp;to PDF...</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="491"/>
+        <source>Print tree output based on current options</source>
+        <translation>Imprimir salida de árbol en base a las opciones actuales</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="495"/>
-        <source>Export to PDF with current printing options</source>
-        <translation type="unfinished"></translation>
+        <source>Print &amp;to PDF...</source>
+        <translation>Imprimir a PD&amp;F...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="499"/>
-        <source>&amp;Undo</source>
-        <translation type="unfinished">&amp;Deshacer</translation>
+        <location filename="treelocalcontrol.py" line="496"/>
+        <source>Export to PDF with current printing options</source>
+        <translation>Exportar a PDF con las opciones de impresión actuales</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="500"/>
-        <source>Undo the previous action</source>
-        <translation type="unfinished">Deshacer la acción previa</translation>
+        <source>&amp;Undo</source>
+        <translation>&amp;Deshacer</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="504"/>
-        <source>&amp;Redo</source>
-        <translation type="unfinished">&amp;Rehacer</translation>
+        <location filename="treelocalcontrol.py" line="501"/>
+        <source>Undo the previous action</source>
+        <translation>Deshacer la acción anterior</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="505"/>
-        <source>Redo the previous undo</source>
-        <translation type="unfinished">Rehacer la última acción sobre la que se ha aplicado deshacer</translation>
+        <source>&amp;Redo</source>
+        <translation>&amp;Rehacer</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="509"/>
-        <source>Cu&amp;t</source>
-        <translation type="unfinished">C&amp;ortar</translation>
+        <location filename="treelocalcontrol.py" line="506"/>
+        <source>Redo the previous undo</source>
+        <translation>Rehacer la última acción sobre la que se ha aplicado deshacer</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="510"/>
-        <source>Cut the branch or text to the clipboard</source>
-        <translation type="unfinished">Cortar la rama o el texto al portapapeles</translation>
+        <source>Cu&amp;t</source>
+        <translation>Cor&amp;tar</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="514"/>
-        <source>&amp;Copy</source>
-        <translation type="unfinished">&amp;Copiar</translation>
+        <location filename="treelocalcontrol.py" line="511"/>
+        <source>Cut the branch or text to the clipboard</source>
+        <translation>Cortar la rama o el texto al portapapeles</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="515"/>
-        <source>Copy the branch or text to the clipboard</source>
-        <translation type="unfinished">Copiar la rama o texto al portapapeles</translation>
+        <source>&amp;Copy</source>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="519"/>
-        <source>&amp;Paste</source>
-        <translation type="unfinished">&amp;Pegar</translation>
+        <location filename="treelocalcontrol.py" line="516"/>
+        <source>Copy the branch or text to the clipboard</source>
+        <translation>Copiar la rama o texto al portapapeles</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="520"/>
+        <source>&amp;Paste</source>
+        <translation>&amp;Pegar</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="521"/>
         <source>Paste nodes or text from the clipboard</source>
-        <translation type="unfinished">Pegar nodos o texto desde el portapapeles</translation>
+        <translation>Pegar nodos o texto desde el portapapeles</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="525"/>
+        <location filename="treelocalcontrol.py" line="526"/>
         <source>Paste non-formatted text from the clipboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="661"/>
-        <source>&amp;Bold Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Pegar texto sin formato del portapapeles</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="662"/>
-        <source>Set the current or selected font to bold</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Bold Font</source>
+        <translation>&amp;Negrita</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="667"/>
-        <source>&amp;Italic Font</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="663"/>
+        <source>Set the current or selected font to bold</source>
+        <translation>Establecer la fuente actual o seleccionada en negrita</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="668"/>
-        <source>Set the current or selected font to italic</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Italic Font</source>
+        <translation>&amp;Cursiva</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="673"/>
-        <source>U&amp;nderline Font</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="669"/>
+        <source>Set the current or selected font to italic</source>
+        <translation>Establecer la fuente actual o seleccionada en cursiva</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="674"/>
+        <source>U&amp;nderline Font</source>
+        <translation>&amp;Subrayado</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="675"/>
         <source>Set the current or selected font to underline</source>
-        <translation type="unfinished"></translation>
+        <translation>Establecer la fuente actual o seleccionada para subrayar</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="680"/>
+        <location filename="treelocalcontrol.py" line="681"/>
         <source>&amp;Font Size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tamaño de Fuente</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="684"/>
+        <location filename="treelocalcontrol.py" line="685"/>
         <source>Set size of the current or selected text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="686"/>
-        <source>Small</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="686"/>
-        <source>Default</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="686"/>
-        <source>Large</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="686"/>
-        <source>Larger</source>
-        <translation type="unfinished"></translation>
+        <translation>Establecer el tamaño del texto actual o seleccionado</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="687"/>
+        <source>Small</source>
+        <translation>Pequeño</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="687"/>
+        <source>Default</source>
+        <translation>Predeterminado</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="687"/>
+        <source>Large</source>
+        <translation>Grande</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="687"/>
+        <source>Larger</source>
+        <translation>Más grande</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="688"/>
         <source>Largest</source>
-        <translation type="unfinished"></translation>
+        <translation>El más grande</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="692"/>
+        <location filename="treelocalcontrol.py" line="693"/>
         <source>Set Font Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="696"/>
-        <source>Font C&amp;olor...</source>
-        <translation type="unfinished"></translation>
+        <translation>Definir tamaño de fuente</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="697"/>
-        <source>Set the color of the current or selected text</source>
-        <translation type="unfinished"></translation>
+        <source>Font C&amp;olor...</source>
+        <translation>Color de &amp;Fuente...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="701"/>
-        <source>&amp;External Link...</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="698"/>
+        <source>Set the color of the current or selected text</source>
+        <translation>Establecer el color del texto actual o seleccionado</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="702"/>
-        <source>Add or modify an extrnal web link</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;External Link...</source>
+        <translation>Enlace &amp;Externo...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="706"/>
-        <source>Internal &amp;Link...</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="703"/>
+        <source>Add or modify an extrnal web link</source>
+        <translation>Añadir o modificar un enlace web externo</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="707"/>
-        <source>Add or modify an internal node link</source>
-        <translation type="unfinished"></translation>
+        <source>Internal &amp;Link...</source>
+        <translation>Enlace &amp;Interno...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="711"/>
-        <source>Clear For&amp;matting</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="708"/>
+        <source>Add or modify an internal node link</source>
+        <translation>Añadir o modificar un enlace interno a nodo</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="712"/>
-        <source>Clear current or selected text formatting</source>
-        <translation type="unfinished"></translation>
+        <source>Clear For&amp;matting</source>
+        <translation>&amp;Borrar Formato</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="559"/>
-        <source>&amp;Rename</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="713"/>
+        <source>Clear current or selected text formatting</source>
+        <translation>Borrar actual o seleccionado formato de texto</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="560"/>
-        <source>Rename the current tree entry title</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Rename</source>
+        <translation>&amp;Renombrar</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="569"/>
-        <source>Insert Sibling &amp;Before</source>
-        <translation type="unfinished">Insertar hermano a&amp;ntes</translation>
+        <location filename="treelocalcontrol.py" line="561"/>
+        <source>Rename the current tree entry title</source>
+        <translation>Renombrar título completo del árbol en uso</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="570"/>
-        <source>Insert new sibling before selection</source>
-        <translation type="unfinished">Insertar nuevo hermano antes de la selección</translation>
+        <source>Insert Sibling &amp;Before</source>
+        <translation>Insertar &amp;Hermano Antes</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="574"/>
-        <source>Insert Sibling &amp;After</source>
-        <translation type="unfinished">Insertar hermano &amp;después</translation>
+        <location filename="treelocalcontrol.py" line="571"/>
+        <source>Insert new sibling before selection</source>
+        <translation>Insertar nuevo hermano antes de la selección</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="575"/>
-        <source>Insert new sibling after selection</source>
-        <translation type="unfinished">Insertar nuevo hermano despues de la selección</translation>
+        <source>Insert Sibling &amp;After</source>
+        <translation>Insertar Hermano &amp;Después</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="564"/>
-        <source>Add &amp;Child</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="576"/>
+        <source>Insert new sibling after selection</source>
+        <translation>Insertar nuevo hermano despues de la selección</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="565"/>
-        <source>Add new child to selected parent</source>
-        <translation type="unfinished"></translation>
+        <source>Add &amp;Child</source>
+        <translation>&amp;Añadir Hijo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="579"/>
-        <source>&amp;Delete Node</source>
-        <translation type="unfinished">&amp;Eliminar nodos</translation>
+        <location filename="treelocalcontrol.py" line="566"/>
+        <source>Add new child to selected parent</source>
+        <translation>Añadir nuevo hijo al padre seleccionado</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="580"/>
-        <source>Delete the selected nodes</source>
-        <translation type="unfinished">Eliminar los nodos seleccionados</translation>
+        <source>&amp;Delete Node</source>
+        <translation>&amp;Eliminar Nodo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="584"/>
-        <source>&amp;Indent Node</source>
-        <translation type="unfinished">Inden&amp;tar Nodos</translation>
+        <location filename="treelocalcontrol.py" line="581"/>
+        <source>Delete the selected nodes</source>
+        <translation>Eliminar los nodos seleccionados</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="585"/>
-        <source>Indent the selected nodes</source>
-        <translation type="unfinished">Indentar los nodos seleccionados</translation>
+        <source>&amp;Indent Node</source>
+        <translation>&amp;Sangrar Nodos</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="589"/>
-        <source>&amp;Unindent Node</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="586"/>
+        <source>Indent the selected nodes</source>
+        <translation>Sangrar los nodos seleccionados</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="590"/>
-        <source>Unindent the selected nodes</source>
-        <translation type="unfinished">Desindentar los nodos seleccionados</translation>
+        <source>&amp;Unindent Node</source>
+        <translation>Deshacer Sangrado de &amp;Nodo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="594"/>
-        <source>&amp;Move Up</source>
-        <translation type="unfinished">Mover hacia a&amp;rriba</translation>
+        <location filename="treelocalcontrol.py" line="591"/>
+        <source>Unindent the selected nodes</source>
+        <translation>Eliminar sangrado de los nodos seleccionados</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="595"/>
-        <source>Move the selected nodes up</source>
-        <translation type="unfinished">Desplazar hacia arriba los nodos seleccionados</translation>
+        <source>&amp;Move Up</source>
+        <translation>Mover A&amp;rriba</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="599"/>
-        <source>M&amp;ove Down</source>
-        <translation type="unfinished">Mover hacia a&amp;bajo</translation>
+        <location filename="treelocalcontrol.py" line="596"/>
+        <source>Move the selected nodes up</source>
+        <translation>Desplazar hacia arriba los nodos seleccionados</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="600"/>
-        <source>Move the selected nodes down</source>
-        <translation type="unfinished">Desplazar hacia abajo los nodos seleccionados</translation>
+        <source>M&amp;ove Down</source>
+        <translation>Mover Aba&amp;jo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="604"/>
-        <source>Move &amp;First</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="601"/>
+        <source>Move the selected nodes down</source>
+        <translation>Desplazar hacia abajo los nodos seleccionados</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="605"/>
-        <source>Move the selected nodes to be the first children</source>
-        <translation type="unfinished"></translation>
+        <source>Move &amp;First</source>
+        <translation>Mover al &amp;Principio</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="609"/>
-        <source>Move &amp;Last</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="606"/>
+        <source>Move the selected nodes to be the first children</source>
+        <translation>Mover nodos seleccionados para ser los primeros hijos</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="610"/>
+        <source>Move &amp;Last</source>
+        <translation>Mover al &amp;Final</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="611"/>
         <source>Move the selected nodes to be the last children</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover nodos seleccionados para ser los últimos hijos</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="615"/>
+        <location filename="treelocalcontrol.py" line="616"/>
         <source>&amp;Set Node Type</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Establecer Tipo de Nodo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="619"/>
+        <location filename="treelocalcontrol.py" line="620"/>
         <source>Set the node type for selected nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Establecer tipo de nodo para los nodos seleccionados</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="622"/>
+        <location filename="treelocalcontrol.py" line="623"/>
         <source>Set Node Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="626"/>
-        <source>Copy Types from &amp;File...</source>
-        <translation type="unfinished"></translation>
+        <translation>Establecer tipo de nodo</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="627"/>
-        <source>Copy the configuration from another TreeLine file</source>
-        <translation type="unfinished">Copiar la configuración desde otro archivo de TreeLine</translation>
+        <source>Copy Types from &amp;File...</source>
+        <translation>&amp;Copiar Tipos desde Archivo...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="641"/>
-        <source>Flatten &amp;by Category</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="628"/>
+        <source>Copy the configuration from another TreeLine file</source>
+        <translation>Copiar la configuración desde otro archivo de TreeLine</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="642"/>
-        <source>Collapse descendants by merging fields</source>
-        <translation type="unfinished"></translation>
+        <source>Flatten &amp;by Category</source>
+        <translation>&amp;Acoplar por Categoría</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="646"/>
-        <source>Add Category &amp;Level...</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="643"/>
+        <source>Collapse descendants by merging fields</source>
+        <translation>Contraer descendientes cuando se fusionen campos</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="647"/>
-        <source>Insert category nodes above children</source>
-        <translation type="unfinished">Insertar los nodos con las categorías por encima de los hijos</translation>
+        <source>Add Category &amp;Level...</source>
+        <translation>Añadir Ni&amp;vel de Categoría...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="656"/>
+        <location filename="treelocalcontrol.py" line="648"/>
+        <source>Insert category nodes above children</source>
+        <translation>Insertar los nodos con las categorías por encima de los hijos</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="657"/>
         <source>&amp;Spell Check...</source>
-        <translation type="unfinished"></translation>
+        <translation>Corrector &amp;Ortográfico...</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="657"/>
         <source>Spell check the tree&apos;)s text data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="716"/>
-        <source>&amp;New Window</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Revisar los datos de texto del árbol</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="717"/>
+        <source>&amp;New Window</source>
+        <translation>&amp;Nueva Ventana</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="718"/>
         <source>Open a new window for the same file</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir nueva ventana para el mismo archivo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="790"/>
+        <location filename="treelocalcontrol.py" line="793"/>
         <source>Error - could not write to {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - No se pudo escribir en {}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="818"/>
+        <location filename="treelocalcontrol.py" line="821"/>
         <source>TreeLine - Save As</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Guardar como</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="851"/>
+        <location filename="treelocalcontrol.py" line="854"/>
         <source>Error - could not write to file</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - no se pudo escribir en el archivo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1216"/>
+        <location filename="treelocalcontrol.py" line="1219"/>
         <source>TreeLine - Open Configuration File</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Abrir archivo de configuración</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1250"/>
+        <location filename="treelocalcontrol.py" line="1253"/>
         <source>Error - could not read file {0}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="1364"/>
-        <source>Cannot expand without common fields</source>
-        <translation type="unfinished">No es posible expandir sin campos comunes</translation>
+        <translation>Error: no se pudo leer el archivo {0}</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="1366"/>
+        <source>Cannot expand without common fields</source>
+        <translation>No es posible expandir sin campos comunes</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="1368"/>
         <source>Category Fields</source>
-        <translation type="unfinished">Campos de las categorías</translation>
+        <translation>Campos de las categorías</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1367"/>
+        <location filename="treelocalcontrol.py" line="1369"/>
         <source>Select fields for new level</source>
-        <translation type="unfinished">Elija campos para el nuevo nivel</translation>
+        <translation>Seleccionar campos para nuevo nivel</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="800"/>
+        <location filename="treelocalcontrol.py" line="803"/>
         <source>File saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivo guardado</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="524"/>
+        <location filename="treelocalcontrol.py" line="525"/>
         <source>Pa&amp;ste Plain Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="treelocalcontrol.py" line="529"/>
-        <source>Paste C&amp;hild</source>
-        <translation type="unfinished"></translation>
+        <translation>Pegar Texto sin &amp;Formato</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="530"/>
-        <source>Paste a child node from the clipboard</source>
-        <translation type="unfinished"></translation>
+        <source>Paste C&amp;hild</source>
+        <translation>Pegar &amp;Hijo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="534"/>
-        <source>Paste Sibling &amp;Before</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="531"/>
+        <source>Paste a child node from the clipboard</source>
+        <translation>Pegar un nodo hijo desde el portapapeles</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="535"/>
-        <source>Paste a sibling before selection</source>
-        <translation type="unfinished"></translation>
+        <source>Paste Sibling &amp;Before</source>
+        <translation>Pegar Hermano &amp;Antes</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="539"/>
-        <source>Paste Sibling &amp;After</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="536"/>
+        <source>Paste a sibling before selection</source>
+        <translation>Pegar hermano antes de la selección</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="540"/>
-        <source>Paste a sibling after selection</source>
-        <translation type="unfinished"></translation>
+        <source>Paste Sibling &amp;After</source>
+        <translation>Pegar Hermano Despué&amp;s</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="544"/>
-        <source>Paste Cl&amp;oned Child</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="541"/>
+        <source>Paste a sibling after selection</source>
+        <translation>Pegar un hermano después de la selección</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="545"/>
-        <source>Paste a child clone from the clipboard</source>
-        <translation type="unfinished"></translation>
+        <source>Paste Cl&amp;oned Child</source>
+        <translation>Pegar Hijo C&amp;lonado</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="549"/>
-        <source>Paste Clo&amp;ned Sibling Before</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="546"/>
+        <source>Paste a child clone from the clipboard</source>
+        <translation>Pegar hijo clonado desde el portapapeles</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="550"/>
-        <source>Paste a sibling clone before selection</source>
-        <translation type="unfinished"></translation>
+        <source>Paste Clo&amp;ned Sibling Before</source>
+        <translation>Pegar Hermano Clo&amp;nado Antes</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="554"/>
-        <source>Paste Clone&amp;d Sibling After</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="551"/>
+        <source>Paste a sibling clone before selection</source>
+        <translation>Pegar un clon hermano antes de la selección</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="555"/>
-        <source>Paste a sibling clone after selection</source>
-        <translation type="unfinished"></translation>
+        <source>Paste Clone&amp;d Sibling After</source>
+        <translation>Pegar Hermano Clonad&amp;o Después</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="631"/>
-        <source>Clone All &amp;Matched Nodes</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="556"/>
+        <source>Paste a sibling clone after selection</source>
+        <translation>Pegar un clon hermano después de la selección</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="632"/>
-        <source>Convert all matching nodes into clones</source>
-        <translation type="unfinished"></translation>
+        <source>Clone All &amp;Matched Nodes</source>
+        <translation>Clonar &amp;Todos los Nodos Emparejados</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="636"/>
-        <source>&amp;Detach Clones</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="633"/>
+        <source>Convert all matching nodes into clones</source>
+        <translation>Convertir todos los nodos coincidentes en clones</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="637"/>
-        <source>Detach all cloned nodes in current branches</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Detach Clones</source>
+        <translation>&amp;Separar Clones</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="651"/>
-        <source>S&amp;wap Category Levels</source>
-        <translation type="unfinished"></translation>
+        <location filename="treelocalcontrol.py" line="638"/>
+        <source>Detach all cloned nodes in current branches</source>
+        <translation>Separar todos los nodos clonados en las ramas actuales</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="652"/>
+        <source>S&amp;wap Category Levels</source>
+        <translation>&amp;Intercambiar Niveles de Categoría</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="653"/>
         <source>Swap child and grandchild category nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Intercambiar categoría nodos hijos y nietos</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1296"/>
+        <location filename="treelocalcontrol.py" line="1298"/>
         <source>Converted {0} branches into clones</source>
-        <translation type="unfinished"></translation>
+        <translation>Convierte ramas {0} en clones</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1303"/>
+        <location filename="treelocalcontrol.py" line="1305"/>
         <source>No identical nodes found</source>
-        <translation type="unfinished"></translation>
+        <translation>No existen nodos idénticos</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="128"/>
         <source>Warning - file corruption!
 Skipped bad child references in the following nodes:</source>
-        <translation type="unfinished"></translation>
+        <translation>Advertencia: ¡archivo corrupto!
+Se omitieron referencias de elementos secundarios incorrectos en los siguientes nodos:</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="658"/>
+        <source>Spell check the tree&apos;s text data</source>
+        <translation>Revisar los datos de texto del árbol</translation>
     </message>
 </context>
 <context>
@@ -4146,273 +4172,274 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treemaincontrol.py" line="99"/>
         <source>Warning:  Could not create local socket</source>
-        <translation type="unfinished"></translation>
+        <translation>Advertencia: no se pudo crear el socket local</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="120"/>
         <source>Error - could not write config file to {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - no se pudo escribir el archivo de configuración en {}</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="258"/>
         <source>Error - could not read file {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error: no se pudo leer el archivo {0}</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="386"/>
         <source>Backup file &quot;{}&quot; exists.
 A previous session may have crashed</source>
-        <translation type="unfinished"></translation>
+        <translation>Existe un archivo de respaldo: &quot;{}&quot;.
+Una sesión anterior puede haberse bloqueado</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="389"/>
         <source>&amp;Restore Backup</source>
-        <translation type="unfinished">&amp;Usar el archivo de recuperación</translation>
+        <translation>&amp;Restaurar copia de seguridad</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="391"/>
         <source>&amp;Delete Backup</source>
-        <translation type="unfinished">&amp;Eliminar el archivo de recuperación</translation>
+        <translation>Eliminar copia de segurida&amp;d</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="393"/>
         <source>&amp;Cancel File Open</source>
-        <translation type="unfinished">&amp;Cancelar archivo abierto</translation>
+        <translation>&amp;Cancelar archivo abierto</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="406"/>
         <source>Error - could not rename &quot;{0}&quot; to &quot;{1}&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Error: - no se pudo cambiar el nombre de &quot;{0}&quot; a &quot;{1}&quot;</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="420"/>
         <source>Error - could not remove backup file {}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - no se pudo eliminar el archivo de copia de seguridad {}</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="514"/>
         <source>&amp;New...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nuevo...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="651"/>
         <source>New File</source>
-        <translation type="unfinished">Archivo nuevo</translation>
+        <translation>Archivo nuevo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="515"/>
         <source>Start a new file</source>
-        <translation type="unfinished">Comenzar un archivo nuevo</translation>
+        <translation>Comenzar un archivo nuevo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="519"/>
         <source>&amp;Open...</source>
-        <translation type="unfinished">&amp;Abrir...</translation>
+        <translation>&amp;Abrir...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="519"/>
         <source>Open File</source>
-        <translation type="unfinished">Abrir archivo</translation>
+        <translation>Abrir archivo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="520"/>
         <source>Open a file from disk</source>
-        <translation type="unfinished">Abrir un archivo desde el disco</translation>
+        <translation>Abrir un archivo desde el disco</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="524"/>
         <source>Open Sa&amp;mple...</source>
-        <translation type="unfinished">Abrir eje&amp;mplo...</translation>
+        <translation>Abrir Archivo de Eje&amp;mplo...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="525"/>
         <source>Open Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir ejemplo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="526"/>
         <source>Open a sample file</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir un archivo de ejemplo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="530"/>
         <source>&amp;Import...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importa&amp;r...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="531"/>
         <source>Open a non-TreeLine file</source>
-        <translation type="unfinished"></translation>
+        <translation>Abriri un arhchivo no-TreeLine</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="535"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished">&amp;Salir</translation>
+        <translation>&amp;Salir</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="536"/>
         <source>Exit the application</source>
-        <translation type="unfinished">Salir de la aplicación</translation>
+        <translation>Salir de la aplicación</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="625"/>
         <source>&amp;Select All</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar T&amp;odo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="626"/>
         <source>Select all text in an editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar todo el texto en un editor</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="540"/>
         <source>&amp;Configure Data Types...</source>
-        <translation type="unfinished">Configurar tipos de &amp;datos...</translation>
+        <translation>Configurar Tipos de &amp;Datos...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="541"/>
         <source>Modify data types, fields &amp; output lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificar tipos de datos, campos y líneas de salida</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="546"/>
         <source>Sor&amp;t Nodes...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ordenar Nodos...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="547"/>
         <source>Define node sort operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Definir operaciones de ordenación de nodos</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="552"/>
         <source>Update &amp;Numbering...</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar &amp;Numeración...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="553"/>
         <source>Update node numbering fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar campos de numeración de nodos</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="558"/>
         <source>&amp;Find Text...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Buscar Texto...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="559"/>
         <source>Find text in node titles &amp; data</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar texto en títulos y datos de nodo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="564"/>
         <source>&amp;Conditional Find...</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda &amp;Condicional...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="565"/>
         <source>Use field conditions to find nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Use condiciones de campo para encontrar nodos</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="570"/>
         <source>Find and &amp;Replace...</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar y &amp;Reemplazar...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="571"/>
         <source>Replace text strings in node data</source>
-        <translation type="unfinished"></translation>
+        <translation>Reemplazar cadenas de texto en datos de nodo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="576"/>
         <source>&amp;Text Filter...</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtro de &amp;Texto...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="577"/>
         <source>Filter nodes to only show text matches</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrar nodos para mostrar solo coincidencias de texto</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="582"/>
         <source>C&amp;onditional Filter...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Filtro Condicional...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="584"/>
         <source>Use field conditions to filter nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar condiciones de campo para filtrar nodos</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="590"/>
         <source>&amp;General Options...</source>
-        <translation type="unfinished">&amp;Opciones generales...</translation>
+        <translation>Opciones &amp;Generales...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="591"/>
         <source>Set user preferences for all files</source>
-        <translation type="unfinished">Configurar las preferencias para todos los archivos</translation>
+        <translation>Configurar las preferencias para todos los archivos</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="595"/>
         <source>Set &amp;Keyboard Shortcuts...</source>
-        <translation type="unfinished"></translation>
+        <translation>Establecer &amp;Atajos de Teclado...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="596"/>
         <source>Customize keyboard commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizar comandos de teclado</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="600"/>
         <source>C&amp;ustomize Toolbars...</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizar Barras de &amp;Herramientas...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="601"/>
         <source>Customize toolbar buttons</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizar botones de la barra de herramientas</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="605"/>
         <source>Customize Fo&amp;nts...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Personalizar Fuentes...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="606"/>
         <source>Customize fonts in various views</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizar fuentes en varias vistas</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="610"/>
         <source>&amp;Basic Usage...</source>
-        <translation type="unfinished"></translation>
+        <translation>Uso &amp;Básico...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="611"/>
         <source>Display basic usage instructions</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar instrucciones de uso básico</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="615"/>
         <source>&amp;Full Documentation...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Documentación completa...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="616"/>
         <source>Open a TreeLine file with full documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir un archivo TreeLine con documentación completa</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="631"/>
         <source>&amp;About TreeLine...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Acerca de TreeLine...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="632"/>
         <source>Display version info about this program</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar información de versión de esta aplicación</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="675"/>
@@ -4422,77 +4449,77 @@ A previous session may have crashed</source>
     <message>
         <location filename="treemaincontrol.py" line="652"/>
         <source>&amp;Select Template</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Seleccionar Plantilla</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="671"/>
         <source>TreeLine - Open File</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine - Abrir Archivo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="683"/>
         <source>Open Sample File</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir archivo de ejemplo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="684"/>
         <source>&amp;Select Sample</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Seleccionar Ejemplo</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="789"/>
         <source>Conditional Find</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda Condicional</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="845"/>
         <source>Conditional Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtro Condicional</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="847"/>
         <source>ToolsFilterCondition</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">ToolsFilterCondition</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="862"/>
         <source>General Options</source>
-        <translation type="unfinished">Opciones generales</translation>
+        <translation>Opciones generales</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="943"/>
         <source>Error - basic help file not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - archivo de ayuda básica no encontrado</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="946"/>
         <source>TreeLine Basic Usage</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine Uso Básico</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="956"/>
         <source>Error - documentation file not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - archivo de documentación no encontrado</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="309"/>
         <source>Error - invalid TreeLine file {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Error - archivo TreeLine no válido {0}</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="970"/>
         <source>TreeLine version {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>TreeLine version {0}</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="971"/>
         <source>written by {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>escrito por {}</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="972"/>
         <source>Library versions:</source>
-        <translation type="unfinished"></translation>
+        <translation>Versiones de la biblioteca:</translation>
     </message>
 </context>
 <context>
@@ -4506,9 +4533,9 @@ A previous session may have crashed</source>
 <context>
     <name>treenode</name>
     <message>
-        <location filename="treenode.py" line="409"/>
+        <location filename="treenode.py" line="410"/>
         <source>New</source>
-        <translation type="unfinished">Nuevo</translation>
+        <translation>Nuevo</translation>
     </message>
 </context>
 <context>
@@ -4516,7 +4543,7 @@ A previous session may have crashed</source>
     <message>
         <location filename="treestructure.py" line="30"/>
         <source>Main</source>
-        <translation type="unfinished">Principal</translation>
+        <translation>Principal</translation>
     </message>
 </context>
 <context>
@@ -4524,37 +4551,37 @@ A previous session may have crashed</source>
     <message>
         <location filename="treeview.py" line="623"/>
         <source>Filtering by &quot;{0}&quot;, found {1} nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrando por &quot;{0}&quot;, encontrados.{1} nodos</translation>
     </message>
     <message>
         <location filename="treeview.py" line="647"/>
         <source>Conditional filtering, found {0} nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrado condicional, encontrados {0} nodos</translation>
     </message>
     <message>
         <location filename="treeview.py" line="198"/>
         <source>Search for:</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar:</translation>
     </message>
     <message>
         <location filename="treeview.py" line="203"/>
         <source>Search for: {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar {0}</translation>
     </message>
     <message>
         <location filename="treeview.py" line="208"/>
         <source>Search for: {0}  (not found)</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar {0}  (no encontrado)</translation>
     </message>
     <message>
         <location filename="treeview.py" line="229"/>
         <source>Next: {0}</source>
-        <translation type="unfinished"></translation>
+        <translation>Siguiente: {0}</translation>
     </message>
     <message>
         <location filename="treeview.py" line="231"/>
         <source>Next: {0}  (not found)</source>
-        <translation type="unfinished"></translation>
+        <translation>Siguiente: {0}  (no encontrado)</translation>
     </message>
 </context>
 <context>
@@ -4562,187 +4589,187 @@ A previous session may have crashed</source>
     <message>
         <location filename="treewindow.py" line="87"/>
         <source>Data Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Salida de Datos</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="96"/>
         <source>Data Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor de Datos</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="123"/>
         <source>Title List</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de Títulos</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="369"/>
         <source>&amp;Expand Full Branch</source>
-        <translation type="unfinished">&amp;Expandir toda la rama</translation>
+        <translation>&amp;Expandir Toda la Rama</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="370"/>
         <source>Expand all children of the selected nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Expandir todos los hijos de los nodos seleccionados</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="374"/>
         <source>&amp;Collapse Full Branch</source>
-        <translation type="unfinished">&amp;Reducir toda la rama</translation>
+        <translation>&amp;Reducir Toda la Rama</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="375"/>
         <source>Collapse all children of the selected nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Reducir todos los hijos de los nodos seleccionados</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="379"/>
         <source>&amp;Previous Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Selección &amp;Previa</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="380"/>
         <source>Return to the previous tree selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Volver a la selección de árbol anterior</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="384"/>
         <source>&amp;Next Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Selección &amp;Siguiente</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="385"/>
         <source>Go to the next tree selection in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Ir a la siguiente selección de árbol en el historial</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="390"/>
         <source>Show Data &amp;Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar Datos &amp;y Resultados</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="391"/>
         <source>Show data output in right view</source>
-        <translation type="unfinished">Mostrar la salida de datos en la vista de la derecha</translation>
+        <translation>Mostrar la salida de datos en la vista derecha</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="395"/>
         <source>Show Data &amp;Editor</source>
-        <translation type="unfinished">Mostrar &amp;editor de datos</translation>
+        <translation>Mostrar Editor de &amp;Datos</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="396"/>
         <source>Show data editor in right view</source>
-        <translation type="unfinished">Mostrar el editor de datos en la vista de la derecha</translation>
+        <translation>Mostrar el editor de datos en la vista de la derecha</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="400"/>
         <source>Show &amp;Title List</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar &amp;Lista de Títulos</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="401"/>
         <source>Show title list in right view</source>
-        <translation type="unfinished">Mostrar la lista de títulos en la vista de la derecha</translation>
+        <translation>Mostrar la lista de títulos en la vista de la derecha</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="415"/>
         <source>&amp;Show Child Pane</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mostrar Panel Hijo</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="416"/>
         <source>Toggle showing right-hand child views</source>
-        <translation type="unfinished"></translation>
+        <translation>Alternar mostrando resultados</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="423"/>
         <source>Toggle showing output view indented descendants</source>
-        <translation type="unfinished"></translation>
+        <translation>Alternar mostrando la vista de salida  sangría de descendients</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="429"/>
         <source>&amp;Close Window</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cerrar Ventana</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="430"/>
         <source>Close this window</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar esta ventana</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="494"/>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Archivo</translation>
+        <translation>&amp;Archivo</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="514"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished">&amp;Editar</translation>
+        <translation>&amp;Editar</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="532"/>
         <source>&amp;Node</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nodo</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="548"/>
         <source>&amp;Data</source>
-        <translation type="unfinished">&amp;Datos</translation>
+        <translation>&amp;Datos</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="566"/>
         <source>&amp;Tools</source>
-        <translation type="unfinished">&amp;Herramientas</translation>
+        <translation>&amp;Herramientas</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="599"/>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp;Ver</translation>
+        <translation>&amp;Ver</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="614"/>
         <source>&amp;Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Ven&amp;tana</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="620"/>
         <source>&amp;Help</source>
-        <translation type="unfinished">A&amp;yuda</translation>
+        <translation>A&amp;yuda</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="434"/>
         <source>Start Incremental Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar búsqueda incremental</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="439"/>
         <source>Next Incremental Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda incremental siguiente</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="444"/>
         <source>Previous Incremental Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda incremental anterior</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="407"/>
         <source>Show &amp;Breadcrumb View</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar &amp;vista panel de navegación</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="408"/>
         <source>Toggle showing breadcrumb ancestor view</source>
-        <translation type="unfinished"></translation>
+        <translation>Alternar mostrando vista anterior de navegación</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="422"/>
         <source>Show Output &amp;Descendants</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar Salida de Datos y Des&amp;cendientes</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="582"/>
         <source>Fo&amp;rmat</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Formato</translation>
     </message>
 </context>
 </TS>

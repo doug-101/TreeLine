@@ -3796,152 +3796,152 @@ Continue from the top?</source>
 <context>
     <name>treelocalcontrol</name>
     <message>
-        <location filename="treelocalcontrol.py" line="422"/>
+        <location filename="treelocalcontrol.py" line="423"/>
         <source>Error - could not delete backup file {}</source>
         <translation>Erro - não foi possível apagar cópia de segurança {}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="373"/>
+        <location filename="treelocalcontrol.py" line="374"/>
         <source>Save changes to {}?</source>
         <translation>Guardar alterações em {}?</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="374"/>
+        <location filename="treelocalcontrol.py" line="375"/>
         <source>Save changes?</source>
         <translation>Guardar alterações?</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="458"/>
+        <location filename="treelocalcontrol.py" line="459"/>
         <source>&amp;Save</source>
         <translation>&amp;Guardar</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="458"/>
+        <location filename="treelocalcontrol.py" line="459"/>
         <source>Save File</source>
         <translation>Guardar Ficheiro</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="459"/>
+        <location filename="treelocalcontrol.py" line="460"/>
         <source>Save the current file</source>
         <translation>Guardar o ficheiro actual</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="464"/>
+        <location filename="treelocalcontrol.py" line="465"/>
         <source>Save &amp;As...</source>
         <translation>Guardar &amp;Como...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="465"/>
+        <location filename="treelocalcontrol.py" line="466"/>
         <source>Save the file with a new name</source>
         <translation>Guardar o ficheiro com um novo nome</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="469"/>
+        <location filename="treelocalcontrol.py" line="470"/>
         <source>&amp;Export...</source>
         <translation>&amp;Exportar...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="470"/>
+        <location filename="treelocalcontrol.py" line="471"/>
         <source>Export the file in various other formats</source>
         <translation>Exportar o ficheiro em diversos outros formatos</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="474"/>
+        <location filename="treelocalcontrol.py" line="475"/>
         <source>Prop&amp;erties...</source>
         <translation>&amp;Propriedades...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="475"/>
+        <location filename="treelocalcontrol.py" line="476"/>
         <source>Set file parameters like compression and encryption</source>
         <translation>Definir parâmetros do ficheiro como compressão e encriptação</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="479"/>
+        <location filename="treelocalcontrol.py" line="480"/>
         <source>P&amp;rint Setup...</source>
         <translation>&amp;Definições de Impressão...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="480"/>
+        <location filename="treelocalcontrol.py" line="481"/>
         <source>Set margins, page size and other printing options</source>
         <translation>Definir margens, tamanho de papel e outras opções de impressão</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="484"/>
+        <location filename="treelocalcontrol.py" line="485"/>
         <source>Print Pre&amp;view...</source>
         <translation>Pré &amp;visualizar impressão...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="485"/>
+        <location filename="treelocalcontrol.py" line="486"/>
         <source>Show a preview of printing results</source>
         <translation>Mostrar uma pré visualização do resultado da impressão</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="489"/>
+        <location filename="treelocalcontrol.py" line="490"/>
         <source>&amp;Print...</source>
         <translation>&amp;Imprimir...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="490"/>
+        <location filename="treelocalcontrol.py" line="491"/>
         <source>Print tree output based on current options</source>
         <translation>Imprimir apresentação da árvore baseada nas opções actuais</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="494"/>
+        <location filename="treelocalcontrol.py" line="495"/>
         <source>Print &amp;to PDF...</source>
         <translation>Imprimir para &amp;PDF...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="495"/>
+        <location filename="treelocalcontrol.py" line="496"/>
         <source>Export to PDF with current printing options</source>
         <translation>Exportar para PDF com as actuais opções de impressão</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="499"/>
+        <location filename="treelocalcontrol.py" line="500"/>
         <source>&amp;Undo</source>
         <translation>&amp;Desfazer</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="500"/>
+        <location filename="treelocalcontrol.py" line="501"/>
         <source>Undo the previous action</source>
         <translation>Reverte a última acção</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="504"/>
+        <location filename="treelocalcontrol.py" line="505"/>
         <source>&amp;Redo</source>
         <translation>&amp;Refazer</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="505"/>
+        <location filename="treelocalcontrol.py" line="506"/>
         <source>Redo the previous undo</source>
         <translation>Repõe a última acção desfeita</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="509"/>
+        <location filename="treelocalcontrol.py" line="510"/>
         <source>Cu&amp;t</source>
         <translation>Cor&amp;tar</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="510"/>
+        <location filename="treelocalcontrol.py" line="511"/>
         <source>Cut the branch or text to the clipboard</source>
         <translation>Cortar o ramo ou texto para a memória de trabalho</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="514"/>
+        <location filename="treelocalcontrol.py" line="515"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copiar</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="515"/>
+        <location filename="treelocalcontrol.py" line="516"/>
         <source>Copy the branch or text to the clipboard</source>
         <translation>Copiar o ramo ou texto para a memória de trabalho</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="519"/>
+        <location filename="treelocalcontrol.py" line="520"/>
         <source>&amp;Paste</source>
         <translation>C&amp;olar</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="520"/>
+        <location filename="treelocalcontrol.py" line="521"/>
         <source>Paste nodes or text from the clipboard</source>
         <translation>Colar ramos ou texto da memória de trabalho</translation>
     </message>
@@ -3951,267 +3951,267 @@ Continue from the top?</source>
         <translation type="obsolete">Colar como texto &amp;simples</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="525"/>
+        <location filename="treelocalcontrol.py" line="526"/>
         <source>Paste non-formatted text from the clipboard</source>
         <translation>Colar texto sem formatação da memória de trabalho</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="661"/>
+        <location filename="treelocalcontrol.py" line="662"/>
         <source>&amp;Bold Font</source>
         <translation>&amp;Negrito</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="662"/>
+        <location filename="treelocalcontrol.py" line="663"/>
         <source>Set the current or selected font to bold</source>
         <translation>Definir o texto actual ou seleccionado como negrito</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="667"/>
+        <location filename="treelocalcontrol.py" line="668"/>
         <source>&amp;Italic Font</source>
         <translation>&amp;Itálico</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="668"/>
+        <location filename="treelocalcontrol.py" line="669"/>
         <source>Set the current or selected font to italic</source>
         <translation>Definir o texto actual ou seleccionado como itálico</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="673"/>
+        <location filename="treelocalcontrol.py" line="674"/>
         <source>U&amp;nderline Font</source>
         <translation>&amp;Sublinhado</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="674"/>
+        <location filename="treelocalcontrol.py" line="675"/>
         <source>Set the current or selected font to underline</source>
         <translation>Definir o texto actual ou seleccionado como sublinhado</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="680"/>
+        <location filename="treelocalcontrol.py" line="681"/>
         <source>&amp;Font Size</source>
         <translation>&amp;Tamanho do texto</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="684"/>
+        <location filename="treelocalcontrol.py" line="685"/>
         <source>Set size of the current or selected text</source>
         <translation>Definir o tamanho do texto actual ou seleccionado</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="686"/>
+        <location filename="treelocalcontrol.py" line="687"/>
         <source>Small</source>
         <translation>Pequeno</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="686"/>
+        <location filename="treelocalcontrol.py" line="687"/>
         <source>Default</source>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="686"/>
+        <location filename="treelocalcontrol.py" line="687"/>
         <source>Large</source>
         <translation>Grande</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="686"/>
+        <location filename="treelocalcontrol.py" line="687"/>
         <source>Larger</source>
         <translation>Maior</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="687"/>
+        <location filename="treelocalcontrol.py" line="688"/>
         <source>Largest</source>
         <translation>Muito Grande</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="692"/>
+        <location filename="treelocalcontrol.py" line="693"/>
         <source>Set Font Size</source>
         <translation>Definir tamanho do texto</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="696"/>
+        <location filename="treelocalcontrol.py" line="697"/>
         <source>Font C&amp;olor...</source>
         <translation>Co&amp;r do Texto...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="697"/>
+        <location filename="treelocalcontrol.py" line="698"/>
         <source>Set the color of the current or selected text</source>
         <translation>Definir a cor do texto actual ou seleccionado</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="701"/>
+        <location filename="treelocalcontrol.py" line="702"/>
         <source>&amp;External Link...</source>
         <translation>&amp;Ligação Externa...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="702"/>
+        <location filename="treelocalcontrol.py" line="703"/>
         <source>Add or modify an extrnal web link</source>
         <translation>Adicionar ou modificar uma ligação externa para a internet</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="706"/>
+        <location filename="treelocalcontrol.py" line="707"/>
         <source>Internal &amp;Link...</source>
         <translation>Ligação &amp;Interna...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="707"/>
+        <location filename="treelocalcontrol.py" line="708"/>
         <source>Add or modify an internal node link</source>
         <translation>Adicionar ou modificar uma ligação interna para outro ramo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="712"/>
+        <location filename="treelocalcontrol.py" line="713"/>
         <source>Clear current or selected text formatting</source>
         <translation>Remover a formatação do texto actual ou seleccionado</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="559"/>
+        <location filename="treelocalcontrol.py" line="560"/>
         <source>&amp;Rename</source>
         <translation>&amp;Mudar Nome</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="560"/>
+        <location filename="treelocalcontrol.py" line="561"/>
         <source>Rename the current tree entry title</source>
         <translation>Alterar o nome da entrada actual na árvore</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="569"/>
+        <location filename="treelocalcontrol.py" line="570"/>
         <source>Insert Sibling &amp;Before</source>
         <translation>Inserir Irmão &amp;Antes</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="570"/>
+        <location filename="treelocalcontrol.py" line="571"/>
         <source>Insert new sibling before selection</source>
         <translation>Inserir novo ramo acima da selecção</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="574"/>
+        <location filename="treelocalcontrol.py" line="575"/>
         <source>Insert Sibling &amp;After</source>
         <translation>Inserir Irmão &amp;Depois</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="575"/>
+        <location filename="treelocalcontrol.py" line="576"/>
         <source>Insert new sibling after selection</source>
         <translation>Inserir novo ramo abaixo da selecção</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="564"/>
+        <location filename="treelocalcontrol.py" line="565"/>
         <source>Add &amp;Child</source>
         <translation>Adicionar De&amp;scendente</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="565"/>
+        <location filename="treelocalcontrol.py" line="566"/>
         <source>Add new child to selected parent</source>
         <translation>Adicionar sub ramo ao ramo seleccionado</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="579"/>
+        <location filename="treelocalcontrol.py" line="580"/>
         <source>&amp;Delete Node</source>
         <translation>&amp;Eliminar Ramo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="580"/>
+        <location filename="treelocalcontrol.py" line="581"/>
         <source>Delete the selected nodes</source>
         <translation>Eliminar os ramos seleccionados</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="584"/>
+        <location filename="treelocalcontrol.py" line="585"/>
         <source>&amp;Indent Node</source>
         <translation>&amp;Recuar Ramo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="585"/>
+        <location filename="treelocalcontrol.py" line="586"/>
         <source>Indent the selected nodes</source>
         <translation>Avançar os ramos seleccionados</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="589"/>
+        <location filename="treelocalcontrol.py" line="590"/>
         <source>&amp;Unindent Node</source>
         <translation>A&amp;vançar Ramo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="590"/>
+        <location filename="treelocalcontrol.py" line="591"/>
         <source>Unindent the selected nodes</source>
         <translation>Recuar os ramos seleccionados</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="594"/>
+        <location filename="treelocalcontrol.py" line="595"/>
         <source>&amp;Move Up</source>
         <translation>Mover para &amp;Cima</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="595"/>
+        <location filename="treelocalcontrol.py" line="596"/>
         <source>Move the selected nodes up</source>
         <translation>Mover para cima os ramos seleccionados</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="599"/>
+        <location filename="treelocalcontrol.py" line="600"/>
         <source>M&amp;ove Down</source>
         <translation>Mover para &amp;Baixo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="600"/>
+        <location filename="treelocalcontrol.py" line="601"/>
         <source>Move the selected nodes down</source>
         <translation>Mover para baixo os ramos seleccionados</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="604"/>
+        <location filename="treelocalcontrol.py" line="605"/>
         <source>Move &amp;First</source>
         <translation>Colocar em &amp;Primeiro</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="605"/>
+        <location filename="treelocalcontrol.py" line="606"/>
         <source>Move the selected nodes to be the first children</source>
         <translation>Mover os ramos seleccionados para que sejam os primeiros descendentes</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="609"/>
+        <location filename="treelocalcontrol.py" line="610"/>
         <source>Move &amp;Last</source>
         <translation>Colocar em &amp;Último</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="610"/>
+        <location filename="treelocalcontrol.py" line="611"/>
         <source>Move the selected nodes to be the last children</source>
         <translation>Mover os ramos seleccionados para que sejam os últimos descendentes</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="615"/>
+        <location filename="treelocalcontrol.py" line="616"/>
         <source>&amp;Set Node Type</source>
         <translation>Definir &amp;Tipo de Ramo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="619"/>
+        <location filename="treelocalcontrol.py" line="620"/>
         <source>Set the node type for selected nodes</source>
         <translation>Definir o tipo de dados para os ramos seleccionados</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="622"/>
+        <location filename="treelocalcontrol.py" line="623"/>
         <source>Set Node Type</source>
         <translation>Definir Tipo de Ramo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="626"/>
+        <location filename="treelocalcontrol.py" line="627"/>
         <source>Copy Types from &amp;File...</source>
         <translation>Copiar Tipos de Outro &amp;Ficheiro...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="627"/>
+        <location filename="treelocalcontrol.py" line="628"/>
         <source>Copy the configuration from another TreeLine file</source>
         <translation>Copiar configuração de outro ficheiro TreeLine</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="641"/>
+        <location filename="treelocalcontrol.py" line="642"/>
         <source>Flatten &amp;by Category</source>
         <translation>&amp;Nivelar por categoria</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="642"/>
+        <location filename="treelocalcontrol.py" line="643"/>
         <source>Collapse descendants by merging fields</source>
         <translation>Colapsar descendentes juntando campos</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="646"/>
+        <location filename="treelocalcontrol.py" line="647"/>
         <source>Add Category &amp;Level...</source>
         <translation>&amp;Adicionar Nível por Categoria...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="647"/>
+        <location filename="treelocalcontrol.py" line="648"/>
         <source>Insert category nodes above children</source>
         <translation>Insere ramos sobre descendentes classificanado segundo um campo</translation>
     </message>
@@ -4236,62 +4236,62 @@ Continue from the top?</source>
         <translation type="obsolete">Distribuir descendentes utilizando ligações aos parentes</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="656"/>
+        <location filename="treelocalcontrol.py" line="657"/>
         <source>&amp;Spell Check...</source>
         <translation>&amp;Verificar Ortografia...</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="657"/>
         <source>Spell check the tree&apos;)s text data</source>
-        <translation>Verificar a informação textual da árvore</translation>
+        <translation type="obsolete">Verificar a informação textual da árvore</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="716"/>
+        <location filename="treelocalcontrol.py" line="717"/>
         <source>&amp;New Window</source>
         <translation>&amp;Nova Janela</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="717"/>
+        <location filename="treelocalcontrol.py" line="718"/>
         <source>Open a new window for the same file</source>
         <translation>Abrir nova vista do mesmo ficheiro</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="790"/>
+        <location filename="treelocalcontrol.py" line="793"/>
         <source>Error - could not write to {}</source>
         <translation>Erro - não é possível escrever para {}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="818"/>
+        <location filename="treelocalcontrol.py" line="821"/>
         <source>TreeLine - Save As</source>
         <translation>TreeLine - Guardar Como</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="851"/>
+        <location filename="treelocalcontrol.py" line="854"/>
         <source>Error - could not write to file</source>
         <translation>Erro - não foi possível escrever para o ficheiro</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1216"/>
+        <location filename="treelocalcontrol.py" line="1219"/>
         <source>TreeLine - Open Configuration File</source>
         <translation>TreeLine - Abrir Ficheiro de Configuração</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1250"/>
+        <location filename="treelocalcontrol.py" line="1253"/>
         <source>Error - could not read file {0}</source>
         <translation>Erro - não foi possível ler o ficheiro {0}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1364"/>
+        <location filename="treelocalcontrol.py" line="1366"/>
         <source>Cannot expand without common fields</source>
         <translation>Não é possível expandir sem campos em comum</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1366"/>
+        <location filename="treelocalcontrol.py" line="1368"/>
         <source>Category Fields</source>
         <translation>Campos de Categorias</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1367"/>
+        <location filename="treelocalcontrol.py" line="1369"/>
         <source>Select fields for new level</source>
         <translation>Seleccione campo para novo nível</translation>
     </message>
@@ -4343,117 +4343,117 @@ Internal link targets could be affected.</source>
 O destino de ligações internas pode ter sido afectado.</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="711"/>
+        <location filename="treelocalcontrol.py" line="712"/>
         <source>Clear For&amp;matting</source>
         <translation>Limpar &amp;Formatação</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="800"/>
+        <location filename="treelocalcontrol.py" line="803"/>
         <source>File saved</source>
         <translation>Ficheiro gravado</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="524"/>
+        <location filename="treelocalcontrol.py" line="525"/>
         <source>Pa&amp;ste Plain Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="529"/>
+        <location filename="treelocalcontrol.py" line="530"/>
         <source>Paste C&amp;hild</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="530"/>
+        <location filename="treelocalcontrol.py" line="531"/>
         <source>Paste a child node from the clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="534"/>
+        <location filename="treelocalcontrol.py" line="535"/>
         <source>Paste Sibling &amp;Before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="535"/>
+        <location filename="treelocalcontrol.py" line="536"/>
         <source>Paste a sibling before selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="539"/>
+        <location filename="treelocalcontrol.py" line="540"/>
         <source>Paste Sibling &amp;After</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="540"/>
+        <location filename="treelocalcontrol.py" line="541"/>
         <source>Paste a sibling after selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="544"/>
+        <location filename="treelocalcontrol.py" line="545"/>
         <source>Paste Cl&amp;oned Child</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="545"/>
+        <location filename="treelocalcontrol.py" line="546"/>
         <source>Paste a child clone from the clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="549"/>
+        <location filename="treelocalcontrol.py" line="550"/>
         <source>Paste Clo&amp;ned Sibling Before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="550"/>
+        <location filename="treelocalcontrol.py" line="551"/>
         <source>Paste a sibling clone before selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="554"/>
+        <location filename="treelocalcontrol.py" line="555"/>
         <source>Paste Clone&amp;d Sibling After</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="555"/>
+        <location filename="treelocalcontrol.py" line="556"/>
         <source>Paste a sibling clone after selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="631"/>
+        <location filename="treelocalcontrol.py" line="632"/>
         <source>Clone All &amp;Matched Nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="632"/>
+        <location filename="treelocalcontrol.py" line="633"/>
         <source>Convert all matching nodes into clones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="636"/>
+        <location filename="treelocalcontrol.py" line="637"/>
         <source>&amp;Detach Clones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="637"/>
+        <location filename="treelocalcontrol.py" line="638"/>
         <source>Detach all cloned nodes in current branches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="651"/>
+        <location filename="treelocalcontrol.py" line="652"/>
         <source>S&amp;wap Category Levels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="652"/>
+        <location filename="treelocalcontrol.py" line="653"/>
         <source>Swap child and grandchild category nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1296"/>
+        <location filename="treelocalcontrol.py" line="1298"/>
         <source>Converted {0} branches into clones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1303"/>
+        <location filename="treelocalcontrol.py" line="1305"/>
         <source>No identical nodes found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4461,6 +4461,11 @@ O destino de ligações internas pode ter sido afectado.</translation>
         <location filename="treelocalcontrol.py" line="128"/>
         <source>Warning - file corruption!
 Skipped bad child references in the following nodes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="658"/>
+        <source>Spell check the tree&apos;s text data</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4766,7 +4771,7 @@ Uma sessão anterior pode ter terminado inesperadamente</translation>
     <message>
         <location filename="treemaincontrol.py" line="847"/>
         <source>ToolsFilterCondition</source>
-        <translation>FerramentasFiltroCondicional</translation>
+        <translation type="obsolete">FerramentasFiltroCondicional</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="862"/>
@@ -4851,7 +4856,7 @@ by {1}</source>
 <context>
     <name>treenode</name>
     <message>
-        <location filename="treenode.py" line="409"/>
+        <location filename="treenode.py" line="410"/>
         <source>New</source>
         <translation>Novo</translation>
     </message>
