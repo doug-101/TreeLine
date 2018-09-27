@@ -226,6 +226,7 @@ class TreeLocalControl(QObject):
         self.updateCommandsAvail()
         if setModified:
             self.setModified()
+        # self.structure.debugCheck()
         QApplication.restoreOverrideCursor()
 
     def updateAllMathFields(self):
@@ -746,6 +747,8 @@ class TreeLocalControl(QObject):
         savePathObj = self.filePathObj
         if backupFile:
             savePathObj = pathlib.Path(str(savePathObj) + '~')
+        else:
+            self.structure.purgeOldFieldData()
         fileData = self.structure.fileData()
         fileData['properties'].update(self.printData.fileData())
         if self.spellCheckLang:

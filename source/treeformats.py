@@ -4,7 +4,7 @@
 # treeformats.py, provides a class to store node format types and info
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -142,6 +142,14 @@ class TreeFormats(dict):
             typeFormat -- the node format to add
         """
         self.setdefault(typeFormat.name, typeFormat)
+
+    def fieldNameDict(self):
+        """Return a dictionary of field name sets using type names as keys.
+        """
+        result = {}
+        for typeFormat in self.values():
+            result[typeFormat.name] = set(typeFormat.fieldNames())
+        return result
 
     def updateDerivedRefs(self):
         """Update derived type lists (in generics) & the conditional type set.

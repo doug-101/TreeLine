@@ -106,6 +106,15 @@ class TreeStructure(treenode.TreeNode):
                     'properties': properties}
         return fileData
 
+    def purgeOldFieldData(self):
+        """Remove data from obsolete fields from all nodes.
+        """
+        fieldSets = self.treeFormats.fieldNameDict()
+        for node in self.nodeDict.values():
+            oldKeys = set(node.data.keys()) - fieldSets[node.formatRef.name]
+            for key in oldKeys:
+                del node.data[key]
+
     def addNodeDictRef(self, node):
         """Add the given node to the node dictionary.
 
