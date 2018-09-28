@@ -886,7 +886,11 @@ class TreeLocalControl(QObject):
         except AttributeError:
             pass
         self.currentSelectionModel().copySelectedNodes()
-        self.nodeDelete()
+        selSpots = self.currentSelectionModel().selectedSpots()
+        rootSpots = [spot for spot in selSpots if not
+                     spot.parentSpot.parentSpot]
+        if selSpots and len(rootSpots) < len(self.structure.childList):
+            self.nodeDelete()
 
     def editCopy(self):
         """Copy the branch or text to the clipboard.
