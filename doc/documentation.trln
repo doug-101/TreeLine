@@ -178,7 +178,7 @@
 "children": [],
 "data": {
 "Name": "Open with bad references",
-"Text": "Allow TreeLine files with invalid child references to open. Provide a warning message about the missing child nodes in the corrupt file."
+"Text": "TreeLine files with invalid child references can now be opened. A warning message is given about the missing child nodes in the corrupt file."
 },
 "format": "BULLETS",
 "uid": "2df5b030bbf711e88a1ca44cc8e97404"
@@ -214,7 +214,7 @@
 "children": [],
 "data": {
 "Name": "Time field AM/PM",
-"Text": "Force references to AM/PM in time field formats to be output regardless of system locale settings."
+"Text": "Now forces references to AM/PM in time field formats to be output regardless of system locale settings."
 },
 "format": "BULLETS",
 "uid": "40ec6d5cbbf711e8bb93a44cc8e97404"
@@ -401,13 +401,14 @@
 "67e95a60bbf611e8a80ca44cc8e97404"
 ],
 "data": {
-"Name": "September 22, 2018 - Release 3.0.1 (stable release)"
+"Name": "September 29, 2018 - Release 3.0.1 (stable release)"
 },
 "format": "HEADINGS",
 "uid": "67e95a5bbbf611e891f7a44cc8e97404"
 },
 {
 "children": [
+"f966db0cc23f11e8b80fd66a6ab671cb",
 "67e95a61bbf611e8989ca44cc8e97404"
 ],
 "data": {
@@ -420,7 +421,12 @@
 "children": [
 "67e95a64bbf611e8960fa44cc8e97404",
 "2df5b030bbf711e88a1ca44cc8e97404",
-"40ec6d5cbbf711e8bb93a44cc8e97404"
+"dc700fb4c24211e8b88dd66a6ab671cb",
+"40ec6d5cbbf711e8bb93a44cc8e97404",
+"9550a81ac24111e89029d66a6ab671cb",
+"71e2f25cc24211e88524d66a6ab671cb",
+"a757f64ac24211e8a95fd66a6ab671cb",
+"bdc8628ec2bd11e889e57054d2175f18"
 ],
 "data": {
 "Name": "Bug Fixes"
@@ -542,6 +548,15 @@
 {
 "children": [],
 "data": {
+"Name": "Complex data menu commands",
+"Text": "Fixed various errors when applying advanced clone and category commands from the Data menu to complex node structures."
+},
+"format": "BULLETS",
+"uid": "71e2f25cc24211e88524d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
 "Name": "Date and time formats",
 "Text": "The Date, Time and DateTime fields  have new format strings that enable extra text to be added to the date output."
 },
@@ -560,11 +575,29 @@
 {
 "children": [],
 "data": {
+"Name": "Translations",
+"Text": "Translations of the TreeLine GUI are available in German and Spanish. The translation should load automatically if the OS locale is properly set. Alternatively, \"--lang xx\" can be appended to the command that starts TreeLine, where \"xx\" is the two-letter language code (\"en\", \"de\" or \"es\")."
+},
+"format": "HEAD_PARA",
+"uid": "7e9b3b88c24511e896c7d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
 "Name": "Copy command errors",
 "Text": "Fix errors shown when using copy commands after closing TreeLine windows."
 },
 "format": "BULLETS",
 "uid": "90dbc4e4334b11e892d0d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Purge old field data",
+"Text": "Data from fields that were removed from the configuration is now purged when a file is saved. This avoids missing matches in the Clone All Matched Nodes command."
+},
+"format": "BULLETS",
+"uid": "9550a81ac24111e89029d66a6ab671cb"
 },
 {
 "children": [],
@@ -678,6 +711,15 @@
 {
 "children": [],
 "data": {
+"Name": "Complex undo operations",
+"Text": "Fixed some problems with using the Undo command after complex operations."
+},
+"format": "BULLETS",
+"uid": "a757f64ac24211e8a95fd66a6ab671cb"
+},
+{
+"children": [],
+"data": {
 "Name": "Save state for discarded files",
 "Text": "The expanded/collapsed and selected tree states are now saved even if changes were discarded in the previous session."
 },
@@ -752,6 +794,24 @@
 {
 "children": [],
 "data": {
+"Name": "Math Fields",
+"Text": "For more complex output formatting, the math field can be used to combine other fields using various mathematical, relational and string operators.  See the <a href=\"#f17005f8a25a11e7b7c67054d2175f18\">Math Type</a> section for details."
+},
+"format": "HEAD_PARA",
+"uid": "bbbf735ac24711e8b560d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Cut last node",
+"Text": "Fix an error caused by attempting to use the Edit &gt; Cut command when there is only one node."
+},
+"format": "BULLETS",
+"uid": "bdc8628ec2bd11e889e57054d2175f18"
+},
+{
+"children": [],
+"data": {
 "Name": "Data editor hover",
 "Text": "By default, the edit boxes in the data edit view now activate when the mouse hovers over them. This eliminates the need to click to activate them. This feature can be disabled in general options if desired."
 },
@@ -766,6 +826,15 @@
 },
 "format": "BULLETS",
 "uid": "d1d8e56eba4011e784ab3417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Sort root nodes",
+"Text": "The Sort command now properly sorts multiple root nodes when sorting the entire tree."
+},
+"format": "BULLETS",
+"uid": "dc700fb4c24211e8b88dd66a6ab671cb"
 },
 {
 "children": [],
@@ -953,7 +1022,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 3.0.1, a stable release, dated September 22, 2018 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.0.1, a stable release, dated September 29, 2018 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -1455,7 +1524,7 @@
 "children": [],
 "data": {
 "Name": "Languages",
-"Text": "The user interface is available in English and German.  Translations into other languages are TBD."
+"Text": "The user interface is available in English, German and Spanish. Translations into other languages are TBD."
 },
 "format": "BULLETS",
 "uid": "f16fbd00a25a11e7b7c67054d2175f18"
@@ -2123,7 +2192,7 @@
 "children": [],
 "data": {
 "Name": "Math Type",
-"Text": "Math field types are configured by defining equations. The equations can reference number fields, date fields, time fields, boolean fields, text fields and/or other math fields. The resulting values of math fields are automatically calculated for each node.<br />\n<br />\nTo define a math field equation, press the \"Define Equation\" button in the \"Field Config\" tab of the \"Data &gt; Configure Types Dialog\". This brings up a dialog with fields to reference on the left and math operators on the right. The \"Reference Level\" pull-down determines whether the reference is from the same node, the node's parent, the root node, or the node's children. The \"Result Type\" pull-down allows arithmetic, date, time, boolean or text results to be chosen. The \"Operator Type\" pull-down allows numeric, comparison or text operators to be shown in the operator list. The down-arrow buttons below the references and operators add the selected item to the equation text below. Portions of equations can also be typed directly in the equation text line editor.<br />\n<br />\nReferences to child nodes must be enclosed in a grouping function, such as sum, max, min, mean or join. A math field can contain a parent or child reference to itself, but not a same-level reference to itself (a circular reference). The references only contain the field name, so they will reference a parent or child field with that name even if it is a different node type.<br />\n<br />\nIn equations, date fields are represented by the number of days since January 1, 1970, and time fields are the number of seconds since midnight. So date fields can be subtracted to give the number of days elapsed, and numbers of days can be added to or subtracted from dates to result in new dates. Time fields can be subtracted to give the number of seconds elapsed, and numbers of seconds can be added to or subtracted from times to result in new times.<br />\n<br />\nThe \"if\" comparison operator can be used to make the result depend on the value of another field. The expression is written as \"true_value if condition else false_value\". Of course, the \"true_value\", \"condition\" and \"false_value\" strings must be replaced with valid fields or expressions. If this operator is inserted from the operator list (under comparisons), it will include parenthesis as placeholders. These parenthesis are optional in the equations.<br />\n<br />\nThe \"join\" text function is used to combine text from several other fields (or from child nodes). The first argument to the function is a separator string that is placed between each piece of text. The remaining argument(s) are the text to be joined.<br />\n<br />\nBy default, math fields are shown in the data edit view, but they are read-only. To hide them, uncheck the \"Show math fields in the Data Edit View\" box under \"Tools &gt; General Options &gt; Features Available\".<br />\n<br />\nThere is also an option under \"File &gt; Properties\" that toggles whether blank fields are treated as zeros. If checked (the default), a blank field that is referenced by a math field has a value of zero (for numeric operations) or blank (for text operations). If unchecked, any blank references also cause equations that reference them to be blank.<br />\n"
+"Text": "Math field types are configured by defining equations. The equations can reference number fields, date fields, time fields, boolean fields, text fields and/or other math fields. The resulting values of math fields are automatically calculated for each node.  Various mathematical, relational and string operators are available.  The results can be numbers, text, boolean, dates or times.<br />\n<br />\nTo define a math field equation, press the \"Define Equation\" button in the \"Field Config\" tab of the \"Data &gt; Configure Types Dialog\". This brings up a dialog with fields to reference on the left and math operators on the right. The \"Reference Level\" pull-down determines whether the reference is from the same node, the node's parent, the root node, or the node's children. The \"Result Type\" pull-down allows arithmetic, date, time, boolean or text results to be chosen. The \"Operator Type\" pull-down allows numeric, comparison or text operators to be shown in the operator list. The down-arrow buttons below the references and operators add the selected item to the equation text below. Portions of equations can also be typed directly in the equation text line editor.<br />\n<br />\nReferences to child nodes must be enclosed in a grouping function, such as sum, max, min, mean or join. A math field can contain a parent or child reference to itself, but not a same-level reference to itself (a circular reference). The references only contain the field name, so they will reference a parent or child field with that name even if it is a different node type.<br />\n<br />\nIn equations, date fields are represented by the number of days since January 1, 1970, and time fields are the number of seconds since midnight. So date fields can be subtracted to give the number of days elapsed, and numbers of days can be added to or subtracted from dates to result in new dates. Time fields can be subtracted to give the number of seconds elapsed, and numbers of seconds can be added to or subtracted from times to result in new times.<br />\n<br />\nThe \"if\" comparison operator can be used to make the result depend on the value of another field. The expression is written as \"true_value if condition else false_value\". Of course, the \"true_value\", \"condition\" and \"false_value\" strings must be replaced with valid fields or expressions. If this operator is inserted from the operator list (under comparisons), it will include parenthesis as placeholders. These parenthesis are optional in the equations.<br />\n<br />\nThe \"join\" text function is used to combine text from several other fields (or from child nodes). The first argument to the function is a separator string that is placed between each piece of text. The remaining argument(s) are the text to be joined.<br />\n<br />\nBy default, math fields are shown in the data edit view, but they are read-only. To hide them, uncheck the \"Show math fields in the Data Edit View\" box under \"Tools &gt; General Options &gt; Features Available\".<br />\n<br />\nThere is also an option under \"File &gt; Properties\" that toggles whether blank fields are treated as zeros. If checked (the default), a blank field that is referenced by a math field has a value of zero (for numeric operations) or blank (for text operations). If unchecked, any blank references also cause equations that reference them to be blank.<br />\n"
 },
 "format": "HEAD_PARA",
 "uid": "f17005f8a25a11e7b7c67054d2175f18"
@@ -2152,7 +2221,8 @@
 "f1700b34a25a11e7b7c67054d2175f18",
 "f1700c38a25a11e7b7c67054d2175f18",
 "f1700d3ca25a11e7b7c67054d2175f18",
-"f1700e40a25a11e7b7c67054d2175f18"
+"f1700e40a25a11e7b7c67054d2175f18",
+"bbbf735ac24711e8b560d66a6ab671cb"
 ],
 "data": {
 "Name": "Output Formatting Details"
@@ -2548,7 +2618,8 @@
 "f1703546a25a11e7b7c67054d2175f18",
 "f170364aa25a11e7b7c67054d2175f18",
 "f1703744a25a11e7b7c67054d2175f18",
-"f1703848a25a11e7b7c67054d2175f18"
+"f1703848a25a11e7b7c67054d2175f18",
+"7e9b3b88c24511e896c7d66a6ab671cb"
 ],
 "data": {
 "Name": "Customizations"
@@ -4981,6 +5052,15 @@
 },
 "format": "BULLETS",
 "uid": "f817e5b6334a11e89349d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Spanish translation",
+"Text": "Added a Spanish GUI translation (thanks to Diego)."
+},
+"format": "BULLETS",
+"uid": "f966db0cc23f11e8b80fd66a6ab671cb"
 }
 ],
 "properties": {
