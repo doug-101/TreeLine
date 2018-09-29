@@ -19,7 +19,7 @@
         </div>
 
         <div class="toplinks">
-            <p>Version 3.0.0 (stable)</p>
+            <p>Version 3.0.1 (stable)</p>
             <p><a href="http://www.bellz.org/progs.html">Other Programs</a></p>
             <p><a href="http://www.bellz.org/contact.html">Contact Info</a></p>
         </div>
@@ -320,10 +320,12 @@ for more formatting details. </p>
 display in the Data Editor. Of course, any new entry with a reasonable format
 is correctly interpreted (but the correct radix character must be used).</p>
 
-<p><b>Math Type</b> - Math field types are configured by defining equations.
-The equations can reference number fields, date fields, time fields, boolean
-fields, text fields and/or other math fields. The resulting values of math
-fields are automatically calculated for each node.</p>
+<p><a id="math_type"></a><b>Math Type</b> - Math field types are configured by
+defining equations.  The equations can reference number fields, date fields,
+time fields, boolean fields, text fields and/or other math fields. The
+resulting values of math fields are automatically calculated for each
+node. Various mathematical, relational and string operators are available.
+The results can be numbers, text, boolean, dates or times.</p>
 
 <p>To define a math field equation, press the "Define Equation" button in the
 "Field Config" tab of the "Data &gt; Configure Types Dialog". This brings up a
@@ -566,6 +568,11 @@ node. These are shown as {*#Level1*} in the format editors.</p>
 
 <p>For examples of these fields, see the "sample_other_fields" file (by using
 the "File &gt; Open Sample" command).</p>
+
+<p><b>Math Fields</b> - For more complex output formatting, the math field can
+be used to combine other fields using various mathematical, relational and
+string operators. See the <a href="#math_type">Math Type</a> section for
+details.</p>
 
 <a id="type_format_details"></a> <h3>Type Format Details</h3>
 
@@ -896,6 +903,12 @@ directory ("~/.treeline-x.x/icons" on Linux,
 "Users\&lt;user&gt;\AppData\roaming\bellz\treeline-x.x\icons" on Windows).
 Image files (PNG or BMP) placed into this directory are available for use as
 tree icons.</p>
+
+<p><b>Translations</b> - Translations of the TreeLine GUI are available in
+German and Spanish. The translation should load automatically if the OS locale
+is properly set. Alternatively, "--lang xx" can be appended to the command
+that starts TreeLine, where "xx" is the two-letter language code ("en", "de"
+or "es").</p>
 
         </div>
 

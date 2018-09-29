@@ -19,7 +19,7 @@
         </div>
 
         <div class="toplinks">
-            <p>Version 3.0.0 (stable)</p>
+            <p>Version 3.0.1 (stable)</p>
             <p><a href="http://www.bellz.org/progs.html">Other Programs</a></p>
             <p><a href="http://www.bellz.org/contact.html">Contact Info</a></p>
         </div>
@@ -61,6 +61,48 @@
             this page</a>.</p>
 
             <h1>News</h1>
+
+            <h2>September 29, 2018 - Release 3.0.1 (stable release)</h2>
+
+            <ul><b>Updates:</b>
+
+              <li>Added a Spanish GUI translation (thanks to Diego).</li>
+
+              <li>Added a read-only text box to the Help &gt; About dialog to
+              allow copying of the version and library information.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed a problem opening old TreeLine files that had format
+              changes in File Info fields.</li>
+
+	      <li>TreeLine files with invalid child references can now be
+              opened. A warning message is given about the missing child nodes
+              in the corrupt file.</li>
+
+	      <li>The Sort command now properly sorts multiple root nodes when
+              sorting the entire tree.</li>
+
+	      <li>Now forces references to AM/PM in time field formats to be
+              output regardless of system locale settings.</li>
+
+	      <li>Data from fields that were removed from the configuration is
+              now purged when a file is saved. This avoids missing matches in
+              the Clone All Matched Nodes command.</li>
+
+	      <li>Fixed various errors when applying advanced clone and
+              category commands from the Data menu to complex node
+              structures.</li>
+
+	      <li>Fixed some problems with using the Undo command after
+              complex operations.</li>
+
+	      <li>Fix an error caused by attempting to use the Edit &gt; Cut
+              command when there is only one node.</li>
+
+            </ul>
 
             <h2>August 19, 2018 - Release 3.0.0 (new stable release)</h2>
 
