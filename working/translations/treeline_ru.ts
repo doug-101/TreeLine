@@ -156,7 +156,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2320"/>
+        <location filename="configdialog.py" line="2319"/>
         <source>&amp;OK</source>
         <translation type="unfinished">&amp;ОК</translation>
     </message>
@@ -171,7 +171,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2324"/>
+        <location filename="configdialog.py" line="2323"/>
         <source>&amp;Cancel</source>
         <translation type="unfinished">О&amp;тмена</translation>
     </message>
@@ -216,7 +216,7 @@
         <translation type="unfinished">Нельзя удалять типы,  уже используемые узлами</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1230"/>
+        <location filename="configdialog.py" line="1229"/>
         <source>&amp;Data Type</source>
         <translation type="unfinished">Тип &amp;Данных</translation>
     </message>
@@ -256,17 +256,17 @@
         <translation type="unfinished">Задать типы условий</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2282"/>
+        <location filename="configdialog.py" line="2281"/>
         <source>Name</source>
         <translation type="unfinished">Имя</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2247"/>
+        <location filename="configdialog.py" line="2246"/>
         <source>Type</source>
         <translation type="unfinished">Тип</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1967"/>
+        <location filename="configdialog.py" line="1966"/>
         <source>Move &amp;Up</source>
         <translation type="unfinished">Переместить &amp;вверх</translation>
     </message>
@@ -301,32 +301,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="952"/>
+        <location filename="configdialog.py" line="951"/>
         <source>Format &amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="956"/>
+        <location filename="configdialog.py" line="955"/>
         <source>Extra Text</source>
         <translation type="unfinished">Дополнительный текст</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="960"/>
+        <location filename="configdialog.py" line="959"/>
         <source>&amp;Prefix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="967"/>
+        <location filename="configdialog.py" line="966"/>
         <source>Suffi&amp;x</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="983"/>
+        <location filename="configdialog.py" line="982"/>
         <source>Editor Height</source>
         <translation type="unfinished">Высота редактора</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="986"/>
+        <location filename="configdialog.py" line="985"/>
         <source>Num&amp;ber of text lines</source>
         <translation type="unfinished"></translation>
     </message>
@@ -336,27 +336,27 @@
         <translation type="unfinished">Ссылка на информацию о файле</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2131"/>
+        <location filename="configdialog.py" line="2130"/>
         <source>Parent Reference</source>
         <translation type="unfinished">Ссылка на родителя</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2132"/>
+        <location filename="configdialog.py" line="2131"/>
         <source>Child Reference</source>
         <translation type="unfinished">Ссылка на потомка</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2134"/>
+        <location filename="configdialog.py" line="2133"/>
         <source>Child Count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1237"/>
+        <location filename="configdialog.py" line="1236"/>
         <source>F&amp;ield List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1295"/>
+        <location filename="configdialog.py" line="1294"/>
         <source>Other Field References</source>
         <translation type="unfinished"></translation>
     </message>
@@ -366,12 +366,12 @@
         <translation type="unfinished">Копировать тип</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1840"/>
+        <location filename="configdialog.py" line="1839"/>
         <source>Set Data Type Icon</source>
         <translation type="unfinished">Установить пиктограмму для типа данных</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1853"/>
+        <location filename="configdialog.py" line="1852"/>
         <source>Clear &amp;Select</source>
         <translation type="unfinished">&amp;Очистить выделение</translation>
     </message>
@@ -502,472 +502,472 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="946"/>
+        <location filename="configdialog.py" line="945"/>
         <source>Outpu&amp;t Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="974"/>
+        <location filename="configdialog.py" line="973"/>
         <source>Default &amp;Value for New Nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="995"/>
+        <location filename="configdialog.py" line="994"/>
         <source>Math Equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1001"/>
+        <location filename="configdialog.py" line="1000"/>
         <source>Define Equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1261"/>
+        <location filename="configdialog.py" line="1260"/>
         <source>&amp;Title Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1283"/>
+        <location filename="configdialog.py" line="1282"/>
         <source>Out&amp;put Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1302"/>
+        <location filename="configdialog.py" line="1301"/>
         <source>Reference Le&amp;vel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1312"/>
+        <location filename="configdialog.py" line="1311"/>
         <source>Refere&amp;nce Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1802"/>
+        <location filename="configdialog.py" line="1801"/>
         <source>The name cannot be empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1804"/>
+        <location filename="configdialog.py" line="1803"/>
         <source>The name must start with a letter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1806"/>
+        <location filename="configdialog.py" line="1805"/>
         <source>The name cannot start with &quot;xml&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1808"/>
+        <location filename="configdialog.py" line="1807"/>
         <source>The name cannot contain spaces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1810"/>
+        <location filename="configdialog.py" line="1809"/>
         <source>The following characters are not allowed: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1814"/>
+        <location filename="configdialog.py" line="1813"/>
         <source>The name was already used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1914"/>
+        <location filename="configdialog.py" line="1913"/>
         <source>forward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1915"/>
+        <location filename="configdialog.py" line="1914"/>
         <source>reverse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1929"/>
+        <location filename="configdialog.py" line="1928"/>
         <source>Sort Key Fields</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1933"/>
+        <location filename="configdialog.py" line="1932"/>
         <source>Available &amp;Fields</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1955"/>
+        <location filename="configdialog.py" line="1954"/>
         <source>&amp;Sort Criteria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1962"/>
+        <location filename="configdialog.py" line="1961"/>
         <source>Field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1962"/>
+        <location filename="configdialog.py" line="1961"/>
         <source>Direction</source>
         <translation type="unfinished">Направление</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1970"/>
+        <location filename="configdialog.py" line="1969"/>
         <source>&amp;Move Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1973"/>
+        <location filename="configdialog.py" line="1972"/>
         <source>Flip &amp;Direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2131"/>
+        <location filename="configdialog.py" line="2130"/>
         <source>Self Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2132"/>
+        <location filename="configdialog.py" line="2131"/>
         <source>Root Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2135"/>
+        <location filename="configdialog.py" line="2134"/>
         <source>Date Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2135"/>
+        <location filename="configdialog.py" line="2134"/>
         <source>Time Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2139"/>
+        <location filename="configdialog.py" line="2138"/>
         <source>add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2140"/>
+        <location filename="configdialog.py" line="2139"/>
         <source>subtract</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2141"/>
+        <location filename="configdialog.py" line="2140"/>
         <source>multiply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2142"/>
+        <location filename="configdialog.py" line="2141"/>
         <source>divide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2143"/>
+        <location filename="configdialog.py" line="2142"/>
         <source>floor divide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2144"/>
+        <location filename="configdialog.py" line="2143"/>
         <source>modulus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2145"/>
+        <location filename="configdialog.py" line="2144"/>
         <source>power</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2146"/>
+        <location filename="configdialog.py" line="2145"/>
         <source>sum of items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2147"/>
+        <location filename="configdialog.py" line="2146"/>
         <source>maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2148"/>
+        <location filename="configdialog.py" line="2147"/>
         <source>minimum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2149"/>
+        <location filename="configdialog.py" line="2148"/>
         <source>average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2150"/>
+        <location filename="configdialog.py" line="2149"/>
         <source>absolute value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2151"/>
+        <location filename="configdialog.py" line="2150"/>
         <source>square root</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2152"/>
+        <location filename="configdialog.py" line="2151"/>
         <source>natural logarithm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2153"/>
+        <location filename="configdialog.py" line="2152"/>
         <source>base-10 logarithm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2154"/>
+        <location filename="configdialog.py" line="2153"/>
         <source>factorial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2155"/>
+        <location filename="configdialog.py" line="2154"/>
         <source>round to num digits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2156"/>
+        <location filename="configdialog.py" line="2155"/>
         <source>lower integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2157"/>
+        <location filename="configdialog.py" line="2156"/>
         <source>higher integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2158"/>
+        <location filename="configdialog.py" line="2157"/>
         <source>truncated integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2159"/>
+        <location filename="configdialog.py" line="2158"/>
         <source>floating point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2160"/>
+        <location filename="configdialog.py" line="2159"/>
         <source>sine of radians</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2161"/>
+        <location filename="configdialog.py" line="2160"/>
         <source>cosine of radians</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2162"/>
+        <location filename="configdialog.py" line="2161"/>
         <source>tangent of radians</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2163"/>
+        <location filename="configdialog.py" line="2162"/>
         <source>arc sine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2164"/>
+        <location filename="configdialog.py" line="2163"/>
         <source>arc cosine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2165"/>
+        <location filename="configdialog.py" line="2164"/>
         <source>arc tangent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2166"/>
+        <location filename="configdialog.py" line="2165"/>
         <source>radians to degrees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2167"/>
+        <location filename="configdialog.py" line="2166"/>
         <source>degrees to radians</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2168"/>
+        <location filename="configdialog.py" line="2167"/>
         <source>pi constant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2169"/>
+        <location filename="configdialog.py" line="2168"/>
         <source>natural log constant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2211"/>
+        <location filename="configdialog.py" line="2210"/>
         <source>Define Math Field Equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2214"/>
+        <location filename="configdialog.py" line="2213"/>
         <source>Field References</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2220"/>
+        <location filename="configdialog.py" line="2219"/>
         <source>Reference &amp;Level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2230"/>
+        <location filename="configdialog.py" line="2229"/>
         <source>Reference &amp;Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2240"/>
+        <location filename="configdialog.py" line="2239"/>
         <source>Available &amp;Field List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2249"/>
+        <location filename="configdialog.py" line="2248"/>
         <source>&amp;Result Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2282"/>
+        <location filename="configdialog.py" line="2281"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2308"/>
+        <location filename="configdialog.py" line="2307"/>
         <source>&amp;Equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2465"/>
+        <location filename="configdialog.py" line="2464"/>
         <source>Equation error: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2136"/>
+        <location filename="configdialog.py" line="2135"/>
         <source>Boolean Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2137"/>
+        <location filename="configdialog.py" line="2136"/>
         <source>Text Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2137"/>
+        <location filename="configdialog.py" line="2136"/>
         <source>Arithmetic Operators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2137"/>
+        <location filename="configdialog.py" line="2136"/>
         <source>Comparison Operators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2139"/>
+        <location filename="configdialog.py" line="2138"/>
         <source>Text Operators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2170"/>
+        <location filename="configdialog.py" line="2169"/>
         <source>equal to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2171"/>
+        <location filename="configdialog.py" line="2170"/>
         <source>less than</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2172"/>
+        <location filename="configdialog.py" line="2171"/>
         <source>greater than</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2173"/>
+        <location filename="configdialog.py" line="2172"/>
         <source>less than or equal to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2174"/>
+        <location filename="configdialog.py" line="2173"/>
         <source>greater than or equal to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2175"/>
+        <location filename="configdialog.py" line="2174"/>
         <source>not equal to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2177"/>
+        <location filename="configdialog.py" line="2176"/>
         <source>true value, condition, false value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2181"/>
+        <location filename="configdialog.py" line="2180"/>
         <source>true if 1st text arg starts with 2nd arg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2183"/>
+        <location filename="configdialog.py" line="2182"/>
         <source>true if 1st text arg ends with 2nd arg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2185"/>
+        <location filename="configdialog.py" line="2184"/>
         <source>true if 1st text arg contains 2nd arg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2186"/>
+        <location filename="configdialog.py" line="2185"/>
         <source>concatenate text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2187"/>
+        <location filename="configdialog.py" line="2186"/>
         <source>join text using 1st arg as separator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2188"/>
+        <location filename="configdialog.py" line="2187"/>
         <source>convert text to upper case</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2189"/>
+        <location filename="configdialog.py" line="2188"/>
         <source>convert text to lower case</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2190"/>
+        <location filename="configdialog.py" line="2189"/>
         <source>in 1st arg, replace 2nd arg with 3rd arg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2259"/>
+        <location filename="configdialog.py" line="2258"/>
         <source>Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2265"/>
+        <location filename="configdialog.py" line="2264"/>
         <source>O&amp;perator Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2275"/>
+        <location filename="configdialog.py" line="2274"/>
         <source>Oper&amp;ator List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2178"/>
+        <location filename="configdialog.py" line="2177"/>
         <source>logical and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2179"/>
+        <location filename="configdialog.py" line="2178"/>
         <source>logical or</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1005"/>
+        <location filename="configdialog.py" line="1004"/>
         <source>Output HTML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1008"/>
+        <location filename="configdialog.py" line="1007"/>
         <source>Evaluate &amp;HTML tags</source>
         <translation type="unfinished"></translation>
     </message>
@@ -977,22 +977,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1639"/>
+        <location filename="configdialog.py" line="1638"/>
         <source>[All Types Available]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1739"/>
+        <location filename="configdialog.py" line="1738"/>
         <source>&amp;Select All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1740"/>
+        <location filename="configdialog.py" line="1739"/>
         <source>Select &amp;None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2135"/>
+        <location filename="configdialog.py" line="2134"/>
         <source>Number Result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1379,22 +1379,22 @@ Continue with absolute path?</source>
 <context>
     <name>fieldformat</name>
     <message>
-        <location filename="fieldformat.py" line="1818"/>
+        <location filename="fieldformat.py" line="1819"/>
         <source>yes/no</source>
         <translation>да/нет</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1816"/>
+        <location filename="fieldformat.py" line="1817"/>
         <source>true/false</source>
         <translation>верно/ложно</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1817"/>
+        <location filename="fieldformat.py" line="1818"/>
         <source>T/F</source>
         <translation>В/Л</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1819"/>
+        <location filename="fieldformat.py" line="1820"/>
         <source>Y/N</source>
         <translation>Д/Н</translation>
     </message>
@@ -1489,187 +1489,177 @@ Continue with absolute path?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="36"/>
+        <location filename="fieldformat.py" line="37"/>
         <source>Now</source>
         <translation type="unfinished">Сейчас</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="425"/>
+        <location filename="fieldformat.py" line="426"/>
         <source>Optional Digit<byte value="x9"/>#</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="426"/>
+        <location filename="fieldformat.py" line="427"/>
         <source>Required Digit<byte value="x9"/>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="427"/>
+        <location filename="fieldformat.py" line="428"/>
         <source>Digit or Space (external)<byte value="x9"/>&lt;space&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="429"/>
+        <location filename="fieldformat.py" line="430"/>
         <source>Decimal Point<byte value="x9"/>.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="430"/>
+        <location filename="fieldformat.py" line="431"/>
         <source>Decimal Comma<byte value="x9"/>,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="432"/>
-        <source>Comma Separator<byte value="x9"/>,</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="fieldformat.py" line="433"/>
-        <source>Dot Separator<byte value="x9"/>.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="fieldformat.py" line="434"/>
+        <location filename="fieldformat.py" line="435"/>
         <source>Space Separator (internal)<byte value="x9"/>&lt;space&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="436"/>
+        <location filename="fieldformat.py" line="437"/>
         <source>Optional Sign<byte value="x9"/>-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="437"/>
+        <location filename="fieldformat.py" line="438"/>
         <source>Required Sign<byte value="x9"/>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="439"/>
+        <location filename="fieldformat.py" line="440"/>
         <source>Exponent (capital)<byte value="x9"/>E</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="440"/>
+        <location filename="fieldformat.py" line="441"/>
         <source>Exponent (small)<byte value="x9"/>e</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="745"/>
+        <location filename="fieldformat.py" line="746"/>
         <source>Number<byte value="x9"/>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="746"/>
+        <location filename="fieldformat.py" line="747"/>
         <source>Capital Letter<byte value="x9"/>A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="747"/>
+        <location filename="fieldformat.py" line="748"/>
         <source>Small Letter<byte value="x9"/>a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="748"/>
+        <location filename="fieldformat.py" line="749"/>
         <source>Capital Roman Numeral<byte value="x9"/>I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="749"/>
+        <location filename="fieldformat.py" line="750"/>
         <source>Small Roman Numeral<byte value="x9"/>i</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="751"/>
+        <location filename="fieldformat.py" line="752"/>
         <source>Level Separator<byte value="x9"/>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="752"/>
+        <location filename="fieldformat.py" line="753"/>
         <source>Section Separator<byte value="x9"/>.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1400"/>
+        <location filename="fieldformat.py" line="1401"/>
         <source>&quot;/&quot; Character<byte value="x9"/>//</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="755"/>
+        <location filename="fieldformat.py" line="756"/>
         <source>&quot;.&quot; Character<byte value="x9"/>..</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="757"/>
+        <location filename="fieldformat.py" line="758"/>
         <source>Outline Example<byte value="x9"/>I../A../1../a)/i)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="759"/>
+        <location filename="fieldformat.py" line="760"/>
         <source>Section Example<byte value="x9"/>1.1.1.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1399"/>
+        <location filename="fieldformat.py" line="1400"/>
         <source>Separator<byte value="x9"/>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1401"/>
+        <location filename="fieldformat.py" line="1402"/>
         <source>Example<byte value="x9"/>1/2/3/4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2184"/>
+        <location filename="fieldformat.py" line="2185"/>
         <source>Any Character<byte value="x9"/>.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2185"/>
+        <location filename="fieldformat.py" line="2186"/>
         <source>End of Text<byte value="x9"/>$</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2187"/>
+        <location filename="fieldformat.py" line="2188"/>
         <source>0 Or More Repetitions<byte value="x9"/>*</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2188"/>
+        <location filename="fieldformat.py" line="2189"/>
         <source>1 Or More Repetitions<byte value="x9"/>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2189"/>
+        <location filename="fieldformat.py" line="2190"/>
         <source>0 Or 1 Repetitions<byte value="x9"/>?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2191"/>
+        <location filename="fieldformat.py" line="2192"/>
         <source>Set of Numbers<byte value="x9"/>[0-9]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2192"/>
+        <location filename="fieldformat.py" line="2193"/>
         <source>Lower Case Letters<byte value="x9"/>[a-z]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2193"/>
+        <location filename="fieldformat.py" line="2194"/>
         <source>Upper Case Letters<byte value="x9"/>[A-Z]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2194"/>
+        <location filename="fieldformat.py" line="2195"/>
         <source>Not a Number<byte value="x9"/>[^0-9]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2196"/>
+        <location filename="fieldformat.py" line="2197"/>
         <source>Or<byte value="x9"/>|</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2197"/>
+        <location filename="fieldformat.py" line="2198"/>
         <source>Escape a Special Character<byte value="x9"/>\</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1679,113 +1669,123 @@ Continue with absolute path?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1203"/>
+        <location filename="fieldformat.py" line="1204"/>
         <source>Day (1 or 2 digits)<byte value="x9"/>%-d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1204"/>
+        <location filename="fieldformat.py" line="1205"/>
         <source>Day (2 digits)<byte value="x9"/>%d</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1205"/>
+        <location filename="fieldformat.py" line="1206"/>
         <source>Weekday Abbreviation<byte value="x9"/>%a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1206"/>
+        <location filename="fieldformat.py" line="1207"/>
         <source>Weekday Name<byte value="x9"/>%A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1207"/>
+        <location filename="fieldformat.py" line="1208"/>
         <source>Month (1 or 2 digits)<byte value="x9"/>%-m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1208"/>
+        <location filename="fieldformat.py" line="1209"/>
         <source>Month (2 digits)<byte value="x9"/>%m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1209"/>
+        <location filename="fieldformat.py" line="1210"/>
         <source>Month Abbreviation<byte value="x9"/>%b</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1210"/>
+        <location filename="fieldformat.py" line="1211"/>
         <source>Month Name<byte value="x9"/>%B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1211"/>
+        <location filename="fieldformat.py" line="1212"/>
         <source>Year (2 digits)<byte value="x9"/>%y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1212"/>
+        <location filename="fieldformat.py" line="1213"/>
         <source>Year (4 digits)<byte value="x9"/>%Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1213"/>
+        <location filename="fieldformat.py" line="1214"/>
         <source>Week Number (0 to 53)<byte value="x9"/>%-U</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1214"/>
+        <location filename="fieldformat.py" line="1215"/>
         <source>Day of year (1 to 366)<byte value="x9"/>%-j</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1215"/>
+        <location filename="fieldformat.py" line="1216"/>
         <source>Hour (0-23, 1 or 2 digits)<byte value="x9"/>%-H</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1216"/>
+        <location filename="fieldformat.py" line="1217"/>
         <source>Hour (00-23, 2 digits)<byte value="x9"/>%H</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1217"/>
+        <location filename="fieldformat.py" line="1218"/>
         <source>Hour (1-12, 1 or 2 digits)<byte value="x9"/>%-I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1218"/>
+        <location filename="fieldformat.py" line="1219"/>
         <source>Hour (01-12, 2 digits)<byte value="x9"/>%I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1219"/>
+        <location filename="fieldformat.py" line="1220"/>
         <source>Minute (1 or 2 digits)<byte value="x9"/>%-M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1220"/>
+        <location filename="fieldformat.py" line="1221"/>
         <source>Minute (2 digits)<byte value="x9"/>%M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1221"/>
+        <location filename="fieldformat.py" line="1222"/>
         <source>Second (1 or 2 digits)<byte value="x9"/>%-S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1222"/>
+        <location filename="fieldformat.py" line="1223"/>
         <source>Second (2 digits)<byte value="x9"/>%S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1223"/>
+        <location filename="fieldformat.py" line="1224"/>
         <source>Microseconds (6 digits)<byte value="x9"/>%f</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1224"/>
+        <location filename="fieldformat.py" line="1225"/>
         <source>AM/PM<byte value="x9"/>%p</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="fieldformat.py" line="433"/>
+        <source>Comma Separator<byte value="x9"/>\,</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="fieldformat.py" line="434"/>
+        <source>Dot Separator<byte value="x9"/>\.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3995,27 +3995,27 @@ Continue from the top?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1219"/>
+        <location filename="treelocalcontrol.py" line="1223"/>
         <source>TreeLine - Open Configuration File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1253"/>
+        <location filename="treelocalcontrol.py" line="1257"/>
         <source>Error - could not read file {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1366"/>
+        <location filename="treelocalcontrol.py" line="1370"/>
         <source>Cannot expand without common fields</source>
         <translation type="unfinished">Невозможно развернуть без общих полей</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1368"/>
+        <location filename="treelocalcontrol.py" line="1372"/>
         <source>Category Fields</source>
         <translation type="unfinished">Категории полей</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1369"/>
+        <location filename="treelocalcontrol.py" line="1373"/>
         <source>Select fields for new level</source>
         <translation type="unfinished">Выбор полей для нового уровня</translation>
     </message>
@@ -4120,12 +4120,12 @@ Continue from the top?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1298"/>
+        <location filename="treelocalcontrol.py" line="1302"/>
         <source>Converted {0} branches into clones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1305"/>
+        <location filename="treelocalcontrol.py" line="1309"/>
         <source>No identical nodes found</source>
         <translation type="unfinished"></translation>
     </message>

@@ -30,6 +30,7 @@ fieldTypes = [N_('Text'), N_('HtmlText'), N_('OneLineText'), N_('SpacedText'),
               N_('Choice'), N_('AutoChoice'), N_('Combination'),
               N_('AutoCombination'), N_('ExternalLink'), N_('InternalLink'),
               N_('Picture'), N_('RegularExpression')]
+translatedFieldTypes = [_(name) for name in fieldTypes]
 _errorStr = '#####'
 _dateStampString = _('Now')
 _timeStampString = _('Now')
@@ -429,8 +430,8 @@ class NumberField(HtmlTextField):
                           (_('Decimal Point\t.'), '.'),
                           (_('Decimal Comma\t,'), ','),
                           ('', ''),
-                          (_('Comma Separator\t\,'), '\,'),
-                          (_('Dot Separator\t\.'), '\.'),
+                          (_('Comma Separator\t\\,'), '\\,'),
+                          (_('Dot Separator\t\\.'), '\\.'),
                           (_('Space Separator (internal)\t<space>'), ' '),
                           ('', ''),
                           (_('Optional Sign\t-'), '-'),
@@ -2463,3 +2464,11 @@ def adjTimeAmPm(timeFormat, time):
         amPm = 'AM' if time.hour < 12 else 'PM'
         timeFormat = re.sub(r'(?<!%)%p', amPm, timeFormat)
     return timeFormat
+
+def translatedTypeName(typeName):
+    """Return a translated type name.
+
+    Arguments:
+        typeName -- the English type name
+    """
+    return translatedFieldTypes[fieldTypes.index(typeName)]

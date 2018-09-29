@@ -772,8 +772,8 @@ class FieldListPage(ConfigPage):
                 sortKey = '{0} ({1})'.format(sortKey, sortDir)
             except ValueError:
                 sortKey = ''
-            QTreeWidgetItem(self.fieldListBox,
-                                  [field.name, _(field.typeName), sortKey])
+            typeName = fieldformat.translatedTypeName(field.typeName)
+            QTreeWidgetItem(self.fieldListBox, [field.name, typeName, sortKey])
         selectNum = currentFormat.fieldNames().index(ConfigDialog.
                                                      currentFieldName)
         selectItem = self.fieldListBox.topLevelItem(selectNum)
@@ -939,8 +939,7 @@ class FieldConfigPage(ConfigPage):
         fieldTypeLayout = QVBoxLayout(fieldTypeBox)
         self.fieldTypeCombo = QComboBox()
         fieldTypeLayout.addWidget(self.fieldTypeCombo)
-        self.fieldTypeCombo.addItems([_(name) for name in
-                                      fieldformat.fieldTypes])
+        self.fieldTypeCombo.addItems(fieldformat.translatedFieldTypes)
         self.fieldTypeCombo.currentIndexChanged.connect(self.changeFieldType)
 
         self.formatBox = QGroupBox(_('Outpu&t Format'))
@@ -1377,8 +1376,8 @@ class  OutputPage(ConfigPage):
         self.fieldListBox.clear()
         for field in activeFormat.fields():
             if field.showInDialog:
-                QTreeWidgetItem(self.fieldListBox,
-                                [field.name, field.typeName])
+                typeName = fieldformat.translatedTypeName(field.typeName)
+                QTreeWidgetItem(self.fieldListBox, [field.name, typeName])
         selectList = self.fieldListBox.findItems(ConfigDialog.currentFieldName,
                                                  Qt.MatchFixedString |
                                                  Qt.MatchCaseSensitive)
