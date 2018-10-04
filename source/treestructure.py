@@ -101,7 +101,7 @@ class TreeStructure(treenode.TreeNode):
         properties = {'tlversion': __version__, 'topnodes': topNodeIds}
         self.treeFormats.storeGlobalSavedConditions(properties)
         if not self.mathZeroBlanks:
-            fileData['properties']['zeroblanks'] = False
+            properties['zeroblanks'] = False
         fileData = {'formats': formats, 'nodes': nodeList,
                     'properties': properties}
         return fileData
