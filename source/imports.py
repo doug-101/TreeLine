@@ -590,7 +590,7 @@ class ImportControl:
                             oldFieldAttr.get('html', '').startswith('y')):
                             text = text.strip()
                             text = xml.sax.saxutils.escape(text)
-                            text = text.replace('\n', '<br />\n')
+                            text = text.replace('\n', '<br />')
                         elif (field.typeName == 'ExternalLink' and
                               oldFieldAttr.get('oldfieldtype', '')):
                             oldType = oldFieldAttr['oldfieldtype']

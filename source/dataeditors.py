@@ -490,11 +490,11 @@ class RichTextEditor(HtmlTextEditor):
         result = ''
         while block.isValid():
             if result:
-                result += '<br />\n'
+                result += '<br />'
             fragIter = block.begin()
             while not fragIter.atEnd():
                 text = xml.sax.saxutils.escape(fragIter.fragment().text())
-                text = text.replace('\u2028', '<br />\n')
+                text = text.replace('\u2028', '<br />')
                 charFormat = fragIter.fragment().charFormat()
                 if charFormat.fontWeight() >= QFont.Bold:
                     text = '<b>{0}</b>'.format(text)

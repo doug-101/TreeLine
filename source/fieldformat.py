@@ -39,6 +39,7 @@ _mathResultBlank = {MathResult.number: 0, MathResult.date: 0,
                     MathResult.time: 0, MathResult.boolean: False,
                     MathResult.text: ''}
 _multipleSpaceRegEx = re.compile(r' {2,}')
+_lineBreakRegEx = re.compile(r'<br\s*/?>', re.I)
 linkRegExp = re.compile(r'<a [^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.I | re.S)
 linkSeparateNameRegExp = re.compile(r'(.*) \[(.*)\]\s*$')
 _imageRegExp = re.compile(r'<img [^>]*src="([^"]+)"[^>]*>', re.I | re.S)
@@ -143,6 +144,7 @@ class TextField:
         prefix = self.prefix
         suffix = self.suffix
         if titleMode:
+            storedText = _lineBreakRegEx.split(storedText, 1)[0]
             storedText = removeMarkup(storedText)
             if formatHtml:
                 prefix = removeMarkup(prefix)
@@ -342,7 +344,7 @@ class OneLineTextField(TextField):
             titleMode -- if True, removes all HTML markup for tree title use
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
-        text = storedText.split('<br />', 1)[0]
+        text = _lineBreakRegEx.split(storedText, 1)[0]
         return super().formatOutput(text, titleMode, formatHtml)
 
     def formatEditorText(self, storedText):
@@ -352,7 +354,7 @@ class OneLineTextField(TextField):
         Arguments:
             storedText -- the source text to format
         """
-        return storedText.split('<br />', 1)[0]
+        return _lineBreakRegEx.split(storedText, 1)[0]
 
 
 class SpacedTextField(TextField):

@@ -169,7 +169,7 @@ class NodeFormat:
         line = ''.join([part.outputText(node, True, self.formatHtml)
                         if hasattr(part, 'outputText') else part
                         for part in self.titleLine])
-        return line.strip().split('\n', 1)[0]   # truncate to 1st line
+        return line.strip()
 
     def formatOutput(self, node, plainText=False, keepBlanks=False,
                      spotRef=None):
