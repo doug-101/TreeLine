@@ -629,6 +629,11 @@ class TreeLocalControl(QObject):
         dataCopyTypeAct.triggered.connect(self.dataCopyType)
         localActions['DataCopyType'] = dataCopyTypeAct
 
+        dataRegenRefsAct = QAction(_('&Regenerate References'), self,
+            statusTip=_('Force update of all conditional types & math fields'))
+        dataRegenRefsAct.triggered.connect(self.dataRegenRefs)
+        localActions['DataRegenRefs'] = dataRegenRefsAct
+
         dataCloneMatchesAct = QAction(_('Clone All &Matched Nodes'), self,
                          statusTip=_('Convert all matching nodes into clones'))
         dataCloneMatchesAct.triggered.connect(self.dataCloneMatches)
@@ -1264,6 +1269,11 @@ class TreeLocalControl(QObject):
         QApplication.restoreOverrideCursor()
         self.updateAll()
         globalref.mainControl.updateConfigDialog()
+
+    def dataRegenRefs(self):
+        """Force update of all conditional types & math fields.
+        """
+        self.updateAll(False)
 
     def dataCloneMatches(self):
         """Convert all matching nodes into clones.

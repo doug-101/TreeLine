@@ -179,6 +179,7 @@ def setKeyboardOptionDefaults(keyboardOptions):
     KeyOptionItem(keyboardOptions, 'DataCopyType', '', 'Data Menu')
     KeyOptionItem(keyboardOptions, 'DataSortNodes', '', 'Data Menu')
     KeyOptionItem(keyboardOptions, 'DataNumbering', '', 'Data Menu')
+    KeyOptionItem(keyboardOptions, 'DataRegenRefs', '', 'Data Menu')
     KeyOptionItem(keyboardOptions, 'DataCloneMatches', '', 'Data Menu')
     KeyOptionItem(keyboardOptions, 'DataDetachClones', '', 'Data Menu')
     KeyOptionItem(keyboardOptions, 'DataFlatCategory', '', 'Data Menu')

@@ -555,6 +555,7 @@ class TreeWindow(QMainWindow):
         dataMenu.addSeparator()
         dataMenu.addAction(self.allActions['DataSortNodes'])
         dataMenu.addAction(self.allActions['DataNumbering'])
+        dataMenu.addAction(self.allActions['DataRegenRefs'])
         dataMenu.addSeparator()
         dataMenu.addAction(self.allActions['DataCloneMatches'])
         dataMenu.addAction(self.allActions['DataDetachClones'])
