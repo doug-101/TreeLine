@@ -759,10 +759,11 @@ class TreeLocalControl(QObject):
         if self.spellCheckLang:
             fileData['properties']['spellchk'] = self.spellCheckLang
         if not self.compressed and not self.encrypted:
+            indent = 3 if globalref.genOptions['PrettyPrint'] else 0
             try:
                 with savePathObj.open('w', encoding='utf-8',
                                       newline='\n') as f:
-                    json.dump(fileData, f, indent=0, sort_keys=True)
+                    json.dump(fileData, f, indent=indent, sort_keys=True)
             except IOError:
                 QApplication.restoreOverrideCursor()
                 QMessageBox.warning(self.activeWindow, 'TreeLine',

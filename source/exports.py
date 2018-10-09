@@ -782,8 +782,9 @@ class ExportControl:
             for data in nodeData:
                 data['children'] = []
             fileData['nodes'] = nodeData
+        indent = 3 if globalref.genOptions['PrettyPrint'] else 0
         with pathObj.open('w', encoding='utf-8', newline='\n') as f:
-            json.dump(fileData, f, indent=0, sort_keys=True)
+            json.dump(fileData, f, indent=indent, sort_keys=True)
         return True
 
     def exportXmlGeneric(self, pathObj=None):

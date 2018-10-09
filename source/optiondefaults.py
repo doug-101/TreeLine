@@ -59,6 +59,9 @@ def setGenOptionDefaults(generalOptions):
                    _('Features Available'), _('Rename new nodes when created'))
     BoolOptionItem(generalOptions, 'DragTree', True, _('Features Available'),
                    _('Tree drag && drop available'))
+    BoolOptionItem(generalOptions, 'PrettyPrint', False,
+                   _('Features Available'),
+                   _('Indent (pretty print) TreeLine JSON files'))
     BoolOptionItem(generalOptions, 'ShowTreeIcons', True,
                    _('Features Available'), _('Show icons in the tree view'))
     BoolOptionItem(generalOptions, 'ShowMath', True, _('Features Available'),
