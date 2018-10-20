@@ -25,6 +25,12 @@ Name: "adduninstall"; Description: "Create an uninstaller"
 Name: "translate"; Description: "Include language translations"
 Name: "source"; Description: "Include source code"
 
+[InstallDelete]
+Type: files; Name: "{app}\*.dll"
+Type: filesandordirs; Name: "{app}\imageformats"
+Type: filesandordirs; Name: "{app}\lib"
+Type: filesandordirs; Name: "{app}\platforms"
+
 [Files]
 Source: "treeline.exe"; DestDir: "{app}"
 Source: "base_library.zip"; DestDir: "{app}"
