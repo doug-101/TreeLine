@@ -5,13 +5,13 @@
 
 [Setup]
 AppName=TreeLine
-AppVersion=3.0.1
+AppVersion=3.0.2
 ChangesAssociations=yes
 DefaultDirName={userappdata}\TreeLine-3
 DefaultGroupName=TreeLine
 DisableProgramGroupPage=yes
 OutputDir=.
-OutputBaseFilename=treeline-3.0.1-install-user
+OutputBaseFilename=treeline-3.0.2-install-user
 PrivilegesRequired=lowest
 SetupIconFile=treeline.ico
 Uninstallable=IsTaskSelected('adduninstall')
@@ -25,15 +25,19 @@ Name: "adduninstall"; Description: "Create an uninstaller"
 Name: "translate"; Description: "Include language translations"
 Name: "source"; Description: "Include source code"
 
+[InstallDelete]
+Type: files; Name: "{app}\*.dll"
+Type: filesandordirs; Name: "{app}\imageformats"
+Type: filesandordirs; Name: "{app}\lib"
+Type: filesandordirs; Name: "{app}\platforms"
+
 [Files]
 Source: "treeline.exe"; DestDir: "{app}"
+Source: "base_library.zip"; DestDir: "{app}"
+Source: "treeline.exe.manifest"; DestDir: "{app}"
 Source: "*.dll"; DestDir: "{app}"
-Source: "lib\*.dll"; DestDir: "{app}\lib"
-Source: "lib\*.pyd"; DestDir: "{app}\lib"
-Source: "lib\*.zip"; DestDir: "{app}\lib"
-Source: "lib\*140.dll"; DestDir: "{app}"
-Source: "imageformats\*.dll"; DestDir: "{app}\imageformats"
-Source: "platforms\*.dll"; DestDir: "{app}\platforms"
+Source: "*.pyd"; DestDir: "{app}"
+Source: "PyQt5\*"; DestDir: "{app}\PyQt5"; Flags: recursesubdirs
 Source: "doc\LICENSE"; DestDir: "{app}\doc"
 Source: "doc\basichelp.html"; DestDir: "{app}\doc"
 Source: "doc\documentation.trln"; DestDir: "{app}\doc"; Attribs: readonly; \
@@ -52,6 +56,8 @@ Source: "templates\*.trln"; DestDir: "{app}\templates"; Attribs: readonly; \
         Tasks: "translate"; Flags: overwritereadonly uninsremovereadonly
 Source: "translations\*.qm"; DestDir: "{app}\translations"; Tasks: "translate"
 Source: "source\*.py"; DestDir: "{app}\source"; Tasks: "source"
+Source: "source\treeline.pro"; DestDir: "{app}\source"; Tasks: "source"
+Source: "source\treeline.spec"; DestDir: "{app}\source"; Tasks: "source"
 Source: "treeline.ico"; DestDir: "{app}"; Tasks: "source"
 Source: "*.iss"; DestDir: "{app}"; Tasks: "source"
 

@@ -4,12 +4,12 @@
 # printdata.py, provides a class for printing
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
 # version.  This program is distributed in the hope that it will be useful,
-# but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
+# but WITHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
 import os.path
@@ -220,6 +220,7 @@ class PrintData:
         pageNum = 1
         columnNum = 0
         pagePos = 0
+        itemSplit = False
         self.checkPageLayout()
         heightAvail = (self.pageLayout.paintRect().height() *
                        self.printer.logicalDpiY())
@@ -255,7 +256,7 @@ class PrintData:
             if item:
                 item.setDocHeight(self.printer, widthRemain, self.mainFont,
                                   True)
-                if item.height > heightAvail:
+                if item.height > heightAvail and not itemSplit:
                     item, newItem = item.splitDocHeight(heightAvail - pagePos,
                                                         heightAvail,
                                                         self.printer,
@@ -263,6 +264,7 @@ class PrintData:
                                                         self.mainFont)
                     if newItem:
                         self.outputGroup.insert(0, newItem)
+                        itemSplit = True
             if item and (pagePos + item.height <= heightAvail or pagePos == 0):
                 item.pageNum = pageNum
                 item.columnNum = columnNum
@@ -276,6 +278,7 @@ class PrintData:
                     pageNum += 1
                     columnNum = 0
                 pagePos = 0
+                itemSplit = False
                 if item:
                     self.outputGroup.insert(0, item)
                     if self.widowControl and not item.siblingPrefix:
@@ -291,7 +294,8 @@ class PrintData:
                             moveItems.insert(0, newGroup.pop())
                             moveHeight += moveItems[0].height
                             level -= 1
-                        if moveItems and moveHeight < (heightAvail // 5):
+                        if (moveItems and newGroup and
+                            moveHeight < (heightAvail // 5)):
                             self.outputGroup[0:0] = moveItems
                         else:
                             newGroup.extend(moveItems)

@@ -9,4 +9,5 @@ If your distribution defaults to Python 2.x, you may need to substitute
 
 To see all install options, use: 'python install.py -h'.  To install
 TreeLine with a different prefix (the default is '/usr/local'), use:
-'python install.py -p /prefix/path'.
+'python install.py -p /prefix/path'.  To skip dependency checks, use:
+'python install.py -x'.

@@ -396,6 +396,75 @@
 "uid": "653f2f90334c11e8a7c9d66a6ab671cb"
 },
 {
+"children": [],
+"data": {
+"Name": "Printing long nodes",
+"Text": "Multiple issues with printing long nodes were fixed."
+},
+"format": "BULLETS",
+"uid": "6610203dd2c111e8a95ad66a6ab671cb"
+},
+{
+"children": [
+"66102040d2c111e8a210d66a6ab671cb",
+"66102041d2c111e8bd85d66a6ab671cb"
+],
+"data": {
+"Name": "October 20, 2018 - Release 3.0.2 (stable release)"
+},
+"format": "HEADINGS",
+"uid": "6610203fd2c111e8b033d66a6ab671cb"
+},
+{
+"children": [
+"66102049d2c111e8bb55d66a6ab671cb"
+],
+"data": {
+"Name": "Updates"
+},
+"format": "BULLET_HEADING",
+"uid": "66102040d2c111e8a210d66a6ab671cb"
+},
+{
+"children": [
+"66102043d2c111e88d57d66a6ab671cb",
+"6610203dd2c111e8a95ad66a6ab671cb",
+"66102048d2c111e89f4cd66a6ab671cb"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "66102041d2c111e8bd85d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Windows printing",
+"Text": "Fixed nonfunctional printing commands under Windows by building the Windows binary using PyInstaller rather than cx_Freeze."
+},
+"format": "BULLETS",
+"uid": "66102043d2c111e88d57d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Blanks as zeros",
+"Text": "Fixed problems saving files when the blanks as zeros property was changed for math fields."
+},
+"format": "BULLETS",
+"uid": "66102048d2c111e89f4cd66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Python 3.7",
+"Text": "Upgraded the Windows binary from Python 3.6 to Python 3.7."
+},
+"format": "BULLETS",
+"uid": "66102049d2c111e8bb55d66a6ab671cb"
+},
+{
 "children": [
 "67e95a5fbbf611e8b8bda44cc8e97404",
 "67e95a60bbf611e8a80ca44cc8e97404"
@@ -1022,7 +1091,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 3.0.1, a stable release, dated September 29, 2018 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.0.2, a stable release, dated October 20, 2018 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -1663,7 +1732,7 @@
 "children": [],
 "data": {
 "Name": "Install options",
-"Text": "To see all install options, use: \"python install.py -h\". To install TreeLine with a different prefix (the default is /usr/local), use:  \"python install.py -p /prefix/path\"."
+"Text": "To see all install options, use: \"python install.py -h\". To install TreeLine with a different prefix (the default is /usr/local), use: \"python install.py -p /prefix/path\".  To skip dependency checks, use: \"python install.py -x\"."
 },
 "format": "PARAGRAPH",
 "uid": "f16fcb9ca25a11e7b7c67054d2175f18"
@@ -2674,6 +2743,7 @@
 },
 {
 "children": [
+"6610203fd2c111e8b033d66a6ab671cb",
 "67e95a5bbbf611e891f7a44cc8e97404",
 "e8e10d33a14311e88e24a44cc8e97404",
 "4bc47248786711e8a8bfa44cc8e97404",
@@ -5064,7 +5134,7 @@
 }
 ],
 "properties": {
-"tlversion": "3.0.1",
+"tlversion": "3.0.2",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]

@@ -4,17 +4,16 @@
 # treeoutput.py, provides classes for output to views, html and printing
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
 # version.  This program is distributed in the hope that it will be useful,
-# but WITTHOUT ANY WARRANTY.  See the included LICENSE file for details.
+# but WITHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
 import re
 import itertools
-import copy
 from PyQt5.QtGui import QTextDocument
 import globalref
 
@@ -29,35 +28,63 @@ class OutputItem:
     def __init__(self, spot, level):
         """Convert the spot's node into an output item.
 
+        Create a blank item if spot is None.
+
         Arguments:
             spot -- the tree spot to convert
             level -- the node's original indent level
         """
-        node = spot.nodeRef
-        nodeFormat = node.formatRef
-        if not nodeFormat.useTables:
-            self.textLines = [line + '<br />' for line in
-                              node.output(spotRef=spot)]
+        if spot:
+            node = spot.nodeRef
+            nodeFormat = node.formatRef
+            if not nodeFormat.useTables:
+                self.textLines = [line + '<br />' for line in
+                                  node.output(spotRef=spot)]
+            else:
+                self.textLines = node.output(keepBlanks=True, spotRef=spot)
+            if not self.textLines:
+                self.textLines = ['']
+            self.addSpace = nodeFormat.spaceBetween
+            self.siblingPrefix = nodeFormat.siblingPrefix
+            self.siblingSuffix = nodeFormat.siblingSuffix
+            if nodeFormat.useBullets and self.textLines:
+                # remove <br /> extra space for bullets
+                self.textLines[-1] = self.textLines[-1][:-6]
+            self.uId = node.uId
         else:
-            self.textLines = node.output(keepBlanks=True, spotRef=spot)
-        if not self.textLines:
             self.textLines = ['']
-        self.addSpace = nodeFormat.spaceBetween
-        self.siblingPrefix = nodeFormat.siblingPrefix
-        self.siblingSuffix = nodeFormat.siblingSuffix
-        if nodeFormat.useBullets and self.textLines:
-            # remove <br /> extra space for bullets
-            self.textLines[-1] = self.textLines[-1][:-6]
+            self.addSpace = False
+            self.siblingPrefix = ''
+            self.siblingSuffix = ''
+            self.uId = None
         self.level = level
-        self.uId = node.uId
         # following variables used by printdata only:
-        height = 0
+        self.height = 0
         self.pageNum = 0
         self.columnNum = 0
         self.pagePos = 0
         self.doc = None
         self.parentItem = None
         self.lastChildItem = None
+
+    def duplicate(self):
+        """Return an independent copy of this OutputItem.
+        """
+        item = OutputItem(None, 0)
+        item.textLines = self.textLines[:]
+        item.addSpace = self.addSpace
+        item.siblingPrefix = self.siblingPrefix
+        item.siblingSuffix = self.siblingSuffix
+        item.uId = self.uId
+        item.level = self.level
+        item.height = self.height
+        item.pageNum = self.pageNum
+        item.columnNum = self.columnNum
+        item.pagePos = self.pagePos
+        item.doc = None
+        item.parentItem = self.parentItem
+        item.lastChildItem = self.lastChildItem
+        return item
 
     def addIndent(self, prevLevel, nextLevel):
         """Add <div> tags to define indent levels in the output.
@@ -176,7 +203,7 @@ class OutputItem:
             width -- the width available for the output text
             printFont -- the default font for the document
         """
-        newItem = copy.deepcopy(self)
+        newItem = self.duplicate()
         fullHeight = self.height
         lines = '\n'.join(self.textLines)
         allLines = [line + '<br />' for line in lines.split('<br />')]
@@ -186,7 +213,7 @@ class OutputItem:
             self.textLines.append(line)
             self.setDocHeight(paintDevice, width, printFont, True)
             if ((prevHeight and self.height > initHeight and
-                 fullHeight - prevHeight < maxHeight) or
+                 fullHeight - prevHeight > maxHeight) or
                 (prevHeight and self.height > maxHeight)):
                 self.textLines = self.textLines[:-1]
                 self.setDocHeight(paintDevice, width, printFont, True)
@@ -355,7 +382,7 @@ class OutputGroup(list):
             addPrefixes -- if True, add sibling prefix and suffix to result
             addSpacing -- if True, add spacing between items with addSpace True
         """
-        comboItem = copy.deepcopy(self[0])
+        comboItem = self[0].duplicate()
         for item in self[1:]:
             if item.addSpace:
                 comboItem.textLines[-1] += '<br />'
