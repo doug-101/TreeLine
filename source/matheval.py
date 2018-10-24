@@ -4,7 +4,7 @@
 # matheval.py, provides a safe eval of mathematical expressions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -205,7 +205,7 @@ class MathEquation:
         except ZeroDivisionError:
             pass
 
-    def equationValue(self, eqnNode, zeroValue=0):
+    def equationValue(self, eqnNode, zeroValue=0, noMarkup=True):
         """Return a value for the equation in the given node.
 
         Return None if references are invalid.
@@ -213,10 +213,11 @@ class MathEquation:
         Arguments:
             eqnNode -- the node containing the equation to evaluate
             zeroValue -- the value to use for blanks
+            noMarkup -- if true, remove html markup
         """
         zeroBlanks = eqnNode.treeStructureRef().mathZeroBlanks
-        inputs = [ref.referenceValue(eqnNode, zeroBlanks) for ref in
-                  self.fieldRefs]
+        inputs = [ref.referenceValue(eqnNode, zeroBlanks, zeroValue, noMarkup)
+                  for ref in self.fieldRefs]
         if not zeroBlanks and None in inputs:
             return None
         inputs = [repr(value) for value in inputs]
@@ -275,7 +276,8 @@ class EquationFieldRef:
         self.eqnNodeTypeName = ''
         self.eqnFieldName = ''
 
-    def referenceValue(self, eqnNode, zeroBlanks=True, zeroValue=0):
+    def referenceValue(self, eqnNode, zeroBlanks=True, zeroValue=0,
+                       noMarkup=True):
         """Return the value of the field referenced in a given node.
 
         Return None if blank or doesn't exist and not zeroBlanks,
@@ -284,10 +286,11 @@ class EquationFieldRef:
             eqnNode -- the node containing the equation to evaluate
             zeroBlanks -- replace blank fields with zeroValue if True
             zeroValue -- the value to use for blanks
+            noMarkup -- if true, remove html markup
         """
         try:
             return (eqnNode.formatRef.fieldDict[self.fieldName].
-                    mathValue(eqnNode, zeroBlanks))
+                    mathValue(eqnNode, zeroBlanks, noMarkup))
         except KeyError:
             return zeroValue if zeroBlanks else None
 
@@ -309,7 +312,8 @@ class EquationParentRef(EquationFieldRef):
     testValue = 1
     evalDirection = EvalDir.downward
 
-    def referenceValue(self, eqnNode, zeroBlanks=True, zeroValue=0):
+    def referenceValue(self, eqnNode, zeroBlanks=True, zeroValue=0,
+                       noMarkup=True):
         """Return the parent field value referenced from a given node.
 
         Return None if blank or doesn't exist and not zeroBlanks,
@@ -318,13 +322,14 @@ class EquationParentRef(EquationFieldRef):
             eqnNode -- the node containing the equation to evaluate
             zeroBlanks -- replace blank fields with zeroValue if True
             zeroValue -- the value to use for blanks
+            noMarkup -- if true, remove html markup
         """
         node = eqnNode.spotByNumber(0).parentSpot.nodeRef
         if not node.formatRef:
             return zeroValue if zeroBlanks else None
         try:
             return (node.formatRef.fieldDict[self.fieldName].
-                    mathValue(node, zeroBlanks))
+                    mathValue(node, zeroBlanks, noMarkup))
         except KeyError:
             return zeroValue if zeroBlanks else None
 
@@ -345,7 +350,8 @@ class EquationRootRef(EquationFieldRef):
     testValue = 1
     evalDirection = EvalDir.downward
 
-    def referenceValue(self, eqnNode, zeroBlanks=True, zeroValue=0):
+    def referenceValue(self, eqnNode, zeroBlanks=True, zeroValue=0,
+                       noMarkup=True):
         """Return the root field value referenced from a given node.
 
         Return None if blank or doesn't exist and not zeroBlanks,
@@ -354,11 +360,12 @@ class EquationRootRef(EquationFieldRef):
             eqnNode -- the node containing the equation to evaluate
             zeroBlanks -- replace blank fields with zeroValue if True
             zeroValue -- the value to use for blanks
+            noMarkup -- if true, remove html markup
         """
         node = eqnNode.spotByNumber(0).spotChain()[0].nodeRef
         try:
             return (node.formatRef.fieldDict[self.fieldName].
-                    mathValue(node, zeroBlanks))
+                    mathValue(node, zeroBlanks, noMarkup))
         except KeyError:
             return zeroValue if zeroBlanks else None
 
@@ -385,7 +392,8 @@ class EquationChildRef(EquationFieldRef):
     testValue = [1]
     evalDirection = EvalDir.upward
 
-    def referenceValue(self, eqnNode, zeroBlanks=True, zeroValue=0):
+    def referenceValue(self, eqnNode, zeroBlanks=True, zeroValue=0,
+                       noMarkup=True):
         """Return a list with child field values referenced from a given node.
 
         Return None if there are blanks and zeroBlanks is false,
@@ -399,7 +407,7 @@ class EquationChildRef(EquationFieldRef):
         for node in eqnNode.childList:
             try:
                 num = (node.formatRef.fieldDict[self.fieldName].
-                       mathValue(node, zeroBlanks))
+                       mathValue(node, zeroBlanks, noMarkup))
                 if num == None:
                     return None
                 result.append(num)

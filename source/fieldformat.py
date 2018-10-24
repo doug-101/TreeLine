@@ -224,16 +224,18 @@ class TextField:
         """
         return []
 
-    def mathValue(self, node, zeroBlanks=True):
+    def mathValue(self, node, zeroBlanks=True, noMarkup=True):
         """Return a value to be used in math field equations.
 
         Return None if blank and not zeroBlanks.
         Arguments:
             node -- the tree item storing the data
             zeroBlanks -- accept blank field values if True
+            noMarkup -- if true, remove html markup
         """
         storedText = node.data.get(self.name, '')
-        storedText = removeMarkup(storedText)
+        if storedText and noMarkup:
+            storedText = removeMarkup(storedText)
         return storedText if storedText or zeroBlanks else None
 
     def compareValue(self, node):
@@ -487,7 +489,7 @@ class NumberField(HtmlTextField):
             return ''
         return repr(gennumber.GenNumber().setFromStr(editorText, self.format))
 
-    def mathValue(self, node, zeroBlanks=True):
+    def mathValue(self, node, zeroBlanks=True, noMarkup=True):
         """Return a numeric value to be used in math field equations.
 
         Return None if blank and not zeroBlanks,
@@ -495,6 +497,7 @@ class NumberField(HtmlTextField):
         Arguments:
             node -- the tree item storing the data
             zeroBlanks -- replace blank field values with zeros if True
+            noMarkup -- not applicable to numbers
         """
         storedText = node.data.get(self.name, '')
         if storedText:
@@ -523,6 +526,7 @@ class MathField(HtmlTextField):
     typeName = 'Math'
     defaultFormat = '#.##'
     evalHtmlDefault = False
+    fixEvalHtmlSetting = False
     editorClassName = 'ReadOnlyEditor'
     def __init__(self, name, formatData=None):
         """Initialize a field format type.
@@ -635,9 +639,10 @@ class MathField(HtmlTextField):
             node -- the tree item with this equation
         """
         if self.equation:
+            zeroValue = _mathResultBlank[self.resultType]
             try:
-                num = self.equation.equationValue(node,
-                                             _mathResultBlank[self.resultType])
+                num = self.equation.equationValue(node, zeroValue,
+                                                  not self.evalHtml)
             except ValueError:
                 return _errorStr
             if num == None:
@@ -651,7 +656,10 @@ class MathField(HtmlTextField):
                 dateTime = dateTime + datetime.timedelta(seconds=num)
                 time = dateTime.time()
                 return time.strftime(TimeField.isoFormat)
-            return str(num)
+            text = str(num)
+            if not self.evalHtml:
+                text = saxutils.escape(text)
+            return text
         return ''
 
     def resultClass(self):
@@ -669,7 +677,7 @@ class MathField(HtmlTextField):
             self.resultType = resultType
             self.setFormat(self.resultClass().defaultFormat)
 
-    def mathValue(self, node, zeroBlanks=True):
+    def mathValue(self, node, zeroBlanks=True, noMarkup=True):
         """Return a numeric value to be used in math field equations.
 
         Return None if blank and not zeroBlanks,
@@ -677,6 +685,7 @@ class MathField(HtmlTextField):
         Arguments:
             node -- the tree item storing the data
             zeroBlanks -- replace blank field values with zeros if True
+            noMarkup -- if true, remove html markup
         """
         storedText = node.data.get(self.name, '')
         if storedText:
@@ -692,7 +701,9 @@ class MathField(HtmlTextField):
                 return (time - TimeField.refTime).seconds
             if self.resultType == MathResult.boolean:
                 return  genboolean.GenBoolean(storedText).value
-            return removeMarkup(storedText)
+            if noMarkup:
+                storedText = removeMarkup(storedText)
+            return storedText
         return _mathResultBlank[self.resultType] if zeroBlanks else None
 
     def adjustedCompareValue(self, value):
