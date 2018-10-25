@@ -852,6 +852,7 @@ class DateField(HtmlTextField):
     defaultFormat = '%B %-d, %Y'
     isoFormat = '%Y-%m-%d'
     evalHtmlDefault = False
+    fixEvalHtmlSetting = False
     editorClassName = 'DateEditor'
     refDate = datetime.date(1970, 1, 1)
     sortTypeStr = '40_date'
@@ -890,6 +891,8 @@ class DateField(HtmlTextField):
             text = date.strftime(adjOutDateFormat(self.format))
         except ValueError:
             text = _errorStr
+        if not self.evalHtml:
+            text = saxutils.escape(text)
         return super().formatOutput(text, titleMode, formatHtml)
 
     def formatEditorText(self, storedText):
@@ -1016,6 +1019,7 @@ class TimeField(HtmlTextField):
     defaultFormat = '%-I:%M:%S %p'
     isoFormat = '%H:%M:%S.%f'
     evalHtmlDefault = False
+    fixEvalHtmlSetting = False
     editorClassName = 'TimeEditor'
     numChoiceColumns = 2
     autoAddChoices = False
@@ -1056,6 +1060,8 @@ class TimeField(HtmlTextField):
             text = time.strftime(outFormat)
         except ValueError:
             text = _errorStr
+        if not self.evalHtml:
+            text = saxutils.escape(text)
         return super().formatOutput(text, titleMode, formatHtml)
 
     def formatEditorText(self, storedText):
@@ -1211,6 +1217,7 @@ class DateTimeField(HtmlTextField):
     defaultFormat = '%B %-d, %Y %-I:%M:%S %p'
     isoFormat = '%Y-%m-%d %H:%M:%S.%f'
     evalHtmlDefault = False
+    fixEvalHtmlSetting = False
     editorClassName = 'DateTimeEditor'
     refDateTime = datetime.datetime(1970, 1, 1)
     sortTypeStr ='45_datetime'
@@ -1261,6 +1268,8 @@ class DateTimeField(HtmlTextField):
             text = dateTime.strftime(outFormat)
         except ValueError:
             text = _errorStr
+        if not self.evalHtml:
+            text = saxutils.escape(text)
         return super().formatOutput(text, titleMode, formatHtml)
 
     def formatEditorText(self, storedText):
