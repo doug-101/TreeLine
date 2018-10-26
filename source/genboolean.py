@@ -3,7 +3,7 @@
 #******************************************************************************
 # genboolean.py, provides a class for boolean formating
 #
-# Copyright (C) 2014, Douglas W. Bell
+# Copyright (C) 2018, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -68,11 +68,15 @@ class GenBoolean:
 
         The dictionary includes conversions in both directions.
         String keys are in lower case.
+        Double editSep's are not split (become single).
         Raises ValueError with an inappropriate format.
         Arguments:
             strFormat -- a text format in True/False style
         """
+        strFormat = strFormat.replace('//', '\0')
         trueVal, falseVal = strFormat.split('/', 1)
+        trueVal = trueVal.replace('\0', '/')
+        falseVal = falseVal.replace('\0', '/')
         if not trueVal or not falseVal or trueVal == falseVal:
             raise ValueError
         return {trueVal.lower():True, falseVal.lower():False,

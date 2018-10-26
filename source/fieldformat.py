@@ -1834,7 +1834,7 @@ class BooleanField(ChoiceField):
     typeName = 'Boolean'
     defaultFormat = _('yes/no')
     evalHtmlDefault = False
-    fixEvalHtmlSetting = True
+    fixEvalHtmlSetting = False
     sortTypeStr ='30_bool'
     formatHelpMenuList = [(_('true/false'), 'true/false'),
                           (_('T/F'), 'T/F'), ('', ''),
@@ -1850,6 +1850,15 @@ class BooleanField(ChoiceField):
         """
         super().__init__(name, formatData)
 
+    def setFormat(self, format):
+        """Set the format string and initialize as required.
+
+        Arguments:
+            format -- the new format string
+        """
+        HtmlTextField.setFormat(self, format)
+        self.strippedFormat = removeMarkup(self.format)
+
     def formatOutput(self, storedText, titleMode, formatHtml):
         """Return formatted output text from stored text for this field.
 
@@ -1862,7 +1871,9 @@ class BooleanField(ChoiceField):
             text =  genboolean.GenBoolean(storedText).boolStr(self.format)
         except ValueError:
             text = _errorStr
-        return super().formatOutput(text, titleMode, formatHtml)
+        if not self.evalHtml:
+            text = saxutils.escape(text)
+        return HtmlTextField.formatOutput(self, text, titleMode, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -1873,7 +1884,8 @@ class BooleanField(ChoiceField):
         """
         if not storedText:
             return ''
-        return genboolean.GenBoolean(storedText).boolStr(self.format)
+        boolFormat = self.strippedFormat if self.evalHtml else self.format
+        return genboolean.GenBoolean(storedText).boolStr(boolFormat)
 
     def storedText(self, editorText):
         """Return new text to be stored based on text from the data editor.
@@ -1884,11 +1896,24 @@ class BooleanField(ChoiceField):
         """
         if not editorText:
             return ''
+        boolFormat = self.strippedFormat if self.evalHtml else self.format
         try:
             return repr(genboolean.GenBoolean().setFromStr(editorText,
-                                                           self.format))
+                                                           boolFormat))
         except ValueError:
             return repr(genboolean.GenBoolean(editorText))
+
+    def comboChoices(self):
+        """Return a list of choices for the combo box.
+        """
+        if self.evalHtml:
+            return self.splitText(self.strippedFormat)
+        return self.splitText(self.format)
+
+    def initDefaultChoices(self):
+        """Return a list of choices for setting the init default.
+        """
+        return self.comboChoices()
 
     def mathValue(self, node, zeroBlanks=True):
         """Return a value to be used in math field equations.
