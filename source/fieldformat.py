@@ -2471,4 +2471,9 @@ def translatedTypeName(typeName):
     Arguments:
         typeName -- the English type name
     """
-    return translatedFieldTypes[fieldTypes.index(typeName)]
+    try:
+        return translatedFieldTypes[fieldTypes.index(typeName)]
+    except ValueError:
+        if typeName == 'DescendantCount':
+            return _('DescendantCount')
+        raise
