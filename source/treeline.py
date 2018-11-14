@@ -13,7 +13,7 @@
 #******************************************************************************
 
 __progname__ = 'TreeLine'
-__version__ = '3.0.2'
+__version__ = '3.0.2+'
 __author__ = 'Doug Bell'
 
 docPath = None         # modified by install script if required
@@ -43,7 +43,7 @@ def loadTranslator(fileName, app):
     translator = QTranslator(app)
     modPath = pathlib.Path(sys.path[0]).resolve()
     if modPath.is_file():
-        modPath = modPath.parent
+        modPath = modPath.parent  # for frozen binary
     path = modPath / translationPath
     result = translator.load(fileName, str(path))
     if not result:

@@ -549,10 +549,12 @@ class Options(OrderedDict):
 
         if not fileName:
             return    # no storage without fileName (temporary options only)
+        if not version:
+            version = '0'
         appDirName = '{0}-{1}'.format(progName.lower(), version)
         fileNameSuffix = '.ini' if sys.platform.startswith('win') else 'rc'
 
-        if not Options.basePath:
+        if not Options.basePath and progName and coDirName:
             if sys.platform.startswith('win'):    # Windows
                 userPath = (pathlib.Path(os.environ.get('APPDATA', '')) /
                             coDirName / appDirName)
@@ -563,6 +565,8 @@ class Options(OrderedDict):
                 Options.basePath = userPath
             else:
                 modPath = pathlib.Path(sys.path[0]).resolve()
+                if modPath.is_file():
+                    modPath = modPath.parent  # for frozen binary
                 modConfigPath = modPath / 'config'
                 if modConfigPath.is_dir():
                     Options.basePath = modConfigPath
@@ -649,7 +653,7 @@ class Options(OrderedDict):
     def readFile(self):
         """Read config options from the file on self.path.
 
-        Create the file if it isn't found.
+        Create the file if it isn't found, raise IOError if this fails.
         Only updates existing config items.
         """
         try:
@@ -661,18 +665,23 @@ class Options(OrderedDict):
                     except AttributeError:
                         pass
         except (IOError, ValueError):
-            self.writeFile()
+            if not self.writeFile():
+                raise IOError
 
     def writeFile(self):
         """Write current options to the file on self.path.
 
-        Raises IOError on failure.
+        Returns False on failure.
         """
-        with self.path.open('w', encoding='utf-8') as f:
-            data = OrderedDict([(key, obj.storedValue()) for (key, obj) in
-                                self.items()])
-            json.dump(data, f, indent=0)
-        self.modified = False
+        try:
+            with self.path.open('w', encoding='utf-8') as f:
+                data = OrderedDict([(key, obj.storedValue()) for (key, obj) in
+                                    self.items()])
+                json.dump(data, f, indent=0)
+            self.modified = False
+        except IOError:
+            return False
+        return True
 
 
 class OptionDialog(QDialog):
