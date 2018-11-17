@@ -151,7 +151,7 @@
 "children": [],
 "data": {
 "Name": "Limit installer deletions",
-"Text": "In the Windows installer, limit the deletion of files from older versions that could cause problems if installing into a directory shared with other applications."
+"Text": "In the Windows installer, improve the deletion of files from older versions and avoid problems if installing into a directory shared with other applications."
 },
 "format": "BULLETS",
 "uid": "2767e530e80411e8aec9a44cc8e97404"
@@ -5194,7 +5194,7 @@
 }
 ],
 "properties": {
-"tlversion": "3.0.2+",
+"tlversion": "3.0.3",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
