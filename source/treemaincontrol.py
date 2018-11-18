@@ -116,9 +116,13 @@ class TreeMainControl(QObject):
             globalref.toolbarOptions.readFile()
             globalref.keyboardOptions.readFile()
         except IOError:
+            errorDir = options.Options.basePath
+            if not errorDir:
+                errorDir = _('missing directory')
             QMessageBox.warning(None, 'TreeLine',
                                 _('Error - could not write config file to {}').
-                                format(options.Options.basePath))
+                                format(errorDir))
+            options.Options.basePath = None
         iconPathList = self.findResourcePaths('icons', iconPath)
         globalref.toolIcons = icondict.IconDict([path / 'toolbar' for path
                                                  in iconPathList],
@@ -171,9 +175,12 @@ class TreeMainControl(QObject):
             preferredPath -- add this as the second path if given
         """
         modPath = pathlib.Path(sys.path[0]).resolve()
-        basePath = pathlib.Path(options.Options.basePath)
-        pathList = [basePath / resourceName, modPath / '..' / resourceName,
-                    modPath / resourceName]
+        if modPath.is_file():
+            modPath = modPath.parent    # for frozen binary
+        pathList = [modPath / '..' / resourceName, modPath / resourceName]
+        if options.Options.basePath:
+            basePath = pathlib.Path(options.Options.basePath)
+            pathList.insert(0, basePath / resourceName)
         if preferredPath:
             pathList.insert(1, pathlib.Path(preferredPath))
         return [path.resolve() for path in pathList if path.is_dir() and

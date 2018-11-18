@@ -5,13 +5,13 @@
 
 [Setup]
 AppName=TreeLine
-AppVersion=3.0.2
+AppVersion=3.0.3
 ChangesAssociations=yes
 DefaultDirName={pf}\TreeLine-3
 DefaultGroupName=TreeLine
 DisableProgramGroupPage=yes
 OutputDir=.
-OutputBaseFilename=treeline-3.0.2-install-all
+OutputBaseFilename=treeline-3.0.3-install-all
 PrivilegesRequired=poweruser
 SetupIconFile=treeline.ico
 Uninstallable=IsTaskSelected('adduninstall')
@@ -26,10 +26,29 @@ Name: "translate"; Description: "Include language translations"
 Name: "source"; Description: "Include source code"
 
 [InstallDelete]
-Type: files; Name: "{app}\*.dll"
+Type: files; Name: "{app}\library.zip"
+Type: files; Name: "{app}\msvcp100.dll"
+Type: files; Name: "{app}\MSVCR100.dll"
+Type: files; Name: "{app}\PyQt4*.dll"
+Type: files; Name: "{app}\python3*.dll"
+Type: files; Name: "{app}\Qt*4.dll"
+Type: files; Name: "{app}\sip.pyd"
+Type: files; Name: "{app}\SSLEAY32.dll"
+Type: files; Name: "{app}\doc\documentation.trl"
 Type: filesandordirs; Name: "{app}\imageformats"
-Type: filesandordirs; Name: "{app}\lib"
+Type: files; Name: "{app}\lib\MSVCP140.dll"
+Type: files; Name: "{app}\lib\python*.dll"
+Type: files; Name: "{app}\lib\Qt5*.dll"
+Type: files; Name: "{app}\lib\VCRUNTIME140.dll"
+Type: files; Name: "{app}\lib\library.zip"
+Type: files; Name: "{app}\lib\*.pyd"
+Type: dirifempty; Name: "{app}\lib"
 Type: filesandordirs; Name: "{app}\platforms"
+Type: dirifempty; Name: "{app}\plugins"
+Type: files; Name: "{app}\samples\*.trl"
+Type: files; Name: "{app}\source\*.py"
+Type: files; Name: "{app}\templates\*.trl"
+Type: files; Name: "{app}\translations\*.qm"
 
 [Files]
 Source: "treeline.exe"; DestDir: "{app}"

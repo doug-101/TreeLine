@@ -150,6 +150,15 @@
 {
 "children": [],
 "data": {
+"Name": "Limit installer deletions",
+"Text": "In the Windows installer, improve the deletion of files from older versions and avoid problems if installing into a directory shared with other applications."
+},
+"format": "BULLETS",
+"uid": "2767e530e80411e8aec9a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Option to keep inaccessible recent files",
 "Text": "A new general option controls whether inaccessible files are removed from the recent file list at startup. The files are removed by default, but this can be changed to avoid losing listings of files stored on removable drives."
 },
@@ -780,6 +789,56 @@
 {
 "children": [],
 "data": {
+"Name": "Portable config",
+"Text": "Problems with writing config files in Windows portable installations were fixed."
+},
+"format": "BULLETS",
+"uid": "9c08f39de80311e8b791a44cc8e97404"
+},
+{
+"children": [
+"9c08f3a0e80311e8b2e0a44cc8e97404"
+],
+"data": {
+"Name": "November 17, 2018 - Release 3.0.3 (stable release)"
+},
+"format": "HEADINGS",
+"uid": "9c08f39ee80311e8a510a44cc8e97404"
+},
+{
+"children": [
+"9c08f3a1e80311e884dca44cc8e97404",
+"9c08f39de80311e8b791a44cc8e97404",
+"9c08f3a2e80311e88128a44cc8e97404",
+"2767e530e80411e8aec9a44cc8e97404"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "9c08f3a0e80311e8b2e0a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Child count fields",
+"Text": "Fixed an error when adding child count fields to the output format."
+},
+"format": "BULLETS",
+"uid": "9c08f3a1e80311e884dca44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Config file error handling",
+"Text": "Improved error handling after failing to read or write config files."
+},
+"format": "BULLETS",
+"uid": "9c08f3a2e80311e88128a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Complex undo operations",
 "Text": "Fixed some problems with using the Undo command after complex operations."
 },
@@ -1091,7 +1150,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 3.0.2, a stable release, dated October 20, 2018 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.0.3, a stable release, dated November 17, 2018 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -2743,6 +2802,7 @@
 },
 {
 "children": [
+"9c08f39ee80311e8a510a44cc8e97404",
 "6610203fd2c111e8b033d66a6ab671cb",
 "67e95a5bbbf611e891f7a44cc8e97404",
 "e8e10d33a14311e88e24a44cc8e97404",
@@ -5134,7 +5194,7 @@
 }
 ],
 "properties": {
-"tlversion": "3.0.2",
+"tlversion": "3.0.3",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
