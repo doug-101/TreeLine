@@ -4,7 +4,7 @@
 # matheval.py, provides a safe eval of mathematical expressions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -15,9 +15,15 @@
 import re
 import ast
 import enum
+import datetime
 import builtins
+import fieldformat
 import gennumber
 from math import *
+
+_nowDateString = 'Now_Date'
+_nowTimeString = 'Now_Time'
+_nowDateTimeString = 'Now_Date_Time'
 
 
 def sum(*args):
@@ -292,6 +298,18 @@ class EquationFieldRef:
             return (eqnNode.formatRef.fieldDict[self.fieldName].
                     mathValue(eqnNode, zeroBlanks, noMarkup))
         except KeyError:
+            if self.fieldName == _nowDateString:
+                return (datetime.date.today() -
+                        fieldformat.DateField.refDate).days
+            elif self.fieldName == _nowTimeString:
+                now = datetime.datetime.combine(fieldformat.DateField.refDate,
+                                                datetime.datetime.now().time())
+                ref = datetime.datetime.combine(fieldformat.DateField.refDate,
+                                                fieldformat.TimeField.refTime)
+                return (now - ref).seconds
+            elif self.fieldName == _nowDateTimeString:
+                return (datetime.datetime.now() -
+                        fieldformat.DateTimeField.refDateTime).total_seconds()
             return zeroValue if zeroBlanks else None
 
     def dependentEqnNodes(self, refNode):

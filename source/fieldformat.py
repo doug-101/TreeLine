@@ -4,7 +4,7 @@
 # fieldformat.py, provides a class to handle field format types
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -964,7 +964,7 @@ class DateField(HtmlTextField):
         """
         return [_dateStampString]
 
-    def mathValue(self, node, zeroBlanks=True):
+    def mathValue(self, node, zeroBlanks=True, noMarkup=True):
         """Return a numeric value to be used in math field equations.
 
         Return None if blank and not zeroBlanks,
@@ -1159,7 +1159,7 @@ class TimeField(HtmlTextField):
         """
         return [_timeStampString]
 
-    def mathValue(self, node, zeroBlanks=True):
+    def mathValue(self, node, zeroBlanks=True, noMarkup=True):
         """Return a numeric value to be used in math field equations.
 
         Return None if blank and not zeroBlanks,
@@ -1360,7 +1360,7 @@ class DateTimeField(HtmlTextField):
         """
         return [_timeStampString]
 
-    def mathValue(self, node, zeroBlanks=True):
+    def mathValue(self, node, zeroBlanks=True, noMarkup=True):
         """Return a numeric value to be used in math field equations.
 
         Return None if blank and not zeroBlanks,
@@ -1373,7 +1373,7 @@ class DateTimeField(HtmlTextField):
         if storedText:
             dateTime = datetime.datetime.strptime(storedText,
                                                   DateTimeField.isoFormat)
-            return (dateTime - DateTimeField.refDateTime).seconds
+            return (dateTime - DateTimeField.refDateTime).total_seconds()
         return 0 if zeroBlanks else None
 
     def compareValue(self, node):
@@ -1915,7 +1915,7 @@ class BooleanField(ChoiceField):
         """
         return self.comboChoices()
 
-    def mathValue(self, node, zeroBlanks=True):
+    def mathValue(self, node, zeroBlanks=True, noMarkup=True):
         """Return a value to be used in math field equations.
 
         Return None if blank and not zeroBlanks,
