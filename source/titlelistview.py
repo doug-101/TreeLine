@@ -4,7 +4,7 @@
 # titlelistview.py, provides a class for the title list view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,7 +14,7 @@
 
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QKeySequence, QPalette, QTextCursor
-from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtWidgets import QAction, QTextEdit
 import treenode
 import undo
 import globalref
@@ -44,6 +44,8 @@ class TitleListView(QTextEdit):
         self.setLineWrapMode(QTextEdit.NoWrap)
         self.setTabChangesFocus(True)
         self.setUndoRedoEnabled(False)
+        self.treeSelectAction = QAction(_('Select in Tree'), self)
+        self.treeSelectAction.triggered.connect(self.selectLineInTree)
         self.textChanged.connect(self.readChange)
 
     def updateContents(self):
@@ -68,6 +70,8 @@ class TitleListView(QTextEdit):
             return
         if self.isChildView:
             selSpots = selSpots[0].childSpots()
+        self.treeSelectAction.setEnabled(self.isChildView and
+                                         len(selSpots) > 0)
         self.blockSignals(True)
         if selSpots:
             self.setPlainText('\n'.join(spot.nodeRef.title(spot) for spot in
@@ -126,6 +130,23 @@ class TitleListView(QTextEdit):
         else:
             self.updateContents()  # remove illegal changes
 
+    def selectLineInTree(self):
+        """Select the node for the current line in the tree view.
+        """
+        selSpots = self.treeView.selectionModel().selectedSpots()
+        if not selSpots:
+            selSpots = [treeStructure.structSpot()]
+        spotList = selSpots[0].childSpots()
+        cursor = self.textCursor()
+        blockStart = cursor.block().position()
+        # check for selection all on one line
+        if (cursor.selectionStart() >= blockStart and
+            cursor.selectionEnd() < blockStart + cursor.block().length()):
+            lineNum = cursor.blockNumber()
+            if len(spotList) > lineNum:
+                self.treeView.selectionModel().selectSpots([spotList[lineNum]],
+                                                           True, True)
+
     def hasSelectedText(self):
         """Return True if text is selected.
         """
@@ -183,6 +204,8 @@ class TitleListView(QTextEdit):
         menu = self.createStandardContextMenu()
         menu.removeAction(menu.actions()[0])
         menu.removeAction(menu.actions()[0])
+        menu.insertSeparator(menu.actions()[0])
+        menu.insertAction(menu.actions()[0], self.treeSelectAction)
         menu.exec_(event.globalPos())
 
     def keyPressEvent(self, event):
