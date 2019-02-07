@@ -4,7 +4,7 @@
 # treelocalcontrol.py, provides a class for the main tree commands
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -1674,6 +1674,7 @@ class TreeLocalControl(QObject):
         """
         window = treewindow.TreeWindow(self.model, self.allActions)
         self.setWindowSignals(window)
+        window.winMinimized.connect(globalref.mainControl.trayMinimize)
         self.windowList.append(window)
         window.setCaption(self.filePathObj)
         oldControl = globalref.mainControl.activeControl

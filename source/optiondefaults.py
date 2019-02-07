@@ -4,7 +4,7 @@
 # optiondefaults.py, defines defaults for config options
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -50,6 +50,9 @@ def setGenOptionDefaults(generalOptions):
     BoolOptionItem(generalOptions, 'OpenNewWindow', True,
                    _('Features Available'),
                    _('Open files in new windows'))
+    BoolOptionItem(generalOptions, 'MinToSysTray', False,
+                   _('Features Available'),
+                   _('Minimize application to system tray'))
     BoolOptionItem(generalOptions, 'EditorOnHover', True,
                    _('Features Available'),
                    _('Activate data editors on mouse hover'))

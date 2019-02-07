@@ -4,7 +4,7 @@
 # treemaincontrol.py, provides a class for global tree commands
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -23,7 +23,7 @@ from PyQt5.QtCore import QIODevice, QObject, Qt, PYQT_VERSION_STR, qVersion
 from PyQt5.QtGui import QFont
 from PyQt5.QtNetwork import QLocalServer, QLocalSocket
 from PyQt5.QtWidgets import (QAction, QApplication, QDialog, QFileDialog,
-                             QMessageBox, qApp)
+                             QMessageBox, QSystemTrayIcon, qApp)
 import globalref
 import treelocalcontrol
 import options
@@ -67,6 +67,8 @@ class TreeMainControl(QObject):
         super().__init__(parent)
         self.localControls = []
         self.activeControl = None
+        self.trayIcon = None
+        self.isTrayMinimized = False
         self.configDialog = None
         self.sortDialog = None
         self.numberingDialog = None
@@ -141,6 +143,8 @@ class TreeMainControl(QObject):
         self.setupActions()
         self.systemFont = QApplication.font()
         self.updateAppFont()
+        if globalref.genOptions['MinToSysTray']:
+            self.createTrayIcon()
         qApp.focusChanged.connect(self.updateActionsAvail)
         if pathObjects:
             for pathObj in pathObjects:
@@ -481,7 +485,46 @@ class TreeMainControl(QObject):
             self.recentFiles.writeItems()
             localControl.windowList[0].saveToolbarPosition()
             globalref.histOptions.writeFile()
+            self.trayIcon.hide()
         localControl.deleteLater()
+
+    def createTrayIcon(self):
+        """Create a new system tray icon if not already created.
+        """
+        if QSystemTrayIcon.isSystemTrayAvailable:
+            if not self.trayIcon:
+                self.trayIcon = QSystemTrayIcon(qApp.windowIcon(), qApp)
+                self.trayIcon.activated.connect(self.toggleTrayShow)
+            self.trayIcon.show()
+
+    def trayMinimize(self):
+        """Minimize to tray based on window minimize signal.
+        """
+        if self.trayIcon and QSystemTrayIcon.isSystemTrayAvailable:
+            # skip minimize to tray if not all windows minimized
+            for control in self.localControls:
+                for window in control.windowList:
+                    if not window.isMinimized():
+                        return
+            for control in self.localControls:
+                for window in control.windowList:
+                    window.hide()
+            self.isTrayMinimized = True
+
+    def toggleTrayShow(self):
+        """Toggle show and hide application based on system tray icon click.
+        """
+        if self.isTrayMinimized:
+            for control in self.localControls:
+                for window in control.windowList:
+                    window.show()
+                    window.showNormal()
+            self.activeControl.activeWindow.treeView.setFocus()
+        else:
+            for control in self.localControls:
+                for window in control.windowList:
+                    window.hide()
+        self.isTrayMinimized = not self.isTrayMinimized
 
     def updateConfigDialog(self):
         """Update the config dialog for changes if it exists.
@@ -871,6 +914,10 @@ class TreeMainControl(QObject):
             globalref.genOptions.modified):
             globalref.genOptions.writeFile()
             self.recentFiles.updateOptions()
+            if globalref.genOptions['MinToSysTray']:
+                self.createTrayIcon()
+            else:
+                self.trayIcon.hide()
             autoSaveMinutes = globalref.genOptions['AutoSaveMinutes']
             for control in self.localControls:
                 for window in control.windowList:
