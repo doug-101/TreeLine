@@ -4,7 +4,7 @@
 # dataeditors.py, provides classes for data editors in the data edit view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -992,8 +992,10 @@ class ReadOnlyEditor(LineEditor):
         Arguments:
             parent -- the parent, if given
         """
-        super().__init__(parent)
+        super().__init__(parent, True)
         self.setReadOnly(True)
+        self.setStyleSheet('QLineEdit {border: 2px solid palette(highlight); '
+                           'background-color: palette(button)}')
 
 
 class ComboEditor(QComboBox):
