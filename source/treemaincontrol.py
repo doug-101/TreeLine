@@ -485,7 +485,8 @@ class TreeMainControl(QObject):
             self.recentFiles.writeItems()
             localControl.windowList[0].saveToolbarPosition()
             globalref.histOptions.writeFile()
-            self.trayIcon.hide()
+            if self.trayIcon:
+                self.trayIcon.hide()
         localControl.deleteLater()
 
     def createTrayIcon(self):
@@ -916,7 +917,7 @@ class TreeMainControl(QObject):
             self.recentFiles.updateOptions()
             if globalref.genOptions['MinToSysTray']:
                 self.createTrayIcon()
-            else:
+            elif self.trayIcon:
                 self.trayIcon.hide()
             autoSaveMinutes = globalref.genOptions['AutoSaveMinutes']
             for control in self.localControls:
