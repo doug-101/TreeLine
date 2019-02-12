@@ -114,9 +114,6 @@ class TreeLocalControl(QObject):
             else:
                 oldControl.controlClosed.emit(oldControl)
             window.resetTreeModel(self.model)
-            # set first spot current to match cases with a new window
-            window.treeView.selectionModel().setCurrentSpot(self.structure.
-                                                            rootSpots()[0])
             self.setWindowSignals(window, True)
             window.updateActions(self.allActions)
             self.windowList.append(window)
@@ -329,6 +326,14 @@ class TreeLocalControl(QObject):
             treeView = self.activeWindow.treeView
             for spot in self.structure.rootSpots():
                 treeView.expandSpot(spot)
+
+    def selectRootSpot(self):
+        """Select the first root spot in the tree.
+
+        Does not signal an update.
+        """
+        self.currentSelectionModel().selectSpots([self.structure.
+                                                  rootSpots()[0]], False)
 
     def currentSelectionModel(self):
         """Return the current tree's selection model.
@@ -1683,5 +1688,6 @@ class TreeLocalControl(QObject):
         window.restoreWindowGeom(offset)
         self.activeWindow = window
         self.expandRootNodes()
+        self.selectRootSpot()
         window.show()
         window.updateRightViews()

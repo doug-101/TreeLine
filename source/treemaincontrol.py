@@ -262,6 +262,7 @@ class TreeMainControl(QObject):
             if not (globalref.genOptions['SaveTreeStates'] and
                     self.recentFiles.retrieveTreeState(self.activeControl)):
                 self.activeControl.expandRootNodes()
+                self.activeControl.selectRootSpot()
             QApplication.restoreOverrideCursor()
         except IOError:
             QApplication.restoreOverrideCursor()
@@ -289,6 +290,7 @@ class TreeMainControl(QObject):
                             self.recentFiles.retrieveTreeState(self.
                                                                activeControl)):
                         self.activeControl.expandRootNodes()
+                        self.activeControl.selectRootSpot()
                     self.activeControl.compressed = compressed
                     self.activeControl.encrypted = encrypted
                     QApplication.restoreOverrideCursor()
