@@ -17,6 +17,7 @@ import options
 
 daysOfWeek = [_('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'),
               _('Friday'), _('Saturday'), _('Sunday')]
+colorThemes = [_('Normal'), _('Dark')]
 
 
 def setGenOptionDefaults(generalOptions):
@@ -86,6 +87,8 @@ def setGenOptionDefaults(generalOptions):
                    _('Data Editor Formats'), _('First day\nof week'), 1)
     IntOptionItem(generalOptions, 'IndentOffset', 2, 0, 99, _('Appearance'),
                   _('Child indent offset\n(in font height units) '), 1)
+    ListOptionItem(generalOptions, 'ColorTheme', colorThemes[0], colorThemes,
+                   _('Appearance'), _('Color Theme'), 1)
 
 def setMiscOptionDefaults(miscOptions):
     """Set defaults for miscellaneous config options.

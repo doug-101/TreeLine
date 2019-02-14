@@ -20,10 +20,10 @@ import gzip
 import zlib
 import platform
 from PyQt5.QtCore import QIODevice, QObject, Qt, PYQT_VERSION_STR, qVersion
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QColor, QFont, QPalette
 from PyQt5.QtNetwork import QLocalServer, QLocalSocket
 from PyQt5.QtWidgets import (QAction, QApplication, QDialog, QFileDialog,
-                             QMessageBox, QSystemTrayIcon, qApp)
+                             QMessageBox, QStyleFactory, QSystemTrayIcon, qApp)
 import globalref
 import treelocalcontrol
 import options
@@ -135,6 +135,8 @@ class TreeMainControl(QObject):
             QApplication.setWindowIcon(windowIcon)
         globalref.treeIcons = icondict.IconDict(iconPathList, ['', 'tree'])
         icon = globalref.treeIcons.getIcon('default')
+        qApp.setStyle(QStyleFactory.create('Fusion'))
+        setThemeColors()
         self.recentFiles = recentfiles.RecentFileList()
         if globalref.genOptions['AutoFileOpen'] and not pathObjects:
             recentPath = self.recentFiles.firstPath()
@@ -910,6 +912,7 @@ class TreeMainControl(QObject):
         """Set general user preferences for all files.
         """
         oldAutoSaveMinutes = globalref.genOptions['AutoSaveMinutes']
+        oldColorTheme = globalref.genOptions['ColorTheme']
         dialog = options.OptionDialog(globalref.genOptions,
                                       QApplication.activeWindow())
         dialog.setWindowTitle(_('General Options'))
@@ -929,6 +932,10 @@ class TreeMainControl(QObject):
                 control.updateAll(False)
                 if autoSaveMinutes != oldAutoSaveMinutes:
                     control.resetAutoSave()
+            if globalref.genOptions['ColorTheme'] != oldColorTheme:
+                QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
+                                    _('Application must be restarted for '
+                                      'color theme changes to take effect'))
 
     def toolsCustomShortcuts(self):
         """Show dialog to customize keyboard commands.
@@ -1035,3 +1042,30 @@ class TreeMainControl(QObject):
                                          QApplication.windowIcon(),
                                          QApplication.activeWindow())
         dialog.exec_()
+
+
+def setThemeColors():
+    """Set the app colors based on options setting.
+    """
+    if globalref.genOptions['ColorTheme'] == optiondefaults.colorThemes[1]:
+        # dark theme
+        myDarkGray = QColor(53, 53, 53)
+        myVeryDarkGray = QColor(25, 25, 25)
+        myBlue = QColor(42, 130, 218)
+        palette = QPalette()
+        palette.setColor(QPalette.Window, myDarkGray)
+        palette.setColor(QPalette.WindowText, Qt.white)
+        palette.setColor(QPalette.Base, myVeryDarkGray)
+        palette.setColor(QPalette.AlternateBase, myDarkGray)
+        palette.setColor(QPalette.ToolTipBase, Qt.white)
+        palette.setColor(QPalette.ToolTipText, Qt.white)
+        palette.setColor(QPalette.Text, Qt.white)
+        palette.setColor(QPalette.Button, myDarkGray)
+        palette.setColor(QPalette.ButtonText, Qt.white)
+        palette.setColor(QPalette.BrightText, Qt.red)
+        palette.setColor(QPalette.Link, myBlue)
+        palette.setColor(QPalette.Highlight, myBlue)
+        palette.setColor(QPalette.HighlightedText, Qt.black)
+        palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
+        palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
+        qApp.setPalette(palette)
