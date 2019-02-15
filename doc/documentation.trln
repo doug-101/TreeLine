@@ -96,6 +96,15 @@
 {
 "children": [],
 "data": {
+"Name": "Minimize to system tray option",
+"Text": "A minimize to system tray option was added to General Options (under Features Available). If enabled, it adds a TreeLine system tray icon to toggle application display and hides the taskbar entry when TreeLine is minimized."
+},
+"format": "BULLETS",
+"uid": "014e1392305b11e9ab99a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Automatic clone creation",
 "Text": "Cloned nodes can be created automatically from all identical nodes by using the \"Data &gt; Clone All Matched Nodes\" command."
 },
@@ -110,6 +119,15 @@
 },
 "format": "BULLETS",
 "uid": "04da8386ba4811e7b3de3417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Reduce windows install size",
+"Text": "Some unnecessary libraries were eliminated from the Windows installer to reduce download sizes and installed space requirements."
+},
+"format": "BULLETS",
+"uid": "10c539e2305c11e9a392a44cc8e97404"
 },
 {
 "children": [],
@@ -132,6 +150,24 @@
 {
 "children": [],
 "data": {
+"Name": "Remove redundant newlines in files",
+"Text": "Some redundant newline characters were removed from text storage in TreeLine files."
+},
+"format": "BULLETS",
+"uid": "192373c6305511e9ab21a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Enable evaluate HTML tags option",
+"Text": "The Evaluate HTML tags control was enabled for date, time, boolean and math fields.  This allows HTML tags to be evaluated or ignored in more field types."
+},
+"format": "BULLETS",
+"uid": "1b73aaf4305811e98bb7a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Remove unique ID",
 "Text": "To improve efficiency, user visible node unique IDs that depend on the node's data have been removed."
 },
@@ -146,6 +182,15 @@
 },
 "format": "BULLETS",
 "uid": "1e3a82e4bb0411e7b7f33417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "Current date/time math field references",
+"Text": "Added support for current date and time references to math fields. Special field names ({*Now_Date*}, {*Now_Time*} and {*Now_Date_Time*}) must be manually typed in equations."
+},
+"format": "BULLETS",
+"uid": "221ca8f0305911e99f3fa44cc8e97404"
 },
 {
 "children": [],
@@ -182,6 +227,15 @@
 },
 "format": "BULLETS",
 "uid": "299ba9e4334a11e881a6d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Pretty print output",
+"Text": "An indent (pretty print) output option was added to General Options (under Features Available). This makes saved TreeLine JSON files easier for humans to read at the expense of somewhat larger file sizes."
+},
+"format": "BULLETS",
+"uid": "2d4430dc305711e9a33aa44cc8e97404"
 },
 {
 "children": [],
@@ -231,6 +285,15 @@
 {
 "children": [],
 "data": {
+"Name": "Title list select in tree command",
+"Text": "A Select in Tree command was added to the Title List's right-click context menu. It selects the node corresponding to the current line in the Title List editor. This makes it easier to edit or add children to an item."
+},
+"format": "BULLETS",
+"uid": "42fb4166305a11e99fd7a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Title edit mouse move",
 "Text": "Fixed node title editing errors caused by moving the mouse to a data edit box with the title edit still active."
 },
@@ -245,6 +308,15 @@
 },
 "format": "BULLETS",
 "uid": "456aa5ca793111e89a30a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Dark theme option",
+"Text": "An optional dark color theme was added to General Options (under Appearances)."
+},
+"format": "BULLETS",
+"uid": "46f3d0a4305e11e9892fa44cc8e97404"
 },
 {
 "children": [],
@@ -533,6 +605,15 @@
 {
 "children": [],
 "data": {
+"Name": "Select top node at open",
+"Text": "The top root node is now selected at file open if there is not a recent selection state to restore.  Previously these files opened with no selection, which could cause confusion."
+},
+"format": "BULLETS",
+"uid": "6a98186e305c11e99fbfa44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Child type limits",
 "Text": "Child node types that are available to be set can be limited. A new pull-down list of child type limits is in the \"Type Config\" tab of the configuration dialog if the advanced functions are shown."
 },
@@ -658,6 +739,89 @@
 },
 "format": "HEAD_PARA",
 "uid": "7e9b3b88c24511e896c7d66a6ab671cb"
+},
+{
+"children": [
+"800a0972305111e9a7fea44cc8e97404",
+"f7bbd909305111e9be43a44cc8e97404",
+"800a0975305111e9a018a44cc8e97404",
+"800a0976305111e9bd43a44cc8e97404"
+],
+"data": {
+"Name": "February 17, 2019 - Release 3.1.0 (beta release)"
+},
+"format": "HEADINGS",
+"uid": "800a0971305111e991cda44cc8e97404"
+},
+{
+"children": [
+"800a0973305111e9b7b9a44cc8e97404",
+"800a0974305111e99f0fa44cc8e97404"
+],
+"data": {
+"Name": "Notes"
+},
+"format": "BULLET_HEADING",
+"uid": "800a0972305111e9a7fea44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Beta release",
+"Text": "This is a beta release of TreeLine. Some new features have not been extensively tested, but major bugs are unlikely. Testing and bug reports are appreciated, but those with very critical work should consider using the stable release (TreeLine 3.0.x)."
+},
+"format": "BULLETS",
+"uid": "800a0973305111e9b7b9a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Translations",
+"Text": "GUI translations are available in German and Spanish, but they still require minor updates to cover recent changes. Volunteers are also needed to update or create translations in additional languages."
+},
+"format": "BULLETS",
+"uid": "800a0974305111e99f0fa44cc8e97404"
+},
+{
+"children": [
+"6a98186e305c11e99fbfa44cc8e97404",
+"800a0977305111e98c38a44cc8e97404",
+"10c539e2305c11e9a392a44cc8e97404"
+],
+"data": {
+"Name": "Updates"
+},
+"format": "BULLET_HEADING",
+"uid": "800a0975305111e9a018a44cc8e97404"
+},
+{
+"children": [
+"800a097a305111e9950ba44cc8e97404",
+"192373c6305511e9ab21a44cc8e97404"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "800a0976305111e9bd43a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Gray out data edit view math fields",
+"Text": "Non-editable math fields in the Data Edit view show as gray when the mouse hovers over them."
+},
+"format": "BULLETS",
+"uid": "800a0977305111e98c38a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Titles from HTML text fields",
+"Text": "Fixed the truncation of node titles that are generated from the first line of HTML Text fields."
+},
+"format": "BULLETS",
+"uid": "800a097a305111e9950ba44cc8e97404"
 },
 {
 "children": [],
@@ -1150,7 +1314,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 3.0.3, a stable release, dated November 17, 2018 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.1.0, a beta release, dated February 17, 2019 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -2320,7 +2484,7 @@
 "children": [],
 "data": {
 "Name": "Math Type",
-"Text": "Math field types are configured by defining equations. The equations can reference number fields, date fields, time fields, boolean fields, text fields and/or other math fields. The resulting values of math fields are automatically calculated for each node.  Various mathematical, relational and string operators are available.  The results can be numbers, text, boolean, dates or times.<br />\n<br />\nTo define a math field equation, press the \"Define Equation\" button in the \"Field Config\" tab of the \"Data &gt; Configure Types Dialog\". This brings up a dialog with fields to reference on the left and math operators on the right. The \"Reference Level\" pull-down determines whether the reference is from the same node, the node's parent, the root node, or the node's children. The \"Result Type\" pull-down allows arithmetic, date, time, boolean or text results to be chosen. The \"Operator Type\" pull-down allows numeric, comparison or text operators to be shown in the operator list. The down-arrow buttons below the references and operators add the selected item to the equation text below. Portions of equations can also be typed directly in the equation text line editor.<br />\n<br />\nReferences to child nodes must be enclosed in a grouping function, such as sum, max, min, mean or join. A math field can contain a parent or child reference to itself, but not a same-level reference to itself (a circular reference). The references only contain the field name, so they will reference a parent or child field with that name even if it is a different node type.<br />\n<br />\nIn equations, date fields are represented by the number of days since January 1, 1970, and time fields are the number of seconds since midnight. So date fields can be subtracted to give the number of days elapsed, and numbers of days can be added to or subtracted from dates to result in new dates. Time fields can be subtracted to give the number of seconds elapsed, and numbers of seconds can be added to or subtracted from times to result in new times.<br />\n<br />\nThe \"if\" comparison operator can be used to make the result depend on the value of another field. The expression is written as \"true_value if condition else false_value\". Of course, the \"true_value\", \"condition\" and \"false_value\" strings must be replaced with valid fields or expressions. If this operator is inserted from the operator list (under comparisons), it will include parenthesis as placeholders. These parenthesis are optional in the equations.<br />\n<br />\nThe \"join\" text function is used to combine text from several other fields (or from child nodes). The first argument to the function is a separator string that is placed between each piece of text. The remaining argument(s) are the text to be joined.<br />\n<br />\nBy default, math fields are shown in the data edit view, but they are read-only. To hide them, uncheck the \"Show math fields in the Data Edit View\" box under \"Tools &gt; General Options &gt; Features Available\".<br />\n<br />\nThere is also an option under \"File &gt; Properties\" that toggles whether blank fields are treated as zeros. If checked (the default), a blank field that is referenced by a math field has a value of zero (for numeric operations) or blank (for text operations). If unchecked, any blank references also cause equations that reference them to be blank.<br />\n"
+"Text": "Math field types are configured by defining equations. The equations can reference number fields, date fields, time fields, boolean fields, text fields and/or other math fields. The resulting values of math fields are automatically calculated for each node. Various mathematical, relational and string operators are available. The results can be numbers, text, boolean, dates or times.<br /><br />To define a math field equation, press the \"Define Equation\" button in the \"Field Config\" tab of the \"Data &gt; Configure Types Dialog\". This brings up a dialog with fields to reference on the left and math operators on the right. The \"Reference Level\" pull-down determines whether the reference is from the same node, the node's parent, the root node, or the node's children. The \"Result Type\" pull-down allows arithmetic, date, time, boolean or text results to be chosen. The \"Operator Type\" pull-down allows numeric, comparison or text operators to be shown in the operator list. The down-arrow buttons below the references and operators add the selected item to the equation text below. Portions of equations can also be typed directly in the equation text line editor.<br /><br />References to child nodes must be enclosed in a grouping function, such as sum, max, min, mean or join. A math field can contain a parent or child reference to itself, but not a same-level reference to itself (a circular reference). The references only contain the field name, so they will reference a parent or child field with that name even if it is a different node type.<br /><br />In equations, date fields are represented by the number of days since January 1, 1970, and time fields are the number of seconds since midnight. So date fields can be subtracted to give the number of days elapsed, and numbers of days can be added to or subtracted from dates to result in new dates. Time fields can be subtracted to give the number of seconds elapsed, and numbers of seconds can be added to or subtracted from times to result in new times. Also, special field names ({*Now_Date*}, {*Now_Time*} and {*Now_Date_Time*}) can be manually typed in equations to represent current dates and times.  The \"Data-&gt;Regenerate References\" command may be needed to force re-evaluation of time-based references.<br /><br />The \"if\" comparison operator can be used to make the result depend on the value of another field. The expression is written as \"true_value if condition else false_value\". Of course, the \"true_value\", \"condition\" and \"false_value\" strings must be replaced with valid fields or expressions. If this operator is inserted from the operator list (under comparisons), it will include parenthesis as placeholders. These parenthesis are optional in the equations.<br /><br />The \"join\" text function is used to combine text from several other fields (or from child nodes). The first argument to the function is a separator string that is placed between each piece of text. The remaining argument(s) are the text to be joined.<br /><br />By default, math fields are shown in the data edit view, but they are read-only. To hide them, uncheck the \"Show math fields in the Data Edit View\" box under \"Tools &gt; General Options &gt; Features Available\".<br /><br />There is also an option under \"File &gt; Properties\" that toggles whether blank fields are treated as zeros. If checked (the default), a blank field that is referenced by a math field has a value of zero (for numeric operations) or blank (for text operations). If unchecked, any blank references also cause equations that reference them to be blank.<br />"
 },
 "format": "HEAD_PARA",
 "uid": "f17005f8a25a11e7b7c67054d2175f18"
@@ -2429,7 +2593,7 @@
 "children": [],
 "data": {
 "Name": "Conditional Types",
-"Text": "Conditional expressions can be used to automatically assign a data type based on each node's content. Conditions can be assigned only to a generic type and its associated derived types. This allows the automatic assignment of different output formatting or different icons depending on each node's field data.<br />\n<br />\nThe conditional dialog box is accessed from a button on the \"Type Config\" tab of the \"Data-&gt;Configure Types Dialog\" if the advanced functions are shown. Each line of the condition includes a field, an operator and a comparison value. The operators include equality, greater than, less than, starts with, ends with, and contains. There are also True and False operators that will toggle the type of all nodes simultaneously.<br />\n<br />\nFor special field types such as dates, times, and booleans, the comparison value should be entered in the same format that is used in the Data Editor window. In general, the starts with, ends with, and contains operators should not be used for these special fields, since the comparison is done using an internal data representation. Dates and times also support a special comparison value of \"now\", which is always interpreted as the current date and time.<br />\n<br />\nThe \"Add New Rule\" button is used to add additional condition lines. The lines can be joined with \"and\" or \"or\" operators. The \"Remove Rule\" button deletes the last condition line. If only a single line is present, the \"Remove Rule\" button completely removes the condition.<br />\n<br />\nConditions do not have to be set for all types in a family. If no conditions are true for a node, the program will select a blank condition rather than a false one.<br />\n<br />\nFor an example, see the \"sample_conditional_todo\" file (by using the \"File &gt; Open Sample\" command)."
+"Text": "Conditional expressions can be used to automatically assign a data type based on each node's content. Conditions can be assigned only to a generic type and its associated derived types. This allows the automatic assignment of different output formatting or different icons depending on each node's field data.<br /><br />The conditional dialog box is accessed from a button on the \"Type Config\" tab of the \"Data-&gt;Configure Types Dialog\" if the advanced functions are shown. Each line of the condition includes a field, an operator and a comparison value. The operators include equality, greater than, less than, starts with, ends with, and contains. There are also True and False operators that will toggle the type of all nodes simultaneously.<br /><br />For special field types such as dates, times, and booleans, the comparison value should be entered in the same format that is used in the Data Editor window. In general, the starts with, ends with, and contains operators should not be used for these special fields, since the comparison is done using an internal data representation. Dates and times also support a special comparison value of \"Now\", which is always interpreted as the current date and time. The \"Data-&gt;Regenerate References\" command may be needed to force re-evaluation of time-based references.<br /><br />The \"Add New Rule\" button is used to add additional condition lines. The lines can be joined with \"and\" or \"or\" operators. The \"Remove Rule\" button deletes the last condition line. If only a single line is present, the \"Remove Rule\" button completely removes the condition.<br /><br />Conditions do not have to be set for all types in a family. If no conditions are true for a node, the program will select a blank condition rather than a false one.<br /><br />For an example, see the \"sample_conditional_todo\" file (by using the \"File &gt; Open Sample\" command)."
 },
 "format": "HEAD_PARA",
 "uid": "f170125aa25a11e7b7c67054d2175f18"
@@ -2802,6 +2966,7 @@
 },
 {
 "children": [
+"800a0971305111e991cda44cc8e97404",
 "9c08f39ee80311e8a510a44cc8e97404",
 "6610203fd2c111e8b033d66a6ab671cb",
 "67e95a5bbbf611e891f7a44cc8e97404",
@@ -5175,6 +5340,31 @@
 "uid": "f5983b38bb0411e795e13417ebd53aeb"
 },
 {
+"children": [
+"42fb4166305a11e99fd7a44cc8e97404",
+"014e1392305b11e9ab99a44cc8e97404",
+"46f3d0a4305e11e9892fa44cc8e97404",
+"f7bbd90a305111e98209a44cc8e97404",
+"221ca8f0305911e99f3fa44cc8e97404",
+"2d4430dc305711e9a33aa44cc8e97404",
+"1b73aaf4305811e98bb7a44cc8e97404"
+],
+"data": {
+"Name": "New Features"
+},
+"format": "BULLET_HEADING",
+"uid": "f7bbd909305111e9be43a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Regenerate references command",
+"Text": "A new Regenerate References command was added to the Data menu. It forces updates to all conditional types and math fields.  It should only be necessary for comparisons to current dates/times or for externally modified data."
+},
+"format": "BULLETS",
+"uid": "f7bbd90a305111e98209a44cc8e97404"
+},
+{
 "children": [],
 "data": {
 "Name": "XML export",
@@ -5194,7 +5384,7 @@
 }
 ],
 "properties": {
-"tlversion": "3.0.3",
+"tlversion": "3.1.0",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
