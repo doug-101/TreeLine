@@ -713,6 +713,7 @@ class TreeMainControl(QObject):
                     self.activeControl.expandRootNodes()
             else:
                 self.createLocalControl()
+            self.activeControl.selectRootSpot()
 
     def fileOpen(self):
         """Prompt for a filename and open it.
