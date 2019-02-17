@@ -231,6 +231,15 @@
 {
 "children": [],
 "data": {
+"Name": "Type structure visualization",
+"Text": "A new Show Configuration Structure command was added to the Data menu. This opens a read-only visualization of complex type structures as another TreeLine file."
+},
+"format": "BULLETS",
+"uid": "2c9ba0c832ed11e9bf7f7054d2175f18"
+},
+{
+"children": [],
+"data": {
 "Name": "Pretty print output",
 "Text": "An indent (pretty print) output option was added to General Options (under Features Available). This makes saved TreeLine JSON files easier for humans to read at the expense of somewhat larger file sizes."
 },
@@ -5346,6 +5355,7 @@
 "46f3d0a4305e11e9892fa44cc8e97404",
 "f7bbd90a305111e98209a44cc8e97404",
 "221ca8f0305911e99f3fa44cc8e97404",
+"2c9ba0c832ed11e9bf7f7054d2175f18",
 "2d4430dc305711e9a33aa44cc8e97404",
 "1b73aaf4305811e98bb7a44cc8e97404"
 ],
@@ -5384,7 +5394,7 @@
 }
 ],
 "properties": {
-"tlversion": "3.1.0",
+"tlversion": "3.0+.3",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]

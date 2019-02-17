@@ -186,6 +186,7 @@ def setKeyboardOptionDefaults(keyboardOptions):
     KeyOptionItem(keyboardOptions, 'DataNodeType', 'Ctrl+T', 'Data Menu')
     KeyOptionItem(keyboardOptions, 'DataConfigType', '', 'Data Menu')
     KeyOptionItem(keyboardOptions, 'DataCopyType', '', 'Data Menu')
+    KeyOptionItem(keyboardOptions, 'DataVisualConfig', '', 'Data Menu')
     KeyOptionItem(keyboardOptions, 'DataSortNodes', '', 'Data Menu')
     KeyOptionItem(keyboardOptions, 'DataNumbering', '', 'Data Menu')
     KeyOptionItem(keyboardOptions, 'DataRegenRefs', '', 'Data Menu')

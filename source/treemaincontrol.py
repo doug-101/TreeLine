@@ -598,6 +598,12 @@ class TreeMainControl(QObject):
         dataConfigAct.triggered.connect(self.dataConfigDialog)
         self.allActions['DataConfigType'] = dataConfigAct
 
+        dataVisualConfigAct = QAction(_('Show C&onfiguration Structure...'),
+                 self,
+                 statusTip=_('Show read-only visualization of type structure'))
+        dataVisualConfigAct.triggered.connect(self.dataVisualConfig)
+        self.allActions['DataVisualConfig'] = dataVisualConfigAct
+
         dataSortAct = QAction(_('Sor&t Nodes...'), self,
                                     statusTip=_('Define node sort operations'),
                                     checkable=True)
@@ -780,6 +786,20 @@ class TreeMainControl(QObject):
             self.configDialog.show()
         else:
             self.configDialog.close()
+
+    def dataVisualConfig(self):
+        """Show a TreeLine file to visualize the config structure.
+        """
+        structure = (self.activeControl.structure.treeFormats.
+                     visualConfigStructure(str(self.activeControl.
+                                               filePathObj)))
+        self.createLocalControl(treeStruct=structure, forceNewWindow=True)
+        self.activeControl.filePathObj = pathlib.Path('structure.trln')
+        self.activeControl.updateWindowCaptions()
+        self.activeControl.expandRootNodes()
+        self.activeControl.imported = True
+        win = self.activeControl.activeWindow
+        win.rightTabs.setCurrentWidget(win.outputSplitter)
 
     def dataSortDialog(self, show):
         """Show or hide the non-modal data sort nodes dialog.

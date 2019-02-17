@@ -553,6 +553,7 @@ class TreeWindow(QMainWindow):
         self.addAction(self.allActions['DataNodeType'])
         dataMenu.addAction(self.allActions['DataConfigType'])
         dataMenu.addAction(self.allActions['DataCopyType'])
+        dataMenu.addAction(self.allActions['DataVisualConfig'])
         dataMenu.addSeparator()
         dataMenu.addAction(self.allActions['DataSortNodes'])
         dataMenu.addAction(self.allActions['DataNumbering'])

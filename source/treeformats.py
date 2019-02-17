@@ -4,7 +4,7 @@
 # treeformats.py, provides a class to store node format types and info
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -17,9 +17,15 @@ import copy
 import nodeformat
 import matheval
 import conditional
+import treenode
+import treestructure
 
 
 defaultTypeName = _('DEFAULT')
+_visualConfigRootTypeName = _('FILE')
+_visualConfigTypeTypeName = _('TYPE')
+_visualConfigFieldTypeName = _('FIELD')
+_visualConfigTypeFieldName = _('FieldType')
 
 class TreeFormats(dict):
     """Class to store node format types and info.
@@ -252,3 +258,47 @@ class TreeFormats(dict):
                 cond = conditional.Conditional(text, typeFormat.name)
                 savedConditions[name] = cond
         return savedConditions
+
+    def visualConfigStructure(self, fileName):
+        """Export a TreeLine structure containing the config types and fields.
+
+        Returns the structure.
+        Arguments:
+            fileName -- the name for the root node
+        """
+        structure = treestructure.TreeStructure()
+        structure.treeFormats = TreeFormats()
+        rootFormat = nodeformat.NodeFormat(_visualConfigRootTypeName,
+                                           structure.treeFormats,
+                                           addDefaultField=True)
+        structure.treeFormats[rootFormat.name] = rootFormat
+        typeFormat = nodeformat.NodeFormat(_visualConfigTypeTypeName,
+                                           structure.treeFormats,
+                                           addDefaultField=True)
+        structure.treeFormats[typeFormat.name] = typeFormat
+        fieldFormat = nodeformat.NodeFormat(_visualConfigFieldTypeName,
+                                            structure.treeFormats,
+                                            addDefaultField=True)
+        fieldFormat.addField(_visualConfigTypeFieldName)
+        line = '{{*{0}*}} ({{*{1}*}})'.format(nodeformat.defaultFieldName,
+                                              _visualConfigTypeFieldName)
+        fieldFormat.changeTitleLine(line)
+        fieldFormat.changeOutputLines([line])
+        structure.treeFormats[fieldFormat.name] = fieldFormat
+        rootNode = treenode.TreeNode(rootFormat)
+        structure.childList.append(rootNode)
+        structure.addNodeDictRef(rootNode)
+        rootNode.data[nodeformat.defaultFieldName] = fileName
+        for typeName in self.typeNames():
+            typeNode = treenode.TreeNode(typeFormat)
+            rootNode.childList.append(typeNode)
+            structure.addNodeDictRef(typeNode)
+            typeNode.data[nodeformat.defaultFieldName] = typeName
+            for field in self[typeName].fields():
+                fieldNode = treenode.TreeNode(fieldFormat)
+                typeNode.childList.append(fieldNode)
+                structure.addNodeDictRef(fieldNode)
+                fieldNode.data[nodeformat.defaultFieldName] = field.name
+                fieldNode.data[_visualConfigTypeFieldName] = field.typeName
+        structure.generateSpots(None)
+        return structure
