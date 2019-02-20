@@ -20,6 +20,7 @@
 
         <div class="toplinks">
             <p>Version 3.0.3 (stable)</p>
+            <p>Version 3.1.0 (beta)</p>
             <p><a href="http://www.bellz.org/progs.html">Other Programs</a></p>
             <p><a href="http://www.bellz.org/contact.html">Contact Info</a></p>
         </div>
@@ -62,6 +63,87 @@
 
             <h1>News</h1>
 
+            <h2>February 20, 2019 - Release 3.1.0 (beta release)</h2>
+
+            <ul><b>Notes:</b>
+
+              <li>This is a beta release of TreeLine. Some new features have
+              not been extensively tested, but major bugs are unlikely.
+              Testing and bug reports are appreciated, but those with very
+              critical work should consider using the stable release
+              (TreeLine 3.0.x).</li>
+
+              <li>GUI translations are available in German and Spanish, but
+              they still require minor updates to cover recent changes.
+              Volunteers are also needed to update or create translations in
+              additional languages.</li>
+
+            </ul>
+
+            <ul><b>New Features:</b>
+
+              <li>A Select in Tree command was added to the Title List's
+              right-click context menu. It selects the node corresponding to
+              the current line in the Title List editor. This makes it easier
+              to edit or add children to an item.</li>
+
+              <li>A minimize to system tray option was added to General
+              Options (under Features Available). If enabled, it adds a
+              TreeLine system tray icon to toggle application display and
+              hides the taskbar entry when TreeLine is minimized.</li>
+
+              <li>An optional dark color theme was added to General Options
+              (under Appearances).</li>
+
+              <li>A new Regenerate References command was added to the Data
+              menu. It forces updates to all conditional types and math
+              fields. It should only be necessary for comparisons to current
+              dates/times or for externally modified data.</li>
+
+              <li>Added support for current date and time references to math
+              fields. Special field names ({*Now_Date*}, {*Now_Time*} and
+              {*Now_Date_Time*}) must be manually typed in equations.</li>
+
+              <li>A new Show Configuration Structure command was added to the
+              Data menu. This opens a read-only visualization of complex type
+              structures as another TreeLine file.</li>
+
+              <li>An indent (pretty print) output option was added to General
+              Options (under Features Available). This makes saved TreeLine
+              JSON files easier for humans to read at the expense of somewhat
+              larger file sizes.</li>
+
+              <li>The Evaluate HTML tags control was enabled for date, time,
+              boolean and math fields. This allows HTML tags to be evaluated
+              or ignored in more field types.</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>The top root node is now selected at file open if there is
+              not a recent selection state to restore. Previously these files
+              opened with no selection, which could cause confusion.</li>
+
+              <li>Non-editable math fields in the Data Edit view show as gray
+              when the mouse hovers over them.</li>
+
+              <li>Some unnecessary libraries were eliminated from the Windows
+              installer to reduce download sizes and installed space
+              requirements.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Fixed the truncation of node titles that are generated from
+              the first line of HTML Text fields.</li>
+
+              <li>Some redundant newline characters were removed from text
+              storage in TreeLine files.</li>
+
+            </ul>
+
             <h2>November 17, 2018 - Release 3.0.3 (stable release)</h2>
 
             <ul><b>Bug Fixes:</b>
@@ -78,7 +160,7 @@
               <li>In the Windows installer, improve the deletion of files from
               older versions and avoid problems if installing into a directory
               shared with other applications.</li>
-                
+
             </ul>
 
             <h2>October 20, 2018 - Release 3.0.2 (stable release)</h2>
