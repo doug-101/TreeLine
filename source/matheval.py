@@ -455,13 +455,15 @@ class EquationChildCountRef(EquationFieldRef):
     testValue = 1
     evalDirection = EvalDir.optional
 
-    def referenceValue(self, eqnNode, zeroBlanks=True, zeroValue=0):
+    def referenceValue(self, eqnNode, zeroBlanks=True, zeroValue=0,
+                       noMarkup=True):
         """Return the child count referenced from the given node.
 
         Arguments:
             eqnNode -- the node containing the equation to evaluate
             zeroBlanks -- replace blank fields with zeroValue if True
             zeroValue -- the value to use for blanks
+            noMarkup -- if true, remove html markup
         """
         return len(eqnNode.childList)
 

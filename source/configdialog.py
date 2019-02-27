@@ -4,7 +4,7 @@
 # configdialog.py, provides classes for the type configuration dialog
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -352,6 +352,8 @@ class TypeListPage(ConfigPage):
         if dlg.exec_() == QDialog.Accepted:
             newFormat = copy.deepcopy(currentFormat)
             newFormat.name = dlg.text
+            # avoid using copied reference for parentFormats
+            newFormat.parentFormats = currentFormat.parentFormats
             ConfigDialog.formatsRef[dlg.text] = newFormat
             ConfigDialog.currentTypeName = dlg.text
             if dlg.extraChecked:
