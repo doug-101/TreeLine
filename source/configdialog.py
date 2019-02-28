@@ -2340,7 +2340,8 @@ class MathEquationDialog(QDialog):
                     QTreeWidgetItem(self.fieldListBox,
                                     [field.name, _(field.typeName)])
         else:
-            QTreeWidgetItem(self.fieldListBox, ['Count', 'Number of Children'])
+            QTreeWidgetItem(self.fieldListBox, [_('Count'),
+                                                _('Number of Children')])
         if self.fieldListBox.topLevelItemCount():
             selectItem = self.fieldListBox.topLevelItem(0)
             self.fieldListBox.setCurrentItem(selectItem)

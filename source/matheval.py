@@ -512,6 +512,7 @@ class RecursiveEqnRef:
         self.evalSequence = 1
         for fieldRef in self.eqnField.equation.fieldRefs:
             if (fieldRef.fieldName in visitedFields and
+                fieldRef.tagPrefix != '#' and
                 (self.eqnField.name != fieldRef.fieldName or
                  fieldRef.evalDirection == EvalDir.optional)):
                 raise CircularMathError()

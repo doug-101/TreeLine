@@ -166,7 +166,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2319"/>
+        <location filename="configdialog.py" line="2321"/>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -181,7 +181,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2323"/>
+        <location filename="configdialog.py" line="2325"/>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -241,759 +241,769 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="367"/>
+        <location filename="configdialog.py" line="369"/>
         <source>Rename Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="851"/>
+        <location filename="configdialog.py" line="853"/>
         <source>Rename from {} to:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="408"/>
+        <location filename="configdialog.py" line="410"/>
         <source>Cannot delete data type being used by nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="430"/>
+        <location filename="configdialog.py" line="432"/>
         <source>[None]</source>
         <comment>no type set</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1229"/>
+        <location filename="configdialog.py" line="1231"/>
         <source>&amp;Data Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="448"/>
+        <location filename="configdialog.py" line="450"/>
         <source>Default Child &amp;Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="456"/>
+        <location filename="configdialog.py" line="458"/>
         <source>Icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="462"/>
+        <location filename="configdialog.py" line="464"/>
         <source>Change &amp;Icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="466"/>
+        <location filename="configdialog.py" line="468"/>
         <source>Output Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="470"/>
+        <location filename="configdialog.py" line="472"/>
         <source>Add &amp;blank lines between nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="473"/>
+        <location filename="configdialog.py" line="475"/>
         <source>Allow &amp;HTML rich text in format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="476"/>
+        <location filename="configdialog.py" line="478"/>
         <source>Add text bullet&amp;s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="479"/>
+        <location filename="configdialog.py" line="481"/>
         <source>Use a table for field &amp;data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="485"/>
+        <location filename="configdialog.py" line="487"/>
         <source>Combination &amp;&amp; Child List Output &amp;Separator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="496"/>
+        <location filename="configdialog.py" line="498"/>
         <source>Derived from &amp;Generic Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="506"/>
+        <location filename="configdialog.py" line="508"/>
         <source>Automatic Types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="552"/>
+        <location filename="configdialog.py" line="554"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="641"/>
+        <location filename="configdialog.py" line="643"/>
         <source>Modify Co&amp;nditional Types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="645"/>
+        <location filename="configdialog.py" line="647"/>
         <source>Create Co&amp;nditional Types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="653"/>
+        <location filename="configdialog.py" line="655"/>
         <source>Set Types Conditionally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="717"/>
+        <location filename="configdialog.py" line="719"/>
         <source>Modify &amp;Field List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2281"/>
+        <location filename="configdialog.py" line="2283"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2246"/>
+        <location filename="configdialog.py" line="2248"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="725"/>
+        <location filename="configdialog.py" line="727"/>
         <source>Sort Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="730"/>
+        <location filename="configdialog.py" line="732"/>
         <source>Move U&amp;p</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="733"/>
+        <location filename="configdialog.py" line="735"/>
         <source>Move Do&amp;wn</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="736"/>
+        <location filename="configdialog.py" line="738"/>
         <source>&amp;New Field...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="739"/>
+        <location filename="configdialog.py" line="741"/>
         <source>Rena&amp;me Field...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="742"/>
+        <location filename="configdialog.py" line="744"/>
         <source>Dele&amp;te Field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="745"/>
+        <location filename="configdialog.py" line="747"/>
         <source>Sort &amp;Keys...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="771"/>
+        <location filename="configdialog.py" line="773"/>
         <source>fwd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="772"/>
+        <location filename="configdialog.py" line="774"/>
         <source>rev</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="835"/>
+        <location filename="configdialog.py" line="837"/>
         <source>Add Field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="835"/>
+        <location filename="configdialog.py" line="837"/>
         <source>Enter new field name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="850"/>
+        <location filename="configdialog.py" line="852"/>
         <source>Rename Field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="909"/>
+        <location filename="configdialog.py" line="911"/>
         <source>File Info Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="929"/>
+        <location filename="configdialog.py" line="931"/>
         <source>F&amp;ield</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="937"/>
+        <location filename="configdialog.py" line="939"/>
         <source>&amp;Field Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="945"/>
+        <location filename="configdialog.py" line="947"/>
         <source>Outpu&amp;t Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="951"/>
+        <location filename="configdialog.py" line="953"/>
         <source>Format &amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="955"/>
+        <location filename="configdialog.py" line="957"/>
         <source>Extra Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="959"/>
+        <location filename="configdialog.py" line="961"/>
         <source>&amp;Prefix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="966"/>
+        <location filename="configdialog.py" line="968"/>
         <source>Suffi&amp;x</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="973"/>
+        <location filename="configdialog.py" line="975"/>
         <source>Default &amp;Value for New Nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="982"/>
+        <location filename="configdialog.py" line="984"/>
         <source>Editor Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="985"/>
+        <location filename="configdialog.py" line="987"/>
         <source>Num&amp;ber of text lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="994"/>
+        <location filename="configdialog.py" line="996"/>
         <source>Math Equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1000"/>
+        <location filename="configdialog.py" line="1002"/>
         <source>Define Equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1236"/>
+        <location filename="configdialog.py" line="1238"/>
         <source>F&amp;ield List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1260"/>
+        <location filename="configdialog.py" line="1262"/>
         <source>&amp;Title Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1282"/>
+        <location filename="configdialog.py" line="1284"/>
         <source>Out&amp;put Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1294"/>
+        <location filename="configdialog.py" line="1296"/>
         <source>Other Field References</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1301"/>
+        <location filename="configdialog.py" line="1303"/>
         <source>Reference Le&amp;vel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1311"/>
+        <location filename="configdialog.py" line="1313"/>
         <source>Refere&amp;nce Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1801"/>
+        <location filename="configdialog.py" line="1803"/>
         <source>The name cannot be empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1803"/>
+        <location filename="configdialog.py" line="1805"/>
         <source>The name must start with a letter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1805"/>
+        <location filename="configdialog.py" line="1807"/>
         <source>The name cannot start with &quot;xml&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1807"/>
+        <location filename="configdialog.py" line="1809"/>
         <source>The name cannot contain spaces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1809"/>
+        <location filename="configdialog.py" line="1811"/>
         <source>The following characters are not allowed: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1813"/>
+        <location filename="configdialog.py" line="1815"/>
         <source>The name was already used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1839"/>
+        <location filename="configdialog.py" line="1841"/>
         <source>Set Data Type Icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1852"/>
+        <location filename="configdialog.py" line="1854"/>
         <source>Clear &amp;Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1913"/>
+        <location filename="configdialog.py" line="1915"/>
         <source>forward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1914"/>
+        <location filename="configdialog.py" line="1916"/>
         <source>reverse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1928"/>
+        <location filename="configdialog.py" line="1930"/>
         <source>Sort Key Fields</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1932"/>
+        <location filename="configdialog.py" line="1934"/>
         <source>Available &amp;Fields</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1954"/>
+        <location filename="configdialog.py" line="1956"/>
         <source>&amp;Sort Criteria</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1961"/>
+        <location filename="configdialog.py" line="1963"/>
         <source>Field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1961"/>
+        <location filename="configdialog.py" line="1963"/>
         <source>Direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1966"/>
+        <location filename="configdialog.py" line="1968"/>
         <source>Move &amp;Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1969"/>
+        <location filename="configdialog.py" line="1971"/>
         <source>&amp;Move Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1972"/>
+        <location filename="configdialog.py" line="1974"/>
         <source>Flip &amp;Direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2130"/>
+        <location filename="configdialog.py" line="2132"/>
         <source>Self Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2130"/>
+        <location filename="configdialog.py" line="2132"/>
         <source>Parent Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2131"/>
+        <location filename="configdialog.py" line="2133"/>
         <source>Root Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2131"/>
+        <location filename="configdialog.py" line="2133"/>
         <source>Child Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2133"/>
+        <location filename="configdialog.py" line="2135"/>
         <source>Child Count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2134"/>
+        <location filename="configdialog.py" line="2136"/>
         <source>Date Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2134"/>
+        <location filename="configdialog.py" line="2136"/>
         <source>Time Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2138"/>
+        <location filename="configdialog.py" line="2140"/>
         <source>add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2139"/>
+        <location filename="configdialog.py" line="2141"/>
         <source>subtract</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2140"/>
+        <location filename="configdialog.py" line="2142"/>
         <source>multiply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2141"/>
+        <location filename="configdialog.py" line="2143"/>
         <source>divide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2142"/>
+        <location filename="configdialog.py" line="2144"/>
         <source>floor divide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2143"/>
+        <location filename="configdialog.py" line="2145"/>
         <source>modulus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2144"/>
+        <location filename="configdialog.py" line="2146"/>
         <source>power</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2145"/>
+        <location filename="configdialog.py" line="2147"/>
         <source>sum of items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2146"/>
+        <location filename="configdialog.py" line="2148"/>
         <source>maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2147"/>
+        <location filename="configdialog.py" line="2149"/>
         <source>minimum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2148"/>
+        <location filename="configdialog.py" line="2150"/>
         <source>average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2149"/>
+        <location filename="configdialog.py" line="2151"/>
         <source>absolute value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2150"/>
+        <location filename="configdialog.py" line="2152"/>
         <source>square root</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2151"/>
+        <location filename="configdialog.py" line="2153"/>
         <source>natural logarithm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2152"/>
+        <location filename="configdialog.py" line="2154"/>
         <source>base-10 logarithm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2153"/>
+        <location filename="configdialog.py" line="2155"/>
         <source>factorial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2154"/>
+        <location filename="configdialog.py" line="2156"/>
         <source>round to num digits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2155"/>
+        <location filename="configdialog.py" line="2157"/>
         <source>lower integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2156"/>
+        <location filename="configdialog.py" line="2158"/>
         <source>higher integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2157"/>
+        <location filename="configdialog.py" line="2159"/>
         <source>truncated integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2158"/>
+        <location filename="configdialog.py" line="2160"/>
         <source>floating point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2159"/>
+        <location filename="configdialog.py" line="2161"/>
         <source>sine of radians</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2160"/>
+        <location filename="configdialog.py" line="2162"/>
         <source>cosine of radians</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2161"/>
+        <location filename="configdialog.py" line="2163"/>
         <source>tangent of radians</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2162"/>
+        <location filename="configdialog.py" line="2164"/>
         <source>arc sine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2163"/>
+        <location filename="configdialog.py" line="2165"/>
         <source>arc cosine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2164"/>
+        <location filename="configdialog.py" line="2166"/>
         <source>arc tangent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2165"/>
+        <location filename="configdialog.py" line="2167"/>
         <source>radians to degrees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2166"/>
+        <location filename="configdialog.py" line="2168"/>
         <source>degrees to radians</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2167"/>
+        <location filename="configdialog.py" line="2169"/>
         <source>pi constant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2168"/>
+        <location filename="configdialog.py" line="2170"/>
         <source>natural log constant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2210"/>
+        <location filename="configdialog.py" line="2212"/>
         <source>Define Math Field Equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2213"/>
+        <location filename="configdialog.py" line="2215"/>
         <source>Field References</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2219"/>
+        <location filename="configdialog.py" line="2221"/>
         <source>Reference &amp;Level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2229"/>
+        <location filename="configdialog.py" line="2231"/>
         <source>Reference &amp;Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2239"/>
+        <location filename="configdialog.py" line="2241"/>
         <source>Available &amp;Field List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2248"/>
+        <location filename="configdialog.py" line="2250"/>
         <source>&amp;Result Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2281"/>
+        <location filename="configdialog.py" line="2283"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2307"/>
+        <location filename="configdialog.py" line="2309"/>
         <source>&amp;Equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2464"/>
+        <location filename="configdialog.py" line="2467"/>
         <source>Equation error: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2135"/>
+        <location filename="configdialog.py" line="2137"/>
         <source>Boolean Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2136"/>
+        <location filename="configdialog.py" line="2138"/>
         <source>Text Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2136"/>
+        <location filename="configdialog.py" line="2138"/>
         <source>Arithmetic Operators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2136"/>
+        <location filename="configdialog.py" line="2138"/>
         <source>Comparison Operators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2138"/>
+        <location filename="configdialog.py" line="2140"/>
         <source>Text Operators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2169"/>
+        <location filename="configdialog.py" line="2171"/>
         <source>equal to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2170"/>
+        <location filename="configdialog.py" line="2172"/>
         <source>less than</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2171"/>
+        <location filename="configdialog.py" line="2173"/>
         <source>greater than</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2172"/>
+        <location filename="configdialog.py" line="2174"/>
         <source>less than or equal to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2173"/>
+        <location filename="configdialog.py" line="2175"/>
         <source>greater than or equal to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2174"/>
+        <location filename="configdialog.py" line="2176"/>
         <source>not equal to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2176"/>
+        <location filename="configdialog.py" line="2178"/>
         <source>true value, condition, false value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2180"/>
+        <location filename="configdialog.py" line="2182"/>
         <source>true if 1st text arg starts with 2nd arg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2182"/>
+        <location filename="configdialog.py" line="2184"/>
         <source>true if 1st text arg ends with 2nd arg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2184"/>
+        <location filename="configdialog.py" line="2186"/>
         <source>true if 1st text arg contains 2nd arg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2185"/>
+        <location filename="configdialog.py" line="2187"/>
         <source>concatenate text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2186"/>
+        <location filename="configdialog.py" line="2188"/>
         <source>join text using 1st arg as separator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2187"/>
+        <location filename="configdialog.py" line="2189"/>
         <source>convert text to upper case</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2188"/>
+        <location filename="configdialog.py" line="2190"/>
         <source>convert text to lower case</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2189"/>
+        <location filename="configdialog.py" line="2191"/>
         <source>in 1st arg, replace 2nd arg with 3rd arg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2258"/>
+        <location filename="configdialog.py" line="2260"/>
         <source>Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2264"/>
+        <location filename="configdialog.py" line="2266"/>
         <source>O&amp;perator Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2274"/>
+        <location filename="configdialog.py" line="2276"/>
         <source>Oper&amp;ator List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2177"/>
+        <location filename="configdialog.py" line="2179"/>
         <source>logical and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2178"/>
+        <location filename="configdialog.py" line="2180"/>
         <source>logical or</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1004"/>
+        <location filename="configdialog.py" line="1006"/>
         <source>Output HTML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1007"/>
+        <location filename="configdialog.py" line="1009"/>
         <source>Evaluate &amp;HTML tags</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="514"/>
+        <location filename="configdialog.py" line="516"/>
         <source>Child Type Limits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1638"/>
+        <location filename="configdialog.py" line="1640"/>
         <source>[All Types Available]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1738"/>
+        <location filename="configdialog.py" line="1740"/>
         <source>&amp;Select All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1739"/>
+        <location filename="configdialog.py" line="1741"/>
         <source>Select &amp;None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2134"/>
+        <location filename="configdialog.py" line="2136"/>
         <source>Number Result</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="configdialog.py" line="2343"/>
+        <source>Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="configdialog.py" line="2344"/>
+        <source>Number of Children</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2096,17 +2106,17 @@ Use an import filter?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="matheval.py" line="574"/>
+        <location filename="matheval.py" line="577"/>
         <source>Illegal syntax in equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="matheval.py" line="586"/>
+        <location filename="matheval.py" line="589"/>
         <source>Illegal function present: {0}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="matheval.py" line="598"/>
+        <location filename="matheval.py" line="601"/>
         <source>Illegal object type or operator: {0}</source>
         <translation type="unfinished"></translation>
     </message>
