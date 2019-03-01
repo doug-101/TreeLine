@@ -4,7 +4,7 @@
 # printdata.py, provides a class for printing
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -16,7 +16,8 @@ import os.path
 import enum
 from PyQt5.QtCore import QMarginsF, QSizeF, Qt
 from PyQt5.QtGui import (QAbstractTextDocumentLayout, QFontMetrics,
-                         QPageLayout, QPageSize, QPainter, QTextDocument)
+                         QPageLayout, QPageSize, QPainter, QPalette,
+                         QTextDocument)
 from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QMessageBox
 from PyQt5.QtPrintSupport import QPrintDialog, QPrinter
 import treeoutput
@@ -380,6 +381,10 @@ class PrintData:
             pageNum -- the page number to be printed
             painter -- the painter for this print job
         """
+        paintContext = QAbstractTextDocumentLayout.PaintContext()
+        # set context text color to black to wrok with dark app themes
+        paintContext.palette = QPalette()
+        paintContext.palette.setColor(QPalette.Text, Qt.black)
         totalNumPages = self.outputGroup[-1].pageNum
         headerDoc = self.headerFooterDoc(True, pageNum, totalNumPages)
         if headerDoc:
@@ -392,8 +397,7 @@ class PrintData:
             headerDelta = ((self.headerMargin - topMargin) *
                            self.printer.logicalDpiX())
             painter.translate(0, int(headerDelta))
-            layout.draw(painter,
-                        QAbstractTextDocumentLayout.PaintContext())
+            layout.draw(painter, paintContext)
             painter.restore()
         painter.save()
         columnSpacing = int(self.columnSpacing * self.printer.logicalDpiX())
@@ -404,7 +408,7 @@ class PrintData:
         for columnNum in range(self.numColumns):
             if columnNum > 0:
                 painter.translate(columnDelta, 0)
-            self.paintColumn(pageNum, columnNum, painter)
+            self.paintColumn(pageNum, columnNum, painter, paintContext)
         painter.restore()
         footerDoc = self.headerFooterDoc(False, pageNum, totalNumPages)
         if footerDoc:
@@ -419,11 +423,10 @@ class PrintData:
             painter.translate(0, self.pageLayout.paintRect().height() *
                               self.printer.logicalDpiX() +
                               int(footerDelta) - self.lineSpacing)
-            layout.draw(painter,
-                        QAbstractTextDocumentLayout.PaintContext())
+            layout.draw(painter, paintContext)
             painter.restore()
 
-    def paintColumn(self, pageNum, columnNum, painter):
+    def paintColumn(self, pageNum, columnNum, painter, paintContext):
         """Paint data for the given column to the printer.
 
         Arguments:
@@ -437,8 +440,7 @@ class PrintData:
             layout = item.doc.documentLayout()
             painter.save()
             painter.translate(item.level * self.indentSize, item.pagePos)
-            layout.draw(painter,
-                        QAbstractTextDocumentLayout.PaintContext())
+            layout.draw(painter, paintContext)
             painter.restore()
         if self.drawLines:
             self.addPrintLines(pageNum, columnNum, columnItems, painter)
