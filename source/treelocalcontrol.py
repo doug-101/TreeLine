@@ -826,7 +826,8 @@ class TreeLocalControl(QObject):
                              globalref.fileFilters['trlnenc']))
         initFilter = globalref.fileFilters['trlnsave']
         defaultPathObj = globalref.mainControl.defaultPathObj()
-        defaultPathObj = defaultPathObj.with_suffix('.trln')
+        if defaultPathObj.is_file():
+            defaultPathObj = defaultPathObj.with_suffix('.trln')
         newPath, selectFilter = (QFileDialog.
                                  getSaveFileName(self.activeWindow,
                                                  _('TreeLine - Save As'),
