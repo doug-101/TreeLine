@@ -14,6 +14,7 @@
 
 import operator
 import copy
+import xml.sax.saxutils
 import nodeformat
 import matheval
 import conditional
@@ -24,6 +25,18 @@ import treestructure
 defaultTypeName = _('DEFAULT')
 _visualConfigRootTypeName = _('FILE')
 _visualConfigTypeTypeName = _('TYPE')
+_visualConfigTypeTitleFieldName = _('TitleFormat')
+_visualConfigTypeOutputFieldName = _('OutputFormat')
+_visualConfigTypeSpaceFieldName = _('SpaceBetween')
+_visualConfigTypeHtmlFieldName = _('FormatHtml')
+_visualConfigTypeBulletsFieldName = _('Bullets')
+_visualConfigTypeTableFieldName = _('Table')
+_visualConfigTypeChildFieldName = _('ChildType')
+_visualConfigTypeIconFieldName = _('Icon')
+_visualConfigTypeGenericFieldName = _('GenericType')
+_visualConfigTypeConditionFieldName = _('ConditionalRule')
+_visualConfigTypeSeparatorFieldName = _('ListSeparator')
+_visualConfigTypeChildLimitFieldName = _('ChildTypeLimit')
 _visualConfigFieldTypeName = _('FIELD')
 _visualConfigTypeFieldName = _('FieldType')
 
@@ -275,6 +288,22 @@ class TreeFormats(dict):
         typeFormat = nodeformat.NodeFormat(_visualConfigTypeTypeName,
                                            structure.treeFormats,
                                            addDefaultField=True)
+        typeFormat.addField(_visualConfigTypeTitleFieldName)
+        typeFormat.addField(_visualConfigTypeOutputFieldName)
+        typeFormat.addField(_visualConfigTypeSpaceFieldName,
+                            {'fieldtype': 'Boolean'})
+        typeFormat.addField(_visualConfigTypeHtmlFieldName,
+                            {'fieldtype': 'Boolean'})
+        typeFormat.addField(_visualConfigTypeBulletsFieldName,
+                            {'fieldtype': 'Boolean'})
+        typeFormat.addField(_visualConfigTypeTableFieldName,
+                            {'fieldtype': 'Boolean'})
+        typeFormat.addField(_visualConfigTypeChildFieldName)
+        typeFormat.addField(_visualConfigTypeIconFieldName)
+        typeFormat.addField(_visualConfigTypeGenericFieldName)
+        typeFormat.addField(_visualConfigTypeConditionFieldName)
+        typeFormat.addField(_visualConfigTypeSeparatorFieldName)
+        typeFormat.addField(_visualConfigTypeChildLimitFieldName)
         structure.treeFormats[typeFormat.name] = typeFormat
         fieldFormat = nodeformat.NodeFormat(_visualConfigFieldTypeName,
                                             structure.treeFormats,
@@ -294,6 +323,36 @@ class TreeFormats(dict):
             rootNode.childList.append(typeNode)
             structure.addNodeDictRef(typeNode)
             typeNode.data[nodeformat.defaultFieldName] = typeName
+            titleLine = self[typeName].getTitleLine()
+            outputList = self[typeName].getOutputLines()
+            if self[typeName].formatHtml:
+                titleLine = xml.sax.saxutils.escape(titleLine)
+                outputList = [xml.sax.saxutils.escape(line) for line in
+                              outputList]
+            outputLines = '<br>\n'.join(outputList)
+            typeNode.data[_visualConfigTypeTitleFieldName] = titleLine
+            typeNode.data[_visualConfigTypeOutputFieldName] = outputLines
+            spaceBetween = repr(self[typeName].spaceBetween)
+            typeNode.data[_visualConfigTypeSpaceFieldName] = spaceBetween
+            formatHtml = repr(self[typeName].formatHtml)
+            typeNode.data[_visualConfigTypeHtmlFieldName] = formatHtml
+            useBullets = repr(self[typeName].useBullets)
+            typeNode.data[_visualConfigTypeBulletsFieldName] = useBullets
+            useTables = repr(self[typeName].useTables)
+            typeNode.data[_visualConfigTypeTableFieldName] = useTables
+            typeNode.data[_visualConfigTypeChildFieldName] = (self[typeName].
+                                                              childType)
+            typeNode.data[_visualConfigTypeIconFieldName] = (self[typeName].
+                                                             iconName)
+            typeNode.data[_visualConfigTypeGenericFieldName] = (self[typeName].
+                                                                genericType)
+            if self[typeName].conditional:
+                condition = self[typeName].conditional.conditionStr()
+                typeNode.data[_visualConfigTypeConditionFieldName] = condition
+            separator = self[typeName].outputSeparator
+            typeNode.data[_visualConfigTypeSeparatorFieldName] = separator
+            childLimit = ','.join(sorted(list(self[typeName].childTypeLimit)))
+            typeNode.data[_visualConfigTypeChildLimitFieldName] = childLimit
             for field in self[typeName].fields():
                 fieldNode = treenode.TreeNode(fieldFormat)
                 typeNode.childList.append(fieldNode)
