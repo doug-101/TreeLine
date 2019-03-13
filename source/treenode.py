@@ -4,7 +4,7 @@
 # treenode.py, provides a class to store tree node data
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -657,6 +657,9 @@ class TreeNode:
                                                  currentSequence))
             if self.formatRef.name in fieldDict or reserveNums:
                 childSequence += [1]
+                currentSequence[-1] += 1
+            if restartSetting and self.formatRef.name not in fieldDict:
+                currentSequence[-1] = 1
             if len(self.spotRefs) > 1:
                 completedClones.add(self.uId)
         if levelLimit > 0:
@@ -666,10 +669,6 @@ class TreeNode:
                 child.updateNumbering(fieldDict, childSequence, levelLimit - 1,
                                       completedClones, True, reserveNums,
                                       restartSetting)
-                if child.formatRef.name in fieldDict or reserveNums:
-                    childSequence[-1] += 1
-                if restartSetting and child.formatRef.name not in fieldDict:
-                    childSequence[-1] = 1
 
     def isIdentical(self, node, checkParents=True):
         """Return True if node format, data and descendants are identical.

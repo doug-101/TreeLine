@@ -4,7 +4,7 @@
 # miscdialogs.py, provides classes for various control dialogs
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -1216,8 +1216,6 @@ class NumberingDialog(QDialog):
                 node.updateNumbering(fieldDict, startNum, levelLimit,
                                      completedClones, includeRoot,
                                      reserveNums, restartSetting)
-                if not restartSetting:
-                    startNum[0] += 1
             control.updateAll()
         QApplication.restoreOverrideCursor()
 
