@@ -339,8 +339,8 @@ class TreeNode:
         found), the node match number and the field match number.
         Returns the last match if skipMatches < 0 (not used with replace).
         Arguments:
-            searchText -- the text to find in a non-regexp search
-            regExpObj -- the regular expression to find if searchText is blank
+            searchText -- the text to find if regExpObj is None
+            regExpObj -- the regular expression to find if not None
             skipMatches -- number of already found matches to skip in this node
             typeName -- if given, verify that this node matches this type
             fieldName -- if given, only find matches under this type name
@@ -349,8 +349,11 @@ class TreeNode:
         """
         if typeName and typeName != self.formatRef.name:
             return ('', 0, 0)
-        fields = ([self.formatRef.fieldDict[fieldName]] if fieldName
-                  else self.formatRef.fields())
+        try:
+            fields = ([self.formatRef.fieldDict[fieldName]] if fieldName
+                      else self.formatRef.fields())
+        except KeyError:
+            return ('', 0, 0)   # field not in this type
         matchedFieldname = ''
         findCount = 0
         prevFieldFindCount = 0
@@ -359,25 +362,27 @@ class TreeNode:
             fieldFindCount = 0
             pos = 0
             while True:
-                if pos >= len(fieldText):
+                if pos >= len(fieldText) and pos > 0:
                     break
-                if searchText:
-                    pos = fieldText.lower().find(searchText, pos)
-                else:
+                if regExpObj:
                     match = regExpObj.search(fieldText, pos)
                     pos = match.start() if match else -1
+                else:
+                    pos = fieldText.lower().find(searchText, pos)
+                    if not searchText and fieldText:
+                        pos = -1  # skip invalid find of empty string
                 if pos < 0:
                     break
                 findCount += 1
                 fieldFindCount += 1
                 prevFieldFindCount = fieldFindCount
-                matchLen = (len(searchText) if searchText
-                            else len(match.group()))
+                matchLen = (len(match.group()) if regExpObj
+                            else len(searchText))
                 if findCount > skipMatches:
                     matchedFieldname = field.name
                     if replaceText is not None:
                         replace = replaceText
-                        if not searchText:
+                        if regExpObj:
                             global _origBackrefMatch
                             _origBackrefMatch = match
                             for backrefRe in _replaceBackrefRe:
@@ -391,7 +396,7 @@ class TreeNode:
                             pass
                     if not replaceAll and skipMatches >= 0:
                         return (field.name, findCount, fieldFindCount)
-                pos += matchLen
+                pos = pos + matchLen if matchLen else pos + 1
         if not matchedFieldname:
             findCount = prevFieldFindCount = 0
         return (matchedFieldname, findCount, prevFieldFindCount)

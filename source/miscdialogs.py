@@ -794,7 +794,8 @@ class FindReplaceDialog(QDialog):
     def updateAvail(self):
         """Set find & replace buttons available if search text & matches exist.
         """
-        hasEntry = len(self.textEntry.text().strip()) > 0
+        hasEntry = (len(self.textEntry.text().strip()) > 0 or
+                    self.howButtons.checkedId() == FindReplaceType.anyMatch)
         self.previousButton.setEnabled(hasEntry)
         self.nextButton.setEnabled(hasEntry)
         match = bool(self.matchedSpot and self.matchedSpot is
@@ -881,7 +882,7 @@ class FindReplaceDialog(QDialog):
             searchText, regExpObj, typeName, fieldName = self.findParameters()
         except re.error:
             QMessageBox.warning(self, 'TreeLine',
-                                      _('Error - invalid regular expression'))
+                                _('Error - invalid regular expression'))
             self.updateAvail()
             return
         control = globalref.mainControl.activeControl

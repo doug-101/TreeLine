@@ -4,7 +4,7 @@
 # dataeditview.py, provides a class for the data edit right-hand view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -756,8 +756,8 @@ class MatchHighlighter(QSyntaxHighlighter):
         Arguments:
             doc -- the text document
             charFormat -- the formatting to apply
-            searchText -- the text to find in a non-regexp search
-            regExpObj -- the regular expression to find if searchText is blank
+            searchText -- the text to find if no regexp is given
+            regExpObj -- the regular expression to find if given
             skipMatches -- number of previous matches to skip
         """
         super().__init__(doc)
@@ -775,12 +775,12 @@ class MatchHighlighter(QSyntaxHighlighter):
         pos = matchLen = 0
         for matchNum in range(self.skipMatches + 1):
             pos += matchLen
-            if self.searchText:
-                pos = text.lower().find(self.searchText, pos)
-                matchLen = len(self.searchText)
-            else:
+            if self.regExpObj:
                 match = self.regExpObj.search(text, pos)
                 pos = match.start() if match else -1
                 matchLen = len(match.group()) if match else 0
+            else:
+                pos = text.lower().find(self.searchText, pos)
+                matchLen = len(self.searchText)
         if pos >= 0:
             self.setFormat(pos, matchLen, self.charFormat)

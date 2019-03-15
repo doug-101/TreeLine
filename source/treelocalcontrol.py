@@ -1549,8 +1549,8 @@ class TreeLocalControl(QObject):
         Called from the find replace dialog.
         Returns True if found, otherwise False.
         Arguments:
-            searchText -- the text to find in a non-regexp search
-            regExpObj -- the regular expression to find if searchText is blank
+            searchText -- the text to find if no regexp is given
+            regExpObj -- the regular expression to find if given
             typeName -- if given, verify that this node matches this type
             fieldName -- if given, only find matches under this type name
             forward -- next if True, previous if False
@@ -1611,8 +1611,8 @@ class TreeLocalControl(QObject):
         Called from the find replace dialog.
         Returns True if replaced, otherwise False.
         Arguments:
-            searchText -- the text to find in a non-regexp search
-            regExpObj -- the regular expression to find if searchText is blank
+            searchText -- the text to find if no regexp is given
+            regExpObj -- the regular expression to find if given
             typeName -- if given, verify that this node matches this type
             fieldName -- if given, only find matches under this type name
             replaceText -- if not None, replace a match with this string
@@ -1648,8 +1648,8 @@ class TreeLocalControl(QObject):
         Called from the find replace dialog.
         Returns number of matches replaced.
         Arguments:
-            searchText -- the text to find in a non-regexp search
-            regExpObj -- the regular expression to find if searchText is blank
+            searchText -- the text to find if no regexp is given
+            regExpObj -- the regular expression to find if given
             typeName -- if given, verify that this node matches this type
             fieldName -- if given, only find matches under this type name
             replaceText -- if not None, replace a match with this string
