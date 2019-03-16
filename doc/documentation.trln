@@ -195,6 +195,15 @@
 {
 "children": [],
 "data": {
+"Name": "Save as without filename",
+"Text": "Fix a minor bug affecting default directories for save-as and export commands when there is not already a file name set."
+},
+"format": "BULLETS",
+"uid": "25ab9320482011e989f27054d2175f18"
+},
+{
+"children": [],
+"data": {
 "Name": "Limit installer deletions",
 "Text": "In the Windows installer, improve the deletion of files from older versions and avoid problems if installing into a directory shared with other applications."
 },
@@ -614,6 +623,15 @@
 {
 "children": [],
 "data": {
+"Name": "Data in config structure",
+"Text": "Added many Show Configuration Structure data fields to show detailed settings for type formats and field formats.."
+},
+"format": "BULLETS",
+"uid": "6a6067d4482011e989f27054d2175f18"
+},
+{
+"children": [],
+"data": {
 "Name": "Select top node at open",
 "Text": "The top root node is now selected at file open if there is not a recent selection state to restore.  Previously these files opened with no selection, which could cause confusion."
 },
@@ -835,6 +853,15 @@
 {
 "children": [],
 "data": {
+"Name": "Numbering",
+"Text": "Fix incorrect numbering updates in some situations with mixed node types."
+},
+"format": "BULLETS",
+"uid": "84b24010482211e989f27054d2175f18"
+},
+{
+"children": [],
+"data": {
 "Name": "Copy command errors",
 "Text": "Fix errors shown when using copy commands after closing TreeLine windows."
 },
@@ -922,6 +949,15 @@
 },
 "format": "BULLET_HEADING",
 "uid": "95a6e90e333f11e88696d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Child count equation references",
+"Text": "Eliminate a problem defining math field equations that include child count references."
+},
+"format": "BULLETS",
+"uid": "95d970aa481f11e989f27054d2175f18"
 },
 {
 "children": [],
@@ -1086,6 +1122,15 @@
 {
 "children": [],
 "data": {
+"Name": "Search and replace",
+"Text": "Added support for finding and replacing empty data fields using the search and replace command."
+},
+"format": "BULLETS",
+"uid": "b398d8ee482211e989f27054d2175f18"
+},
+{
+"children": [],
+"data": {
 "Name": "Output table spacing",
 "Text": "Fixed minor spacing issues for tables shown in output views and HTML exports."
 },
@@ -1129,6 +1174,40 @@
 "uid": "d1d8e56eba4011e784ab3417ebd53aeb"
 },
 {
+"children": [
+"ff3f7c98481e11e989f27054d2175f18",
+"db25ce66481e11e989f27054d2175f18"
+],
+"data": {
+"Name": "March 17, 2019 - Release 3.1.1 (stable release)"
+},
+"format": "HEADINGS",
+"uid": "db25cd62481e11e989f27054d2175f18"
+},
+{
+"children": [
+"e3690592481f11e989f27054d2175f18",
+"84b24010482211e989f27054d2175f18",
+"db25cf60481e11e989f27054d2175f18",
+"95d970aa481f11e989f27054d2175f18",
+"25ab9320482011e989f27054d2175f18"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "db25ce66481e11e989f27054d2175f18"
+},
+{
+"children": [],
+"data": {
+"Name": "Math equation with copied type",
+"Text": "Fix problems defining a math field equation on a recently copied data type."
+},
+"format": "BULLETS",
+"uid": "db25cf60481e11e989f27054d2175f18"
+},
+{
 "children": [],
 "data": {
 "Name": "Sort root nodes",
@@ -1145,6 +1224,15 @@
 },
 "format": "BULLETS",
 "uid": "dd22e382334111e894e6d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Dark mode printing",
+"Text": "Fix printing problems when using the dark theme."
+},
+"format": "BULLETS",
+"uid": "e3690592481f11e989f27054d2175f18"
 },
 {
 "children": [],
@@ -1323,7 +1411,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 3.1.0, a beta release, dated February 20, 2019 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.1.1, a stable release, dated March 17, 2019 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -2975,6 +3063,7 @@
 },
 {
 "children": [
+"db25cd62481e11e989f27054d2175f18",
 "800a0971305111e991cda44cc8e97404",
 "9c08f39ee80311e8a510a44cc8e97404",
 "6610203fd2c111e8b033d66a6ab671cb",
@@ -5391,10 +5480,31 @@
 },
 "format": "BULLETS",
 "uid": "f966db0cc23f11e8b80fd66a6ab671cb"
+},
+{
+"children": [
+"6a6067d4482011e989f27054d2175f18",
+"b398d8ee482211e989f27054d2175f18",
+"ff3f7da6481e11e989f27054d2175f18"
+],
+"data": {
+"Name": "Updates"
+},
+"format": "BULLET_HEADING",
+"uid": "ff3f7c98481e11e989f27054d2175f18"
+},
+{
+"children": [],
+"data": {
+"Name": "Translations",
+"Text": "Updated German and Spanish GUI translations (thanks to Maria Seliger and Diego)."
+},
+"format": "BULLETS",
+"uid": "ff3f7da6481e11e989f27054d2175f18"
 }
 ],
 "properties": {
-"tlversion": "3.0+.3",
+"tlversion": "3.1.1",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
