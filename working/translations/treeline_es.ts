@@ -2144,12 +2144,12 @@ Use an import filter?</source>
 <context>
     <name>miscdialogs</name>
     <message>
-        <location filename="miscdialogs.py" line="1975"/>
+        <location filename="miscdialogs.py" line="1974"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1896"/>
+        <location filename="miscdialogs.py" line="1895"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Cancelar</translation>
     </message>
@@ -2316,12 +2316,12 @@ diccionario (opcional)</translation>
         <translation>C&amp;errar Filtro</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1161"/>
+        <location filename="miscdialogs.py" line="1162"/>
         <source>&amp;Close</source>
         <translation>&amp;Cerrar</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="884"/>
+        <location filename="miscdialogs.py" line="885"/>
         <source>Error - invalid regular expression</source>
         <translation>Error - Expresión regular no válida</translation>
     </message>
@@ -2381,317 +2381,317 @@ diccionario (opcional)</translation>
         <translation>Reemplaz&amp;ar Todo</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="822"/>
+        <location filename="miscdialogs.py" line="823"/>
         <source>[All Types]</source>
         <translation>[Todos los tipos]</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="844"/>
+        <location filename="miscdialogs.py" line="845"/>
         <source>[All Fields]</source>
         <translation>[Todos los campos]</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="894"/>
+        <location filename="miscdialogs.py" line="895"/>
         <source>Search text &quot;{0}&quot; not found</source>
         <translation>Búsqueda del texto &quot;{0}&quot; no encontrado</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="918"/>
+        <location filename="miscdialogs.py" line="919"/>
         <source>Error - replacement failed</source>
         <translation>Error - reemplazo fallido</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="932"/>
+        <location filename="miscdialogs.py" line="933"/>
         <source>Replaced {0} matches</source>
         <translation>Reemplazadas {0} coincidencias</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="961"/>
+        <location filename="miscdialogs.py" line="962"/>
         <source>Sort Nodes</source>
         <translation>Ordenar Nodos</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="967"/>
+        <location filename="miscdialogs.py" line="968"/>
         <source>What to Sort</source>
         <translation>Qué ordenar</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1116"/>
+        <location filename="miscdialogs.py" line="1117"/>
         <source>&amp;Entire tree</source>
         <translation>Árbol compl&amp;eto</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1119"/>
+        <location filename="miscdialogs.py" line="1120"/>
         <source>Selected &amp;branches</source>
         <translation>Ramas &amp;Seleccionadas</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="977"/>
+        <location filename="miscdialogs.py" line="978"/>
         <source>Selection&apos;s childre&amp;n</source>
         <translation>&amp;Hijos seleccionados</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="980"/>
+        <location filename="miscdialogs.py" line="981"/>
         <source>Selection&apos;s &amp;siblings</source>
         <translation>Her&amp;manos seleccionados</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="987"/>
+        <location filename="miscdialogs.py" line="988"/>
         <source>Sort Method</source>
         <translation>Método de ordenado</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="991"/>
+        <location filename="miscdialogs.py" line="992"/>
         <source>&amp;Predefined Key Fields</source>
         <translation>Nombres de Campos &amp;Predefinidos</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="994"/>
+        <location filename="miscdialogs.py" line="995"/>
         <source>Node &amp;Titles</source>
         <translation>&amp;Títulos de Nodos</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="999"/>
+        <location filename="miscdialogs.py" line="1000"/>
         <source>Sort Direction</source>
         <translation>Dirección de Ordenado</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1003"/>
+        <location filename="miscdialogs.py" line="1004"/>
         <source>&amp;Forward</source>
         <translation>&amp;Adelante</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1006"/>
+        <location filename="miscdialogs.py" line="1007"/>
         <source>&amp;Reverse</source>
         <translation>At&amp;rás</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1893"/>
+        <location filename="miscdialogs.py" line="1892"/>
         <source>&amp;Apply</source>
         <translation>A&amp;plicar</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1108"/>
+        <location filename="miscdialogs.py" line="1109"/>
         <source>Update Node Numbering</source>
         <translation>Actualizar Numeración de Nodo</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1112"/>
+        <location filename="miscdialogs.py" line="1113"/>
         <source>What to Update</source>
         <translation>Qué Actualizar</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1122"/>
+        <location filename="miscdialogs.py" line="1123"/>
         <source>&amp;Selection&apos;s children</source>
         <translation>&amp;Selección de Hijos</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1127"/>
+        <location filename="miscdialogs.py" line="1128"/>
         <source>Root Node</source>
         <translation>Nodo Principal</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1130"/>
+        <location filename="miscdialogs.py" line="1131"/>
         <source>Include top-level nodes</source>
         <translation>Incluir nodos de nivel superior</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1135"/>
+        <location filename="miscdialogs.py" line="1136"/>
         <source>Handling Nodes without Numbering Fields</source>
         <translation>Manejar nodos sin Campos de Numeración</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1139"/>
+        <location filename="miscdialogs.py" line="1140"/>
         <source>&amp;Ignore and skip</source>
         <translation>&amp;Ignorar y omitir</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1142"/>
+        <location filename="miscdialogs.py" line="1143"/>
         <source>&amp;Restart numbers for next siblings</source>
         <translation>&amp;Reiniciar números para los siguientes hermanos</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1146"/>
+        <location filename="miscdialogs.py" line="1147"/>
         <source>Reserve &amp;numbers</source>
         <translation>Reserva &amp;números</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1188"/>
+        <location filename="miscdialogs.py" line="1189"/>
         <source>TreeLine Numbering</source>
         <translation>Numeración TreeLine</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1189"/>
+        <location filename="miscdialogs.py" line="1190"/>
         <source>No numbering fields were found in data types</source>
         <translation>No se encontraron campos de numeración en los tipos de datos</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1239"/>
+        <location filename="miscdialogs.py" line="1238"/>
         <source>File Menu</source>
         <translation>Menú de Archivo</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1239"/>
+        <location filename="miscdialogs.py" line="1238"/>
         <source>File</source>
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1240"/>
+        <location filename="miscdialogs.py" line="1239"/>
         <source>Edit Menu</source>
         <translation>Menú Edición</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1240"/>
+        <location filename="miscdialogs.py" line="1239"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1241"/>
+        <location filename="miscdialogs.py" line="1240"/>
         <source>Node Menu</source>
         <translation>Menú de Nodo</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1241"/>
+        <location filename="miscdialogs.py" line="1240"/>
         <source>Node</source>
         <translation>Nodo</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1242"/>
+        <location filename="miscdialogs.py" line="1241"/>
         <source>Data Menu</source>
         <translation>Menú de datos</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1242"/>
+        <location filename="miscdialogs.py" line="1241"/>
         <source>Data</source>
         <translation>Datos</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1243"/>
+        <location filename="miscdialogs.py" line="1242"/>
         <source>Tools Menu</source>
         <translation>Menú de Herramientas</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1243"/>
+        <location filename="miscdialogs.py" line="1242"/>
         <source>Tools</source>
         <translation>Herramientas</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1245"/>
+        <location filename="miscdialogs.py" line="1244"/>
         <source>View Menu</source>
         <translation>Menú Ver</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1245"/>
+        <location filename="miscdialogs.py" line="1244"/>
         <source>View</source>
         <translation>Ver</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1246"/>
+        <location filename="miscdialogs.py" line="1245"/>
         <source>Window Menu</source>
         <translation>Menú Ventana</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1246"/>
+        <location filename="miscdialogs.py" line="1245"/>
         <source>Window</source>
         <translation>Ventana</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1247"/>
+        <location filename="miscdialogs.py" line="1246"/>
         <source>Help Menu</source>
         <translation>Menú Ayuda</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1247"/>
+        <location filename="miscdialogs.py" line="1246"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1262"/>
+        <location filename="miscdialogs.py" line="1261"/>
         <source>Keyboard Shortcuts</source>
         <translation>Atajos de Teclado</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1583"/>
+        <location filename="miscdialogs.py" line="1582"/>
         <source>&amp;Restore Defaults</source>
         <translation>&amp;Restaurar Valores por &amp;Defecto</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1431"/>
+        <location filename="miscdialogs.py" line="1430"/>
         <source>Key {0} is already used</source>
         <translation>Clave {0} ya está en uso</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1442"/>
+        <location filename="miscdialogs.py" line="1441"/>
         <source>Clear &amp;Key</source>
         <translation>Borrar Cla&amp;ve</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1491"/>
+        <location filename="miscdialogs.py" line="1490"/>
         <source>--Separator--</source>
         <translation>--Separador--</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1502"/>
+        <location filename="miscdialogs.py" line="1501"/>
         <source>Customize Toolbars</source>
         <translation>Personalizar Barra de Herramientas</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1516"/>
+        <location filename="miscdialogs.py" line="1515"/>
         <source>Toolbar &amp;Size</source>
         <translation>Tamaño Barra de Herramienta&amp;s</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1521"/>
+        <location filename="miscdialogs.py" line="1520"/>
         <source>Small Icons</source>
         <translation>Iconos Pequeños</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1521"/>
+        <location filename="miscdialogs.py" line="1520"/>
         <source>Large Icons</source>
         <translation>Iconos Grandes</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1524"/>
+        <location filename="miscdialogs.py" line="1523"/>
         <source>Toolbar Quantity</source>
         <translation>Cantidad de barras de herramientas</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1530"/>
+        <location filename="miscdialogs.py" line="1529"/>
         <source>&amp;Toolbars</source>
         <translation>Barras de herramien&amp;tas</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1535"/>
+        <location filename="miscdialogs.py" line="1534"/>
         <source>A&amp;vailable Commands</source>
         <translation>Comandos Dis&amp;ponibles</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1559"/>
+        <location filename="miscdialogs.py" line="1558"/>
         <source>Tool&amp;bar Commands</source>
         <translation>Comandos de la &amp;barra de herramientas</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1574"/>
+        <location filename="miscdialogs.py" line="1573"/>
         <source>Move &amp;Up</source>
         <translation>Mover &amp;Arriba</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1577"/>
+        <location filename="miscdialogs.py" line="1576"/>
         <source>Move &amp;Down</source>
         <translation>Mover Aba&amp;jo</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1877"/>
+        <location filename="miscdialogs.py" line="1876"/>
         <source>Tree View Font</source>
         <translation>Fuente del Árbol</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1881"/>
+        <location filename="miscdialogs.py" line="1880"/>
         <source>Output View Font</source>
         <translation>Fuente de Salida</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1885"/>
+        <location filename="miscdialogs.py" line="1884"/>
         <source>Editor View Font</source>
         <translation>Fuente del Editor</translation>
     </message>
@@ -2706,7 +2706,7 @@ diccionario (opcional)</translation>
         <translation type="obsolete">Extensiones cargadas</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1275"/>
+        <location filename="miscdialogs.py" line="1274"/>
         <source>No menu</source>
         <translation>No.menu</translation>
     </message>
@@ -2730,32 +2730,32 @@ La información de depuración que se muestra a continuación se puede copiar y 
 </translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1244"/>
+        <location filename="miscdialogs.py" line="1243"/>
         <source>Format Menu</source>
         <translation>Menú Formato</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1244"/>
+        <location filename="miscdialogs.py" line="1243"/>
         <source>Format</source>
         <translation>Formato</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1858"/>
+        <location filename="miscdialogs.py" line="1857"/>
         <source>Customize Fonts</source>
         <translation>Personalizar Fuentes</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1869"/>
+        <location filename="miscdialogs.py" line="1868"/>
         <source>&amp;Use system default font</source>
         <translation>&amp;Usar fuente por defecto del sistema</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1872"/>
+        <location filename="miscdialogs.py" line="1871"/>
         <source>App Default Font</source>
         <translation>Fuente por defecto de la aplicación</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1874"/>
+        <location filename="miscdialogs.py" line="1873"/>
         <source>&amp;Use app default font</source>
         <translation>&amp;Usar la fuente predeterminada de la aplicación</translation>
     </message>
@@ -3018,31 +3018,31 @@ of week</source>
 <context>
     <name>printdata</name>
     <message>
-        <location filename="printdata.py" line="366"/>
+        <location filename="printdata.py" line="367"/>
         <source>Error initializing printer</source>
         <translation>Error inicializando la impresora</translation>
     </message>
     <message>
-        <location filename="printdata.py" line="577"/>
+        <location filename="printdata.py" line="579"/>
         <source>TreeLine - Export PDF</source>
         <translation>TreeLine - Exportar a PDF</translation>
     </message>
     <message>
-        <location filename="printdata.py" line="343"/>
+        <location filename="printdata.py" line="344"/>
         <source>Warning: Page size and margin settings unsupported on current printer.
 Save page adjustments?</source>
         <translation>Advertencia: configuración de tamaño de página y margen no admitida en la impresora actual.
  ¿Guardar los ajustes de página?</translation>
     </message>
     <message>
-        <location filename="printdata.py" line="346"/>
+        <location filename="printdata.py" line="347"/>
         <source>Warning: Page size setting unsupported on current printer.
 Save adjustment?</source>
         <translation>Advertencia: configuración de tamaño de página no admitida en la impresora actual.
  ¿Guardar ajustes?</translation>
     </message>
     <message>
-        <location filename="printdata.py" line="349"/>
+        <location filename="printdata.py" line="350"/>
         <source>Warning: Margin settings unsupported on current printer.
 Save adjustments?</source>
         <translation>Advertencia: configuración de margen no compatible en la impresora actual.
@@ -3614,29 +3614,129 @@ Continuar desde la parte superior?</translation>
 <context>
     <name>treeformats</name>
     <message>
-        <location filename="treeformats.py" line="25"/>
+        <location filename="treeformats.py" line="26"/>
         <source>DEFAULT</source>
         <translation>PREDETERMINADO</translation>
     </message>
     <message>
-        <location filename="treeformats.py" line="26"/>
+        <location filename="treeformats.py" line="27"/>
         <source>FILE</source>
         <translation>ARCHIVO</translation>
     </message>
     <message>
-        <location filename="treeformats.py" line="27"/>
+        <location filename="treeformats.py" line="28"/>
         <source>TYPE</source>
         <translation>TIPO</translation>
     </message>
     <message>
-        <location filename="treeformats.py" line="28"/>
+        <location filename="treeformats.py" line="41"/>
         <source>FIELD</source>
         <translation>CAMPO</translation>
     </message>
     <message>
-        <location filename="treeformats.py" line="30"/>
+        <location filename="treeformats.py" line="42"/>
         <source>FieldType</source>
         <translation>TipoCampo</translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="29"/>
+        <source>TitleFormat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="30"/>
+        <source>OutputFormat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="31"/>
+        <source>SpaceBetween</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="32"/>
+        <source>FormatHtml</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="33"/>
+        <source>Bullets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="34"/>
+        <source>Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="35"/>
+        <source>ChildType</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="36"/>
+        <source>Icon</source>
+        <translation type="unfinished">Icono</translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="37"/>
+        <source>GenericType</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="38"/>
+        <source>ConditionalRule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="39"/>
+        <source>ListSeparator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="40"/>
+        <source>ChildTypeLimit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="43"/>
+        <source>Format</source>
+        <translation type="unfinished">Formato</translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="44"/>
+        <source>Prefix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="45"/>
+        <source>Suffix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="46"/>
+        <source>InitialValue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="47"/>
+        <source>NumLines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="48"/>
+        <source>SortKeyNum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="49"/>
+        <source>SortForward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treeformats.py" line="51"/>
+        <source>EvalHtml</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4087,37 +4187,37 @@ Continuar desde la parte superior?</translation>
         <translation>Error - No se pudo escribir en {}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="832"/>
+        <location filename="treelocalcontrol.py" line="833"/>
         <source>TreeLine - Save As</source>
         <translation>TreeLine - Guardar como</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="865"/>
+        <location filename="treelocalcontrol.py" line="866"/>
         <source>Error - could not write to file</source>
         <translation>Error - no se pudo escribir en el archivo</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1234"/>
+        <location filename="treelocalcontrol.py" line="1235"/>
         <source>TreeLine - Open Configuration File</source>
         <translation>TreeLine - Abrir archivo de configuración</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1268"/>
+        <location filename="treelocalcontrol.py" line="1269"/>
         <source>Error - could not read file {0}</source>
         <translation>Error: no se pudo leer el archivo {0}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1386"/>
+        <location filename="treelocalcontrol.py" line="1387"/>
         <source>Cannot expand without common fields</source>
         <translation>No es posible expandir sin campos comunes</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1388"/>
+        <location filename="treelocalcontrol.py" line="1389"/>
         <source>Category Fields</source>
         <translation>Campos de las categorías</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1389"/>
+        <location filename="treelocalcontrol.py" line="1390"/>
         <source>Select fields for new level</source>
         <translation>Seleccionar campos para nuevo nivel</translation>
     </message>
@@ -4222,12 +4322,12 @@ Continuar desde la parte superior?</translation>
         <translation>Intercambiar categoría nodos hijos y nietos</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1318"/>
+        <location filename="treelocalcontrol.py" line="1319"/>
         <source>Converted {0} branches into clones</source>
         <translation>Convierte ramas {0} en clones</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1325"/>
+        <location filename="treelocalcontrol.py" line="1326"/>
         <source>No identical nodes found</source>
         <translation>No existen nodos idénticos</translation>
     </message>
@@ -4640,7 +4740,7 @@ Una sesión anterior puede haberse bloqueado</translation>
 <context>
     <name>treenode</name>
     <message>
-        <location filename="treenode.py" line="410"/>
+        <location filename="treenode.py" line="415"/>
         <source>New</source>
         <translation>Nuevo</translation>
     </message>
