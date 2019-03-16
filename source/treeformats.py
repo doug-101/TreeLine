@@ -23,22 +23,30 @@ import treestructure
 
 
 defaultTypeName = _('DEFAULT')
-_visualConfigRootTypeName = _('FILE')
-_visualConfigTypeTypeName = _('TYPE')
-_visualConfigTypeTitleFieldName = _('TitleFormat')
-_visualConfigTypeOutputFieldName = _('OutputFormat')
-_visualConfigTypeSpaceFieldName = _('SpaceBetween')
-_visualConfigTypeHtmlFieldName = _('FormatHtml')
-_visualConfigTypeBulletsFieldName = _('Bullets')
-_visualConfigTypeTableFieldName = _('Table')
-_visualConfigTypeChildFieldName = _('ChildType')
-_visualConfigTypeIconFieldName = _('Icon')
-_visualConfigTypeGenericFieldName = _('GenericType')
-_visualConfigTypeConditionFieldName = _('ConditionalRule')
-_visualConfigTypeSeparatorFieldName = _('ListSeparator')
-_visualConfigTypeChildLimitFieldName = _('ChildTypeLimit')
-_visualConfigFieldTypeName = _('FIELD')
-_visualConfigTypeFieldName = _('FieldType')
+_showConfRootTypeName = _('FILE')
+_showConfTypeTypeName = _('TYPE')
+_showConfTypeTitleFieldName = _('TitleFormat')
+_showConfTypeOutputFieldName = _('OutputFormat')
+_showConfTypeSpaceFieldName = _('SpaceBetween')
+_showConfTypeHtmlFieldName = _('FormatHtml')
+_showConfTypeBulletsFieldName = _('Bullets')
+_showConfTypeTableFieldName = _('Table')
+_showConfTypeChildFieldName = _('ChildType')
+_showConfTypeIconFieldName = _('Icon')
+_showConfTypeGenericFieldName = _('GenericType')
+_showConfTypeConditionFieldName = _('ConditionalRule')
+_showConfTypeSeparatorFieldName = _('ListSeparator')
+_showConfTypeChildLimitFieldName = _('ChildTypeLimit')
+_showConfFieldTypeName = _('FIELD')
+_showConfFieldTypeFieldName = _('FieldType')
+_showConfFieldFormatFieldName = _('Format')
+_showConfFieldPrefixFieldName = _('Prefix')
+_showConfFieldSuffixFieldName = _('Suffix')
+_showConfFieldInitFieldName = _('InitialValue')
+_showConfFieldLinesFieldName = _('NumLines')
+_showConfFieldSortKeyFieldName = _('SortKeyNum')
+_showConfFieldSortDirFieldName = _('SortForward')
+_showConfFieldEvalHtmlFieldName = _('EvalHtml')
 
 class TreeFormats(dict):
     """Class to store node format types and info.
@@ -281,36 +289,48 @@ class TreeFormats(dict):
         """
         structure = treestructure.TreeStructure()
         structure.treeFormats = TreeFormats()
-        rootFormat = nodeformat.NodeFormat(_visualConfigRootTypeName,
+        rootFormat = nodeformat.NodeFormat(_showConfRootTypeName,
                                            structure.treeFormats,
                                            addDefaultField=True)
         structure.treeFormats[rootFormat.name] = rootFormat
-        typeFormat = nodeformat.NodeFormat(_visualConfigTypeTypeName,
+        typeFormat = nodeformat.NodeFormat(_showConfTypeTypeName,
                                            structure.treeFormats,
                                            addDefaultField=True)
-        typeFormat.addField(_visualConfigTypeTitleFieldName)
-        typeFormat.addField(_visualConfigTypeOutputFieldName)
-        typeFormat.addField(_visualConfigTypeSpaceFieldName,
+        typeFormat.addField(_showConfTypeTitleFieldName)
+        typeFormat.addField(_showConfTypeOutputFieldName)
+        typeFormat.addField(_showConfTypeSpaceFieldName,
                             {'fieldtype': 'Boolean'})
-        typeFormat.addField(_visualConfigTypeHtmlFieldName,
+        typeFormat.addField(_showConfTypeHtmlFieldName,
                             {'fieldtype': 'Boolean'})
-        typeFormat.addField(_visualConfigTypeBulletsFieldName,
+        typeFormat.addField(_showConfTypeBulletsFieldName,
                             {'fieldtype': 'Boolean'})
-        typeFormat.addField(_visualConfigTypeTableFieldName,
+        typeFormat.addField(_showConfTypeTableFieldName,
                             {'fieldtype': 'Boolean'})
-        typeFormat.addField(_visualConfigTypeChildFieldName)
-        typeFormat.addField(_visualConfigTypeIconFieldName)
-        typeFormat.addField(_visualConfigTypeGenericFieldName)
-        typeFormat.addField(_visualConfigTypeConditionFieldName)
-        typeFormat.addField(_visualConfigTypeSeparatorFieldName)
-        typeFormat.addField(_visualConfigTypeChildLimitFieldName)
+        typeFormat.addField(_showConfTypeChildFieldName)
+        typeFormat.addField(_showConfTypeIconFieldName)
+        typeFormat.addField(_showConfTypeGenericFieldName)
+        typeFormat.addField(_showConfTypeConditionFieldName)
+        typeFormat.addField(_showConfTypeSeparatorFieldName)
+        typeFormat.addField(_showConfTypeChildLimitFieldName)
         structure.treeFormats[typeFormat.name] = typeFormat
-        fieldFormat = nodeformat.NodeFormat(_visualConfigFieldTypeName,
+        fieldFormat = nodeformat.NodeFormat(_showConfFieldTypeName,
                                             structure.treeFormats,
                                             addDefaultField=True)
-        fieldFormat.addField(_visualConfigTypeFieldName)
+        fieldFormat.addField(_showConfFieldTypeFieldName)
+        fieldFormat.addField(_showConfFieldFormatFieldName)
+        fieldFormat.addField(_showConfFieldPrefixFieldName)
+        fieldFormat.addField(_showConfFieldSuffixFieldName)
+        fieldFormat.addField(_showConfFieldInitFieldName)
+        fieldFormat.addField(_showConfFieldLinesFieldName,
+                             {'fieldtype': 'Number'})
+        fieldFormat.addField(_showConfFieldSortKeyFieldName,
+                             {'fieldtype': 'Number'})
+        fieldFormat.addField(_showConfFieldSortDirFieldName,
+                             {'fieldtype': 'Boolean'})
+        fieldFormat.addField(_showConfFieldEvalHtmlFieldName,
+                             {'fieldtype': 'Boolean'})
         line = '{{*{0}*}} ({{*{1}*}})'.format(nodeformat.defaultFieldName,
-                                              _visualConfigTypeFieldName)
+                                              _showConfFieldTypeFieldName)
         fieldFormat.changeTitleLine(line)
         fieldFormat.changeOutputLines([line])
         structure.treeFormats[fieldFormat.name] = fieldFormat
@@ -330,34 +350,55 @@ class TreeFormats(dict):
                 outputList = [xml.sax.saxutils.escape(line) for line in
                               outputList]
             outputLines = '<br>\n'.join(outputList)
-            typeNode.data[_visualConfigTypeTitleFieldName] = titleLine
-            typeNode.data[_visualConfigTypeOutputFieldName] = outputLines
+            typeNode.data[_showConfTypeTitleFieldName] = titleLine
+            typeNode.data[_showConfTypeOutputFieldName] = outputLines
             spaceBetween = repr(self[typeName].spaceBetween)
-            typeNode.data[_visualConfigTypeSpaceFieldName] = spaceBetween
+            typeNode.data[_showConfTypeSpaceFieldName] = spaceBetween
             formatHtml = repr(self[typeName].formatHtml)
-            typeNode.data[_visualConfigTypeHtmlFieldName] = formatHtml
+            typeNode.data[_showConfTypeHtmlFieldName] = formatHtml
             useBullets = repr(self[typeName].useBullets)
-            typeNode.data[_visualConfigTypeBulletsFieldName] = useBullets
+            typeNode.data[_showConfTypeBulletsFieldName] = useBullets
             useTables = repr(self[typeName].useTables)
-            typeNode.data[_visualConfigTypeTableFieldName] = useTables
-            typeNode.data[_visualConfigTypeChildFieldName] = (self[typeName].
-                                                              childType)
-            typeNode.data[_visualConfigTypeIconFieldName] = (self[typeName].
-                                                             iconName)
-            typeNode.data[_visualConfigTypeGenericFieldName] = (self[typeName].
-                                                                genericType)
+            typeNode.data[_showConfTypeTableFieldName] = useTables
+            typeNode.data[_showConfTypeChildFieldName] = (self[typeName].
+                                                          childType)
+            typeNode.data[_showConfTypeIconFieldName] = (self[typeName].
+                                                         iconName)
+            typeNode.data[_showConfTypeGenericFieldName] = (self[typeName].
+                                                            genericType)
             if self[typeName].conditional:
                 condition = self[typeName].conditional.conditionStr()
-                typeNode.data[_visualConfigTypeConditionFieldName] = condition
+                typeNode.data[_showConfTypeConditionFieldName] = condition
             separator = self[typeName].outputSeparator
-            typeNode.data[_visualConfigTypeSeparatorFieldName] = separator
+            typeNode.data[_showConfTypeSeparatorFieldName] = separator
             childLimit = ','.join(sorted(list(self[typeName].childTypeLimit)))
-            typeNode.data[_visualConfigTypeChildLimitFieldName] = childLimit
+            typeNode.data[_showConfTypeChildLimitFieldName] = childLimit
+            fieldSortKeyDict = {}
+            fieldSortSet = False
+            for field in self[typeName].fields():
+                fieldSortKeyDict[field.name] = repr(field.sortKeyNum)
+                if field.sortKeyNum != 0:
+                    fieldSortSet = True
+            if not fieldSortSet:
+                sortField = list(self[typeName].fields())[0]
+                fieldSortKeyDict[sortField.name] = repr(1)
             for field in self[typeName].fields():
                 fieldNode = treenode.TreeNode(fieldFormat)
                 typeNode.childList.append(fieldNode)
                 structure.addNodeDictRef(fieldNode)
                 fieldNode.data[nodeformat.defaultFieldName] = field.name
-                fieldNode.data[_visualConfigTypeFieldName] = field.typeName
+                fieldNode.data[_showConfFieldTypeFieldName] = field.typeName
+                fieldNode.data[_showConfFieldFormatFieldName] = field.format
+                fieldNode.data[_showConfFieldPrefixFieldName] = field.prefix
+                fieldNode.data[_showConfFieldSuffixFieldName] = field.suffix
+                fieldNode.data[_showConfFieldInitFieldName] = field.initDefault
+                numLines = repr(field.numLines)
+                fieldNode.data[_showConfFieldLinesFieldName] = numLines
+                sortKeyNum = fieldSortKeyDict[field.name]
+                fieldNode.data[_showConfFieldSortKeyFieldName] = sortKeyNum
+                sortKeyFwd = repr(field.sortKeyForward)
+                fieldNode.data[_showConfFieldSortDirFieldName] = sortKeyFwd
+                evalHtml = repr(field.evalHtml)
+                fieldNode.data[_showConfFieldEvalHtmlFieldName] = evalHtml
         structure.generateSpots(None)
         return structure
