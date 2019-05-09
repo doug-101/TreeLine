@@ -70,8 +70,6 @@ class TitleListView(QTextEdit):
             return
         if self.isChildView:
             selSpots = selSpots[0].childSpots()
-        self.treeSelectAction.setEnabled(self.isChildView and
-                                         len(selSpots) > 0)
         self.blockSignals(True)
         if selSpots:
             self.setPlainText('\n'.join(spot.nodeRef.title(spot) for spot in
@@ -206,6 +204,8 @@ class TitleListView(QTextEdit):
         menu.removeAction(menu.actions()[0])
         menu.insertSeparator(menu.actions()[0])
         menu.insertAction(menu.actions()[0], self.treeSelectAction)
+        self.treeSelectAction.setEnabled(self.isChildView and
+                                         len(self.toPlainText().strip()) > 0)
         menu.exec_(event.globalPos())
 
     def keyPressEvent(self, event):
