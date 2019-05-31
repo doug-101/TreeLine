@@ -133,7 +133,8 @@ class DataEditDelegate(QStyledItemDelegate):
             doc.setTextWidth(styleOption.rect.width())
             size = doc.documentLayout().documentSize().toSize()
             maxHeight = self.parent().height() * 9 // 10  # 90% of view height
-            if size.height() > maxHeight:
+            if (size.height() > maxHeight and
+                globalref.genOptions['EditorLimitHeight']):
                 size.setHeight(maxHeight)
             if cell.field.numLines > 1:
                 minDoc = QTextDocument('\n' * (cell.field.numLines - 1))

@@ -57,6 +57,9 @@ def setGenOptionDefaults(generalOptions):
     BoolOptionItem(generalOptions, 'EditorOnHover', True,
                    _('Features Available'),
                    _('Activate data editors on mouse hover'))
+    BoolOptionItem(generalOptions, 'EditorLimitHeight', True,
+                   _('Features Available'),
+                   _('Limit data editor height to window size'))
     BoolOptionItem(generalOptions, 'ClickRename', True,
                    _('Features Available'), _('Click node to rename'))
     BoolOptionItem(generalOptions, 'RenameNewNodes', True,
