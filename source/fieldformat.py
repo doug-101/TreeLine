@@ -40,6 +40,7 @@ _mathResultBlank = {MathResult.number: 0, MathResult.date: 0,
                     MathResult.text: ''}
 _multipleSpaceRegEx = re.compile(r' {2,}')
 _lineBreakRegEx = re.compile(r'<br\s*/?>', re.I)
+_stripTagRe = re.compile('<.*?>')
 linkRegExp = re.compile(r'<a [^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.I | re.S)
 linkSeparateNameRegExp = re.compile(r'(.*) \[(.*)\]\s*$')
 _imageRegExp = re.compile(r'<img [^>]*src="([^"]+)"[^>]*>', re.I | re.S)
@@ -116,12 +117,13 @@ class TextField:
         """
         self.format = format
 
-    def outputText(self, node, titleMode, formatHtml, spotRef=None):
+    def outputText(self, node, oneLine, noHtml, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Arguments:
             node -- the tree item storing the data
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
             spotRef -- optional, used for ancestor field refs
         """
@@ -130,26 +132,28 @@ class TextField:
             node = node.treeStructureRef().fileInfoNode
         storedText = node.data.get(self.name, '')
         if storedText:
-            return self.formatOutput(storedText, titleMode, formatHtml)
+            return self.formatOutput(storedText, oneLine, noHtml, formatHtml)
         return ''
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         prefix = self.prefix
         suffix = self.suffix
-        if titleMode:
+        if oneLine:
             storedText = _lineBreakRegEx.split(storedText, 1)[0]
+        if noHtml:
             storedText = removeMarkup(storedText)
             if formatHtml:
                 prefix = removeMarkup(prefix)
                 suffix = removeMarkup(suffix)
-        elif not formatHtml:
+        if not formatHtml:
             prefix = saxutils.escape(prefix)
             suffix = saxutils.escape(suffix)
         return '{0}{1}{2}'.format(prefix, storedText, suffix)
@@ -338,16 +342,17 @@ class OneLineTextField(TextField):
         """
         super().__init__(name, formatData)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         text = _lineBreakRegEx.split(storedText, 1)[0]
-        return super().formatOutput(text, titleMode, formatHtml)
+        return super().formatOutput(text, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -379,17 +384,18 @@ class SpacedTextField(TextField):
         """
         super().__init__(name, formatData)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         if storedText:
             storedText = '<pre>{0}</pre>'.format(storedText)
-        return super().formatOutput(storedText, titleMode, formatHtml)
+        return super().formatOutput(storedText, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -453,19 +459,20 @@ class NumberField(HtmlTextField):
         """
         super().__init__(name, formatData)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         try:
             text = gennumber.GenNumber(storedText).numStr(self.format)
         except ValueError:
             text = _errorStr
-        return super().formatOutput(text, titleMode, formatHtml)
+        return super().formatOutput(text, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -569,12 +576,13 @@ class MathField(HtmlTextField):
             self.resultType = MathResult.number
         super().setFormat(format)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         text = storedText
@@ -593,7 +601,7 @@ class MathField(HtmlTextField):
                 text =  genboolean.GenBoolean(text).boolStr(self.format)
         except ValueError:
             text = _errorStr
-        return super().formatOutput(text, titleMode, formatHtml)
+        return super().formatOutput(text, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -791,19 +799,20 @@ class NumberingField(HtmlTextField):
         self.numFormat = numbering.NumberingGroup(format)
         super().setFormat(format)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         try:
             text = self.numFormat.numString(storedText)
         except ValueError:
             text = _errorStr
-        return super().formatOutput(text, titleMode, formatHtml)
+        return super().formatOutput(text, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -877,12 +886,13 @@ class DateField(HtmlTextField):
         """
         super().__init__(name, formatData)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         try:
@@ -893,7 +903,7 @@ class DateField(HtmlTextField):
             text = _errorStr
         if not self.evalHtml:
             text = saxutils.escape(text)
-        return super().formatOutput(text, titleMode, formatHtml)
+        return super().formatOutput(text, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -1044,12 +1054,13 @@ class TimeField(HtmlTextField):
         """
         super().__init__(name, formatData)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         try:
@@ -1062,7 +1073,7 @@ class TimeField(HtmlTextField):
             text = _errorStr
         if not self.evalHtml:
             text = saxutils.escape(text)
-        return super().formatOutput(text, titleMode, formatHtml)
+        return super().formatOutput(text, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -1252,12 +1263,13 @@ class DateTimeField(HtmlTextField):
         """
         super().__init__(name, formatData)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         try:
@@ -1270,7 +1282,7 @@ class DateTimeField(HtmlTextField):
             text = _errorStr
         if not self.evalHtml:
             text = saxutils.escape(text)
-        return super().formatOutput(text, titleMode, formatHtml)
+        return super().formatOutput(text, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -1445,17 +1457,18 @@ class ChoiceField(HtmlTextField):
             self.choices = set([saxutils.escape(choice) for choice in
                                 self.choiceList])
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         if storedText not in self.choices:
             storedText = _errorStr
-        return super().formatOutput(storedText, titleMode, formatHtml)
+        return super().formatOutput(storedText, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -1608,25 +1621,27 @@ class CombinationField(ChoiceField):
         self.choices = set(self.choiceList)
         self.outputSep = ''
 
-    def outputText(self, node, titleMode, formatHtml, spotRef=None):
+    def outputText(self, node, oneLine, noHtml, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Sets output separator prior to calling base class methods.
         Arguments:
             node -- the tree item storing the data
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
             spotRef -- optional, used for ancestor field refs
         """
         self.outputSep = node.formatRef.outputSeparator
-        return super().outputText(node, titleMode, formatHtml, spotRef)
+        return super().outputText(node, oneLine, noHtml, formatHtml, spotRef)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         selections, valid = self.sortedSelections(storedText)
@@ -1634,7 +1649,8 @@ class CombinationField(ChoiceField):
             result = self.outputSep.join(selections)
         else:
             result = _errorStr
-        return TextField.formatOutput(self, result, titleMode, formatHtml)
+        return TextField.formatOutput(self, result, oneLine, noHtml,
+                                      formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -1731,29 +1747,32 @@ class AutoCombinationField(CombinationField):
         self.choices = set()
         self.outputSep = ''
 
-    def outputText(self, node, titleMode, formatHtml, spotRef=None):
+    def outputText(self, node, oneLine, noHtml, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Sets output separator prior to calling base class methods.
         Arguments:
             node -- the tree item storing the data
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
             spotRef -- optional, used for ancestor field refs
         """
         self.outputSep = node.formatRef.outputSeparator
-        return super().outputText(node, titleMode, formatHtml, spotRef)
+        return super().outputText(node, oneLine, noHtml, formatHtml, spotRef)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         result = self.outputSep.join(self.splitText(storedText))
-        return TextField.formatOutput(self, result, titleMode, formatHtml)
+        return TextField.formatOutput(self, result, oneLine, noHtml,
+                                      formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -1859,12 +1878,13 @@ class BooleanField(ChoiceField):
         HtmlTextField.setFormat(self, format)
         self.strippedFormat = removeMarkup(self.format)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         try:
@@ -1873,7 +1893,8 @@ class BooleanField(ChoiceField):
             text = _errorStr
         if not self.evalHtml:
             text = saxutils.escape(text)
-        return HtmlTextField.formatOutput(self, text, titleMode, formatHtml)
+        return HtmlTextField.formatOutput(self, text, oneLine, noHtml,
+                                          formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -1994,22 +2015,23 @@ class ExternalLinkField(HtmlTextField):
         address, name = linkMatch.groups()
         return (address, name)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
-        if titleMode:
+        if noHtml:
             linkMatch = linkRegExp.search(storedText)
             if linkMatch:
                 address, name = linkMatch.groups()
                 storedText = name.strip()
                 if not storedText:
                     storedText = address.lstrip('#')
-        return super().formatOutput(storedText, titleMode, formatHtml)
+        return super().formatOutput(storedText, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -2156,20 +2178,21 @@ class PictureField(HtmlTextField):
         """
         super().__init__(name, formatData)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
-        if titleMode:
+        if noHtml:
             linkMatch = _imageRegExp.search(storedText)
             if linkMatch:
                 address = linkMatch.group(1)
                 storedText = address.strip()
-        return super().formatOutput(storedText, titleMode, formatHtml)
+        return super().formatOutput(storedText, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -2266,12 +2289,13 @@ class RegularExpressionField(HtmlTextField):
             raise ValueError
         super().setFormat(format)
 
-    def formatOutput(self, storedText, titleMode, formatHtml):
+    def formatOutput(self, storedText, oneLine, noHtml, formatHtml):
         """Return formatted output text from stored text for this field.
 
         Arguments:
             storedText -- the source text to format
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         match = re.fullmatch(self.format, saxutils.unescape(storedText))
@@ -2279,7 +2303,7 @@ class RegularExpressionField(HtmlTextField):
             text = storedText
         else:
             text = _errorStr
-        return super().formatOutput(text, titleMode, formatHtml)
+        return super().formatOutput(text, oneLine, noHtml, formatHtml)
 
     def formatEditorText(self, storedText):
         """Return text formatted for use in the data editor.
@@ -2324,13 +2348,14 @@ class AncestorLevelField(TextField):
         super().__init__(name, {})
         self.ancestorLevel = ancestorLevel
 
-    def outputText(self, node, titleMode, formatHtml, spotRef=None):
+    def outputText(self, node, oneLine, noHtml, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Finds the appropriate ancestor node to get the field text.
         Arguments:
             node -- the tree node to start from
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
             spotRef -- optional, used for ancestor field refs
         """
@@ -2344,7 +2369,7 @@ class AncestorLevelField(TextField):
             field = spotRef.nodeRef.formatRef.fieldDict[self.name]
         except (AttributeError, KeyError):
             return ''
-        return field.outputText(spotRef.nodeRef, titleMode, formatHtml,
+        return field.outputText(spotRef.nodeRef, oneLine, noHtml, formatHtml,
                                 spotRef)
 
     def sepName(self):
@@ -2365,13 +2390,14 @@ class AnyAncestorField(TextField):
         """
         super().__init__(name, {})
 
-    def outputText(self, node, titleMode, formatHtml, spotRef=None):
+    def outputText(self, node, oneLine, noHtml, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Finds the appropriate ancestor node to get the field text.
         Arguments:
             node -- the tree node to start from
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
             spotRef -- optional, used for ancestor field refs
         """
@@ -2384,8 +2410,8 @@ class AnyAncestorField(TextField):
             except (AttributeError, KeyError):
                 pass
             else:
-                return field.outputText(spotRef.nodeRef, titleMode, formatHtml,
-                                        spotRef)
+                return field.outputText(spotRef.nodeRef, oneLine, noHtml,
+                                        formatHtml, spotRef)
         return ''
 
     def sepName(self):
@@ -2406,13 +2432,14 @@ class ChildListField(TextField):
         """
         super().__init__(name, {})
 
-    def outputText(self, node, titleMode, formatHtml, spotRef=None):
+    def outputText(self, node, oneLine, noHtml, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Returns a joined list of matching child field data.
         Arguments:
             node -- the tree node to start from
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
             spotRef -- optional, used for ancestor field refs
         """
@@ -2423,8 +2450,8 @@ class ChildListField(TextField):
             except KeyError:
                 pass
             else:
-                result.append(field.outputText(child, titleMode, formatHtml,
-                                               spotRef))
+                result.append(field.outputText(child, oneLine, noHtml,
+                                               formatHtml, spotRef))
         outputSep = node.formatRef.outputSeparator
         return outputSep.join(result)
 
@@ -2448,13 +2475,14 @@ class DescendantCountField(TextField):
         super().__init__(name, {})
         self.descendantLevel = descendantLevel
 
-    def outputText(self, node, titleMode, formatHtml, spotRef=None):
+    def outputText(self, node, oneLine, noHtml, formatHtml, spotRef=None):
         """Return formatted output text for this field in this node.
 
         Returns a count of descendants at the approriate level.
         Arguments:
             node -- the tree node to start from
-            titleMode -- if True, removes all HTML markup for tree title use
+            oneLine -- if True, returns only first line of output (for titles)
+            noHtml -- if True, removes all HTML markup (for titles, etc.)
             formatHtml -- if False, escapes HTML from prefix & suffix
             spotRef -- optional, used for ancestor field refs
         """
@@ -2474,11 +2502,12 @@ class DescendantCountField(TextField):
 
 ####  Utility Functions  ####
 
-_stripTagRe = re.compile('<.*?>')
-
 def removeMarkup(text):
     """Return text with all HTML Markup removed and entities unescaped.
+
+    Any <br /> tags are replaced with newlines.
     """
+    text = _lineBreakRegEx.sub('\n', text)
     text = _stripTagRe.sub('', text)
     return saxutils.unescape(text)
 

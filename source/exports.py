@@ -1188,7 +1188,7 @@ def _writeHtmlTable(node, parent, pathDict, level=1):
                   node.childList[0].formatRef.fieldNames()])
     lines.append('</tr><tr>')
     for child in node.childList:
-        cellList = [field.outputText(child, False, True) for field in
+        cellList = [field.outputText(child, False, False, True) for field in
                     child.formatRef.fields()]
         for i in range(len(cellList)):
             startPos = 0
@@ -1337,7 +1337,7 @@ def _setOldUniqueId(idDict, node):
     """
     nodeFormat = node.formatRef
     idField = next(iter(nodeFormat.fieldDict.values()))
-    uId = idField.outputText(node, True, nodeFormat.formatHtml)
+    uId = idField.outputText(node, True, True, nodeFormat.formatHtml)
     uId = uId.strip().split('\n', 1)[0]
     maxLength = 50
     if len(uId) > maxLength:

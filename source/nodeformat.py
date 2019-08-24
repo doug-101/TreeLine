@@ -4,7 +4,7 @@
 # nodeformat.py, provides a class to handle node format objects
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -166,7 +166,7 @@ class NodeFormat:
             node -- the node used to get data for fields
             spotRef -- optional, used for ancestor field refs
         """
-        line = ''.join([part.outputText(node, True, self.formatHtml)
+        line = ''.join([part.outputText(node, True, True, self.formatHtml)
                         if hasattr(part, 'outputText') else part
                         for part in self.titleLine])
         return line.strip()
@@ -188,7 +188,8 @@ class NodeFormat:
             numFullFields = 0
             for part in lineData:
                 if hasattr(part, 'outputText'):
-                    text = part.outputText(node, plainText, self.formatHtml)
+                    text = part.outputText(node, False, plainText,
+                                           self.formatHtml)
                     if text:
                         numFullFields += 1
                     else:
