@@ -4,7 +4,7 @@
 # imports.py, provides classes for a file import dialog and import functions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -639,8 +639,14 @@ class ImportControl:
         tpFormat = structure.treeFormats[treeformats.defaultTypeName]
         tpFormat.addFieldList([textFieldName], False, True)
         tpFormat.fieldDict[textFieldName].changeType('SpacedText')
-        with self.pathObj.open(encoding=globalref.localTextEncoding) as f:
-            textList = f.read().split('<end node> 5P9i0s8y19Z')
+        try:
+            with self.pathObj.open(encoding=globalref.localTextEncoding) as f:
+                textList = f.read().split('<end node> 5P9i0s8y19Z')
+        except UnicodeDecodeError:
+            with self.pathObj.open(encoding='latin-1') as f:
+                textList = f.read().split('<end node> 5P9i0s8y19Z')
+        except UnicodeDecodeError:
+            return None
         nodeList = []
         for text in textList:
             text = text.strip()
