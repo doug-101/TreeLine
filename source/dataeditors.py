@@ -46,6 +46,7 @@ class PlainTextEditor(QTextEdit):
     """
     dragLinkEnabled = False
     contentsChanged = pyqtSignal(QWidget)
+    finalCursorPos = pyqtSignal(int, int)
     def __init__(self, parent=None):
         """Initialize the editor class.
 
@@ -82,6 +83,23 @@ class PlainTextEditor(QTextEdit):
         """Return True if text is selected.
         """
         return self.textCursor().hasSelection()
+
+    def cursorPosTuple(self):
+        """Return a tuple of the current cursor position and anchor (integers).
+        """
+        cursor = self.textCursor()
+        return (cursor.anchor(), cursor.position())
+
+    def setCursorPos(self, anchor, position):
+        """Set the cursor to the given anchor and position.
+        Arguments:
+            anchor -- the cursor selection start integer
+            position -- the cursor position or select end integer
+        """
+        cursor = self.textCursor()
+        cursor.setPosition(anchor)
+        cursor.setPosition(position, QTextCursor.KeepAnchor)
+        self.setTextCursor(cursor)
 
     def setCursorPoint(self, point):
         """Set the cursor to the given point.
@@ -154,6 +172,7 @@ class PlainTextEditor(QTextEdit):
         super().focusOutEvent(event)
         if event.reason() != Qt.PopupFocusReason:
             self.disableActions()
+            self.finalCursorPos.emit(*self.cursorPosTuple())
 
     def hideEvent(self, event):
         """Reset format actions when the editor is hidden.
@@ -162,6 +181,7 @@ class PlainTextEditor(QTextEdit):
             event -- the hide event
         """
         self.disableActions()
+        self.finalCursorPos.emit(*self.cursorPosTuple())
         super().hideEvent(event)
 
 
@@ -829,6 +849,7 @@ class LineEditor(QLineEdit):
     """
     dragLinkEnabled = False
     contentsChanged = pyqtSignal(QWidget)
+    finalCursorPos = pyqtSignal(int, int)
     contextMenuPrep = pyqtSignal()
     def __init__(self, parent=None, subControl=False):
         """Initialize the editor class.
@@ -880,6 +901,26 @@ class LineEditor(QLineEdit):
         """
         self.errorFlag = True
         self.update()
+
+    def cursorPosTuple(self):
+        """Return a tuple of the current cursor position and anchor (integers).
+        """
+        pos = start = self.cursorPosition()
+        if self.hasSelectedText():
+            start = self.selectionStart()
+        return (start, pos)
+
+    def setCursorPos(self, anchor, position):
+        """Set the cursor to the given anchor and position.
+        Arguments:
+            anchor -- the cursor selection start integer
+            position -- the cursor position or select end integer
+        """
+        if anchor == position:
+            self.deselect()
+            self.setCursorPosition(position)
+        else:
+            self.setSelection(anchor, position - anchor)
 
     def setCursorPoint(self, point):
         """Set the cursor to the given point.
@@ -971,6 +1012,7 @@ class LineEditor(QLineEdit):
         super().focusOutEvent(event)
         if event.reason() != Qt.PopupFocusReason:
             self.disableActions()
+            self.finalCursorPos.emit(*self.cursorPosTuple())
 
     def hideEvent(self, event):
         """Reset format actions when the editor is hidden.
@@ -979,6 +1021,7 @@ class LineEditor(QLineEdit):
             event -- the hide event
         """
         self.disableActions()
+        self.finalCursorPos.emit(*self.cursorPosTuple())
         super().hideEvent(event)
 
 
@@ -1005,6 +1048,7 @@ class ComboEditor(QComboBox):
     """
     dragLinkEnabled = False
     contentsChanged = pyqtSignal(QWidget)
+    finalCursorPos = pyqtSignal(int, int)
     def __init__(self, parent=None):
         """Initialize the editor class.
 
@@ -1031,6 +1075,7 @@ class ComboEditor(QComboBox):
         self.fieldRef = None
         self.nodeRef = None
         self.editTextChanged.connect(self.signalUpdate)
+        self.lineEdit().finalCursorPos.connect(self.finalCursorPos)
 
     def setContents(self, text):
         """Set the contents of the editor to text.
@@ -1097,6 +1142,19 @@ class ComboEditor(QComboBox):
         """Select all text in the line editor.
         """
         self.lineEdit().selectAll()
+
+    def cursorPosTuple(self):
+        """Return a tuple of the current cursor position and anchor (integers).
+        """
+        return self.lineEdit().cursorPosTuple()
+
+    def setCursorPos(self, anchor, position):
+        """Set the cursor to the given anchor and position.
+        Arguments:
+            anchor -- the cursor selection start integer
+            position -- the cursor position or select end integer
+        """
+        self.lineEdit().setCursorPos(anchor, position)
 
     def setCursorPoint(self, point):
         """Set the cursor to the given point.

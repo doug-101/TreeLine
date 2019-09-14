@@ -48,6 +48,7 @@ class DataEditCell(QTableWidgetItem):
         self.titleCellRef = titleCellRef
         self.typeCellRef = typeCellRef
         self.errorFlag = False
+        self.cursorPos = (-1, -1)
         # store doc to speed up delegate sizeHint and paint calls
         self.doc = QTextDocument()
         self.doc.setDefaultFont(defaultFont)
@@ -70,6 +71,16 @@ class DataEditCell(QTableWidgetItem):
             self.doc.setHtml(self.text())
         else:
             self.doc.setPlainText(self.text())
+        # self.cursorPos = (-1, -1)
+
+    def storeCursor(self, anchor, position):
+        """Store the cursor position baseed on a signal from an editor.
+
+        Arguments:
+            anchor -- the cursor selection start integer
+            position -- the cursor position or select end integer
+        """
+        self.cursorPos = (anchor, position)
 
 
 class DataEditDelegate(QStyledItemDelegate):
@@ -166,6 +177,7 @@ class DataEditDelegate(QStyledItemDelegate):
                 editor.setErrorFlag()
             # self.parent().setFocusProxy(editor)
             editor.contentsChanged.connect(self.commitData)
+            editor.finalCursorPos.connect(cell.storeCursor)
             if hasattr(editor, 'inLinkSelectMode'):
                 editor.inLinkSelectMode.connect(self.parent().
                                                 changeInLinkSelectMode)
@@ -206,6 +218,9 @@ class DataEditDelegate(QStyledItemDelegate):
             if self.editorClickPos:
                 editor.setCursorPoint(self.editorClickPos)
                 self.editorClickPos = None
+            elif cell.cursorPos[1] >= 0:
+                editor.setCursorPos(*cell.cursorPos)
+                cell.cursorPos = (-1, -1)
             else:
                 editor.resetCursor()
         else:
