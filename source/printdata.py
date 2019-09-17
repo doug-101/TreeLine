@@ -357,7 +357,10 @@ class PrintData:
         """Paint data to be printed to the printer.
         """
         pageNum = 1
-        maxPageNum = self.outputGroup[-1].pageNum
+        try:
+            maxPageNum = self.outputGroup[-1].pageNum
+        except IndexError:   # printing empty branch
+            maxPageNum = 1
         if self.printer.printRange() != QPrinter.AllPages:
             pageNum = self.printer.fromPage()
             maxPageNum = self.printer.toPage()
@@ -385,7 +388,10 @@ class PrintData:
         # set context text color to black to wrok with dark app themes
         paintContext.palette = QPalette()
         paintContext.palette.setColor(QPalette.Text, Qt.black)
-        totalNumPages = self.outputGroup[-1].pageNum
+        try:
+            totalNumPages = self.outputGroup[-1].pageNum
+        except IndexError:   # printing empty branch
+            totalNumPages = 1
         headerDoc = self.headerFooterDoc(True, pageNum, totalNumPages)
         if headerDoc:
             layout = headerDoc.documentLayout()
