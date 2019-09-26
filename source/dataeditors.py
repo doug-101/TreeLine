@@ -46,7 +46,7 @@ class PlainTextEditor(QTextEdit):
     """
     dragLinkEnabled = False
     contentsChanged = pyqtSignal(QWidget)
-    finalCursorPos = pyqtSignal(int, int)
+    editEnding = pyqtSignal(QWidget)
     def __init__(self, parent=None):
         """Initialize the editor class.
 
@@ -100,6 +100,7 @@ class PlainTextEditor(QTextEdit):
         cursor.setPosition(anchor)
         cursor.setPosition(position, QTextCursor.KeepAnchor)
         self.setTextCursor(cursor)
+        # self.ensureCursorVisible()
 
     def setCursorPoint(self, point):
         """Set the cursor to the given point.
@@ -113,6 +114,19 @@ class PlainTextEditor(QTextEdit):
         """Set the cursor to end for tab-focus use.
         """
         self.moveCursor(QTextCursor.End)
+
+    def scrollPosition(self):
+        """Return the current scrollbar position.
+        """
+        return self.verticalScrollBar().value()
+
+    def setScrollPosition(self, value):
+        """Set the scrollbar position to value.
+
+        Arguments:
+            value -- the new scrollbar position
+        """
+        self.verticalScrollBar().setValue(value)
 
     def signalUpdate(self):
         """Signal the delegate to update the model based on an editor change.
@@ -172,7 +186,7 @@ class PlainTextEditor(QTextEdit):
         super().focusOutEvent(event)
         if event.reason() != Qt.PopupFocusReason:
             self.disableActions()
-            self.finalCursorPos.emit(*self.cursorPosTuple())
+            self.editEnding.emit(self)
 
     def hideEvent(self, event):
         """Reset format actions when the editor is hidden.
@@ -181,7 +195,7 @@ class PlainTextEditor(QTextEdit):
             event -- the hide event
         """
         self.disableActions()
-        self.finalCursorPos.emit(*self.cursorPosTuple())
+        self.editEnding.emit(self)
         super().hideEvent(event)
 
 
@@ -849,7 +863,7 @@ class LineEditor(QLineEdit):
     """
     dragLinkEnabled = False
     contentsChanged = pyqtSignal(QWidget)
-    finalCursorPos = pyqtSignal(int, int)
+    editEnding = pyqtSignal(QWidget)
     contextMenuPrep = pyqtSignal()
     def __init__(self, parent=None, subControl=False):
         """Initialize the editor class.
@@ -936,6 +950,20 @@ class LineEditor(QLineEdit):
         """
         self.selectAll()
 
+    def scrollPosition(self):
+        """Return the current scrollbar position.
+        """
+        return 0
+
+    def setScrollPosition(self, value):
+        """Set the scrollbar position to value.
+
+        No operation with single line editor.
+        Arguments:
+            value -- the new scrollbar position
+        """
+        pass
+
     def paintEvent(self, event):
         """Add painting of the error flag to the paint event.
         
@@ -1012,7 +1040,7 @@ class LineEditor(QLineEdit):
         super().focusOutEvent(event)
         if event.reason() != Qt.PopupFocusReason:
             self.disableActions()
-            self.finalCursorPos.emit(*self.cursorPosTuple())
+            self.editEnding.emit(self)
 
     def hideEvent(self, event):
         """Reset format actions when the editor is hidden.
@@ -1021,7 +1049,7 @@ class LineEditor(QLineEdit):
             event -- the hide event
         """
         self.disableActions()
-        self.finalCursorPos.emit(*self.cursorPosTuple())
+        self.editEnding.emit(self)
         super().hideEvent(event)
 
 
@@ -1048,7 +1076,7 @@ class ComboEditor(QComboBox):
     """
     dragLinkEnabled = False
     contentsChanged = pyqtSignal(QWidget)
-    finalCursorPos = pyqtSignal(int, int)
+    editEnding = pyqtSignal(QWidget)
     def __init__(self, parent=None):
         """Initialize the editor class.
 
@@ -1075,7 +1103,7 @@ class ComboEditor(QComboBox):
         self.fieldRef = None
         self.nodeRef = None
         self.editTextChanged.connect(self.signalUpdate)
-        self.lineEdit().finalCursorPos.connect(self.finalCursorPos)
+        self.lineEdit().editEnding.connect(self.signalEditEnd)
 
     def setContents(self, text):
         """Set the contents of the editor to text.
@@ -1169,6 +1197,20 @@ class ComboEditor(QComboBox):
         """
         self.lineEdit().selectAll()
 
+    def scrollPosition(self):
+        """Return the current scrollbar position.
+        """
+        return 0
+
+    def setScrollPosition(self, value):
+        """Set the scrollbar position to value.
+
+        No operation with single line editor.
+        Arguments:
+            value -- the new scrollbar position
+        """
+        pass
+
     def copy(self):
         """Copy text selected in the line editor.
         """
@@ -1183,6 +1225,11 @@ class ComboEditor(QComboBox):
         """Paste from the clipboard into the line editor.
         """
         self.lineEdit().paste()
+
+    def signalEditEnd(self):
+        """Emit editEnding signal based on line edit signal.
+        """
+        self.editEnding.emit(self)
 
 
 class CombinationEditor(ComboEditor):

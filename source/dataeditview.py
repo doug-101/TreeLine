@@ -49,6 +49,7 @@ class DataEditCell(QTableWidgetItem):
         self.typeCellRef = typeCellRef
         self.errorFlag = False
         self.cursorPos = (-1, -1)
+        self.scrollPos = -1
         # store doc to speed up delegate sizeHint and paint calls
         self.doc = QTextDocument()
         self.doc.setDefaultFont(defaultFont)
@@ -71,16 +72,15 @@ class DataEditCell(QTableWidgetItem):
             self.doc.setHtml(self.text())
         else:
             self.doc.setPlainText(self.text())
-        # self.cursorPos = (-1, -1)
 
-    def storeCursor(self, anchor, position):
-        """Store the cursor position baseed on a signal from an editor.
+    def storeEditorState(self, editor):
+        """Store the cursor & scroll positions baseed on an editor signal.
 
         Arguments:
-            anchor -- the cursor selection start integer
-            position -- the cursor position or select end integer
+            editor -- the editor that will get its state saved
         """
-        self.cursorPos = (anchor, position)
+        self.cursorPos = editor.cursorPosTuple()
+        self.scrollPos = editor.scrollPosition()
 
 
 class DataEditDelegate(QStyledItemDelegate):
@@ -94,6 +94,7 @@ class DataEditDelegate(QStyledItemDelegate):
         """
         super().__init__(parent)
         self.editorClickPos = None
+        self.tallEditScrollPos = -1
         self.lastEditor = None
         self.prevNumLines = -1
 
@@ -177,7 +178,7 @@ class DataEditDelegate(QStyledItemDelegate):
                 editor.setErrorFlag()
             # self.parent().setFocusProxy(editor)
             editor.contentsChanged.connect(self.commitData)
-            editor.finalCursorPos.connect(cell.storeCursor)
+            editor.editEnding.connect(cell.storeEditorState)
             if hasattr(editor, 'inLinkSelectMode'):
                 editor.inLinkSelectMode.connect(self.parent().
                                                 changeInLinkSelectMode)
@@ -218,11 +219,22 @@ class DataEditDelegate(QStyledItemDelegate):
             if self.editorClickPos:
                 editor.setCursorPoint(self.editorClickPos)
                 self.editorClickPos = None
-            elif cell.cursorPos[1] >= 0:
-                editor.setCursorPos(*cell.cursorPos)
-                cell.cursorPos = (-1, -1)
-            else:
-                editor.resetCursor()
+            elif globalref.genOptions['EditorLimitHeight']:
+                if cell.cursorPos[1] >= 0:
+                    editor.setCursorPos(*cell.cursorPos)
+                    cell.cursorPos = (-1, -1)
+                    if cell.scrollPos >= 0:
+                        editor.setScrollPosition(cell.scrollPos)
+                        cell.scrollPos = -1
+                else:
+                    editor.resetCursor()
+            if (not globalref.genOptions['EditorLimitHeight'] and
+                globalref.genOptions['EditorOnHover'] and
+                self.tallEditScrollPos >= 0):
+                # maintain scroll position for unlimited height editors
+                # when hovering (use adjustScroll() for non-hovering
+                self.parent().verticalScrollBar().setValue(self.
+                                                           tallEditScrollPos)
         else:
             super().setEditorData(editor, modelIndex)
 
@@ -267,6 +279,18 @@ class DataEditDelegate(QStyledItemDelegate):
         editor.setMaximumSize(self.sizeHint(styleOption, modelIndex))
         super().updateEditorGeometry(editor, styleOption, modelIndex)
 
+    def adjustScroll(self):
+        """Reset the scroll back to the original for unlimited height editors.
+
+        Called from signal after any scroll change.
+        Needed for non-hovering to fix late scroll reset after editor created.
+        """
+        if (not globalref.genOptions['EditorLimitHeight'] and
+            not globalref.genOptions['EditorOnHover'] and
+            self.tallEditScrollPos >= 0):
+            self.parent().verticalScrollBar().setValue(self.tallEditScrollPos)
+            self.tallEditScrollPos = -1
+
     def editorEvent(self, event, model, styleOption, modelIndex):
         """Save the mouse click position in order to set the editor's cursor.
 
@@ -278,6 +302,8 @@ class DataEditDelegate(QStyledItemDelegate):
         """
         if event.type() == QEvent.MouseButtonPress:
             self.editorClickPos = event.globalPos()
+            # save scroll position for clicks on unlimited height editors
+            self.tallEditScrollPos = self.parent().verticalScrollBar().value()
         return super().editorEvent(event, model, styleOption, modelIndex)
 
     def eventFilter(self, editor, event):
@@ -365,6 +391,8 @@ class DataEditView(QTableWidget):
                      QApplication.palette().windowText())
         self.setPalette(pal)
         self.currentItemChanged.connect(self.moveEditor)
+        self.verticalScrollBar().valueChanged.connect(self.itemDelegate().
+                                                      adjustScroll)
 
     def updateContents(self):
         """Reload the view's content if the view is shown.
@@ -713,6 +741,10 @@ class DataEditView(QTableWidget):
             oldCell = self.currentItem()
             if (cell != oldCell and cell != self.prevHoverCell and
                 not self.inLinkSelectActive):
+                # save scroll position for unlimited height editors
+                self.itemDelegate().tallEditScrollPos = (self.
+                                                         verticalScrollBar().
+                                                         value())
                 self.prevHoverCell = cell
                 self.hoverFocusActive.emit()
                 self.setFocus()
