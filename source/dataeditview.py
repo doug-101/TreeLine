@@ -179,6 +179,9 @@ class DataEditDelegate(QStyledItemDelegate):
             # self.parent().setFocusProxy(editor)
             editor.contentsChanged.connect(self.commitData)
             editor.editEnding.connect(cell.storeEditorState)
+            if (not globalref.genOptions['EditorLimitHeight'] and
+                hasattr(editor, 'keyPressed')):
+                editor.keyPressed.connect(self.scrollOnKeyPress)
             if hasattr(editor, 'inLinkSelectMode'):
                 editor.inLinkSelectMode.connect(self.parent().
                                                 changeInLinkSelectMode)
@@ -290,6 +293,27 @@ class DataEditDelegate(QStyledItemDelegate):
             self.tallEditScrollPos >= 0):
             self.parent().verticalScrollBar().setValue(self.tallEditScrollPos)
             self.tallEditScrollPos = -1
+
+    def scrollOnKeyPress(self, editor):
+        """Adjust the scroll position to make cursor visible.
+
+        Needed after key presses on unlimited height editors.
+        Arguments:
+            editor -- the editor with the key press
+        """
+        if not globalref.genOptions['EditorLimitHeight']:
+            view = self.parent()
+            cursorRect = editor.cursorRect()
+            upperPos = editor.mapToGlobal(cursorRect.topLeft()).y()
+            lowerPos = editor.mapToGlobal(cursorRect.bottomLeft()).y()
+            viewRect = view.viewport().rect()
+            viewTop = view.mapToGlobal(viewRect.topLeft()).y()
+            viewBottom = view.mapToGlobal(viewRect.bottomLeft()).y()
+            bar = view.verticalScrollBar()
+            if upperPos < viewTop:
+                bar.setValue(bar.value() - (viewTop - upperPos))
+            elif lowerPos > viewBottom:
+                bar.setValue(bar.value() + (lowerPos - viewBottom))
 
     def editorEvent(self, event, model, styleOption, modelIndex):
         """Save the mouse click position in order to set the editor's cursor.

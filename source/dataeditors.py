@@ -47,6 +47,7 @@ class PlainTextEditor(QTextEdit):
     dragLinkEnabled = False
     contentsChanged = pyqtSignal(QWidget)
     editEnding = pyqtSignal(QWidget)
+    keyPressed = pyqtSignal(QWidget)
     def __init__(self, parent=None):
         """Initialize the editor class.
 
@@ -197,6 +198,16 @@ class PlainTextEditor(QTextEdit):
         self.disableActions()
         self.editEnding.emit(self)
         super().hideEvent(event)
+
+    def keyPressEvent(self, event):
+        """Emit a signal after every key press.
+
+        Needed to adjust scroll position in unlimited height editors.
+        Arguments:
+            event -- the key press event
+        """
+        super().keyPressEvent(event)
+        self.keyPressed.emit(self)
 
 
 class HtmlTextEditor(PlainTextEditor):
@@ -2496,7 +2507,7 @@ class PartialLineEditor(LineEditor):
         self.fixSelection()
 
     def keyPressEvent(self, event):
-        """Avoid edits or cursor movements to the statis portion of the text.
+        """Avoid edits or cursor movements to the static portion of the text.
 
         Arguments:
             event -- the mouse release event
