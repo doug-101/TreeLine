@@ -200,12 +200,27 @@ class PlainTextEditor(QTextEdit):
         super().hideEvent(event)
 
     def keyPressEvent(self, event):
-        """Emit a signal after every key press.
+        """Emit a signal after every key press and handle page up/down.
 
         Needed to adjust scroll position in unlimited height editors.
         Arguments:
             event -- the key press event
         """
+        if (event.key() in (Qt.Key_PageUp, Qt.Key_PageDown) and
+            not globalref.genOptions['EditorLimitHeight']):
+            pos = self.cursorRect().center()
+            if event.key() == Qt.Key_PageUp:
+                pos.setY(pos.y() - self.parent().height())
+                if pos.y() < 0:
+                    pos.setY(0)
+            else:
+                pos.setY(pos.y() + self.parent().height())
+                if pos.y() > self.height():
+                    pos.setY(self.height())
+            self.setTextCursor(self.cursorForPosition(pos))
+            event.accept()
+            self.keyPressed.emit(self)
+            return
         super().keyPressEvent(event)
         self.keyPressed.emit(self)
 

@@ -404,6 +404,8 @@ class DataEditView(QTableWidget):
         self.verticalHeader().hide()
         self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.verticalScrollBar().setSingleStep(self.fontMetrics().
+                                               lineSpacing())
         self.setSelectionMode(QAbstractItemView.SingleSelection)
         self.setItemDelegate(DataEditDelegate(self))
         self.setEditTriggers(QAbstractItemView.NoEditTriggers)
