@@ -4,7 +4,7 @@
 # numbering.py, provides classes to format node numbering
 #
 # TreeLine, an information storage program
-# Copyright (C) 2013, Douglas W. Bell
+# Copyright (C) 2019, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -137,6 +137,7 @@ def _stringFromNum(num, case=None):
 def _alphaFromNum(num, upperCase=True):
     """Return an alphabetic string from an integer.
 
+    Sequence is 'A', 'B' ... 'Z', 'AA', 'BB' ... 'ZZ', 'AAA', 'BBB' ...
     Arguments:
         num -- the integer to convert
         upperCase -- return an upper case string if true
@@ -144,10 +145,10 @@ def _alphaFromNum(num, upperCase=True):
     if num <= 0:
         return ''
     result = ''
-    while num:
-        digit = (num - 1) % 26
-        result = chr(digit + ord('A')) + result
-        num = (num - digit - 1) // 26
+    charPos = (num - 1) % 26
+    char = chr(charPos + ord('A'))
+    qty = (num - 1) // 26 + 1
+    result = char * qty
     if not upperCase:
         result = result.lower()
     return result
