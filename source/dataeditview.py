@@ -548,10 +548,13 @@ class DataEditView(QTableWidget):
             newCell -- the new current edit cell item
             prevCell - the old current cell item
         """
-        if prevCell and hasattr(prevCell, 'updateText'):
-            self.closePersistentEditor(prevCell)
-            prevCell.updateText()
-            self.resizeRowToContents(prevCell.row())
+        try:
+            if prevCell and hasattr(prevCell, 'updateText'):
+                self.closePersistentEditor(prevCell)
+                prevCell.updateText()
+                self.resizeRowToContents(prevCell.row())
+        except RuntimeError:
+            pass   # avoid non-repeatable error involving deleted c++ object
         if newCell:
             self.openPersistentEditor(newCell)
 
