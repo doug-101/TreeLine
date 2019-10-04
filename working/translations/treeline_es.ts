@@ -1010,117 +1010,117 @@
 <context>
     <name>dataeditors</name>
     <message>
-        <location filename="dataeditors.py" line="1242"/>
+        <location filename="dataeditors.py" line="1373"/>
         <source>Today&apos;s &amp;Date</source>
         <translation>Fecha de &amp;Hoy</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="1880"/>
+        <location filename="dataeditors.py" line="2011"/>
         <source>&amp;Open Link</source>
         <translation>&amp;Abrir Enlace</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="1882"/>
+        <location filename="dataeditors.py" line="2013"/>
         <source>Open &amp;Folder</source>
         <translation>Abrir &amp;Carpeta</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2008"/>
+        <location filename="dataeditors.py" line="2139"/>
         <source>External Link</source>
         <translation>Enlace Externo</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2011"/>
+        <location filename="dataeditors.py" line="2142"/>
         <source>Scheme</source>
         <translation>Esquema</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2604"/>
+        <location filename="dataeditors.py" line="2735"/>
         <source>&amp;Browse for File</source>
         <translation>&amp;Seleccionar Archivo</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2610"/>
+        <location filename="dataeditors.py" line="2741"/>
         <source>File Path Type</source>
         <translation>Tipo de ruta de archivo</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2616"/>
+        <location filename="dataeditors.py" line="2747"/>
         <source>Absolute</source>
         <translation>Absoluta</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2619"/>
+        <location filename="dataeditors.py" line="2750"/>
         <source>Relative</source>
         <translation>Relativa</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2626"/>
+        <location filename="dataeditors.py" line="2757"/>
         <source>Address</source>
         <translation>Dirección</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2453"/>
+        <location filename="dataeditors.py" line="2584"/>
         <source>Display Name</source>
         <translation>Mostrar Nombre</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2640"/>
+        <location filename="dataeditors.py" line="2771"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2643"/>
+        <location filename="dataeditors.py" line="2774"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Cancelar</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2212"/>
+        <location filename="dataeditors.py" line="2343"/>
         <source>TreeLine - External Link File</source>
         <translation>TreeLine - Enlace a archivo externo</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2239"/>
+        <location filename="dataeditors.py" line="2370"/>
         <source>&amp;Go to Target</source>
         <translation>&amp;Ir al Destino</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2445"/>
+        <location filename="dataeditors.py" line="2576"/>
         <source>Internal Link</source>
         <translation>Enlace Interno</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2527"/>
+        <location filename="dataeditors.py" line="2658"/>
         <source>&amp;Open Picture</source>
         <translation>&amp;Abrir Imagen</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2593"/>
+        <location filename="dataeditors.py" line="2724"/>
         <source>Picture Link</source>
         <translation>Enlace de Imagen</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2742"/>
+        <location filename="dataeditors.py" line="2873"/>
         <source>TreeLine - Picture File</source>
         <translation>TreeLine - Archivo de Imagen</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="1815"/>
+        <location filename="dataeditors.py" line="1946"/>
         <source>Set to &amp;Now</source>
         <translation>Establecer A&amp;hora</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2241"/>
+        <location filename="dataeditors.py" line="2372"/>
         <source>Clear &amp;Link</source>
         <translation>Borrar En&amp;lace</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2450"/>
+        <location filename="dataeditors.py" line="2581"/>
         <source>(Click link target in tree)</source>
         <translation>(Clicar objeto a enlazar en el árbol)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2510"/>
+        <location filename="dataeditors.py" line="2641"/>
         <source>link</source>
         <translation>enlace</translation>
     </message>
@@ -1392,22 +1392,22 @@ Continuar con la ruta absoluta?</translation>
 <context>
     <name>fieldformat</name>
     <message>
-        <location filename="fieldformat.py" line="1841"/>
+        <location filename="fieldformat.py" line="1860"/>
         <source>yes/no</source>
         <translation>sí/no</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1839"/>
+        <location filename="fieldformat.py" line="1858"/>
         <source>true/false</source>
         <translation>verdadero/falso</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1840"/>
+        <location filename="fieldformat.py" line="1859"/>
         <source>T/F</source>
         <translation>V/F</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1842"/>
+        <location filename="fieldformat.py" line="1861"/>
         <source>Y/N</source>
         <translation>S/N</translation>
     </message>
@@ -1507,27 +1507,27 @@ Continuar con la ruta absoluta?</translation>
         <translation>Ahora</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="430"/>
+        <location filename="fieldformat.py" line="436"/>
         <source>Optional Digit<byte value="x9"/>#</source>
         <translation>Dígito Opcional<byte value="x9"/>#</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="431"/>
+        <location filename="fieldformat.py" line="437"/>
         <source>Required Digit<byte value="x9"/>0</source>
         <translation>Dígito Requerido<byte value="x9"/>0</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="432"/>
+        <location filename="fieldformat.py" line="438"/>
         <source>Digit or Space (external)<byte value="x9"/>&lt;space&gt;</source>
         <translation>Dígito o Espacio (externo)<byte value="x9"/>&lt;space&gt;</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="434"/>
+        <location filename="fieldformat.py" line="440"/>
         <source>Decimal Point<byte value="x9"/>.</source>
         <translation>Punto Decimal<byte value="x9"/>.</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="435"/>
+        <location filename="fieldformat.py" line="441"/>
         <source>Decimal Comma<byte value="x9"/>,</source>
         <translation>Coma Decimal<byte value="x9"/>,</translation>
     </message>
@@ -1542,147 +1542,147 @@ Continuar con la ruta absoluta?</translation>
         <translation type="obsolete">Separador Punto<byte value="x9"/>.</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="439"/>
+        <location filename="fieldformat.py" line="445"/>
         <source>Space Separator (internal)<byte value="x9"/>&lt;space&gt;</source>
         <translation>Separador Espacio (interno)<byte value="x9"/>&lt;space&gt;</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="441"/>
+        <location filename="fieldformat.py" line="447"/>
         <source>Optional Sign<byte value="x9"/>-</source>
         <translation>Signo Opcional<byte value="x9"/>-</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="442"/>
+        <location filename="fieldformat.py" line="448"/>
         <source>Required Sign<byte value="x9"/>+</source>
         <translation>Signo Requerido<byte value="x9"/>+</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="444"/>
+        <location filename="fieldformat.py" line="450"/>
         <source>Exponent (capital)<byte value="x9"/>E</source>
         <translation>Exponente (mayúscula)<byte value="x9"/>E</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="445"/>
+        <location filename="fieldformat.py" line="451"/>
         <source>Exponent (small)<byte value="x9"/>e</source>
         <translation>Exponente (minúscula)<byte value="x9"/>e</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="759"/>
+        <location filename="fieldformat.py" line="767"/>
         <source>Number<byte value="x9"/>1</source>
         <translation>Número<byte value="x9"/>1</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="760"/>
+        <location filename="fieldformat.py" line="768"/>
         <source>Capital Letter<byte value="x9"/>A</source>
         <translation>Mayúsculas<byte value="x9"/>A</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="761"/>
+        <location filename="fieldformat.py" line="769"/>
         <source>Small Letter<byte value="x9"/>a</source>
         <translation>Minúsculas<byte value="x9"/>a</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="762"/>
+        <location filename="fieldformat.py" line="770"/>
         <source>Capital Roman Numeral<byte value="x9"/>I</source>
         <translation>Números Romanos (mayúsculas)<byte value="x9"/>I</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="763"/>
+        <location filename="fieldformat.py" line="771"/>
         <source>Small Roman Numeral<byte value="x9"/>i</source>
         <translation>Números romanos (minúsculas)<byte value="x9"/>i</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="765"/>
+        <location filename="fieldformat.py" line="773"/>
         <source>Level Separator<byte value="x9"/>/</source>
         <translation>Separador de nivel<byte value="x9"/>/</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="766"/>
+        <location filename="fieldformat.py" line="774"/>
         <source>Section Separator<byte value="x9"/>.</source>
         <translation>Separador de sección<byte value="x9"/>.</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1423"/>
+        <location filename="fieldformat.py" line="1435"/>
         <source>&quot;/&quot; Character<byte value="x9"/>//</source>
         <translation>&quot;/&quot; Carácter<byte value="x9"/>//</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="769"/>
+        <location filename="fieldformat.py" line="777"/>
         <source>&quot;.&quot; Character<byte value="x9"/>..</source>
         <translation>&quot;.&quot; Carácter<byte value="x9"/>..</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="771"/>
+        <location filename="fieldformat.py" line="779"/>
         <source>Outline Example<byte value="x9"/>I../A../1../a)/i)</source>
         <translation>Ejemplo de esquema<byte value="x9"/>I../A../1../a)/i)</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="773"/>
+        <location filename="fieldformat.py" line="781"/>
         <source>Section Example<byte value="x9"/>1.1.1.1</source>
         <translation>Ejemplo de sección<byte value="x9"/>1.1.1.1</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1422"/>
+        <location filename="fieldformat.py" line="1434"/>
         <source>Separator<byte value="x9"/>/</source>
         <translation>Separador<byte value="x9"/>/</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1424"/>
+        <location filename="fieldformat.py" line="1436"/>
         <source>Example<byte value="x9"/>1/2/3/4</source>
         <translation>Ejemplo<byte value="x9"/>1/2/3/4</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2232"/>
+        <location filename="fieldformat.py" line="2255"/>
         <source>Any Character<byte value="x9"/>.</source>
         <translation>Cualquier Carácter<byte value="x9"/>.</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2233"/>
+        <location filename="fieldformat.py" line="2256"/>
         <source>End of Text<byte value="x9"/>$</source>
         <translation>Final del Texto<byte value="x9"/>$</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2235"/>
+        <location filename="fieldformat.py" line="2258"/>
         <source>0 Or More Repetitions<byte value="x9"/>*</source>
         <translation>0 o más repeticiones<byte value="x9"/>*</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2236"/>
+        <location filename="fieldformat.py" line="2259"/>
         <source>1 Or More Repetitions<byte value="x9"/>+</source>
         <translation>1 o más repeticiones<byte value="x9"/>+</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2237"/>
+        <location filename="fieldformat.py" line="2260"/>
         <source>0 Or 1 Repetitions<byte value="x9"/>?</source>
         <translation>0 ó 1 Repeticiones<byte value="x9"/>?</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2239"/>
+        <location filename="fieldformat.py" line="2262"/>
         <source>Set of Numbers<byte value="x9"/>[0-9]</source>
         <translation>Conjunto de Números<byte value="x9"/>[0-9]</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2240"/>
+        <location filename="fieldformat.py" line="2263"/>
         <source>Lower Case Letters<byte value="x9"/>[a-z]</source>
         <translation>Minúsculas<byte value="x9"/>[a-z]</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2241"/>
+        <location filename="fieldformat.py" line="2264"/>
         <source>Upper Case Letters<byte value="x9"/>[A-Z]</source>
         <translation>Mayúsculas<byte value="x9"/>[A-Z]</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2242"/>
+        <location filename="fieldformat.py" line="2265"/>
         <source>Not a Number<byte value="x9"/>[^0-9]</source>
         <translation>No es un número [^0-9]</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2244"/>
+        <location filename="fieldformat.py" line="2267"/>
         <source>Or<byte value="x9"/>|</source>
         <translation>O<byte value="x9"/>|</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2245"/>
+        <location filename="fieldformat.py" line="2268"/>
         <source>Escape a Special Character<byte value="x9"/>\</source>
         <translation>Escape carácter especial<byte value="x9"/>\</translation>
     </message>
@@ -1692,127 +1692,127 @@ Continuar con la ruta absoluta?</translation>
         <translation>Fecha y hora</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1224"/>
+        <location filename="fieldformat.py" line="1235"/>
         <source>Day (1 or 2 digits)<byte value="x9"/>%-d</source>
         <translation>Día (1 ó 2 dígitos)<byte value="x9"/>%-d</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1225"/>
+        <location filename="fieldformat.py" line="1236"/>
         <source>Day (2 digits)<byte value="x9"/>%d</source>
         <translation>Día (2 dígitos)<byte value="x9"/>%d</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1226"/>
+        <location filename="fieldformat.py" line="1237"/>
         <source>Weekday Abbreviation<byte value="x9"/>%a</source>
         <translation>Día de la semana (abreviado)<byte value="x9"/><byte value="x9"/>%a</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1227"/>
+        <location filename="fieldformat.py" line="1238"/>
         <source>Weekday Name<byte value="x9"/>%A</source>
         <translation>Día de la semana<byte value="x9"/>%A</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1228"/>
+        <location filename="fieldformat.py" line="1239"/>
         <source>Month (1 or 2 digits)<byte value="x9"/>%-m</source>
         <translation>Mes (1 o 2 dígitos)<byte value="x9"/>%-m</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1229"/>
+        <location filename="fieldformat.py" line="1240"/>
         <source>Month (2 digits)<byte value="x9"/>%m</source>
         <translation>Mes (2 dígitos)<byte value="x9"/>%m</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1230"/>
+        <location filename="fieldformat.py" line="1241"/>
         <source>Month Abbreviation<byte value="x9"/>%b</source>
         <translation>Mes (abreviado)<byte value="x9"/>%b</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1231"/>
+        <location filename="fieldformat.py" line="1242"/>
         <source>Month Name<byte value="x9"/>%B</source>
         <translation>Mes (nombre completo)<byte value="x9"/>%B</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1232"/>
+        <location filename="fieldformat.py" line="1243"/>
         <source>Year (2 digits)<byte value="x9"/>%y</source>
         <translation>Año (2 dígitos)<byte value="x9"/>%y</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1233"/>
+        <location filename="fieldformat.py" line="1244"/>
         <source>Year (4 digits)<byte value="x9"/>%Y</source>
         <translation>Año (4 dígitos)<byte value="x9"/>%Y</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1234"/>
+        <location filename="fieldformat.py" line="1245"/>
         <source>Week Number (0 to 53)<byte value="x9"/>%-U</source>
         <translation>Semana (0 a 53)<byte value="x9"/>%-U</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1235"/>
+        <location filename="fieldformat.py" line="1246"/>
         <source>Day of year (1 to 366)<byte value="x9"/>%-j</source>
         <translation>Día del año (1 a 366)<byte value="x9"/>%-j</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1236"/>
+        <location filename="fieldformat.py" line="1247"/>
         <source>Hour (0-23, 1 or 2 digits)<byte value="x9"/>%-H</source>
         <translation>Hora (0-23, 1 ó 2 dígitos)<byte value="x9"/>%-H</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1237"/>
+        <location filename="fieldformat.py" line="1248"/>
         <source>Hour (00-23, 2 digits)<byte value="x9"/>%H</source>
         <translation>Hora (00-23, 2 dígitos)<byte value="x9"/>%H</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1238"/>
+        <location filename="fieldformat.py" line="1249"/>
         <source>Hour (1-12, 1 or 2 digits)<byte value="x9"/>%-I</source>
         <translation>Hora (1-12, 1 ó 2 dígitos)<byte value="x9"/>%-I</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1239"/>
+        <location filename="fieldformat.py" line="1250"/>
         <source>Hour (01-12, 2 digits)<byte value="x9"/>%I</source>
         <translation>Hora (01-12, 2 dígitos)<byte value="x9"/>%I</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1240"/>
+        <location filename="fieldformat.py" line="1251"/>
         <source>Minute (1 or 2 digits)<byte value="x9"/>%-M</source>
         <translation>Minutos (1 ó 2 dígitos)<byte value="x9"/>%-M</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1241"/>
+        <location filename="fieldformat.py" line="1252"/>
         <source>Minute (2 digits)<byte value="x9"/>%M</source>
         <translation>Minutos (2 dígitos)<byte value="x9"/>%M</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1242"/>
+        <location filename="fieldformat.py" line="1253"/>
         <source>Second (1 or 2 digits)<byte value="x9"/>%-S</source>
         <translation>Segundos (1 ó 2 dígitos)<byte value="x9"/>%-S</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1243"/>
+        <location filename="fieldformat.py" line="1254"/>
         <source>Second (2 digits)<byte value="x9"/>%S</source>
         <translation>Segundos (2 dígitos)<byte value="x9"/>%S</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1244"/>
+        <location filename="fieldformat.py" line="1255"/>
         <source>Microseconds (6 digits)<byte value="x9"/>%f</source>
         <translation>Microsegundos (6 dígitos)<byte value="x9"/>%f</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1245"/>
+        <location filename="fieldformat.py" line="1256"/>
         <source>AM/PM<byte value="x9"/>%p</source>
         <translation>AM/PM<byte value="x9"/>%p</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="437"/>
+        <location filename="fieldformat.py" line="443"/>
         <source>Comma Separator<byte value="x9"/>\,</source>
         <translation>Separador Coma<byte value="x9"/>\,</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="438"/>
+        <location filename="fieldformat.py" line="444"/>
         <source>Dot Separator<byte value="x9"/>\.</source>
         <translation>Separador Punto<byte value="x9"/>\.</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2526"/>
+        <location filename="fieldformat.py" line="2555"/>
         <source>DescendantCount</source>
         <translation>Cuenta Descendiente</translation>
     </message>
@@ -2063,7 +2063,7 @@ Use an import filter?</source>
         <translation>TABLA</translation>
     </message>
     <message>
-        <location filename="imports.py" line="895"/>
+        <location filename="imports.py" line="901"/>
         <source>Bookmarks</source>
         <translation>Favoritos</translation>
     </message>
@@ -2831,7 +2831,7 @@ La información de depuración que se muestra a continuación se puede copiar y 
         <translation>Restaurar la geometría de la ventana anterior</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="74"/>
+        <location filename="optiondefaults.py" line="77"/>
         <source>Features Available</source>
         <translation>Funcionalidades disponibles</translation>
     </message>
@@ -2841,96 +2841,96 @@ La información de depuración que se muestra a continuación se puede copiar y 
         <translation>Abrir archivos en una nueva ventana</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="61"/>
+        <location filename="optiondefaults.py" line="64"/>
         <source>Click node to rename</source>
         <translation>Clicar en nodo para renombrar</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="63"/>
+        <location filename="optiondefaults.py" line="66"/>
         <source>Rename new nodes when created</source>
         <translation>Renombrar los nodos nuevos cuando sean creados</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="65"/>
+        <location filename="optiondefaults.py" line="68"/>
         <source>Tree drag &amp;&amp; drop available</source>
         <translation>Disponible la opción de pulsar y arrastrar en el árbol</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="70"/>
+        <location filename="optiondefaults.py" line="73"/>
         <source>Show icons in the tree view</source>
         <translation>Mostrar iconos en la vista de árbol</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="72"/>
+        <location filename="optiondefaults.py" line="75"/>
         <source>Show math fields in the Data Edit view</source>
         <translation>Mostrar campos matemáticos en la vista de Edición de Datos</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="75"/>
+        <location filename="optiondefaults.py" line="78"/>
         <source>Show numbering fields in the Data Edit view</source>
         <translation>Mostrar campos de numeración en la vista de Edición de Datos</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="76"/>
+        <location filename="optiondefaults.py" line="79"/>
         <source>Undo Memory</source>
         <translation>Memoria usada por la opción &quot;deshacer&quot;</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="77"/>
+        <location filename="optiondefaults.py" line="80"/>
         <source>Number of undo levels</source>
         <translation>Número de niveles de deshacer</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="78"/>
+        <location filename="optiondefaults.py" line="81"/>
         <source>Auto Save</source>
         <translation>Grabación automática</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="79"/>
+        <location filename="optiondefaults.py" line="82"/>
         <source>Minutes between saves
 (set to 0 to disable)</source>
         <translation>Minutos entre respaldos (seleccione 0 para desactivar)</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="80"/>
+        <location filename="optiondefaults.py" line="83"/>
         <source>Recent Files</source>
         <translation>Archivos recientes</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="81"/>
+        <location filename="optiondefaults.py" line="84"/>
         <source>Number of recent files 
 in the file menu</source>
         <translation>Cantidad de archivos recientes
 en el menú de archivo</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="87"/>
+        <location filename="optiondefaults.py" line="90"/>
         <source>Data Editor Formats</source>
         <translation>Formatos del editor de datos</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="83"/>
+        <location filename="optiondefaults.py" line="86"/>
         <source>Times</source>
         <translation>Horas</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="85"/>
+        <location filename="optiondefaults.py" line="88"/>
         <source>Dates</source>
         <translation>Fechas</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="87"/>
+        <location filename="optiondefaults.py" line="90"/>
         <source>First day
 of week</source>
         <translation>Primer día de la semana</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="91"/>
+        <location filename="optiondefaults.py" line="94"/>
         <source>Appearance</source>
         <translation>Apariencia</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="89"/>
+        <location filename="optiondefaults.py" line="92"/>
         <source>Child indent offset
 (in font height units) </source>
         <translation>Corrección de sangrado de hijos
@@ -2977,14 +2977,19 @@ of week</source>
         <translation>Minimiza aplicación a la bandeja del sistema</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="68"/>
+        <location filename="optiondefaults.py" line="71"/>
         <source>Indent (pretty print) TreeLine JSON files</source>
         <translation>Sangrado (mejor impresión) Archivos TreeLine JSON</translation>
     </message>
     <message>
-        <location filename="optiondefaults.py" line="91"/>
+        <location filename="optiondefaults.py" line="94"/>
         <source>Color Theme</source>
         <translation>Color de Tema</translation>
+    </message>
+    <message>
+        <location filename="optiondefaults.py" line="62"/>
+        <source>Limit data editor height to window size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3018,12 +3023,12 @@ of week</source>
 <context>
     <name>printdata</name>
     <message>
-        <location filename="printdata.py" line="367"/>
+        <location filename="printdata.py" line="370"/>
         <source>Error initializing printer</source>
         <translation>Error inicializando la impresora</translation>
     </message>
     <message>
-        <location filename="printdata.py" line="579"/>
+        <location filename="printdata.py" line="585"/>
         <source>TreeLine - Export PDF</source>
         <translation>TreeLine - Exportar a PDF</translation>
     </message>

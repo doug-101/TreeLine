@@ -159,6 +159,61 @@
 {
 "children": [],
 "data": {
+"Name": "Restore data editor cursor &amp; scroll positions",
+"Text": "Restore the cursor and scroll positions of data editors when the editors are re-created after focus changes."
+},
+"format": "BULLETS",
+"uid": "194b052fe5d811e9a0d1a44cc8e97404"
+},
+{
+"children": [
+"3e749de3e5d811e98227a44cc8e97404",
+"194b0537e5d811e989a1a44cc8e97404",
+"194b0534e5d811e985f6a44cc8e97404"
+],
+"data": {
+"Name": "October 6, 2019 - Release 3.1.2 (stable release)"
+},
+"format": "HEADINGS",
+"uid": "194b0533e5d811e9b5fea44cc8e97404"
+},
+{
+"children": [
+"8cdb2406e5df11e9a06da44cc8e97404",
+"8e8e418ae5dc11e98404a44cc8e97404",
+"9139627ee5db11e98a21a44cc8e97404",
+"194b0536e5d811e991b3a44cc8e97404",
+"fcc1b718e5df11e9a7f9a44cc8e97404"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "194b0534e5d811e985f6a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Treepad import",
+"Text": "Fix error due to character encoding when importing files from Treepad."
+},
+"format": "BULLETS",
+"uid": "194b0536e5d811e991b3a44cc8e97404"
+},
+{
+"children": [
+"194b052fe5d811e9a0d1a44cc8e97404",
+"4212597ee5e011e99b51a44cc8e97404"
+],
+"data": {
+"Name": "Updates"
+},
+"format": "BULLET_HEADING",
+"uid": "194b0537e5d811e989a1a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Enable evaluate HTML tags option",
 "Text": "The Evaluate HTML tags control was enabled for date, time, boolean and math fields.  This allows HTML tags to be evaluated or ignored in more field types."
 },
@@ -294,11 +349,40 @@
 {
 "children": [],
 "data": {
+"Name": "Chinese translation",
+"Text": "Add a simplified Chinese GUI translation (thanks to Qu Ray for translating)."
+},
+"format": "BULLETS",
+"uid": "3e749de1e5d811e9a22ba44cc8e97404"
+},
+{
+"children": [
+"3e749de1e5d811e9a22ba44cc8e97404",
+"cef1d9fee5de11e998dea44cc8e97404"
+],
+"data": {
+"Name": "New Features"
+},
+"format": "BULLET_HEADING",
+"uid": "3e749de3e5d811e98227a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Time field AM/PM",
 "Text": "Now forces references to AM/PM in time field formats to be output regardless of system locale settings."
 },
 "format": "BULLETS",
 "uid": "40ec6d5cbbf711e8bb93a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Outline numbering",
+"Text": "Change lettered outline numbering sequences to match standards. The sequences change from ...Y, Z, AA, AB, AC... to ...Y, Z, AA, BB, CC..."
+},
+"format": "BULLETS",
+"uid": "4212597ee5e011e99b51a44cc8e97404"
 },
 {
 "children": [],
@@ -862,11 +946,38 @@
 {
 "children": [],
 "data": {
+"Name": "Truncated text export",
+"Text": "Fix a bug that truncated plain text exports after the first line."
+},
+"format": "BULLETS",
+"uid": "8cdb2406e5df11e9a06da44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Title list select in tree",
+"Text": "Enable the title list view's select in tree context menu to be used on new child nodes."
+},
+"format": "BULLETS",
+"uid": "8e8e418ae5dc11e98404a44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "Copy command errors",
 "Text": "Fix errors shown when using copy commands after closing TreeLine windows."
 },
 "format": "BULLETS",
 "uid": "90dbc4e4334b11e892d0d66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Dark mode tooltips",
+"Text": "Modify dark mode colors to make tool tips visible."
+},
+"format": "BULLETS",
+"uid": "9139627ee5db11e98a21a44cc8e97404"
 },
 {
 "children": [],
@@ -1167,6 +1278,15 @@
 {
 "children": [],
 "data": {
+"Name": "Unlimited data editor height option",
+"Text": "Add a general option to extend the height of data editors with long text content. The default setting (limit the height to the window size) is unchanged. The new option uses the view scroll bars to access the full text length."
+},
+"format": "BULLETS",
+"uid": "cef1d9fee5de11e998dea44cc8e97404"
+},
+{
+"children": [],
+"data": {
 "Name": "TreeLine 2 import / export",
 "Text": "Import and export filters are provided for older TreeLine version 2.x and 1.x files. The older files can be opened using the standard \"File &gt; Open\" command."
 },
@@ -1411,7 +1531,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 3.1.1, a stable release, dated March 17, 2019 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.1.2, a stable release, dated October 6, 2019 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -1913,7 +2033,7 @@
 "children": [],
 "data": {
 "Name": "Languages",
-"Text": "The user interface is available in English, German and Spanish. Translations into other languages are TBD."
+"Text": "The user interface is available in simplified Chinese, English, German and Spanish. Translations into other languages are TBD."
 },
 "format": "BULLETS",
 "uid": "f16fbd00a25a11e7b7c67054d2175f18"
@@ -3063,6 +3183,7 @@
 },
 {
 "children": [
+"194b0533e5d811e9b5fea44cc8e97404",
 "db25cd62481e11e989f27054d2175f18",
 "800a0971305111e991cda44cc8e97404",
 "9c08f39ee80311e8a510a44cc8e97404",
@@ -5482,6 +5603,15 @@
 "uid": "f966db0cc23f11e8b80fd66a6ab671cb"
 },
 {
+"children": [],
+"data": {
+"Name": "Printing empty branches",
+"Text": "Fix an error caused by attempting to print an empty branch."
+},
+"format": "BULLETS",
+"uid": "fcc1b718e5df11e9a7f9a44cc8e97404"
+},
+{
 "children": [
 "6a6067d4482011e989f27054d2175f18",
 "b398d8ee482211e989f27054d2175f18",
@@ -5504,7 +5634,7 @@
 }
 ],
 "properties": {
-"tlversion": "3.1.1",
+"tlversion": "3.1.2",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
