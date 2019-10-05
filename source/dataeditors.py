@@ -217,7 +217,14 @@ class PlainTextEditor(QTextEdit):
                 pos.setY(pos.y() + self.parent().height())
                 if pos.y() > self.height():
                     pos.setY(self.height())
-            self.setTextCursor(self.cursorForPosition(pos))
+            newCursor = self.cursorForPosition(pos)
+            if event.modifiers() == Qt.ShiftModifier:
+                cursor = self.textCursor()
+                cursor.setPosition(newCursor.position(),
+                                   QTextCursor.KeepAnchor)
+                self.setTextCursor(cursor)
+            else:
+                self.setTextCursor(newCursor)
             event.accept()
             self.keyPressed.emit(self)
             return
