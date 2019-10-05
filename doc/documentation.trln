@@ -203,6 +203,7 @@
 {
 "children": [
 "194b052fe5d811e9a0d1a44cc8e97404",
+"ea0c9b24e79911e98abe7054d2175f18",
 "4212597ee5e011e99b51a44cc8e97404"
 ],
 "data": {
@@ -1469,6 +1470,15 @@
 },
 "format": "BULLETS",
 "uid": "e8e10d3ca14311e8b71da44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Add modified flag",
+"Text": "Add an asterisk after the file name in the title bar if a file has been modified."
+},
+"format": "BULLETS",
+"uid": "ea0c9b24e79911e98abe7054d2175f18"
 },
 {
 "children": [],

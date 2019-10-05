@@ -265,15 +265,17 @@ class TreeWindow(QMainWindow):
         self.activateWindow()
         self.raise_()
 
-    def setCaption(self, pathObj=None):
+    def setCaption(self, pathObj=None, modified=False):
         """Change the window caption title based on the file name and path.
 
         Arguments:
             pathObj - a path object for the current file
         """
+        modFlag = '*' if modified else ''
         if pathObj:
-            caption = '{0} [{1}] - TreeLine'.format(str(pathObj.name),
-                                                    str(pathObj.parent))
+            caption = '{0}{1} [{2}] - TreeLine'.format(str(pathObj.name),
+                                                       modFlag,
+                                                       str(pathObj.parent))
         else:
             caption = '- TreeLine'
         self.setWindowTitle(caption)

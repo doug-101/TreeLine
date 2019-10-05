@@ -117,7 +117,7 @@ class TreeLocalControl(QObject):
             self.setWindowSignals(window, True)
             window.updateActions(self.allActions)
             self.windowList.append(window)
-            window.setCaption(self.filePathObj)
+            self.updateWindowCaptions()
             self.activeWindow = window
         if fileObj and self.structure.childRefErrorNodes:
             msg = _('Warning - file corruption!\n'
@@ -303,7 +303,7 @@ class TreeLocalControl(QObject):
         """Update the caption for all windows.
         """
         for window in self.windowList:
-            window.setCaption(self.filePathObj)
+            window.setCaption(self.filePathObj, self.modified)
 
     def setModified(self, modified=True):
         """Set the modified flag on this file and update commands available.
@@ -314,6 +314,7 @@ class TreeLocalControl(QObject):
         if modified != self.modified:
             self.modified = modified
             self.allActions['FileSave'].setEnabled(modified)
+            self.updateWindowCaptions()
             self.resetAutoSave()
 
     def expandRootNodes(self, maxNum=5):
@@ -1682,7 +1683,7 @@ class TreeLocalControl(QObject):
         self.setWindowSignals(window)
         window.winMinimized.connect(globalref.mainControl.trayMinimize)
         self.windowList.append(window)
-        window.setCaption(self.filePathObj)
+        self.updateWindowCaptions()
         oldControl = globalref.mainControl.activeControl
         if oldControl:
             oldControl.activeWindow.saveWindowGeom()
