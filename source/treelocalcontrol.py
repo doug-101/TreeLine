@@ -297,6 +297,8 @@ class TreeLocalControl(QObject):
             self.allActions['NodeMoveDown'].setEnabled(False)
             self.allActions['NodeMoveFirst'].setEnabled(False)
             self.allActions['NodeMoveLast'].setEnabled(False)
+        else:
+            self.allActions['NodeAddChild'].setEnabled(True)
         self.activeWindow.updateCommandsAvail()
 
     def updateWindowCaptions(self):
