@@ -1692,6 +1692,7 @@ class TreeLocalControl(QObject):
                 oldControl.activeWindow.saveWindowGeom()
             except RuntimeError:
                 # possibly avoid rare error of deleted c++ TreeWindow
+                pass
         window.restoreWindowGeom(offset)
         self.activeWindow = window
         self.expandRootNodes()

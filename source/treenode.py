@@ -4,7 +4,7 @@
 # treenode.py, provides a class to store tree node data
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -358,7 +358,10 @@ class TreeNode:
         findCount = 0
         prevFieldFindCount = 0
         for field in fields:
-            fieldText = field.editorText(self)
+            try:
+                fieldText = field.editorText(self)
+            except ValueError:
+                fieldText = self.data.get(field.name, '')
             fieldFindCount = 0
             pos = 0
             while True:
