@@ -4,7 +4,7 @@
 # treemaincontrol.py, provides a class for global tree commands
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -79,6 +79,7 @@ class TreeMainControl(QObject):
         self.filterConditionDialog = None
         self.basicHelpView = None
         self.passwords = {}
+        self.creatingLocalControlFlag = False
         globalref.mainControl = self
         self.allActions = {}
         try:
@@ -95,6 +96,8 @@ class TreeMainControl(QObject):
                     sys.exit(0)
             # start local server to listen for attempt to start new session
             self.serverSocket = QLocalServer()
+            # remove any old servers still around after a crash in linux
+            self.serverSocket.removeServer('treeline3-session')
             self.serverSocket.listen('treeline3-session')
             self.serverSocket.newConnection.connect(self.getSocket)
         except AttributeError:
@@ -448,6 +451,7 @@ class TreeMainControl(QObject):
             treeStruct -- the imported structure to use
             forceNewWindow -- if True, use a new window regardless of option
         """
+        self.creatingLocalControlFlag = True
         localControl = treelocalcontrol.TreeLocalControl(self.allActions,
                                                          pathObj, treeStruct,
                                                          forceNewWindow)
@@ -455,6 +459,7 @@ class TreeMainControl(QObject):
         localControl.controlClosed.connect(self.removeLocalControlRef)
         self.localControls.append(localControl)
         self.updateLocalControlRef(localControl)
+        self.creatingLocalControlFlag = False
         localControl.updateRightViews()
         localControl.updateCommandsAvail()
 
@@ -481,7 +486,7 @@ class TreeMainControl(QObject):
         self.localControls.remove(localControl)
         if globalref.genOptions['SaveTreeStates']:
             self.recentFiles.saveTreeState(localControl)
-        if not self.localControls:
+        if not self.localControls and not self.creatingLocalControlFlag:
             if globalref.genOptions['SaveWindowGeom']:
                 localControl.windowList[0].saveWindowGeom()
             else:
@@ -491,6 +496,12 @@ class TreeMainControl(QObject):
             globalref.histOptions.writeFile()
             if self.trayIcon:
                 self.trayIcon.hide()
+            # stop listening for session connections
+            try:
+                self.serverSocket.close()
+                del self.serverSocket
+            except AttributeError:
+                pass
         localControl.deleteLater()
 
     def createTrayIcon(self):
