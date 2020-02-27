@@ -4,7 +4,7 @@
 # recentfiles.py, classes to save recent file lists, states and actions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -247,6 +247,6 @@ class RecentFileList(list):
         """
         try:
             item = self[self.index(localControl.filePathObj)]
-        except ValueError:
+        except (ValueError, AttributeError):
             return False
         return item.restoreTreeState(localControl)
