@@ -4,7 +4,7 @@
 # optiondefaults.py, defines defaults for config options
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -113,6 +113,8 @@ def setHistOptionDefaults(historyOptions):
     IntOptionItem(historyOptions, 'WindowYSize', 640, 10, 10000)
     IntOptionItem(historyOptions, 'WindowXPos', -1000, -1000, 10000)
     IntOptionItem(historyOptions, 'WindowYPos', -1000, -1000, 10000)
+    IntOptionItem(historyOptions, 'WindowTopMargin', 0, 0, 1000)
+    IntOptionItem(historyOptions, 'WindowOtherMargin', 0, 0, 1000)
     IntOptionItem(historyOptions, 'CrumbSplitPercent', 10, 1, 99)
     IntOptionItem(historyOptions, 'TreeSplitPercent', 40, 1, 99)
     IntOptionItem(historyOptions, 'OutputSplitPercent', 20, 1, 99)

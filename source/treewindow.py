@@ -4,7 +4,7 @@
 # treewindow.py, provides a class for the main window and controls
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -746,10 +746,16 @@ class TreeWindow(QMainWindow):
     def saveWindowGeom(self):
         """Save window geometry parameters to history options.
         """
-        globalref.histOptions.changeValue('WindowXSize', self.width())
-        globalref.histOptions.changeValue('WindowYSize', self.height())
-        globalref.histOptions.changeValue('WindowXPos', self.geometry().x())
-        globalref.histOptions.changeValue('WindowYPos', self.geometry().y())
+        contentsRect = self.geometry()
+        frameRect = self.frameGeometry()
+        globalref.histOptions.changeValue('WindowXSize', contentsRect.width())
+        globalref.histOptions.changeValue('WindowYSize', contentsRect.height())
+        globalref.histOptions.changeValue('WindowXPos', contentsRect.x())
+        globalref.histOptions.changeValue('WindowYPos', contentsRect.y())
+        globalref.histOptions.changeValue('WindowTopMargin',
+                                          contentsRect.y() - frameRect.y())
+        globalref.histOptions.changeValue('WindowOtherMargin',
+                                          contentsRect.x() - frameRect.x())
         try:
             upperWidth, lowerWidth = self.breadcrumbSplitter.sizes()
             crumbPercent = int(100 * upperWidth / (upperWidth + lowerWidth))
@@ -792,15 +798,18 @@ class TreeWindow(QMainWindow):
         else:
             if offset:
                 rect.adjust(offset, offset, offset, offset)
-            desktop = QApplication.desktop()
-            if desktop.isVirtualDesktop():
-                # availRect = desktop.screen().rect() # buggy in windows?
-                availRect = (QGuiApplication.screens()[0].
-                             availableVirtualGeometry())
-            else:
-                availRect = desktop.availableGeometry(desktop.primaryScreen())
-            rect = rect.intersected(availRect)
-            self.setGeometry(rect)
+            availRect = QApplication.primaryScreen().availableVirtualGeometry()
+            topMargin = globalref.histOptions['WindowTopMargin']
+            otherMargin = globalref.histOptions['WindowOtherMargin']
+            # remove frame space from available rect
+            availRect.adjust(otherMargin, topMargin,
+                             -otherMargin, -otherMargin)
+            finalRect = rect.intersected(availRect)
+            if finalRect.isEmpty():
+                rect.moveTo(0, 0)
+                finalRect = rect.intersected(availRect)
+            if finalRect.isValid():
+                self.setGeometry(finalRect)
         crumbWidth = int(self.breadcrumbSplitter.width() / 100 *
                          globalref.histOptions['CrumbSplitPercent'])
         self.breadcrumbSplitter.setSizes([crumbWidth,
