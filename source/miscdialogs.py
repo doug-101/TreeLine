@@ -4,7 +4,7 @@
 # miscdialogs.py, provides classes for various control dialogs
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -1906,11 +1906,13 @@ class CustomFontDialog(QDialog):
                 defaultFont = QFont(globalref.mainControl.systemFont)
             else:
                 defaultFont = appFontWidget.readFont()
-            currentWidget.printData.defaultFont = defaultFont
-            if currentWidget.defaultCheck.isChecked():
-                currentWidget.printData.mainFont = QFont(defaultFont)
-                currentWidget.currentFont = currentWidget.printData.mainFont
-                currentWidget.setFont(defaultFont)
+            if defaultFont:
+                currentWidget.printData.defaultFont = defaultFont
+                if currentWidget.defaultCheck.isChecked():
+                    currentWidget.printData.mainFont = QFont(defaultFont)
+                    currentWidget.currentFont = (currentWidget.printData.
+                                                 mainFont)
+                    currentWidget.setFont(defaultFont)
 
     def applyChanges(self):
         """Apply any changes from the dialog.
