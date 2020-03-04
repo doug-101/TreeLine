@@ -169,10 +169,14 @@ class TreeMainControl(QObject):
                 paths = ast.literal_eval(data)
                 if paths:
                     for path in paths:
-                        self.openFile(pathlib.Path(path), True)
+                        pathObj = pathlib.Path(path)
+                        if pathObj != self.activeControl.filePathObj:
+                            self.openFile(pathObj, True)
+                        else:
+                            self.activeControl.activeWindow.activateAndRaise()
                 else:
                     self.activeControl.activeWindow.activateAndRaise()
-            except(SyntaxError, ValueError, TypeError):
+            except(SyntaxError, ValueError, TypeError, RuntimeError):
                 pass
 
     def findResourcePaths(self, resourceName, preferredPath=''):
