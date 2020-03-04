@@ -550,12 +550,13 @@ allowedFunctions = set(['abs', 'float', 'int', 'len', 'max', 'min', 'pow',
                         'startswith', 'endswith', 'contains',
                         'join', 'upper', 'lower', 'replace'])
 
-allowedNodeTypes = set(['Module', 'Expr', 'Name', 'Load', 'IfExp', 'Compare',
-                        'Num', 'Str', 'Tuple', 'List', 'BinOp', 'UnaryOp',
-                        'Add', 'Sub', 'Mult', 'Div', 'Mod', 'Pow', 'FloorDiv',
-                        'Invert', 'Not', 'UAdd', 'USub',
-                        'Eq', 'NotEq', 'Lt', 'LtE', 'Gt', 'GtE', 'Is', 'IsNot',
-                        'In', 'NotIn', 'BoolOp', 'And', 'Or'])
+allowedNodeTypes = set(['Module', 'Expr', 'Name', 'NameConstant', 'Constant',
+                        'Load', 'IfExp', 'Compare', 'Num', 'Str', 'Tuple',
+                        'List', 'BinOp', 'UnaryOp', 'Add', 'Sub', 'Mult',
+                        'Div', 'Mod', 'Pow', 'FloorDiv', 'Invert', 'Not',
+                        'UAdd', 'USub', 'Eq', 'NotEq', 'Lt', 'LtE', 'Gt',
+                        'GtE', 'Is', 'IsNot', 'In', 'NotIn', 'BoolOp',
+                        'And', 'Or'])
 
 
 class SafeEvalChecker(ast.NodeVisitor):
