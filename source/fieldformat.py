@@ -4,7 +4,7 @@
 # fieldformat.py, provides a class to handle field format types
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -649,8 +649,8 @@ class MathField(HtmlTextField):
         if self.equation:
             zeroValue = _mathResultBlank[self.resultType]
             try:
-                num = self.equation.equationValue(node, zeroValue,
-                                                  not self.evalHtml)
+                num = self.equation.equationValue(node, self.resultType,
+                                                  zeroValue, not self.evalHtml)
             except ValueError:
                 return _errorStr
             if num == None:

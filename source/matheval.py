@@ -4,7 +4,7 @@
 # matheval.py, provides a safe eval of mathematical expressions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -211,22 +211,34 @@ class MathEquation:
         except ZeroDivisionError:
             pass
 
-    def equationValue(self, eqnNode, zeroValue=0, noMarkup=True):
+    def equationValue(self, eqnNode, resultType, zeroValue=0, noMarkup=True):
         """Return a value for the equation in the given node.
 
         Return None if references are invalid.
         Raise a ValueError for illegal math operations.
         Arguments:
             eqnNode -- the node containing the equation to evaluate
+            resultType -- the result type from fieldformat
             zeroValue -- the value to use for blanks
             noMarkup -- if true, remove html markup
         """
         zeroBlanks = eqnNode.treeStructureRef().mathZeroBlanks
-        inputs = [ref.referenceValue(eqnNode, zeroBlanks, zeroValue, noMarkup)
-                  for ref in self.fieldRefs]
-        if not zeroBlanks and None in inputs:
-            return None
-        inputs = [repr(value) for value in inputs]
+        checker = SafeEvalChecker()
+        inputs = []
+        for ref in self.fieldRefs:
+            inp = ref.referenceValue(eqnNode, zeroBlanks, zeroValue, noMarkup)
+            if inp == None and not zeroBlanks:
+                return None
+            if (resultType == fieldformat.MathResult.number and
+                hasattr(inp, 'format')):
+                try:
+                    checker.check(inp)
+                    inp = eval(inp)
+                except ValueError:
+                    inp = repr(inp)
+            else:
+                inp = repr(inp)
+            inputs.append(inp)
         eqn = self.formattedEqnText.format(*inputs)
         try:
             return eval(eqn)
