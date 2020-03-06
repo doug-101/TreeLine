@@ -234,7 +234,7 @@ class MathEquation:
                 try:
                     checker.check(inp)
                     inp = eval(inp)
-                except ValueError:
+                except Exception:
                     inp = repr(inp)
             else:
                 inp = repr(inp)
