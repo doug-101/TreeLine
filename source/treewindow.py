@@ -583,6 +583,7 @@ class TreeWindow(QMainWindow):
         toolsMenu.addAction(self.allActions['ToolsShortcuts'])
         toolsMenu.addAction(self.allActions['ToolsToolbars'])
         toolsMenu.addAction(self.allActions['ToolsFonts'])
+        toolsMenu.addAction(self.allActions['ToolsColors'])
 
         formatMenu = self.menuBar().addMenu(_('Fo&rmat'))
         formatMenu.addAction(self.allActions['FormatBoldFont'])

@@ -17,7 +17,7 @@ import options
 
 daysOfWeek = [_('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'),
               _('Friday'), _('Saturday'), _('Sunday')]
-colorThemes = [_('Normal'), _('Dark')]
+# colorThemes = [_('Normal'), _('Dark')]
 
 
 def setGenOptionDefaults(generalOptions):
@@ -90,8 +90,8 @@ def setGenOptionDefaults(generalOptions):
                    _('Data Editor Formats'), _('First day\nof week'), 1)
     IntOptionItem(generalOptions, 'IndentOffset', 2, 0, 99, _('Appearance'),
                   _('Child indent offset\n(in font height units) '), 1)
-    ListOptionItem(generalOptions, 'ColorTheme', colorThemes[0], colorThemes,
-                   _('Appearance'), _('Color Theme'), 1)
+    # ListOptionItem(generalOptions, 'ColorTheme', colorThemes[0], colorThemes,
+                   # _('Appearance'), _('Color Theme'), 1)
 
 def setMiscOptionDefaults(miscOptions):
     """Set defaults for miscellaneous config options.
@@ -103,6 +103,20 @@ def setMiscOptionDefaults(miscOptions):
     StringOptionItem(miscOptions, 'TreeFont', '', True, True)
     StringOptionItem(miscOptions, 'OutputFont', '', True, True)
     StringOptionItem(miscOptions, 'EditorFont', '', True, True)
+    StringOptionItem(miscOptions, 'ColorTheme', 'system', False, True)
+    StringOptionItem(miscOptions, 'WindowColor', '', True, True)
+    StringOptionItem(miscOptions, 'WindowTextColor', '', True, True)
+    StringOptionItem(miscOptions, 'BaseColor', '', True, True)
+    StringOptionItem(miscOptions, 'TextColor', '', True, True)
+    StringOptionItem(miscOptions, 'HighlightColor', '', True, True)
+    StringOptionItem(miscOptions, 'HighlightedTextColor', '', True, True)
+    StringOptionItem(miscOptions, 'LinkColor', '', True, True)
+    StringOptionItem(miscOptions, 'ToolTipBaseColor', '', True, True)
+    StringOptionItem(miscOptions, 'ToolTipTextColor', '', True, True)
+    StringOptionItem(miscOptions, 'ButtonColor', '', True, True)
+    StringOptionItem(miscOptions, 'ButtonTextColor', '', True, True)
+    StringOptionItem(miscOptions, 'Text-DisabledColor', '', True, True)
+    StringOptionItem(miscOptions, 'ButtonText-DisabledColor', '', True, True)
 
 def setHistOptionDefaults(historyOptions):
     """Set defaults for history config options.
@@ -210,6 +224,7 @@ def setKeyboardOptionDefaults(keyboardOptions):
     KeyOptionItem(keyboardOptions, 'ToolsShortcuts', '', 'Tools Menu')
     KeyOptionItem(keyboardOptions, 'ToolsToolbars', '', 'Tools Menu')
     KeyOptionItem(keyboardOptions, 'ToolsFonts', '', 'Tools Menu')
+    KeyOptionItem(keyboardOptions, 'ToolsColors', '', 'Tools Menu')
     KeyOptionItem(keyboardOptions, 'FormatBoldFont', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatItalicFont', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatUnderlineFont', '', 'Format Menu')

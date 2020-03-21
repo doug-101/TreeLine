@@ -35,6 +35,7 @@ import imports
 import configdialog
 import miscdialogs
 import conditional
+import colorset
 import helpview
 try:
     from __main__ import __version__, __author__
@@ -139,7 +140,9 @@ class TreeMainControl(QObject):
         globalref.treeIcons = icondict.IconDict(iconPathList, ['', 'tree'])
         icon = globalref.treeIcons.getIcon('default')
         qApp.setStyle(QStyleFactory.create('Fusion'))
-        setThemeColors()
+        self.colorSet = colorset.ColorSet()
+        if globalref.miscOptions['ColorTheme'] != 'system':
+            self.colorSet.setAppColors()
         self.recentFiles = recentfiles.RecentFileList()
         if globalref.genOptions['AutoFileOpen'] and not pathObjects:
             recentPath = self.recentFiles.firstPath()
@@ -683,6 +686,11 @@ class TreeMainControl(QObject):
         toolsFontsAct.triggered.connect(self.toolsCustomFonts)
         self.allActions['ToolsFonts'] = toolsFontsAct
 
+        toolsColorsAct = QAction(_('Custo&mize Colors...'), self,
+                                statusTip=_('Customize GUI colors and themes'))
+        toolsColorsAct.triggered.connect(self.toolsCustomColors)
+        self.allActions['ToolsColors'] = toolsColorsAct
+
         helpBasicAct = QAction(_('&Basic Usage...'), self,
                                statusTip=_('Display basic usage instructions'))
         helpBasicAct.triggered.connect(self.helpViewBasic)
@@ -948,7 +956,6 @@ class TreeMainControl(QObject):
         """Set general user preferences for all files.
         """
         oldAutoSaveMinutes = globalref.genOptions['AutoSaveMinutes']
-        oldColorTheme = globalref.genOptions['ColorTheme']
         dialog = options.OptionDialog(globalref.genOptions,
                                       QApplication.activeWindow())
         dialog.setWindowTitle(_('General Options'))
@@ -968,10 +975,6 @@ class TreeMainControl(QObject):
                 control.updateAll(False)
                 if autoSaveMinutes != oldAutoSaveMinutes:
                     control.resetAutoSave()
-            if globalref.genOptions['ColorTheme'] != oldColorTheme:
-                QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
-                                    _('Application must be restarted for '
-                                      'color theme changes to take effect'))
 
     def toolsCustomShortcuts(self):
         """Show dialog to customize keyboard commands.
@@ -1004,6 +1007,11 @@ class TreeMainControl(QObject):
                                               activeWindow())
         dialog.updateRequired.connect(self.updateCustomFonts)
         dialog.exec_()
+
+    def toolsCustomColors(self):
+        """Show dialog to customize GUI colors ans themes.
+        """
+        self.colorSet.showDialog(QApplication.activeWindow())
 
     def updateCustomFonts(self):
         """Update fonts in all windows based on a dialog signal.
