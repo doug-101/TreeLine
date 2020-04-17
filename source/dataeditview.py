@@ -4,7 +4,7 @@
 # dataeditview.py, provides a class for the data edit right-hand view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -476,6 +476,7 @@ class DataEditView(QTableWidget):
         if not globalref.genOptions['ShowMath']:
             fields = [field for field in fields
                       if field.typeName != 'Math']
+        row = 0  # initialize for cases with only Numbering or Math fields
         for row, field in enumerate(fields, startRow + 1):
             self.setItem(row, 0, self.createInactiveCell(field.name,
                                                          Qt.AlignRight |
