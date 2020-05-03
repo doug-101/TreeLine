@@ -490,7 +490,10 @@ class TreeMainControl(QObject):
         Arguments:
             localControl -- the local control that is closing
         """
-        self.localControls.remove(localControl)
+        try:
+            self.localControls.remove(localControl)
+        except ValueError:
+            return  # skip for unreporducible bug - odd race condition?
         if globalref.genOptions['SaveTreeStates']:
             self.recentFiles.saveTreeState(localControl)
         if not self.localControls and not self.creatingLocalControlFlag:
