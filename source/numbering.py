@@ -73,7 +73,7 @@ class NumberingGroup:
             return basicFormat.numString(inputNums[level])
 
 
-_formatRegEx = re.compile(r'(.*)([1AaIi])(.*)')
+_formatRegEx = re.compile(r'(.*?)([1AaIi]{1,2})(\W*)$')
 
 
 class BasicNumbering:
@@ -105,6 +105,8 @@ class BasicNumbering:
                 self.numFunction = _stringFromNum
             elif series in 'Aa':
                 self.numFunction = _alphaFromNum
+            elif series in 'AAaa':
+                self.numFunction = _alpha2FromNum
             else:
                 self.numFunction = _romanFromNum
             self.upperCase = series.isupper()
@@ -149,6 +151,25 @@ def _alphaFromNum(num, upperCase=True):
     char = chr(charPos + ord('A'))
     qty = (num - 1) // 26 + 1
     result = char * qty
+    if not upperCase:
+        result = result.lower()
+    return result
+
+def _alpha2FromNum(num, upperCase=True):
+    """Return an alphabetic string from an integer.
+
+    Sequence is 'AA', 'BB' ... 'ZZ', 'AAA', 'BBB' ... 'ZZZ', 'AAAA', 'BBBB' ...
+    Arguments:
+        num -- the integer to convert
+        upperCase -- return an upper case string if true
+    """
+    if num <= 0:
+        return ''
+    result = ''
+    charPos = (num - 1) % 26
+    char = chr(charPos + ord('A'))
+    qty = (num - 1) // 26 + 1
+    result = char * (qty+1)
     if not upperCase:
         result = result.lower()
     return result
