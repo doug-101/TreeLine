@@ -4,7 +4,7 @@
 # dataeditors.py, provides classes for data editors in the data edit view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -64,6 +64,7 @@ class PlainTextEditor(QTextEdit):
         self.allActions = parent.parent().allActions
         self.modified = False
         self.textChanged.connect(self.signalUpdate)
+        self.allActions['FormatInsertDate'].triggered.connect(self.insDate)
 
     def setContents(self, text):
         """Set the contents of the editor to text.
@@ -144,6 +145,7 @@ class PlainTextEditor(QTextEdit):
         self.allActions['EditPaste'].setEnabled(len(mime.data('text/xml') or
                                                     mime.data('text/plain'))
                                                 > 0)
+        self.allActions['FormatInsertDate'].setEnabled(False)
 
     def updateActions(self):
         """Set availability of context menu actions.
@@ -154,6 +156,16 @@ class PlainTextEditor(QTextEdit):
         mime = QApplication.clipboard().mimeData()
         self.allActions['EditPaste'].setEnabled(len(mime.data('text/plain'))
                                                 > 0)
+        self.allActions['FormatInsertDate'].setEnabled(True)
+
+    def insDate(self):
+        """Insert the current date using the editor format.
+        """
+        date = datetime.date.today()
+        editorFormat = fieldformat.adjOutDateFormat(globalref.
+                                                  genOptions['EditDateFormat'])
+        dateText = date.strftime(editorFormat)
+        self.insertPlainText(dateText)
 
     def contextMenuEvent(self, event):
         """Override popup menu to add global actions.
@@ -167,6 +179,8 @@ class PlainTextEditor(QTextEdit):
         menu.addAction(self.allActions['EditCut'])
         menu.addAction(self.allActions['EditCopy'])
         menu.addAction(self.allActions['EditPaste'])
+        menu.addSeparator()
+        menu.addAction(self.allActions['FormatInsertDate'])
         menu.exec_(event.globalPos())
 
     def focusInEvent(self, event):
@@ -488,6 +502,7 @@ class HtmlTextEditor(PlainTextEditor):
         menu.addSeparator()
         menu.addAction(self.allActions['FormatExtLink'])
         menu.addAction(self.allActions['FormatIntLink'])
+        menu.addAction(self.allActions['FormatInsertDate'])
         menu.addSeparator()
         menu.addAction(self.allActions['FormatSelectAll'])
         menu.addSeparator()
@@ -817,6 +832,7 @@ class RichTextEditor(HtmlTextEditor):
         menu.addSeparator()
         menu.addAction(self.allActions['FormatExtLink'])
         menu.addAction(self.allActions['FormatIntLink'])
+        menu.addAction(self.allActions['FormatInsertDate'])
         menu.addSeparator()
         menu.addAction(self.allActions['FormatSelectAll'])
         menu.addAction(self.allActions['FormatClearFormat'])

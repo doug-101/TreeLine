@@ -598,6 +598,7 @@ class TreeWindow(QMainWindow):
         formatMenu.addSeparator()
         formatMenu.addAction(self.allActions['FormatExtLink'])
         formatMenu.addAction(self.allActions['FormatIntLink'])
+        formatMenu.addAction(self.allActions['FormatInsertDate'])
         formatMenu.addSeparator()
         formatMenu.addAction(self.allActions['FormatSelectAll'])
         formatMenu.addAction(self.allActions['FormatClearFormat'])

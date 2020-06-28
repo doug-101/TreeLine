@@ -694,6 +694,12 @@ class TreeMainControl(QObject):
         toolsColorsAct.triggered.connect(self.toolsCustomColors)
         self.allActions['ToolsColors'] = toolsColorsAct
 
+        formatSelectAllAct =  QAction(_('&Select All'), self,
+                                   statusTip=_('Select all text in an editor'))
+        formatSelectAllAct.setEnabled(False)
+        formatSelectAllAct.triggered.connect(self.formatSelectAll)
+        self.allActions['FormatSelectAll'] = formatSelectAllAct
+
         helpBasicAct = QAction(_('&Basic Usage...'), self,
                                statusTip=_('Display basic usage instructions'))
         helpBasicAct.triggered.connect(self.helpViewBasic)
@@ -703,17 +709,6 @@ class TreeMainControl(QObject):
                    statusTip=_('Open a TreeLine file with full documentation'))
         helpFullAct.triggered.connect(self.helpViewFull)
         self.allActions['HelpFull'] = helpFullAct
-
-        helpAboutAct = QAction(_('&About TreeLine...'), self,
-                        statusTip=_('Display version info about this program'))
-        helpAboutAct.triggered.connect(self.helpAbout)
-        self.allActions['HelpAbout'] = helpAboutAct
-
-        formatSelectAllAct =  QAction(_('&Select All'), self,
-                                   statusTip=_('Select all text in an editor'))
-        formatSelectAllAct.setEnabled(False)
-        formatSelectAllAct.triggered.connect(self.formatSelectAll)
-        self.allActions['FormatSelectAll'] = formatSelectAllAct
 
         helpAboutAct = QAction(_('&About TreeLine...'), self,
                         statusTip=_('Display version info about this program'))

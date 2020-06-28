@@ -722,6 +722,11 @@ class TreeLocalControl(QObject):
         formatIntLinkAct.setEnabled(False)
         localActions['FormatIntLink'] = formatIntLinkAct
 
+        formatInsDateAct = QAction(_('Insert &Date'), self,
+                                   statusTip=_('Insert current date as text'))
+        formatInsDateAct.setEnabled(False)
+        localActions['FormatInsertDate'] = formatInsDateAct
+
         formatClearFormatAct =  QAction(_('Clear For&matting'), self,
                       statusTip=_('Clear current or selected text formatting'))
         formatClearFormatAct.setEnabled(False)

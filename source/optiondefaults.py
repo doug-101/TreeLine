@@ -232,6 +232,7 @@ def setKeyboardOptionDefaults(keyboardOptions):
     KeyOptionItem(keyboardOptions, 'FormatFontColor', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatExtLink', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatIntLink', '', 'Format Menu')
+    KeyOptionItem(keyboardOptions, 'FormatInsertDate', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatSelectAll', 'Ctrl+L', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatClearFormat', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'ViewExpandBranch', 'Ctrl+Right',
