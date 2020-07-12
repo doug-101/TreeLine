@@ -41,7 +41,8 @@ def loadTranslator(fileName, app):
         app -- the main QApplication
     """
     translator = QTranslator(app)
-    modPath = pathlib.Path(sys.path[0]).resolve()
+    # use abspath() - pathlib's resolve() can be buggy with network drives
+    modPath = pathlib.Path(os.path.abspath(sys.path[0]))
     if modPath.is_file():
         modPath = modPath.parent  # for frozen binary
     path = modPath / translationPath
@@ -149,7 +150,7 @@ if __name__ == '__main__':
     parser.add_argument('fileList', nargs='*', metavar='filename',
                         help='input filename(s) to load')
     args = parser.parse_args()
-    # use abspath() - pathlib's resolve() replaces drive letters with map names
+    # use abspath() - pathlib's resolve() can be buggy with network drives
     pathObjects = [pathlib.Path(os.path.abspath(path)) for path in
                    args.fileList]
 

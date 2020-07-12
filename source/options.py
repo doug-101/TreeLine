@@ -564,7 +564,8 @@ class Options(OrderedDict):
             if userPath.is_dir():
                 Options.basePath = userPath
             else:
-                modPath = pathlib.Path(sys.path[0]).resolve()
+                # use abspath() - pathlib's resolve() buggy with network drives
+                modPath = pathlib.Path(os.path.abspath(sys.path[0]))
                 if modPath.is_file():
                     modPath = modPath.parent  # for frozen binary
                 modConfigPath = modPath / 'config'

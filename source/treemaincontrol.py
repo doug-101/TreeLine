@@ -14,6 +14,7 @@
 
 import sys
 import pathlib
+import os.path
 import ast
 import io
 import gzip
@@ -190,7 +191,8 @@ class TreeMainControl(QObject):
             resourceName -- the typical name of the resource directory
             preferredPath -- add this as the second path if given
         """
-        modPath = pathlib.Path(sys.path[0]).resolve()
+        # use abspath() - pathlib's resolve() can be buggy with network drives
+        modPath = pathlib.Path(os.path.abspath(sys.path[0]))
         if modPath.is_file():
             modPath = modPath.parent    # for frozen binary
         pathList = [modPath / '..' / resourceName, modPath / resourceName]
@@ -199,8 +201,8 @@ class TreeMainControl(QObject):
             pathList.insert(0, basePath / resourceName)
         if preferredPath:
             pathList.insert(1, pathlib.Path(preferredPath))
-        return [path.resolve() for path in pathList if path.is_dir() and
-                list(path.iterdir())]
+        return [pathlib.Path(os.path.abspath(str(path))) for path in pathList
+                if path.is_dir() and list(path.iterdir())]
 
     def findResourceFile(self, fileName, resourceName, preferredPath=''):
         """Return a path object for a resource file.

@@ -13,7 +13,7 @@
 #******************************************************************************
 
 import pathlib
-import os
+import os.path
 import time
 from PyQt5.QtWidgets import QAction
 import globalref
@@ -135,7 +135,9 @@ class RecentFileItem:
             otherPath = other.pathObj
         except AttributeError:
             otherPath = other
-        return self.pathObj.resolve() == otherPath.resolve()
+        # use abspath() - pathlib's resolve() can be buggy with network drives
+        return (os.path.abspath(str(self.pathObj)) ==
+                os.path.abspath(str(otherPath)))
 
     def __ne__(self, other):
         """Test for inequality between RecentFileItems and paths.
@@ -147,7 +149,9 @@ class RecentFileItem:
             otherPath = other.pathObj
         except AttributeError:
             otherPath = other
-        return self.pathObj.resolve() != otherPath.resolve()
+        # use abspath() - pathlib's resolve() can be buggy with network drives
+        return (os.path.abspath(str(self.pathObj)) !=
+                os.path.abspath(str(otherPath)))
 
 
 class RecentFileList(list):
