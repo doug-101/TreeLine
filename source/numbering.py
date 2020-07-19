@@ -168,8 +168,8 @@ def _alpha2FromNum(num, upperCase=True):
     result = ''
     charPos = (num - 1) % 26
     char = chr(charPos + ord('A'))
-    qty = (num - 1) // 26 + 1
-    result = char * (qty+1)
+    qty = (num - 1) // 26 + 2
+    result = char * qty
     if not upperCase:
         result = result.lower()
     return result
