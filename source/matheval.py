@@ -273,7 +273,7 @@ class MathEquation:
 
 
 # recursive equation ref eval directions
-EvalDir = enum.IntEnum('EvalDir', 'optional upward downward')
+EvalDir = enum.IntEnum('EvalDir', 'downward upward optional')
 
 
 class EquationFieldRef:
