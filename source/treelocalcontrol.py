@@ -193,14 +193,17 @@ class TreeLocalControl(QObject):
             self.setModified()
         QApplication.restoreOverrideCursor()
 
-    def updateRightViews(self, setModified=False):
+    def updateRightViews(self, setModified=False, otherTrees=False):
         """Update the right-hand views in all windows.
 
         Arguments:
             setModified -- if True, set the modified flag for this file
+            otherTrees -- if True, also update trees in non-active windows
         """
         for window in self.windowList:
             window.updateRightViews()
+            if otherTrees and window != self.activeWindow:
+                window.updateTree()
         if setModified:
             self.setModified()
 

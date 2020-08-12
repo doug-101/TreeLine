@@ -331,7 +331,7 @@ class TreeView(QTreeView):
             self.selectionModel().selectSpots([])
             self.scheduleDelayedItemsLayout()
         if event.isAccepted():
-            self.model().treeModified.emit(True)
+            self.model().treeModified.emit(True, True)
 
     def toggleNoMouseSelectMode(self, active=True):
         """Set noMouseSelectMode to active or inactive.
