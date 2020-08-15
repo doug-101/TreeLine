@@ -636,6 +636,15 @@
 "uid": "5f12f768b32c11e7a41a3417ebd53aeb"
 },
 {
+"children": [],
+"data": {
+"Name": "Library updates",
+"Text": "Update the libraries used to build the Windows binaries to Python 3.8 and Qt/PyQt 5.14."
+},
+"format": "BULLETS",
+"uid": "603e11fadf2011eaa12e7054d2175f18"
+},
+{
 "children": [
 "2fa1be1fdc9511eaa00dac675dac20af"
 ],
@@ -997,7 +1006,8 @@
 {
 "children": [
 "27950877dc8a11ea8902ac675dac20af",
-"c1f8dca5dc9511ea8f76ac675dac20af"
+"c1f8dca5dc9511ea8f76ac675dac20af",
+"603e11fadf2011eaa12e7054d2175f18"
 ],
 "data": {
 "Name": "Updates"

@@ -5,7 +5,7 @@
 
 [Setup]
 AppName=TreeLine
-AppVersion=3.1.2
+AppVersion=3.1.3
 ChangesAssociations=yes
 DefaultDirName={pf}\TreeLine-3
 DefaultGroupName=TreeLine
@@ -27,22 +27,12 @@ Name: "source"; Description: "Include source code"
 
 [InstallDelete]
 Type: files; Name: "{app}\library.zip"
-Type: files; Name: "{app}\msvcp100.dll"
-Type: files; Name: "{app}\MSVCR100.dll"
-Type: files; Name: "{app}\PyQt4*.dll"
-Type: files; Name: "{app}\python3*.dll"
-Type: files; Name: "{app}\Qt*4.dll"
-Type: files; Name: "{app}\sip.pyd"
-Type: files; Name: "{app}\SSLEAY32.dll"
+Type: files; Name: "{app}\python*.zip"
+Type: files; Name: "{app}\*.pyd"
+Type: files; Name: "{app}\*.dll"
 Type: files; Name: "{app}\doc\documentation.trl"
+Type: filesandordirs; Name: "{app}\lib"
 Type: filesandordirs; Name: "{app}\imageformats"
-Type: files; Name: "{app}\lib\MSVCP140.dll"
-Type: files; Name: "{app}\lib\python*.dll"
-Type: files; Name: "{app}\lib\Qt5*.dll"
-Type: files; Name: "{app}\lib\VCRUNTIME140.dll"
-Type: files; Name: "{app}\lib\library.zip"
-Type: files; Name: "{app}\lib\*.pyd"
-Type: dirifempty; Name: "{app}\lib"
 Type: filesandordirs; Name: "{app}\platforms"
 Type: dirifempty; Name: "{app}\plugins"
 Type: files; Name: "{app}\samples\*.trl"
