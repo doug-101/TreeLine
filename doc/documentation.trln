@@ -123,6 +123,15 @@
 {
 "children": [],
 "data": {
+"Name": "Updating multiple windows",
+"Text": "Properly update multiple windows after drag and drop tree changes."
+},
+"format": "BULLETS",
+"uid": "0906c05bdc8f11ea94fbac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "Reduce windows install size",
 "Text": "Some unnecessary libraries were eliminated from the Windows installer to reduce download sizes and installed space requirements."
 },
@@ -251,6 +260,24 @@
 {
 "children": [],
 "data": {
+"Name": "German outline nuimbering",
+"Text": "Add support for German outline numbering using double letters in some levels (thanks to Teresa M)."
+},
+"format": "BULLETS",
+"uid": "228fa647dc8c11eab28aac675dac20af"
+},
+{
+"children": [],
+"data": {
+"Name": "Empty data edit views",
+"Text": "Fix a bug in Data Edit views when no fields are visible due to hidden numbering or math fields."
+},
+"format": "BULLETS",
+"uid": "23b9a763dc8b11ea9dafac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "Save as without filename",
 "Text": "Fix a minor bug affecting default directories for save-as and export commands when there is not already a file name set."
 },
@@ -265,6 +292,15 @@
 },
 "format": "BULLETS",
 "uid": "2767e530e80411e8aec9a44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Math field restrictions",
+"Text": "Update math field equation restrictions to work with Python 3.8."
+},
+"format": "BULLETS",
+"uid": "27950877dc8a11ea8902ac675dac20af"
 },
 {
 "children": [],
@@ -323,11 +359,29 @@
 {
 "children": [],
 "data": {
+"Name": "MacPorts",
+"Text": "See <a href=\"https://ports.macports.org/port/treeline/summary\">MacPorts</a> for a third-party port to macOS."
+},
+"format": "PARAGRAPH",
+"uid": "2fa1be1fdc9511eaa00dac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "Live HTML Export",
 "Text": "A live tree HTML export creates an interactive view with expandable nodes and a descendant output pane."
 },
 "format": "BULLETS",
 "uid": "31304c06792b11e888cfa44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Restoring window geometry",
+"Text": "Fix issues with restoring window geometry with multiple monitors and changing configurations."
+},
+"format": "BULLETS",
+"uid": "35d0914edc8911eab202ac675dac20af"
 },
 {
 "children": [],
@@ -411,6 +465,17 @@
 },
 "format": "BULLETS",
 "uid": "456aa5ca793111e89a30a44cc8e97404"
+},
+{
+"children": [
+"66faed8adc9411ea965eac675dac20af",
+"d8a76c1fdc9411eaab2dac675dac20af"
+],
+"data": {
+"Name": "macOS"
+},
+"format": "BULLET_HEADING",
+"uid": "460699ebdc9411ea89afac675dac20af"
 },
 {
 "children": [],
@@ -510,6 +575,15 @@
 {
 "children": [],
 "data": {
+"Name": "Multi-session controls",
+"Text": "Fix problems detecting existing TreeLine sessions when opening files (mostly in Linux)."
+},
+"format": "BULLETS",
+"uid": "5337587ddc8811eaaaedac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "Clone removal",
 "Text": "The new \"Data &gt; Detach Clones\" command converts cloned nodes in selected branches back into independent nodes."
 },
@@ -560,6 +634,16 @@
 },
 "format": "BULLETS",
 "uid": "5f12f768b32c11e7a41a3417ebd53aeb"
+},
+{
+"children": [
+"2fa1be1fdc9511eaa00dac675dac20af"
+],
+"data": {
+"Name": "macOS"
+},
+"format": "BULLET_HEADING",
+"uid": "611e03ffdc9411ea930eac675dac20af"
 },
 {
 "children": [],
@@ -649,6 +733,15 @@
 "uid": "66102049d2c111e8bb55d66a6ab671cb"
 },
 {
+"children": [],
+"data": {
+"Name": "Not supported",
+"Text": "Due to a lack of Macs for testing, TreeLine on macOS is not formally supported."
+},
+"format": "BULLETS",
+"uid": "66faed8adc9411ea965eac675dac20af"
+},
+{
 "children": [
 "67e95a5fbbf611e8b8bda44cc8e97404",
 "67e95a60bbf611e8a80ca44cc8e97404"
@@ -722,6 +815,15 @@
 },
 "format": "BULLETS",
 "uid": "6a98186e305c11e99fbfa44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Insert date command",
+"Text": "Add an Insert Date command that adds a timestamp to text field edit boxes."
+},
+"format": "BULLETS",
+"uid": "6c916f15dc8c11ea9dbeac675dac20af"
 },
 {
 "children": [],
@@ -846,11 +948,75 @@
 {
 "children": [],
 "data": {
+"Name": "Math field expressions",
+"Text": "Evaluate math expressions contained in fields that are referenced by math field equations. "
+},
+"format": "BULLETS",
+"uid": "7a9ace43dc8a11ea9e9bac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "Translations",
 "Text": "Translations of the TreeLine GUI are available in German and Spanish. The translation should load automatically if the OS locale is properly set. Alternatively, \"--lang xx\" can be appended to the command that starts TreeLine, where \"xx\" is the two-letter language code (\"en\", \"de\" or \"es\")."
 },
 "format": "HEAD_PARA",
 "uid": "7e9b3b88c24511e896c7d66a6ab671cb"
+},
+{
+"children": [
+"7ffeb672dc8711ea86ddac675dac20af",
+"7ffeb670dc8711ea81aeac675dac20af",
+"7ffeb66edc8711eaaa13ac675dac20af"
+],
+"data": {
+"Name": "August 16, 2020 - Release 3.1.3 (stable release)"
+},
+"format": "HEADINGS",
+"uid": "7ffeb66ddc8711ea9a87ac675dac20af"
+},
+{
+"children": [
+"d9119485dc8711ea92dcac675dac20af",
+"8d9c1717dc8811ea9c40ac675dac20af",
+"cf9c139fdc8e11ea8261ac675dac20af",
+"88bb6300dc8e11ea9a73ac675dac20af",
+"b6a4a6bddc8911ea8612ac675dac20af",
+"23b9a763dc8b11ea9dafac675dac20af",
+"0906c05bdc8f11ea94fbac675dac20af",
+"35d0914edc8911eab202ac675dac20af",
+"f2a0c0a1dc8d11ea8921ac675dac20af",
+"5337587ddc8811eaaaedac675dac20af"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "7ffeb66edc8711eaaa13ac675dac20af"
+},
+{
+"children": [
+"27950877dc8a11ea8902ac675dac20af",
+"c1f8dca5dc9511ea8f76ac675dac20af"
+],
+"data": {
+"Name": "Updates"
+},
+"format": "BULLET_HEADING",
+"uid": "7ffeb670dc8711ea81aeac675dac20af"
+},
+{
+"children": [
+"dca5b84fdc8a11eab098ac675dac20af",
+"6c916f15dc8c11ea9dbeac675dac20af",
+"7a9ace43dc8a11ea9e9bac675dac20af",
+"228fa647dc8c11eab28aac675dac20af"
+],
+"data": {
+"Name": "New Features"
+},
+"format": "BULLET_HEADING",
+"uid": "7ffeb672dc8711ea86ddac675dac20af"
 },
 {
 "children": [
@@ -947,11 +1113,29 @@
 {
 "children": [],
 "data": {
+"Name": "Circular math errors",
+"Text": "Fix problems opening files that contain circular reference errors in math fields."
+},
+"format": "BULLETS",
+"uid": "88bb6300dc8e11ea9a73ac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "Truncated text export",
 "Text": "Fix a bug that truncated plain text exports after the first line."
 },
 "format": "BULLETS",
 "uid": "8cdb2406e5df11e9a06da44cc8e97404"
+},
+{
+"children": [],
+"data": {
+"Name": "Find &amp; replace error",
+"Text": "Avoid an application error when a Find and Replace command causes fields to contain invalid data."
+},
+"format": "BULLETS",
+"uid": "8d9c1717dc8811ea9c40ac675dac20af"
 },
 {
 "children": [],
@@ -1160,6 +1344,15 @@
 {
 "children": [],
 "data": {
+"Name": "Colors",
+"Text": "The default GUI colors can be changed using the \"Tools &gt; Customize Colors\" dialog. A dark theme is available, or individual colors can be selected."
+},
+"format": "HEAD_PARA",
+"uid": "9ff09734dc9011ea887bac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "Complex undo operations",
 "Text": "Fixed some problems with using the Undo command after complex operations."
 },
@@ -1243,6 +1436,15 @@
 {
 "children": [],
 "data": {
+"Name": "Font dialog bug",
+"Text": "Avoid problems with empty parameters in the font dialogs."
+},
+"format": "BULLETS",
+"uid": "b6a4a6bddc8911ea8612ac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "Output table spacing",
 "Text": "Fixed minor spacing issues for tables shown in output views and HTML exports."
 },
@@ -1270,6 +1472,15 @@
 {
 "children": [],
 "data": {
+"Name": "MacPorts reference",
+"Text": "References to a macOS port on MacPorts were added to the System Requirements and Installation documentation."
+},
+"format": "BULLETS",
+"uid": "c1f8dca5dc9511ea8f76ac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "Data editor hover",
 "Text": "By default, the edit boxes in the data edit view now activate when the mouse hovers over them. This eliminates the need to click to activate them. This feature can be disabled in general options if desired."
 },
@@ -1288,11 +1499,38 @@
 {
 "children": [],
 "data": {
+"Name": "Math field recalculation",
+"Text": "Perform a more complete recalculation of math fields after certain operations."
+},
+"format": "BULLETS",
+"uid": "cf9c139fdc8e11ea8261ac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "TreeLine 2 import / export",
 "Text": "Import and export filters are provided for older TreeLine version 2.x and 1.x files. The older files can be opened using the standard \"File &gt; Open\" command."
 },
 "format": "BULLETS",
 "uid": "d1d8e56eba4011e784ab3417ebd53aeb"
+},
+{
+"children": [],
+"data": {
+"Name": "MacPorts",
+"Text": "There is a third-party port available on <a href=\"https://ports.macports.org/port/treeline/summary\">MacPorts.</a>"
+},
+"format": "BULLETS",
+"uid": "d8a76c1fdc9411eaab2dac675dac20af"
+},
+{
+"children": [],
+"data": {
+"Name": "Enable add child",
+"Text": "Make the Add Child command available after filtering has ended."
+},
+"format": "BULLETS",
+"uid": "d9119485dc8711ea92dcac675dac20af"
 },
 {
 "children": [
@@ -1336,6 +1574,15 @@
 },
 "format": "BULLETS",
 "uid": "dc700fb4c24211e8b88dd66a6ab671cb"
+},
+{
+"children": [],
+"data": {
+"Name": "Customize colors",
+"Text": "Add a more flexible tool for customizing GUI colors."
+},
+"format": "BULLETS",
+"uid": "dca5b84fdc8a11eab098ac675dac20af"
 },
 {
 "children": [],
@@ -1541,7 +1788,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 3.1.2, a stable release, dated October 6, 2019 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.1.3, a stable release, dated August 16, 2020 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -2051,7 +2298,8 @@
 {
 "children": [
 "f16fbfeea25a11e7b7c67054d2175f18",
-"f16fc4bca25a11e7b7c67054d2175f18"
+"f16fc4bca25a11e7b7c67054d2175f18",
+"460699ebdc9411ea89afac675dac20af"
 ],
 "data": {
 "Name": "System Requirements"
@@ -2140,7 +2388,8 @@
 {
 "children": [
 "f16fc89aa25a11e7b7c67054d2175f18",
-"f16fcc96a25a11e7b7c67054d2175f18"
+"f16fcc96a25a11e7b7c67054d2175f18",
+"611e03ffdc9411ea930eac675dac20af"
 ],
 "data": {
 "Name": "Installation"
@@ -3137,6 +3386,7 @@
 "f1703546a25a11e7b7c67054d2175f18",
 "f170364aa25a11e7b7c67054d2175f18",
 "f1703744a25a11e7b7c67054d2175f18",
+"9ff09734dc9011ea887bac675dac20af",
 "f1703848a25a11e7b7c67054d2175f18",
 "7e9b3b88c24511e896c7d66a6ab671cb"
 ],
@@ -3193,6 +3443,7 @@
 },
 {
 "children": [
+"7ffeb66ddc8711ea9a87ac675dac20af",
 "194b0533e5d811e9b5fea44cc8e97404",
 "db25cd62481e11e989f27054d2175f18",
 "800a0971305111e991cda44cc8e97404",
@@ -5562,6 +5813,15 @@
 {
 "children": [],
 "data": {
+"Name": "Network drive issues",
+"Text": "Work around bugs when using files located on some types of Windows network drives."
+},
+"format": "BULLETS",
+"uid": "f2a0c0a1dc8d11ea8921ac675dac20af"
+},
+{
+"children": [],
+"data": {
 "Name": "Error handling",
 "Text": "Error handling has been improved.  For most errors, a dialog box is shown with debugging information that can be copied into an email."
 },
@@ -5644,7 +5904,7 @@
 }
 ],
 "properties": {
-"tlversion": "3.1.2",
+"tlversion": "3.1.2+",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
