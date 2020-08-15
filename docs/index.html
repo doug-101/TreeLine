@@ -19,7 +19,7 @@
         </div>
 
         <div class="toplinks">
-            <p>Version 3.1.2 (stable)</p>
+            <p>Version 3.1.3 (stable)</p>
             <!--<p>Version 3.1.0 (beta)</p>-->
             <p><a href="http://www.bellz.org/progs.html">Other Programs</a></p>
             <p><a href="http://www.bellz.org/contact.html">Contact Info</a></p>
@@ -63,17 +63,81 @@
 
             <h1>News</h1>
 
+            <h2>August 16, 2019 - Release 3.1.3 (stable release)</h2>
+
+            <ul><b>New Features:</b>
+
+              <li>Add a more flexible tool for customizing GUI colors.</li>
+
+              <li>Add an Insert Date command that adds a timestamp to text
+              field edit boxes.</li>
+
+              <li>Evaluate math expressions contained in fields that are
+              referenced by math field equations.</li>
+
+              <li>Add support for German outline numbering using double
+              letters in some levels (thanks to Teresa M).</li>
+
+            </ul>
+
+            <ul><b>Updates:</b>
+
+              <li>Update math field equation restrictions to work with
+              Python 3.8.</li>
+
+              <li>References to a macOS port on MacPorts were added to the
+              System Requirements and Installation documentation.</li>
+
+              <li>Update the libraries used to build the Windows binaries to
+              Python 3.8 and Qt/PyQt 5.14.</li>
+
+            </ul>
+
+            <ul><b>Bug Fixes:</b>
+
+              <li>Make the Add Child command available after filtering has
+              ended.</li>
+
+              <li>Avoid an application error when a Find and Replace command
+              causes fields to contain invalid data.</li>
+
+              <li>Perform a more complete recalculation of math fields after
+              certain operations.</li>
+
+              <li>Fix problems opening files that contain circular reference
+              errors in math fields.</li>
+
+              <li>Avoid problems with empty parameters in the font
+              dialogs.</li>
+
+              <li>Fix a bug in Data Edit views when no fields are visible due
+              to hidden numbering or math fields.</li>
+
+              <li>Properly update multiple windows after drag and drop tree
+              changes.</li>
+
+              <li>Fix issues with restoring window geometry with multiple
+              monitors and changing configurations.</li>
+
+              <li>Work around bugs when using files located on some types of
+              Windows network drives.</li>
+
+              <li>Fix problems detecting existing TreeLine sessions when
+              opening files (mostly in Linux).</li>
+
+            </ul>
+
             <h2>October 6, 2019 - Release 3.1.2 (stable release)</h2>
 
             <ul><b>New Features:</b>
 
-              <li>Add a simplified Chinese GUI translation (thanks to Qu Ray for
-              translating).</li>
+              <li>Add a simplified Chinese GUI translation (thanks to Qu Ray
+              for translating).</li>
 
-              <li>Add a general option to extend the height of data editors with
-              long text content. The default setting (limit the height to the
-              window size) is unchanged. The new option uses the view scroll
-              bars to access the full text length.</li>
+              <li>Add a general option to extend the height of data editors
+              with long text content. The default setting (limit the height to
+              the window size) is unchanged. The new option uses the view
+              scroll bars to access the full text length.</li>
 
             </ul>
 
