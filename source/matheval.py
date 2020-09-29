@@ -410,7 +410,7 @@ class EquationRootRef(EquationFieldRef):
             return []
         refs = [node for node in refNode.descendantGen() if
                 node.formatRef.name == self.eqnNodeTypeName]
-        if refs[0] is refNode:
+        if refs and refs[0] is refNode:
             refs = refs[1:]
         return refs
 
