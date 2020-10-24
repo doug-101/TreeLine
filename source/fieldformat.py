@@ -40,7 +40,7 @@ _mathResultBlank = {MathResult.number: 0, MathResult.date: 0,
                     MathResult.text: ''}
 _multipleSpaceRegEx = re.compile(r' {2,}')
 _lineBreakRegEx = re.compile(r'<br\s*/?>', re.I)
-_stripTagRe = re.compile('<.*?>')
+_stripTagRe = re.compile(r'<.*?>')
 linkRegExp = re.compile(r'<a [^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.I | re.S)
 linkSeparateNameRegExp = re.compile(r'(.*) \[(.*)\]\s*$')
 _imageRegExp = re.compile(r'<img [^>]*src="([^"]+)"[^>]*>', re.I | re.S)

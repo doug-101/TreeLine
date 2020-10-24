@@ -4,7 +4,7 @@
 # configdialog.py, provides classes for the type configuration dialog
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -782,8 +782,8 @@ class FieldListPage(ConfigPage):
         self.fieldListBox.setCurrentItem(selectItem)
         selectItem.setSelected(True)
         width = self.fieldListBox.viewport().width()
-        self.fieldListBox.setColumnWidth(0, width // 2.5)
-        self.fieldListBox.setColumnWidth(1, width // 2.5)
+        self.fieldListBox.setColumnWidth(0, int(width // 2.5))
+        self.fieldListBox.setColumnWidth(1, int(width // 2.5))
         self.fieldListBox.setColumnWidth(2, width // 5)
         self.fieldListBox.blockSignals(False)
         num = currentFormat.fieldNames().index(ConfigDialog.currentFieldName)
@@ -1212,7 +1212,7 @@ _refLevelList = ['No Other Reference', 'File Info Reference',
                  'Child Reference', 'Child Count']
 # _refLevelFlags  correspond to _refLevelList
 _refLevelFlags = ['', '!', '?', '*', '**', '***', '&', '#']
-fieldPattern = re.compile('{\*.*?\*}')
+fieldPattern = re.compile(r'{\*.*?\*}')
 
 class  OutputPage(ConfigPage):
     """Config dialog page to define the node output strings.
@@ -2447,8 +2447,8 @@ class MathEquationDialog(QDialog):
         for oper, descr in _operatorLists[num]:
             QTreeWidgetItem(self.operListBox, [oper, descr])
         self.operListBox.resizeColumnToContents(0)
-        self.operListBox.setColumnWidth(0,
-                                        self.operListBox.columnWidth(0) * 1.2)
+        self.operListBox.setColumnWidth(0, int(self.operListBox.columnWidth(0)
+                                               * 1.2))
         self.operListBox.resizeColumnToContents(1)
         selectItem = self.operListBox.topLevelItem(0)
         self.operListBox.setCurrentItem(selectItem)

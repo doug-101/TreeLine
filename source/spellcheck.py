@@ -5,7 +5,7 @@
 # including interfaces to aspell, ispell, hunspell.
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2020, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -25,8 +25,8 @@ from PyQt5.QtWidgets import (QApplication, QDialog, QFileDialog, QGroupBox,
 import undo
 import globalref
 
-_guessRe = re.compile('[&?] (\S+) \d+ (\d+): (.+)')
-_noGuessRe = re.compile('# (\S+) (\d+)')
+_guessRe = re.compile(r'[&?] (\S+) \d+ (\d+): (.+)')
+_noGuessRe = re.compile(r'# (\S+) (\d+)')
 
 
 class SpellCheckInterface:

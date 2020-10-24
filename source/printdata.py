@@ -469,8 +469,9 @@ class PrintData:
             if item.level > 0:
                 indent = item.level * self.indentSize
                 vertPos = item.pagePos + vertOffset
-                painter.drawLine(indent - horizOffset, vertPos,
-                                 indent - self.lineSpacing // 4, vertPos)
+                painter.drawLine(int(indent - horizOffset), int(vertPos),
+                                 int(indent - self.lineSpacing // 4),
+                                 int(vertPos))
                 parent = item.parentItem
                 while parent:
                     if parent in parentsDrawn:
@@ -488,8 +489,8 @@ class PrintData:
                          parent.lastChildItem.columnNum >= columnNum)):
                         horizPos = ((parent.level + 1) * self.indentSize -
                                     horizOffset)
-                        painter.drawLine(horizPos, lineStart,
-                                         horizPos, lineEnd)
+                        painter.drawLine(int(horizPos), int(lineStart),
+                                         int(horizPos), int(lineEnd))
                     parentsDrawn.add(parent)
                     parent = parent.parentItem
 
