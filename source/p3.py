@@ -76,7 +76,7 @@ def p3_encrypt(plain,key):
     xkey = _expand_key(k_enc, n+4)
     for i in range(len(stream)):
         stream[i] = stream[i] ^ xkey[i]
-    ct = nonce + stream.tostring()[:n]
+    ct = nonce + stream.tobytes()[:n]
     auth = _hmac(ct, k_auth)
     return ct + auth[:_maclen]
 
@@ -96,7 +96,7 @@ def p3_decrypt(cipher,key):
     xkey = _expand_key (k_enc, n+4)
     for i in range (len(stream)):
         stream[i] = stream[i] ^ xkey[i]
-    plain = stream.tostring()[:n]
+    plain = stream.tobytes()[:n]
     return plain
 
 # RFC 2104 HMAC message authentication code
@@ -109,8 +109,8 @@ def _hmac_setup():
     for i in range(256):
         _itrans[i] = i ^ 0x36
         _otrans[i] = i ^ 0x5c
-    _itrans = _itrans.tostring()
-    _otrans = _otrans.tostring()
+    _itrans = _itrans.tobytes()
+    _otrans = _otrans.tobytes()
 
     _ipad = b'\x36'*64
     _opad = b'\x5c'*64
