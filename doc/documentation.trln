@@ -1444,6 +1444,55 @@
 "uid": "b398d8ee482211e989f27054d2175f18"
 },
 {
+"children": [
+"b5fe6aa030e111ebbc097054d2175f18"
+],
+"data": {
+"Name": "November 27, 2020 - Release 3.1.4 (stable release)"
+},
+"format": "HEADINGS",
+"uid": "b5fe698830e111ebbc097054d2175f18"
+},
+{
+"children": [
+"b5fe74c830e111ebbc097054d2175f18",
+"b5fe6f0030e111ebbc097054d2175f18",
+"b5fe737e30e111ebbc097054d2175f18"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "b5fe6aa030e111ebbc097054d2175f18"
+},
+{
+"children": [],
+"data": {
+"Name": "Window closing error",
+"Text": "Avoid an error message when a window is closed with the focus on a dialog box."
+},
+"format": "BULLETS",
+"uid": "b5fe6f0030e111ebbc097054d2175f18"
+},
+{
+"children": [],
+"data": {
+"Name": "Math field root reference",
+"Text": "Fix a problem recalculating root references in field equations."
+},
+"format": "BULLETS",
+"uid": "b5fe737e30e111ebbc097054d2175f18"
+},
+{
+"children": [],
+"data": {
+"Name": "Python 3.9 compatible",
+"Text": "Fix an incompatibility with the new Python 3.9 version under Linux or running from source."
+},
+"format": "BULLETS",
+"uid": "b5fe74c830e111ebbc097054d2175f18"
+},
+{
 "children": [],
 "data": {
 "Name": "Font dialog bug",
@@ -1798,7 +1847,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 3.1.3, a stable release, dated August 16, 2020 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.1.4, a stable release, dated November 28, 2020 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -3453,6 +3502,7 @@
 },
 {
 "children": [
+"b5fe698830e111ebbc097054d2175f18",
 "7ffeb66ddc8711ea9a87ac675dac20af",
 "194b0533e5d811e9b5fea44cc8e97404",
 "db25cd62481e11e989f27054d2175f18",
@@ -5914,7 +5964,7 @@
 }
 ],
 "properties": {
-"tlversion": "3.1.2+",
+"tlversion": "3.1.4",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
