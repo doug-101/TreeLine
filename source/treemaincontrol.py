@@ -514,6 +514,11 @@ class TreeMainControl(QObject):
                 del self.serverSocket
             except AttributeError:
                 pass
+        if self.localControls:
+            # make sure a window is active (may not be focused), to avoid
+            # bugs due to a deleted current window
+            newControl = self.localControls[0]
+            newControl.setActiveWin(newControl.windowList[0])
         localControl.deleteLater()
 
     def createTrayIcon(self):
