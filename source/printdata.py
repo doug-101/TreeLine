@@ -465,6 +465,10 @@ class PrintData:
         vertOffset = self.lineSpacing // 2
         heightAvail = (self.pageLayout.paintRect().height() *
                        self.printer.logicalDpiY())
+        painter.save()
+        pen = painter.pen()
+        pen.setWidth(6)
+        painter.setPen(pen)
         for item in columnItems:
             if item.level > 0:
                 indent = item.level * self.indentSize
@@ -493,6 +497,7 @@ class PrintData:
                                          int(horizPos), int(lineEnd))
                     parentsDrawn.add(parent)
                     parent = parent.parentItem
+        painter.restore()
 
     def formatHeaderFooter(self, header=True, pageNum=1, numPages=1):
         """Return an HTML table formatted header or footer.
