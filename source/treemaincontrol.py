@@ -350,8 +350,11 @@ class TreeMainControl(QObject):
         if fileObj.read(len(encryptPrefix)) != encryptPrefix:
             fileObj.seek(0)
             return (fileObj, False)
+        fileContents = fileObj.read()
+        fileName = fileObj.name
+        fileObj.close()
         while True:
-            pathObj = pathlib.Path(fileObj.name)
+            pathObj = pathlib.Path(fileName)
             password = self.passwords.get(pathObj, '')
             if not password:
                 QApplication.restoreOverrideCursor()
@@ -359,17 +362,15 @@ class TreeMainControl(QObject):
                                                     QApplication.
                                                     activeWindow())
                 if dialog.exec_() != QDialog.Accepted:
-                    fileObj.close()
                     return (None, True)
                 QApplication.setOverrideCursor(Qt.WaitCursor)
                 password = dialog.password
                 if miscdialogs.PasswordDialog.remember:
                     self.passwords[pathObj] = password
             try:
-                text = p3.p3_decrypt(fileObj.read(), password.encode())
+                text = p3.p3_decrypt(fileContents, password.encode())
                 fileIO = io.BytesIO(text)
-                fileIO.name = fileObj.name
-                fileObj.close()
+                fileIO.name = fileName
                 return (fileIO, True)
             except p3.CryptError:
                 try:
