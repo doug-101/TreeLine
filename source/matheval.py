@@ -196,6 +196,8 @@ class MathEquation:
             eqn = self.formattedEqnText.format(*inputs)
         except IndexError:
             raise ValueError(_('Illegal "{}" characters'))
+        except KeyError:
+            raise ValueError(_('Invalid field modifiers'))
         checker.check(eqn)
         try:
             result = eval(eqn)
