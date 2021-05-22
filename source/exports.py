@@ -582,7 +582,7 @@ class ExportControl:
                     lines.extend(spot.nodeRef.output(True, False, spot))
                     if spot.nodeRef.formatRef.spaceBetween:
                         lines.append('')
-        with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
+        with pathObj.open('w', encoding='utf-8') as f:
             f.writelines([(line + '\n') for line in lines])
         return True
 
