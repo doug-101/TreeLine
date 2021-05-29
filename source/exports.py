@@ -546,8 +546,12 @@ class ExportControl:
                                                   ExportDialog.includeRoot,
                                                   None, ExportDialog.openOnly):
                     lines.append('\t' * level + spot.nodeRef.title(spot))
-        with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
-            f.writelines([(line + '\n') for line in lines])
+        try:
+            with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
+                f.writelines([(line + '\n') for line in lines])
+        except UnicodeEncodeError:
+            with pathObj.open('w', encoding='utf-8') as f:
+                f.writelines([(line + '\n') for line in lines])
         return True
 
     def exportTextPlain(self, pathObj=None):
@@ -582,8 +586,12 @@ class ExportControl:
                     lines.extend(spot.nodeRef.output(True, False, spot))
                     if spot.nodeRef.formatRef.spaceBetween:
                         lines.append('')
-        with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
-            f.writelines([(line + '\n') for line in lines])
+        try:
+            with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
+                f.writelines([(line + '\n') for line in lines])
+        except UnicodeEncodeError:
+            with pathObj.open('w', encoding='utf-8') as f:
+                f.writelines([(line + '\n') for line in lines])
         return True
 
     def exportTextTableMultiCsv(self, pathObj=None):
@@ -623,10 +631,15 @@ class ExportControl:
                 newLine = [spot.nodeRef.data.get(head, '') for head in
                            headings]
                 lines.append([repr(level)] + newLine)
-        with pathObj.open('w', newline='',
-                          encoding=globalref.localTextEncoding) as f:
-            writer = csv.writer(f)
-            writer.writerows(lines)
+        try:
+            with pathObj.open('w', newline='',
+                              encoding=globalref.localTextEncoding) as f:
+                writer = csv.writer(f)
+                writer.writerows(lines)
+        except UnicodeEncodeError:
+            with pathObj.open('w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer.writerows(lines)
         return True
 
     def exportTextTableCsv(self, pathObj=None):
@@ -661,10 +674,15 @@ class ExportControl:
         lines = [headings]
         for node in nodeList:
             lines.append([node.data.get(head, '') for head in headings])
-        with pathObj.open('w', newline='',
-                          encoding=globalref.localTextEncoding) as f:
-            writer = csv.writer(f)
-            writer.writerows(lines)
+        try:
+            with pathObj.open('w', newline='',
+                              encoding=globalref.localTextEncoding) as f:
+                writer = csv.writer(f)
+                writer.writerows(lines)
+        except UnicodeEncodeError:
+            with pathObj.open('w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer.writerows(lines)
         return True
 
     def exportTextTableTab(self, pathObj=None):
@@ -700,8 +718,12 @@ class ExportControl:
         for node in nodeList:
             lines.append('\t'.join([node.data.get(head, '') for head in
                                     headings]))
-        with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
-            f.writelines([(line + '\n') for line in lines])
+        try:
+            with pathObj.open('w', encoding=globalref.localTextEncoding) as f:
+                f.writelines([(line + '\n') for line in lines])
+        except UnicodeEncodeError:
+            with pathObj.open('w', encoding='utf-8') as f:
+                f.writelines([(line + '\n') for line in lines])
         return True
 
     def exportOldTreeLine(self, pathObj=None):

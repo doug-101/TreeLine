@@ -141,6 +141,12 @@ class ImportControl:
                                       _('Error - could not read file {0}').
                                       format(self.pathObj))
             return None
+        except UnicodeDecodeError:
+            prevEncoding = globalref.localTextEncoding
+            globalref.localTextEncoding = 'utf-8'
+            structure = getattr(self, method)()
+            globalref.localTextEncoding = prevEncoding
+            QApplication.restoreOverrideCursor()
         if not structure:
             message = _('Error - improper format in {0}').format(self.pathObj)
             if self.errorMessage:
