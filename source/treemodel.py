@@ -4,7 +4,7 @@
 # treemodel.py, provides a class for the tree's data
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2022, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -62,9 +62,13 @@ class TreeModel(QAbstractItemModel):
         Arguments:
             index -- the child model index
         """
-        parentSpot = index.internalPointer().parentSpot
-        if parentSpot.parentSpot:
-            return self.createIndex(parentSpot.row(), 0, parentSpot)
+        try:
+            parentSpot = index.internalPointer().parentSpot
+            if parentSpot.parentSpot:
+                return self.createIndex(parentSpot.row(), 0, parentSpot)
+        except AttributeError:
+            # attempt to fix an unreproducable bug deleting deep nodes
+            pass
         return QModelIndex()
 
     def rowCount(self, parentIndex):
