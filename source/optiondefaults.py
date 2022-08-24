@@ -228,6 +228,7 @@ def setKeyboardOptionDefaults(keyboardOptions):
     KeyOptionItem(keyboardOptions, 'FormatBoldFont', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatItalicFont', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatUnderlineFont', '', 'Format Menu')
+    KeyOptionItem(keyboardOptions, 'FormatStrikethroughFont', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatFontSize', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatFontColor', '', 'Format Menu')
     KeyOptionItem(keyboardOptions, 'FormatExtLink', '', 'Format Menu')

@@ -693,6 +693,12 @@ class TreeLocalControl(QObject):
         formatUnderlineAct.setEnabled(False)
         localActions['FormatUnderlineFont'] = formatUnderlineAct
 
+        formatStrikethroughAct = QAction(_('St&rikethrough Font'), self,
+                statusTip=_('Set the current or selected font to strikethough'),
+                checkable=True)
+        formatStrikethroughAct.setEnabled(False)
+        localActions['FormatStrikethroughFont'] = formatStrikethroughAct
+
         title = _('&Font Size')
         key = globalref.keyboardOptions['FormatFontSize']
         if not key.isEmpty():

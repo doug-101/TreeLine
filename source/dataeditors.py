@@ -139,13 +139,16 @@ class PlainTextEditor(QTextEdit):
     def disableActions(self):
         """Reset action availability after focus is lost.
         """
-        self.allActions['EditCut'].setEnabled(True)
-        self.allActions['EditCopy'].setEnabled(True)
-        mime = QApplication.clipboard().mimeData()
-        self.allActions['EditPaste'].setEnabled(len(mime.data('text/xml') or
-                                                    mime.data('text/plain'))
-                                                > 0)
-        self.allActions['FormatInsertDate'].setEnabled(False)
+        try:
+            self.allActions['EditCut'].setEnabled(True)
+            self.allActions['EditCopy'].setEnabled(True)
+            mime = QApplication.clipboard().mimeData()
+            self.allActions['EditPaste'].setEnabled(len(mime.data('text/xml') or
+                                                        mime.data('text/plain'))
+                                                    > 0)
+            self.allActions['FormatInsertDate'].setEnabled(False)
+        except RuntimeError:
+            pass    # avoid calling a deleted C++ editor object
 
     def updateActions(self):
         """Set availability of context menu actions.
@@ -266,6 +269,8 @@ class HtmlTextEditor(PlainTextEditor):
                                                               setItalicFont)
         self.allActions['FormatUnderlineFont'].triggered.connect(self.
                                                               setUnderlineFont)
+        self.allActions['FormatStrikethroughFont'].triggered.connect(self.
+                                                          setStrikethroughFont)
         self.allActions['FormatFontSize'].parent().triggered.connect(self.
                                                                    setFontSize)
         self.allActions['FormatFontSize'].triggered.connect(self.
@@ -323,6 +328,18 @@ class HtmlTextEditor(PlainTextEditor):
         try:
             if self.hasFocus() and checked:
                 self.insertTagText('<u>', '</u>')
+        except RuntimeError:
+            pass    # avoid calling a deleted C++ editor object
+
+    def setStrikethroughFont(self, checked):
+        """Insert tags for a strikethrough font.
+
+        Arguments:
+            checked -- current toggle state of the control
+        """
+        try:
+            if self.hasFocus() and checked:
+                self.insertTagText('<s>', '</s>')
         except RuntimeError:
             pass    # avoid calling a deleted C++ editor object
 
@@ -448,13 +465,17 @@ class HtmlTextEditor(PlainTextEditor):
         """Set format actions to unavailable.
         """
         super().disableActions()
-        self.allActions['FormatBoldFont'].setEnabled(False)
-        self.allActions['FormatItalicFont'].setEnabled(False)
-        self.allActions['FormatUnderlineFont'].setEnabled(False)
-        self.allActions['FormatFontSize'].parent().setEnabled(False)
-        self.allActions['FormatFontColor'].setEnabled(False)
-        self.allActions['FormatExtLink'].setEnabled(False)
-        self.allActions['FormatIntLink'].setEnabled(False)
+        try:
+            self.allActions['FormatBoldFont'].setEnabled(False)
+            self.allActions['FormatItalicFont'].setEnabled(False)
+            self.allActions['FormatUnderlineFont'].setEnabled(False)
+            self.allActions['FormatStrikethroughFont'].setEnabled(False)
+            self.allActions['FormatFontSize'].parent().setEnabled(False)
+            self.allActions['FormatFontColor'].setEnabled(False)
+            self.allActions['FormatExtLink'].setEnabled(False)
+            self.allActions['FormatIntLink'].setEnabled(False)
+        except RuntimeError:
+            pass    # avoid calling a deleted C++ editor object
 
     def updateActions(self):
         """Set editor format actions to available and update toggle states.
@@ -469,6 +490,9 @@ class HtmlTextEditor(PlainTextEditor):
         underlineAct = self.allActions['FormatUnderlineFont']
         underlineAct.setEnabled(True)
         underlineAct.setChecked(False)
+        strikethroughAct = self.allActions['FormatStrikethroughFont']
+        strikethroughAct.setEnabled(True)
+        strikethroughAct.setChecked(False)
         fontSizeSubMenu = self.allActions['FormatFontSize'].parent()
         fontSizeSubMenu.setEnabled(True)
         for action in fontSizeSubMenu.actions():
@@ -496,6 +520,7 @@ class HtmlTextEditor(PlainTextEditor):
         menu.addAction(self.allActions['FormatBoldFont'])
         menu.addAction(self.allActions['FormatItalicFont'])
         menu.addAction(self.allActions['FormatUnderlineFont'])
+        menu.addAction(self.allActions['FormatStrikethroughFont'])
         menu.addSeparator()
         menu.addMenu(self.allActions['FormatFontSize'].parent())
         menu.addAction(self.allActions['FormatFontColor'])
@@ -582,6 +607,8 @@ class RichTextEditor(HtmlTextEditor):
                     text = '<b>{0}</b>'.format(text)
                 if charFormat.fontItalic():
                     text = '<i>{0}</i>'.format(text)
+                if charFormat.fontStrikeOut():
+                    text = '<s>{0}</s>'.format(text)
                 size = charFormat.font().pointSize()
                 if size != self.font().pointSize():
                     closeSize = min((abs(size - i), i) for i in
@@ -644,6 +671,20 @@ class RichTextEditor(HtmlTextEditor):
         try:
             if self.hasFocus():
                 self.setFontUnderline(checked)
+        except RuntimeError:
+            pass    # avoid calling a deleted C++ editor object
+
+    def setStrikethroughFont(self, checked):
+        """Set the selection or the current setting to a strikethrough font.
+
+        Arguments:
+            checked -- current toggle state of the control
+        """
+        try:
+            if self.hasFocus():
+                charFormat = self.currentCharFormat()
+                charFormat.setFontStrikeOut(checked)
+                self.setCurrentCharFormat(charFormat)
         except RuntimeError:
             pass    # avoid calling a deleted C++ editor object
 
@@ -792,8 +833,11 @@ class RichTextEditor(HtmlTextEditor):
         """Set format actions to unavailable.
         """
         super().disableActions()
-        self.allActions['FormatClearFormat'].setEnabled(False)
-        self.allActions['EditPastePlain'].setEnabled(False)
+        try:
+            self.allActions['FormatClearFormat'].setEnabled(False)
+            self.allActions['EditPastePlain'].setEnabled(False)
+        except RuntimeError:
+            pass    # avoid calling a deleted C++ editor object
 
     def updateActions(self):
         """Set editor format actions to available and update toggle states.
@@ -803,6 +847,8 @@ class RichTextEditor(HtmlTextEditor):
                                                    QFont.Bold)
         self.allActions['FormatItalicFont'].setChecked(self.fontItalic())
         self.allActions['FormatUnderlineFont'].setChecked(self.fontUnderline())
+        self.allActions['FormatStrikethroughFont'].setChecked(self.
+                                           currentCharFormat().fontStrikeOut())
         fontSizeSubMenu = self.allActions['FormatFontSize'].parent()
         pointSize = int(self.fontPointSize())
         try:
@@ -826,6 +872,7 @@ class RichTextEditor(HtmlTextEditor):
         menu.addAction(self.allActions['FormatBoldFont'])
         menu.addAction(self.allActions['FormatItalicFont'])
         menu.addAction(self.allActions['FormatUnderlineFont'])
+        menu.addAction(self.allActions['FormatStrikethroughFont'])
         menu.addSeparator()
         menu.addMenu(self.allActions['FormatFontSize'].parent())
         menu.addAction(self.allActions['FormatFontColor'])
@@ -1031,12 +1078,15 @@ class LineEditor(QLineEdit):
     def disableActions(self):
         """Reset action availability after focus is lost.
         """
-        self.allActions['EditCut'].setEnabled(True)
-        self.allActions['EditCopy'].setEnabled(True)
-        mime = QApplication.clipboard().mimeData()
-        self.allActions['EditPaste'].setEnabled(len(mime.data('text/xml') or
-                                                    mime.data('text/plain'))
-                                                > 0)
+        try:
+            self.allActions['EditCut'].setEnabled(True)
+            self.allActions['EditCopy'].setEnabled(True)
+            mime = QApplication.clipboard().mimeData()
+            self.allActions['EditPaste'].setEnabled(len(mime.data('text/xml') or
+                                                        mime.data('text/plain'))
+                                                    > 0)
+        except RuntimeError:
+            pass    # avoid calling a deleted C++ editor object
 
     def updateActions(self):
         """Set availability of context menu actions.

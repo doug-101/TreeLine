@@ -589,6 +589,7 @@ class TreeWindow(QMainWindow):
         formatMenu.addAction(self.allActions['FormatBoldFont'])
         formatMenu.addAction(self.allActions['FormatItalicFont'])
         formatMenu.addAction(self.allActions['FormatUnderlineFont'])
+        formatMenu.addAction(self.allActions['FormatStrikethroughFont'])
         formatMenu.addSeparator()
         # add action's parent to get the sub-menu
         formatMenu.addMenu(self.allActions['FormatFontSize'].parent())
