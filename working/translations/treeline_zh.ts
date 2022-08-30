@@ -1010,117 +1010,117 @@
 <context>
     <name>dataeditors</name>
     <message>
-        <location filename="dataeditors.py" line="1396"/>
+        <location filename="dataeditors.py" line="1446"/>
         <source>Today's &amp;Date</source>
         <translation>当前日期(&amp;D)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2034"/>
+        <location filename="dataeditors.py" line="2084"/>
         <source>&amp;Open Link</source>
         <translation>打开链接(&amp;O)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2036"/>
+        <location filename="dataeditors.py" line="2086"/>
         <source>Open &amp;Folder</source>
         <translation>打开文件夹(&amp;F)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2162"/>
+        <location filename="dataeditors.py" line="2212"/>
         <source>External Link</source>
         <translation>外部链接</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2165"/>
+        <location filename="dataeditors.py" line="2215"/>
         <source>Scheme</source>
         <translation>方案</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2182"/>
+        <location filename="dataeditors.py" line="2232"/>
         <source>&amp;Browse for File</source>
         <translation>浏览文件(&amp;B)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2188"/>
+        <location filename="dataeditors.py" line="2238"/>
         <source>File Path Type</source>
         <translation>文件路径类型</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2194"/>
+        <location filename="dataeditors.py" line="2244"/>
         <source>Absolute</source>
         <translation>绝对</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2197"/>
+        <location filename="dataeditors.py" line="2247"/>
         <source>Relative</source>
         <translation>相对</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2204"/>
+        <location filename="dataeditors.py" line="2254"/>
         <source>Address</source>
         <translation>地址</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2211"/>
+        <location filename="dataeditors.py" line="2261"/>
         <source>Display Name</source>
         <translation>显示名称</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2616"/>
+        <location filename="dataeditors.py" line="2666"/>
         <source>&amp;OK</source>
         <translation>确认(&amp;O)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2620"/>
+        <location filename="dataeditors.py" line="2670"/>
         <source>&amp;Cancel</source>
         <translation>取消(&amp;C)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2366"/>
+        <location filename="dataeditors.py" line="2416"/>
         <source>TreeLine - External Link File</source>
         <translation>TreeLine - 外部链接文件</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2393"/>
+        <location filename="dataeditors.py" line="2443"/>
         <source>&amp;Go to Target</source>
         <translation>转到目标(&amp;G)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2599"/>
+        <location filename="dataeditors.py" line="2649"/>
         <source>Internal Link</source>
         <translation>内部链接</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2681"/>
+        <location filename="dataeditors.py" line="2731"/>
         <source>&amp;Open Picture</source>
         <translation>打开图片(&amp;O)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2747"/>
+        <location filename="dataeditors.py" line="2797"/>
         <source>Picture Link</source>
         <translation>图片链接</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2896"/>
+        <location filename="dataeditors.py" line="2946"/>
         <source>TreeLine - Picture File</source>
         <translation>TreeLine - 图片文件</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="1472"/>
+        <location filename="dataeditors.py" line="1522"/>
         <source>Set to &amp;Now</source>
         <translation>设置为当前时间(&amp;N)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2395"/>
+        <location filename="dataeditors.py" line="2445"/>
         <source>Clear &amp;Link</source>
         <translation>清除链接(&amp;L)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2578"/>
+        <location filename="dataeditors.py" line="2628"/>
         <source>(Click link target in tree)</source>
         <translation>(在树中点击链接目标)</translation>
     </message>
     <message>
-        <location filename="dataeditors.py" line="2663"/>
+        <location filename="dataeditors.py" line="2713"/>
         <source>link</source>
         <translation>链接</translation>
     </message>
@@ -1143,162 +1143,162 @@
         <translation>TreeLine - 导出文本标题</translation>
     </message>
     <message>
-        <location filename="exports.py" line="562"/>
+        <location filename="exports.py" line="566"/>
         <source>TreeLine - Export Plain Text</source>
         <translation>TreeLine - 导出纯文本</translation>
     </message>
     <message>
-        <location filename="exports.py" line="598"/>
+        <location filename="exports.py" line="606"/>
         <source>TreeLine - Export Text Tables</source>
         <translation>TreeLine - 导出文本表格</translation>
     </message>
     <message>
-        <location filename="exports.py" line="799"/>
+        <location filename="exports.py" line="821"/>
         <source>TreeLine - Export Generic XML</source>
         <translation>TreeLine - 导出通用XML</translation>
     </message>
     <message>
-        <location filename="exports.py" line="716"/>
+        <location filename="exports.py" line="738"/>
         <source>TreeLine - Export TreeLine Subtree</source>
         <translation>TreeLine - 导出TreeLine子树</translation>
     </message>
     <message>
-        <location filename="exports.py" line="826"/>
+        <location filename="exports.py" line="848"/>
         <source>TreeLine - Export ODF Text</source>
         <translation>TreeLine - 导出ODF文本</translation>
     </message>
     <message>
-        <location filename="exports.py" line="966"/>
+        <location filename="exports.py" line="988"/>
         <source>TreeLine - Export HTML Bookmarks</source>
         <translation>TreeLine - 导出HTML书签</translation>
     </message>
     <message>
-        <location filename="exports.py" line="997"/>
+        <location filename="exports.py" line="1019"/>
         <source>TreeLine - Export XBEL Bookmarks</source>
         <translation>TreeLine - 导出XBEL书签</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1642"/>
+        <location filename="exports.py" line="1664"/>
         <source>&amp;HTML</source>
         <translation>&amp;HTML</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1642"/>
+        <location filename="exports.py" line="1664"/>
         <source>&amp;Text</source>
         <translation>文本(&amp;T)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1644"/>
+        <location filename="exports.py" line="1666"/>
         <source>&amp;ODF Outline</source>
         <translation>&amp;ODF大纲</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1645"/>
+        <location filename="exports.py" line="1667"/>
         <source>Book&amp;marks</source>
         <translation>书签(&amp;m)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1655"/>
+        <location filename="exports.py" line="1677"/>
         <source>&amp;Single HTML page</source>
         <translation>单个HTML页面(&amp;S)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1656"/>
+        <location filename="exports.py" line="1678"/>
         <source>Single &amp;HTML page with navigation pane</source>
         <translation>带有导航窗格的单个&amp;HTML页面</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1658"/>
+        <location filename="exports.py" line="1680"/>
         <source>Multiple HTML &amp;pages with navigation pane</source>
         <translation>带导航窗格的多个HTML页面(&amp;p)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1660"/>
+        <location filename="exports.py" line="1682"/>
         <source>Multiple HTML &amp;data tables</source>
         <translation>多个HTML和数据表(&amp;d)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1665"/>
+        <location filename="exports.py" line="1687"/>
         <source>&amp;Tabbed title text</source>
         <translation>标签标题文字(&amp;T)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1666"/>
+        <location filename="exports.py" line="1688"/>
         <source>&amp;Unformatted output of all text</source>
         <translation>未格式化的所有文本输出(&amp;U)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1675"/>
+        <location filename="exports.py" line="1697"/>
         <source>&amp;HTML format bookmarks</source>
         <translation>&amp;HTML格式的书签</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1676"/>
+        <location filename="exports.py" line="1698"/>
         <source>&amp;XBEL format bookmarks</source>
         <translation>&amp;XBEL格式的书签</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1700"/>
+        <location filename="exports.py" line="1722"/>
         <source>File Export</source>
         <translation>文件导出</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1721"/>
+        <location filename="exports.py" line="1743"/>
         <source>Choose export format type</source>
         <translation>选择导出格式类型</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1765"/>
+        <location filename="exports.py" line="1787"/>
         <source>Choose export format subtype</source>
         <translation>选择导出格式子类型</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1812"/>
+        <location filename="exports.py" line="1834"/>
         <source>Choose export options</source>
         <translation>选择导出选项</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1814"/>
+        <location filename="exports.py" line="1836"/>
         <source>What to Export</source>
         <translation>导出什么</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1818"/>
+        <location filename="exports.py" line="1840"/>
         <source>&amp;Entire tree</source>
         <translation>整棵树(&amp;E)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1821"/>
+        <location filename="exports.py" line="1843"/>
         <source>Selected &amp;branches</source>
         <translation>选定的分支(&amp;b)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1824"/>
+        <location filename="exports.py" line="1846"/>
         <source>Selected &amp;nodes</source>
         <translation>选定的节点(&amp;n)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1830"/>
+        <location filename="exports.py" line="1852"/>
         <source>Other Options</source>
         <translation>其他选项</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1838"/>
+        <location filename="exports.py" line="1860"/>
         <source>&amp;Only open node children</source>
         <translation>只有打开节点的子节点(&amp;O)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1843"/>
+        <location filename="exports.py" line="1865"/>
         <source>Include &amp;print header &amp;&amp; footer</source>
         <translation>包括打印标题和页脚(&amp;p)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1856"/>
+        <location filename="exports.py" line="1878"/>
         <source>&amp;Columns</source>
         <translation>列(&amp;C)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1868"/>
+        <location filename="exports.py" line="1890"/>
         <source>Navigation pane &amp;levels</source>
         <translation>导航窗格级别(&amp;l)</translation>
     </message>
@@ -1324,62 +1324,62 @@ Continue with absolute path?</source>
 继续绝对路径？</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1185"/>
+        <location filename="exports.py" line="1207"/>
         <source>Parent</source>
         <translation>父</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1643"/>
+        <location filename="exports.py" line="1665"/>
         <source>Tree&amp;Line</source>
         <translation>Tree&amp;Line</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1644"/>
+        <location filename="exports.py" line="1666"/>
         <source>&amp;XML (generic)</source>
         <translation>&amp;XML (通用)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1661"/>
+        <location filename="exports.py" line="1683"/>
         <source>Live tree view, linked to TreeLine file (for web server)</source>
         <translation>实时树视图，链接到TreeLine文件(用于Web服务器)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1663"/>
+        <location filename="exports.py" line="1685"/>
         <source>Live tree view, single file (embedded data)</source>
         <translation>实时树视图，单个文件(嵌入数据)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1667"/>
+        <location filename="exports.py" line="1689"/>
         <source>&amp;Comma delimited (CSV) table of descendants (level numbers)</source>
         <translation>逗号分隔(CSV)后代表格(级别编号)(&amp;C)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1669"/>
+        <location filename="exports.py" line="1691"/>
         <source>Comma &amp;delimited (CSV) table of children (single level)</source>
         <translation>逗号分隔(CSV)子表格(单级)(&amp;d)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1671"/>
+        <location filename="exports.py" line="1693"/>
         <source>Tab &amp;delimited table of children (&amp;single level)</source>
         <translation>制表符分隔(CSV)子表格(单级)(&amp;d)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1673"/>
+        <location filename="exports.py" line="1695"/>
         <source>&amp;Old TreeLine (2.0.x)</source>
         <translation>老版本TreeLine (2.0.x)(&amp;O)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1674"/>
+        <location filename="exports.py" line="1696"/>
         <source>&amp;TreeLine Subtree</source>
         <translation>TreeLine子树(&amp;T)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1833"/>
+        <location filename="exports.py" line="1855"/>
         <source>&amp;Include root nodes</source>
         <translation>包括根节点(&amp;I)</translation>
     </message>
     <message>
-        <location filename="exports.py" line="1889"/>
+        <location filename="exports.py" line="1911"/>
         <source>Must select nodes prior to export</source>
         <translation>必须在导出之前选择节点</translation>
     </message>
@@ -2038,22 +2038,22 @@ Use an import filter?</source>
         <translation>错误 - 无法读取文件{0}</translation>
     </message>
     <message>
-        <location filename="imports.py" line="145"/>
+        <location filename="imports.py" line="151"/>
         <source>Error - improper format in {0}</source>
         <translation>错误 -  {0}中的格式不正确</translation>
     </message>
     <message>
-        <location filename="imports.py" line="184"/>
+        <location filename="imports.py" line="190"/>
         <source>TABLE</source>
         <translation>表格</translation>
     </message>
     <message>
-        <location filename="imports.py" line="900"/>
+        <location filename="imports.py" line="906"/>
         <source>Bookmarks</source>
         <translation>书签</translation>
     </message>
     <message>
-        <location filename="imports.py" line="292"/>
+        <location filename="imports.py" line="298"/>
         <source>Too many entries on Line {0}</source>
         <translation>行{0}上的条目太多</translation>
     </message>
@@ -2063,7 +2063,7 @@ Use an import filter?</source>
         <translation>纯文本，每行一个节点(回车分隔)(&amp;n)</translation>
     </message>
     <message>
-        <location filename="imports.py" line="217"/>
+        <location filename="imports.py" line="223"/>
         <source>Bad CSV format on Line {0}</source>
         <translation>行{0}上的错误CSV格式</translation>
     </message>
@@ -2088,12 +2088,12 @@ Use an import filter?</source>
         <translation>老版本Tree&amp;Line文件(1.x或2.x)</translation>
     </message>
     <message>
-        <location filename="imports.py" line="201"/>
+        <location filename="imports.py" line="207"/>
         <source>Invalid level number on line {0}</source>
         <translation>第{0}行上的级别编号无效</translation>
     </message>
     <message>
-        <location filename="imports.py" line="224"/>
+        <location filename="imports.py" line="230"/>
         <source>Invalid level structure</source>
         <translation>级别结构无效</translation>
     </message>
@@ -2106,24 +2106,29 @@ Use an import filter?</source>
         <translation>非法的"{}"字符</translation>
     </message>
     <message>
-        <location filename="matheval.py" line="209"/>
+        <location filename="matheval.py" line="211"/>
         <source>Child references must be combined in a function</source>
         <translation>必须在函数中组合子引用</translation>
     </message>
     <message>
-        <location filename="matheval.py" line="590"/>
+        <location filename="matheval.py" line="592"/>
         <source>Illegal syntax in equation</source>
         <translation>等式中的非法语法</translation>
     </message>
     <message>
-        <location filename="matheval.py" line="602"/>
+        <location filename="matheval.py" line="604"/>
         <source>Illegal function present: {0}</source>
         <translation>存在非法函数: {0}</translation>
     </message>
     <message>
-        <location filename="matheval.py" line="614"/>
+        <location filename="matheval.py" line="616"/>
         <source>Illegal object type or operator: {0}</source>
         <translation>非法对象类型或运算符: {0}</translation>
+    </message>
+    <message>
+        <location filename="matheval.py" line="200"/>
+        <source>Invalid field modifiers</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2985,7 +2990,7 @@ of week</source>
         <translation>初始化打印机时出错</translation>
     </message>
     <message>
-        <location filename="printdata.py" line="585"/>
+        <location filename="printdata.py" line="591"/>
         <source>TreeLine - Export PDF</source>
         <translation>TreeLine - 导出PDF</translation>
     </message>
@@ -3874,82 +3879,82 @@ Continue from the top?</source>
         <translation>将当前或选定的字体设置为下划线</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="696"/>
+        <location filename="treelocalcontrol.py" line="702"/>
         <source>&amp;Font Size</source>
         <translation>字体大小(&amp;F)</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="701"/>
+        <location filename="treelocalcontrol.py" line="707"/>
         <source>Set size of the current or selected text</source>
         <translation>设置当前或所选文本的大小</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="703"/>
+        <location filename="treelocalcontrol.py" line="709"/>
         <source>Small</source>
         <translation>小</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="703"/>
+        <location filename="treelocalcontrol.py" line="709"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="703"/>
+        <location filename="treelocalcontrol.py" line="709"/>
         <source>Large</source>
         <translation>大</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="703"/>
+        <location filename="treelocalcontrol.py" line="709"/>
         <source>Larger</source>
         <translation>更大</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="704"/>
+        <location filename="treelocalcontrol.py" line="710"/>
         <source>Largest</source>
         <translation>最大</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="709"/>
+        <location filename="treelocalcontrol.py" line="715"/>
         <source>Set Font Size</source>
         <translation>设置字体大小</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="713"/>
+        <location filename="treelocalcontrol.py" line="719"/>
         <source>Font C&amp;olor...</source>
         <translation>字体颜色(&amp;o)...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="714"/>
+        <location filename="treelocalcontrol.py" line="720"/>
         <source>Set the color of the current or selected text</source>
         <translation>设置当前或所选文本的颜色</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="718"/>
+        <location filename="treelocalcontrol.py" line="724"/>
         <source>&amp;External Link...</source>
         <translation>外部链接(&amp;E)...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="719"/>
+        <location filename="treelocalcontrol.py" line="725"/>
         <source>Add or modify an extrnal web link</source>
         <translation>添加或修改外部Web链接</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="723"/>
+        <location filename="treelocalcontrol.py" line="729"/>
         <source>Internal &amp;Link...</source>
         <translation>内部链接(&amp;L)...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="724"/>
+        <location filename="treelocalcontrol.py" line="730"/>
         <source>Add or modify an internal node link</source>
         <translation>添加或修改内部节点链接</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="733"/>
+        <location filename="treelocalcontrol.py" line="739"/>
         <source>Clear For&amp;matting</source>
         <translation>清除格式(&amp;m)</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="734"/>
+        <location filename="treelocalcontrol.py" line="740"/>
         <source>Clear current or selected text formatting</source>
         <translation>清除当前或选定的文本格式</translation>
     </message>
@@ -4114,57 +4119,57 @@ Continue from the top?</source>
         <translation>拼写检查(&amp;S)...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="738"/>
+        <location filename="treelocalcontrol.py" line="744"/>
         <source>&amp;New Window</source>
         <translation>新建窗口(&amp;N)</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="739"/>
+        <location filename="treelocalcontrol.py" line="745"/>
         <source>Open a new window for the same file</source>
         <translation>打开同一文件的新窗口</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="786"/>
+        <location filename="treelocalcontrol.py" line="792"/>
         <source>Error - could not write to {}</source>
         <translation>错误 - 无法写入{}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="844"/>
+        <location filename="treelocalcontrol.py" line="850"/>
         <source>TreeLine - Save As</source>
         <translation>TreeLine  - 另存为</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="877"/>
+        <location filename="treelocalcontrol.py" line="883"/>
         <source>Error - could not write to file</source>
         <translation>错误 - 无法写入文件</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1246"/>
+        <location filename="treelocalcontrol.py" line="1252"/>
         <source>TreeLine - Open Configuration File</source>
         <translation>TreeLine  - 打开配置文件</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1280"/>
+        <location filename="treelocalcontrol.py" line="1286"/>
         <source>Error - could not read file {0}</source>
         <translation>错误 - 无法读取文件{0}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1398"/>
+        <location filename="treelocalcontrol.py" line="1404"/>
         <source>Cannot expand without common fields</source>
         <translation>没有常见字段无法扩展</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1400"/>
+        <location filename="treelocalcontrol.py" line="1406"/>
         <source>Category Fields</source>
         <translation>类别字段</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1401"/>
+        <location filename="treelocalcontrol.py" line="1407"/>
         <source>Select fields for new level</source>
         <translation>选择新级别的字段</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="825"/>
+        <location filename="treelocalcontrol.py" line="831"/>
         <source>File saved</source>
         <translation>文件已保存</translation>
     </message>
@@ -4264,12 +4269,12 @@ Continue from the top?</source>
         <translation>交换子节点和孙节点类节点</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1330"/>
+        <location filename="treelocalcontrol.py" line="1336"/>
         <source>Converted {0} branches into clones</source>
         <translation>将{0}分支转换为克隆</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1336"/>
+        <location filename="treelocalcontrol.py" line="1342"/>
         <source>No identical nodes found</source>
         <translation>找不到相同的节点</translation>
     </message>
@@ -4296,13 +4301,23 @@ Skipped bad child references in the following nodes:</source>
         <translation>强制更新所有条件类型和数学字段</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="728"/>
+        <location filename="treelocalcontrol.py" line="734"/>
         <source>Insert &amp;Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="729"/>
+        <location filename="treelocalcontrol.py" line="735"/>
         <source>Insert current date as text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="696"/>
+        <source>St&amp;rikethrough Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="697"/>
+        <source>Set the current or selected font to strikethough</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4324,309 +4339,309 @@ Skipped bad child references in the following nodes:</source>
         <translation>错误 - 无法读取文件{0}</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="412"/>
+        <location filename="treemaincontrol.py" line="413"/>
         <source>Backup file "{}" exists.
 A previous session may have crashed</source>
         <translation>备份文件“{}”存在。
 之前的会话可能已经崩溃</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="416"/>
+        <location filename="treemaincontrol.py" line="417"/>
         <source>&amp;Restore Backup</source>
         <translation>恢复备份(&amp;R)</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="418"/>
+        <location filename="treemaincontrol.py" line="419"/>
         <source>&amp;Delete Backup</source>
         <translation>删除备份(&amp;D)</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="420"/>
+        <location filename="treemaincontrol.py" line="421"/>
         <source>&amp;Cancel File Open</source>
         <translation>取消文件打开(&amp;C)</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="433"/>
+        <location filename="treemaincontrol.py" line="434"/>
         <source>Error - could not rename "{0}" to "{1}"</source>
         <translation>错误 - 无法将“{0}”重命名为“{1}”</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="447"/>
+        <location filename="treemaincontrol.py" line="448"/>
         <source>Error - could not remove backup file {}</source>
         <translation>错误 - 无法删除备份文件{}</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="592"/>
+        <location filename="treemaincontrol.py" line="598"/>
         <source>&amp;New...</source>
         <translation>新建(&amp;N)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="592"/>
+        <location filename="treemaincontrol.py" line="598"/>
         <source>New File</source>
         <translation>新文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="593"/>
+        <location filename="treemaincontrol.py" line="599"/>
         <source>Start a new file</source>
         <translation>开始一个新文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="597"/>
+        <location filename="treemaincontrol.py" line="603"/>
         <source>&amp;Open...</source>
         <translation>打开(&amp;O)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="597"/>
+        <location filename="treemaincontrol.py" line="603"/>
         <source>Open File</source>
         <translation>打开文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="598"/>
+        <location filename="treemaincontrol.py" line="604"/>
         <source>Open a file from disk</source>
         <translation>从磁盘上打开文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="602"/>
+        <location filename="treemaincontrol.py" line="608"/>
         <source>Open Sa&amp;mple...</source>
         <translation>打开示例文件(&amp;m)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="603"/>
+        <location filename="treemaincontrol.py" line="609"/>
         <source>Open Sample</source>
         <translation>打开示例文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="604"/>
+        <location filename="treemaincontrol.py" line="610"/>
         <source>Open a sample file</source>
         <translation>打开一个示例文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="608"/>
+        <location filename="treemaincontrol.py" line="614"/>
         <source>&amp;Import...</source>
         <translation>导入(&amp;I)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="609"/>
+        <location filename="treemaincontrol.py" line="615"/>
         <source>Open a non-TreeLine file</source>
         <translation>打开一个非TreeLine文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="613"/>
+        <location filename="treemaincontrol.py" line="619"/>
         <source>&amp;Quit</source>
         <translation>退出(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="614"/>
+        <location filename="treemaincontrol.py" line="620"/>
         <source>Exit the application</source>
         <translation>退出应用</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="699"/>
+        <location filename="treemaincontrol.py" line="705"/>
         <source>&amp;Select All</source>
         <translation>选择所有(&amp;S)</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="700"/>
+        <location filename="treemaincontrol.py" line="706"/>
         <source>Select all text in an editor</source>
         <translation>在编辑器里选择所有</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="618"/>
+        <location filename="treemaincontrol.py" line="624"/>
         <source>&amp;Configure Data Types...</source>
         <translation>配置数据类型(&amp;C)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="619"/>
+        <location filename="treemaincontrol.py" line="625"/>
         <source>Modify data types, fields &amp; output lines</source>
         <translation>编辑数据类型，字段和输出行</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="630"/>
+        <location filename="treemaincontrol.py" line="636"/>
         <source>Sor&amp;t Nodes...</source>
         <translation>节点排序(&amp;t)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="631"/>
+        <location filename="treemaincontrol.py" line="637"/>
         <source>Define node sort operations</source>
         <translation>定义节点排序操作</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="636"/>
+        <location filename="treemaincontrol.py" line="642"/>
         <source>Update &amp;Numbering...</source>
         <translation>更新编号(&amp;N)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="637"/>
+        <location filename="treemaincontrol.py" line="643"/>
         <source>Update node numbering fields</source>
         <translation>更新节点数值型字段</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="642"/>
+        <location filename="treemaincontrol.py" line="648"/>
         <source>&amp;Find Text...</source>
         <translation>查找文本(&amp;F)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="643"/>
+        <location filename="treemaincontrol.py" line="649"/>
         <source>Find text in node titles &amp; data</source>
         <translation>在标题和数据中查找文本</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="648"/>
+        <location filename="treemaincontrol.py" line="654"/>
         <source>&amp;Conditional Find...</source>
         <translation>条件查找(&amp;C)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="649"/>
+        <location filename="treemaincontrol.py" line="655"/>
         <source>Use field conditions to find nodes</source>
         <translation>使用字段条件查找节点</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="654"/>
+        <location filename="treemaincontrol.py" line="660"/>
         <source>Find and &amp;Replace...</source>
         <translation>查找和替换(&amp;R)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="655"/>
+        <location filename="treemaincontrol.py" line="661"/>
         <source>Replace text strings in node data</source>
         <translation>替换节点数据中的文本字符串</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="660"/>
+        <location filename="treemaincontrol.py" line="666"/>
         <source>&amp;Text Filter...</source>
         <translation>文本过滤器(&amp;T)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="661"/>
+        <location filename="treemaincontrol.py" line="667"/>
         <source>Filter nodes to only show text matches</source>
         <translation>过滤节点仅显示匹配文本</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="666"/>
+        <location filename="treemaincontrol.py" line="672"/>
         <source>C&amp;onditional Filter...</source>
         <translation>条件过滤器(&amp;o)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="668"/>
+        <location filename="treemaincontrol.py" line="674"/>
         <source>Use field conditions to filter nodes</source>
         <translation>使用字段条件过滤节点</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="674"/>
+        <location filename="treemaincontrol.py" line="680"/>
         <source>&amp;General Options...</source>
         <translation>常规选项(&amp;G)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="675"/>
+        <location filename="treemaincontrol.py" line="681"/>
         <source>Set user preferences for all files</source>
         <translation>设置所有文件的用户首选项</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="679"/>
+        <location filename="treemaincontrol.py" line="685"/>
         <source>Set &amp;Keyboard Shortcuts...</source>
         <translation>设置键盘快捷键(&amp;K)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="680"/>
+        <location filename="treemaincontrol.py" line="686"/>
         <source>Customize keyboard commands</source>
         <translation>自定义键盘命令</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="684"/>
+        <location filename="treemaincontrol.py" line="690"/>
         <source>C&amp;ustomize Toolbars...</source>
         <translation>自定义工具栏(&amp;u)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="685"/>
+        <location filename="treemaincontrol.py" line="691"/>
         <source>Customize toolbar buttons</source>
         <translation>自定义工具栏按钮</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="689"/>
+        <location filename="treemaincontrol.py" line="695"/>
         <source>Customize Fo&amp;nts...</source>
         <translation>自定义字体(&amp;n)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="690"/>
+        <location filename="treemaincontrol.py" line="696"/>
         <source>Customize fonts in various views</source>
         <translation>在各种视图中自定义字体</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="705"/>
+        <location filename="treemaincontrol.py" line="711"/>
         <source>&amp;Basic Usage...</source>
         <translation>基本用法(&amp;B)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="706"/>
+        <location filename="treemaincontrol.py" line="712"/>
         <source>Display basic usage instructions</source>
         <translation>显示基本使用说明</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="710"/>
+        <location filename="treemaincontrol.py" line="716"/>
         <source>&amp;Full Documentation...</source>
         <translation>完整文档(&amp;F)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="711"/>
+        <location filename="treemaincontrol.py" line="717"/>
         <source>Open a TreeLine file with full documentation</source>
         <translation>使用完整文档打开TreeLine文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="715"/>
+        <location filename="treemaincontrol.py" line="721"/>
         <source>&amp;About TreeLine...</source>
         <translation>关于TreeLine(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="716"/>
+        <location filename="treemaincontrol.py" line="722"/>
         <source>Display version info about this program</source>
         <translation>显示有关此程序的版本信息</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="736"/>
+        <location filename="treemaincontrol.py" line="742"/>
         <source>&amp;Select Template</source>
         <translation>选择模板(&amp;S)</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="756"/>
+        <location filename="treemaincontrol.py" line="762"/>
         <source>TreeLine - Open File</source>
         <translation>TreeLine - 打开文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="768"/>
+        <location filename="treemaincontrol.py" line="774"/>
         <source>Open Sample File</source>
         <translation>打开一个示例文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="769"/>
+        <location filename="treemaincontrol.py" line="775"/>
         <source>&amp;Select Sample</source>
         <translation>选择示例文件(&amp;S)</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="888"/>
+        <location filename="treemaincontrol.py" line="894"/>
         <source>Conditional Find</source>
         <translation>条件查找</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="944"/>
+        <location filename="treemaincontrol.py" line="950"/>
         <source>Conditional Filter</source>
         <translation>条件过滤器</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="961"/>
+        <location filename="treemaincontrol.py" line="967"/>
         <source>General Options</source>
         <translation>常规选项</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1051"/>
+        <location filename="treemaincontrol.py" line="1057"/>
         <source>Error - basic help file not found</source>
         <translation>错误 - 找不到基本帮助文件</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1054"/>
+        <location filename="treemaincontrol.py" line="1060"/>
         <source>TreeLine Basic Usage</source>
         <translation>TreeLine基本用法</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1064"/>
+        <location filename="treemaincontrol.py" line="1070"/>
         <source>Error - documentation file not found</source>
         <translation>错误 - 找不到文档文件</translation>
     </message>
@@ -4636,17 +4651,17 @@ A previous session may have crashed</source>
         <translation>错误 - 无效的TreeLine文件{0}</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1078"/>
+        <location filename="treemaincontrol.py" line="1084"/>
         <source>TreeLine version {0}</source>
         <translation>TreeLine版本{0}</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1079"/>
+        <location filename="treemaincontrol.py" line="1085"/>
         <source>written by {0}</source>
         <translation>由{0}编写</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1080"/>
+        <location filename="treemaincontrol.py" line="1086"/>
         <source>Library versions:</source>
         <translation>库版本:</translation>
     </message>
@@ -4656,22 +4671,22 @@ A previous session may have crashed</source>
         <translation>缺少目录</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="624"/>
+        <location filename="treemaincontrol.py" line="630"/>
         <source>Show C&amp;onfiguration Structure...</source>
         <translation>显示配置结构(&amp;o)...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="626"/>
+        <location filename="treemaincontrol.py" line="632"/>
         <source>Show read-only visualization of type structure</source>
         <translation>显示只读的类型结构可视化</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="694"/>
+        <location filename="treemaincontrol.py" line="700"/>
         <source>Custo&amp;mize Colors...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="695"/>
+        <location filename="treemaincontrol.py" line="701"/>
         <source>Customize GUI colors and themes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4868,17 +4883,17 @@ A previous session may have crashed</source>
         <translation>工具(&amp;T)</translation>
     </message>
     <message>
-        <location filename="treewindow.py" line="606"/>
+        <location filename="treewindow.py" line="607"/>
         <source>&amp;View</source>
         <translation>视图(&amp;V)</translation>
     </message>
     <message>
-        <location filename="treewindow.py" line="621"/>
+        <location filename="treewindow.py" line="622"/>
         <source>&amp;Window</source>
         <translation>窗口(&amp;W)</translation>
     </message>
     <message>
-        <location filename="treewindow.py" line="627"/>
+        <location filename="treewindow.py" line="628"/>
         <source>&amp;Help</source>
         <translation>帮助(&amp;H)</translation>
     </message>
