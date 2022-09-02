@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>basichelp <!-- Справка по основам --></title>
+</head>
+<body>
+
+<b>Формы просмотра (Views)</b><br />
+
+<div style="margin-left: 20px;">
+
+<b>Панель Дерева (Tree View) - </b>
+
+В панели слева показывается дерево заголовков узлов. Родительские
+узлы могут разворачиваться и сворачиваться для показа или скрытия их 
+дочерних узлов - потомков, отображаемых с отступами. Щелчок по уже выбранному 
+узлу позволяет редактировать его заголовок. Контекстные меню, содержащие часто 
+используемые функции, могут вызываться по щелчку правой кнопкой мыши на узлах.
+
+<!-- 
+The left-hand view shows a tree of node titles. Parent
+nodes can be opened and closed to display or hide their indented descendant
+nodes. Clicking on an already selected node allows the title to be edited.
+Right-click context menus are available for commonly used functions. 
+-->
+<br/><br/>
+
+<b>Панель Навигационной цепочки (Breadcrumb View) - </b>
+
+На верхней панели показываются родительский элемент и предки
+выбранного узла. Панель пуста, если не выбрано ни одного узла или выбрано 
+несколько узлов. По щелчку мыши на узлах предков, выделенных синим цветом, 
+можно выбрать и перейти к этим узлам.
+
+<!--
+The top pane shows the parent and ancestors of the
+selected node.  It is blank if no nodes or multiple nodes are selected.
+Ancestors with blue text can be clicked to select those nodes.
+-->
+<br/><br/>
+
+<b>Панели Справа (Right-hand Views) - </b>
+
+Панель справа содержит вкладки, показывающие одно из трёх различных представлений
+данных. Во вкладке «Вывод данных» ("Data Output") показывается отформатированный 
+текст, во вкладке «Редактор Данных» ("Data Edit") отображаются поля для 
+редактирования текста, а во вкладке «Список заголовков» редактируемый список 
+заголовков узлов, выбранных в панели дерева.
+
+<!--
+The right pane is tabbed to show one of three
+different views of the data. The "Data Output" view shows the formatted text,
+the "Data Edit" view shows text edit boxes, and the "Title List" view shows
+an editable list of node titles.
+-->
+<br/><br/>
+
+Когда в дереве выбран родительский узел, на панели справа по умолчанию будет
+отображаться информация о выбранном узле на верхней части панели и информация
+о дочерних элементах выбранного узла на нижней части панели. 
+Команда "Вид &gt; Показать Панель Дочернего Узла" ("View &gt; Show Child
+Pane") будет переключать отображение дочерних узлов. Если выбранный узел
+не имеет дочерних элементов, во вкладке будет отображаться одна панель с 
+информацией только о выбранном узле.
+
+<!-- When a parent node is selected in the tree, the right view will default to
+showing information about the selected node in an upper pane and information
+about the selected node's children in a lower pane. The "View &gt; Show Child
+Pane" command will toggle the display of the child nodes. If the selected node
+has no children, the view will show a single pane with information about the
+selected node only.
+-->
+<br/><br/>
+
+Когда в дереве выбрано несколько узлов (при удержании нажатой клавиши Shift или
+нажатии Ctrl), в панели справа не будет отображаться информация о дочерних 
+узлах. Вместо этого будет показана информация о каждом выбранном узле.
+
+<!--
+When multiple nodes are selected in the tree (by holding down the shift or
+Ctrl keys while clicking), the right view will not display any child node
+information. It will instead show information about every selected node.
+-->
+
+<br/><br/>
+
+Если узлы в дереве не выбраны (при щелчке мышью в пустой области или при нажатии 
+кнопки мыши с одновременным нажатием Ctrl для отмены выбора узла), в панели справа
+отобразится информация об узле верхнего уровня (корневом).
+
+<!-- 
+When no nodes are selected in the tree (by clicking on a blank area or Ctrl
+clicking to unselect), the right view will show information about the
+top-level (root) nodes.
+-->
+
+<br/><br/>
+
+<b>Панель «Вывод Данных» (Data Output View) - </b>
+
+Во вкладке «Вывод Данных» отображается отформатированный для вывода текст.
+В этой панели текст не может редактироваться.
+
+<!-- 
+The "Data Output" view shows formatted output text.
+It cannot be edited from this view. 
+-->
+
+<br/><br/>
+
+При переключении команды «Вид &gt; Показать Вывод Потомков» ("View &gt; 
+Show Output Descendants") в панели «Вывод Данных» (Data Output View) отобразится
+список элементов с отступами, в котором каждый элемент будет содержать информацию
+о каждом потомке выбранного узла.
+
+<!-- 
+When the "View &gt; Show Output Descendants" command is toggled, the "Data
+Output" view will show an indented list with information about every
+descendant of a single selected node.
+-->
+
+<br/><br/>
+
+<b>Панель «Редактор Данных» (Data Edit View) - </b>
+
+Во вкладке «Редактор Данных» (Data Edit) отображаются области редактирования для 
+каждого из полей данных в узле. В ней также показываются типы и заголовки [aka 
+названия] узлов. Типы областей редактирования различаются в зависимости от типов 
+полей. Некоторые из них являются просто полями для редактирования текста, в то 
+время как другие (например, поля выбора, даты, ссылок и т.д.) — выпадающими меню 
+или диалоговыми окнами.
+
+<!--
+The "Data Edit" view shows a text edit box for each
+data field within a node.  It also shows the node types and the node titles.
+The types of edit boxes vary based on the field type.  Some are just text
+editors, while others (such as choice fields, date fields, links, etc.) have
+pull-down menus or dialogs.
+-->
+
+<br /><br />
+
+<b>Панель «Список заголовков» (Title List View) - </b>
+
+Во вкладке «Список Заголовков» ("Title List") отображается список заголовков [aka 
+названий] узлов, которые можно изменить [в этой панели] как в обычном текстовом 
+редакторе. Если [при редактировании в этой панели] вводится новая строка, то [в 
+результирующем дереве в этом месте] создается новый узел с этим заголовком. Если 
+[при редактировании в этой панели] строка удаляется, соответствующий узел 
+удаляется из дерева.
+
+<!--
+The "Title List" view shows a list of node titles
+that can be modified using typical text editor methods.  If a new line is
+typed, a new node is created with that title.  If a line is deleted, the
+corresponding node is removed from the tree.
+-->
+
+<br/><br/>
+
+</div>
+<div style="margin-left: 0px;">
+
+<b>Редактирование <!-- Editing --></b><br />
+</div>
+
+<div style="margin-left: 20px;">
+
+<b>Меню «Узел» (Node Menu) - </b>
+
+Команды в меню «Узел» (Node) выполняются по отношению к выбранным узлам в панели
+с деревом, располагающейся слева. Имеются команды для создания или вставки узлов, 
+переименования заголовков [aka имён] и удаления узлов. В том числе имеются команды 
+для переупорядочивания структуры дерева, путем смещения узлов между уровнями и 
+перемещения их вверх или вниз. Многие команды также затрагивают потомков выбранных 
+узлов.
+
+<!--
+The commands in the "Node" menu operate on the selected
+nodes in the left tree view. There are commands to add or insert nodes, rename
+node titles and delete nodes. There are also commands to rearrange the tree by
+changing indent levels or moving nodes up or down. For many of the commands,
+the descendants of the selected nodes are also affected.
+-->
+
+<br/><br/>
+
+<b>Меню «Правка» (Edit Menu) - </b>
+
+Меню «Правка» включает команды отмены и повтора, которые могут помочь 
+исправить проблемы. Команды вырезания, копирования и вставки могут выполняться при
+редактировании текста в панели справа (если она выбрана и активна) или к узлам в
+дереве.
+
+<!--
+The edit menu includes undo and redo commands that can fix
+problems.  Cut, copy and paste commands can operate either on text in the
+right-hand view (if selected or active) or to tree nodes.
+-->
+
+<br/><br/>
+
+<b>Меню «Формат» (Format Menu) - </b>
+
+В меню «Формат» находятся команды форматирования текста, которые становятся
+активными при использовании областей редактирования в панели «Редактир Данных».
+
+<!--
+The format menu has text formatting commands that are
+active when using edit boxes in the Data Edit view.
+-->
+
+<br/><br/>
+
+<b>Быстрый выбор команд (Shortcuts) - </b>
+
+В приложении испольуются несколько сочетаний нажатия клавиш клавиатуры и мыши, 
+применяющихся при редактировании дерева. Перетащить и отпустить (drag and drop) 
+переместит (или скопирует, если удерживается кнопка Ctrl) узлы. Щелчок по 
+выбранному узлу переименует его. Нажатие кнопки удаления удалит выбранные
+узлы. При желании эти команды можно отключить в меню «Инструменты > Общие 
+Параметры» ("Tools &gt; General Options").
+
+<!--
+There are several shortcuts for use in tree editing. Drag
+and drop will move (or copy if the Ctrl button is held) nodes. Clicking on a
+selected node will rename it. Pressing the delete key will remove the selected
+nodes. If desired, these shortcuts can be disabled in "Tools &gt; General
+Options".
+-->
+
+<br/><br/>
+
+
+
+</div>
+<div style="margin-left: 0px;">
+
+<b>Файлы <!-- Files --></b><br />
+</div>
+
+<div style="margin-left: 20px;">
+
+<b>Шаблоны <!-- Templates --> - </b>
+
+Когда создаётся новый файл, открывается диалоговое окно, предлагающее выбрать один из 
+шаблонов. По умолчанию в каждом узле имеется только одно текстовое поле, содержащее 
+заголовок. В шаблон Длинный Текст (Long Text) добавлено второе поле типа Длинный Текст, 
+предназначенное для вывода текста большого объёма. В других шаблонах имеются различные 
+поля для контактов, списков книг и дел.
+
+<!--
+When starting a new file, a dialog box offers a choice of
+templates. The default has only a single text field for each node that
+contains the title. The Long Text template adds a second long text field for
+more output text. Other templates have various fields for contacts, book lists
+and to-do lists.
+-->
+<br/><br/>
+
+<b>Файлы Примеров <!-- Sample Files -->- </b>
+
+При помощи команды «Файл &gt; Открыть Пример» ("File &gt; Open Sample") могут быть открыты различные файлы примеров TreeLine. В них содержится более подробная информация, чем в шаблонах новых файлов, и имеются образцы контента.
+
+<!--
+Various TreeLine sample files can be opened by using the
+"File &gt; Open Sample" command.  These have more detail and example content
+than the new file templates.
+-->
+<br/><br/>
+
+</div>
+<div style="margin-left: 0px;">
+
+<b>Типы Данных <!-- Data Types --></b><br />
+</div>
+
+<div style="margin-left: 20px;">
+
+<b>Типы узлов <!-- Node Types -->- </b>
+
+В файлах TreeLine можно определить разнообразные типы данных узла. Каждый тип узла 
+может содержать различные поля данных и иметь различные форматы вывода. Смотрите 
+примеры в файлах шаблонов и примеров. Узлам может быть присвоен конкретный тип 
+при помощи команды «Данные &gt; Назначить тип узла» ("Data &gt; Set Node Type").
+
+<!--
+Multiple node data types can be defined in a TreeLine
+file. Each can contain different data fields and have different output
+formats. See the template and sample files for examples. Nodes can be set to a
+specific type using the "Data &gt; Set Node Type" command.
+-->
+<br/><br/>
+
+<b>Настройка Типов <!-- Type Config -->- </b>
+
+Команда «Данные &gt; Настроить Типы Данных» ("Data &gt; Configure Data Types") применяется для изменения типов данных 
+узла, полей и форматирования вывода. Обратитесь к разделу Подробности использования в 
+полной документации.
+
+<!--
+The "Data &gt; Configure Data Types" command is used to
+modify node data types, fields and output formatting.  Refer to the Detailed
+Usage section of the full documentation for details.
+-->
+<br/>
+
+</div>
+
+</body> </html>

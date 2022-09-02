@@ -4,7 +4,7 @@
 # treeline.py, the main program file
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2022, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -159,6 +159,7 @@ if __name__ == '__main__':
 
     import globalref
     globalref.localTextEncoding = locale.getpreferredencoding()
+    globalref.lang = lang
 
     sys.excepthook = handleException
 
