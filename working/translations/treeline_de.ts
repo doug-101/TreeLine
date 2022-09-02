@@ -2945,7 +2945,7 @@ of week</source>
     <message>
         <location filename="optiondefaults.py" line="62"/>
         <source>Limit data editor height to window size</source>
-        <translation type="Begrenzung der Höhe des Dateneditors auf die Fenstergröße"></translation>
+        <translation>Begrenzung der Höhe des Dateneditors auf die Fenstergröße</translation>
     </message>
 </context>
 <context>
@@ -3586,102 +3586,102 @@ Wieder von oben anfangen?
     <message>
         <location filename="treeformats.py" line="28"/>
         <source>TitleFormat</source>
-        <translation type="Titelformat"></translation>
+        <translation>Titelformat</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="29"/>
         <source>OutputFormat</source>
-        <translation type="Ausgabeformat"></translation>
+        <translation>Ausgabeformat</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="30"/>
         <source>SpaceBetween</source>
-        <translation type="Zwischenraum"></translation>
+        <translation>Zwischenraum</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="31"/>
         <source>FormatHtml</source>
-        <translation type="HTML-Format"></translation>
+        <translation>HTML-Format</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="32"/>
         <source>Bullets</source>
-        <translation type="Kugeln"></translation>
+        <translation>Kugeln</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="33"/>
         <source>Table</source>
-        <translation type="Tabelle"></translation>
+        <translation>Tabelle</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="34"/>
         <source>ChildType</source>
-        <translation type="KinderTyp"></translation>
+        <translation>KinderTyp</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="35"/>
         <source>Icon</source>
-        <translation type="Icon">Icon</translation>
+        <translation>Icon"&gt;Icon</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="36"/>
         <source>GenericType</source>
-        <translation type="GenerischerTyp"></translation>
+        <translation>GenerischerTyp</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="37"/>
         <source>ConditionalRule</source>
-        <translation type="Bedingungen"></translation>
+        <translation>Bedingungen</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="38"/>
         <source>ListSeparator</source>
-        <translation type="ListenTrennzeichen"></translation>
+        <translation>ListenTrennzeichen</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="39"/>
         <source>ChildTypeLimit</source>
-        <translation type="unfinished"></translation>
+        <translation>unfinished</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="42"/>
         <source>Format</source>
-        <translation type="Format">Format</translation>
+        <translation>Format"&gt;Format</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="43"/>
         <source>Prefix</source>
-        <translation type="Prefix"></translation>
+        <translation>Prefix</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="44"/>
         <source>Suffix</source>
-        <translation type="Suffix"></translation>
+        <translation>Suffix</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="45"/>
         <source>InitialValue</source>
-        <translation type="Anfangswert"></translation>
+        <translation>Anfangswert</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="46"/>
         <source>NumLines</source>
-        <translation type="Zeilennummerierung"></translation>
+        <translation>Zeilennummerierung</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="47"/>
         <source>SortKeyNum</source>
-        <translation type="Sortierschlüssel"></translation>
+        <translation>Sortierschlüssel</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="48"/>
         <source>SortForward</source>
-        <translation type="AufwärtsSortierten"></translation>
+        <translation>AufwärtsSortierten</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="49"/>
         <source>EvalHtml</source>
-        <translation type="unfinished"></translation>
+        <translation>unfinished</translation>
     </message>
 </context>
 <context>
@@ -4295,12 +4295,12 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="734"/>
         <source>Insert &amp;Date</source>
-        <translation type="&amp;Datum einfügen"></translation>
+        <translation>&amp;Datum einfügen</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="735"/>
         <source>Insert current date as text</source>
-        <translation type="Aktuelles Datum als Text einfügen"></translation>
+        <translation>Aktuelles Datum als Text einfügen</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="696"/>
@@ -4675,12 +4675,12 @@ Eine vorherige Sitzung ist möglicherweise abgestürzt</translation>
     <message>
         <location filename="treemaincontrol.py" line="700"/>
         <source>Custo&amp;mize Colors...</source>
-        <translation type="Farben anpassen"></translation>
+        <translation>Farben anpassen</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="701"/>
         <source>Customize GUI colors and themes</source>
-        <translation type="GUI Farben und Thema anpassen"></translation>
+        <translation>GUI Farben und Thema anpassen</translation>
     </message>
 </context>
 <context>
@@ -5006,7 +5006,7 @@ Eine vorherige Sitzung ist möglicherweise abgestürzt</translation>
     <message>
         <location filename="colorset.py" line="88"/>
         <source>Color Theme</source>
-        <translation>unfinished">Farbschema</translation>
+        <translation>unfinished"&gt;Farbschema</translation>
     </message>
     <message>
         <location filename="colorset.py" line="92"/>

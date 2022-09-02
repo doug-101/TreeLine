@@ -103,7 +103,12 @@ def readXml(root, sourceDict, keepObsolete=True):
         currentDict = collections.OrderedDict()
         numObsolete = 0
         for msgNode in contextNode.findall('message'):
-            lineNum = int(msgNode.find('location').attrib['line'])
+            try:
+                lineNum = int(msgNode.find('location').attrib['line'])
+            except AttributeError:
+                # .ts files converted from .qm files have no locations and
+                # line numbers
+                lineNum = 0
             srcText = msgNode.find('source').text
             commentNode = msgNode.find('comment')
             comment = commentNode.text if commentNode is not None else ''
