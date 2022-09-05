@@ -5,13 +5,13 @@
 
 [Setup]
 AppName=TreeLine
-AppVersion=3.1.4
+AppVersion=3.1.5
 ChangesAssociations=yes
 DefaultDirName={pf}\TreeLine-3
 DefaultGroupName=TreeLine
 DisableProgramGroupPage=yes
 OutputDir=.
-OutputBaseFilename=treeline-3.1.4-install-all
+OutputBaseFilename=treeline-3.1.5-install-all
 PrivilegesRequired=poweruser
 SetupIconFile=treeline.ico
 Uninstallable=IsTaskSelected('adduninstall')

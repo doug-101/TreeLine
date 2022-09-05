@@ -287,6 +287,15 @@
 {
 "children": [],
 "data": {
+"Name": "Math field crash",
+"Text": "Avoid a crash when bad field name modifiers are in a math field equation."
+},
+"format": "BULLETS",
+"uid": "273a36a82ca911eda95c54b2039ee1f3"
+},
+{
+"children": [],
+"data": {
 "Name": "Limit installer deletions",
 "Text": "In the Windows installer, improve the deletion of files from older versions and avoid problems if installing into a directory shared with other applications."
 },
@@ -301,6 +310,15 @@
 },
 "format": "BULLETS",
 "uid": "27950877dc8a11ea8902ac675dac20af"
+},
+{
+"children": [],
+"data": {
+"Name": "Fallback character encoding",
+"Text": "Add fallbacks to UTF-8 encoding if the OS encoding fails on import and export."
+},
+"format": "BULLETS",
+"uid": "280fe9c42ca911eda95c54b2039ee1f3"
 },
 {
 "children": [],
@@ -571,6 +589,39 @@
 },
 "format": "BULLET_HEADING",
 "uid": "4bc4724f786711e89bdca44cc8e97404"
+},
+{
+"children": [
+"97cd921c2ca811eda95c54b2039ee1f3",
+"97cd914a2ca811eda95c54b2039ee1f3",
+"4f1367d62ca811eda95c54b2039ee1f3"
+],
+"data": {
+"Name": "September 10, 2022 - Release 3.1.5 (stable release)"
+},
+"format": "HEADINGS",
+"uid": "4f1366fa2ca811eda95c54b2039ee1f3"
+},
+{
+"children": [
+"4f136a742ca811eda95c54b2039ee1f3",
+"280fe9c42ca911eda95c54b2039ee1f3",
+"273a36a82ca911eda95c54b2039ee1f3"
+],
+"data": {
+"Name": "Bug Fixes"
+},
+"format": "BULLET_HEADING",
+"uid": "4f1367d62ca811eda95c54b2039ee1f3"
+},
+{
+"children": [],
+"data": {
+"Name": "Encrypted password",
+"Text": "Fix a bug preventing a second-try password entry from opening an encrypted file."
+},
+"format": "BULLETS",
+"uid": "4f136a742ca811eda95c54b2039ee1f3"
 },
 {
 "children": [],
@@ -1268,6 +1319,47 @@
 {
 "children": [],
 "data": {
+"Name": "Printed line width",
+"Text": "For better visibility, increase the width of tree structure lines in printed and PDF output files."
+},
+"format": "BULLETS",
+"uid": "97cd8dda2ca811eda95c54b2039ee1f3"
+},
+{
+"children": [
+"97cd8dda2ca811eda95c54b2039ee1f3",
+"c5c45e3e2d4411eda95c54b2039ee1f3",
+"c771aa162ca911eda95c54b2039ee1f3",
+"c8eb2e4e2ca911eda95c54b2039ee1f3"
+],
+"data": {
+"Name": "Updates"
+},
+"format": "BULLET_HEADING",
+"uid": "97cd914a2ca811eda95c54b2039ee1f3"
+},
+{
+"children": [
+"97cd93ac2ca811eda95c54b2039ee1f3"
+],
+"data": {
+"Name": "New Features"
+},
+"format": "BULLET_HEADING",
+"uid": "97cd921c2ca811eda95c54b2039ee1f3"
+},
+{
+"children": [],
+"data": {
+"Name": "Strike-through font",
+"Text": "Add a command for strike-through font formatting."
+},
+"format": "BULLETS",
+"uid": "97cd93ac2ca811eda95c54b2039ee1f3"
+},
+{
+"children": [],
+"data": {
 "Name": "Native cloned nodes",
 "Text": "Cloned nodes now have a more native and efficient implementation.  This allows the same nodes to have multiple parents.  The new breadcrumb view shows a list of clones for the selected node that can be clicked to select the other instances."
 },
@@ -1536,6 +1628,33 @@
 },
 "format": "BULLETS",
 "uid": "c1f8dca5dc9511ea8f76ac675dac20af"
+},
+{
+"children": [],
+"data": {
+"Name": "Windows binaries",
+"Text": "Update the libraries used to build the Windows binaries to Python 3.10 and Qt/PyQt 5.15.  Note that this eliminates support for Windows 7."
+},
+"format": "BULLETS",
+"uid": "c5c45e3e2d4411eda95c54b2039ee1f3"
+},
+{
+"children": [],
+"data": {
+"Name": "Russian translation",
+"Text": "Add a Russian translation of the GUI and the help files (thanks to Andrew Trofimov)."
+},
+"format": "BULLETS",
+"uid": "c771aa162ca911eda95c54b2039ee1f3"
+},
+{
+"children": [],
+"data": {
+"Name": "German translation",
+"Text": "Update the German GUI translation (thanks to Karsten)."
+},
+"format": "BULLETS",
+"uid": "c8eb2e4e2ca911eda95c54b2039ee1f3"
 },
 {
 "children": [],
@@ -1847,7 +1966,7 @@
 "children": [],
 "data": {
 "Name": "Version",
-"Text": "This document covers TreeLine, Version 3.1.4, a stable release, dated November 28, 2020 by Doug Bell."
+"Text": "This document covers TreeLine, Version 3.1.5, a stable release, dated September 10, 2022 by Doug Bell."
 },
 "format": "PARAGRAPH",
 "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -2349,7 +2468,7 @@
 "children": [],
 "data": {
 "Name": "Languages",
-"Text": "The user interface is available in simplified Chinese, English, German and Spanish. Translations into other languages are TBD."
+"Text": "The user interface is available in simplified Chinese, English, German, Russian and Spanish. Translations into other languages are TBD."
 },
 "format": "BULLETS",
 "uid": "f16fbd00a25a11e7b7c67054d2175f18"
@@ -2430,7 +2549,7 @@
 "children": [],
 "data": {
 "Name": "Binary",
-"Text": "Should run on any computer running Windows Vista, 7, 8 or 10."
+"Text": "Should run on any computer running Windows 8, 10 or 11."
 },
 "format": "BULLETS",
 "uid": "f16fc5aca25a11e7b7c67054d2175f18"
@@ -3502,6 +3621,7 @@
 },
 {
 "children": [
+"4f1366fa2ca811eda95c54b2039ee1f3",
 "b5fe698830e111ebbc097054d2175f18",
 "7ffeb66ddc8711ea9a87ac675dac20af",
 "194b0533e5d811e9b5fea44cc8e97404",
@@ -5964,7 +6084,7 @@
 }
 ],
 "properties": {
-"tlversion": "3.1.4",
+"tlversion": "3.1.5",
 "topnodes": [
 "f16f7d90a25a11e7b7c67054d2175f18"
 ]
