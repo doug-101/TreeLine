@@ -43,7 +43,6 @@ Type: files; Name: "{app}\translations\*.qm"
 [Files]
 Source: "treeline.exe"; DestDir: "{app}"
 Source: "base_library.zip"; DestDir: "{app}"
-Source: "treeline.exe.manifest"; DestDir: "{app}"
 Source: "*.dll"; DestDir: "{app}"
 Source: "*.pyd"; DestDir: "{app}"
 Source: "PyQt5\*"; DestDir: "{app}\PyQt5"; Flags: recursesubdirs
