@@ -73,7 +73,7 @@
     <message>
         <location filename="conditional.py" line="250"/>
         <source>&amp;Add New Rule</source>
-        <translation>&amp;Добавить Правило</translation>
+        <translation>&amp;Добавить Новое Правило</translation>
     </message>
     <message>
         <location filename="conditional.py" line="253"/>
@@ -93,7 +93,7 @@
     <message>
         <location filename="conditional.py" line="267"/>
         <source>Saved Rules</source>
-        <translation>Сохранённые Правила</translation>
+        <translation>Сохраненные Правила</translation>
     </message>
     <message>
         <location filename="conditional.py" line="275"/>
@@ -156,72 +156,72 @@
     <message>
         <location filename="colorset.py" line="24"/>
         <source>Dialog background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет фона интерфейса</translation>
     </message>
     <message>
         <location filename="colorset.py" line="25"/>
         <source>Dialog text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет шрифта интерфейса</translation>
     </message>
     <message>
         <location filename="colorset.py" line="26"/>
         <source>Text widget background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет фона элементов интерфейса</translation>
     </message>
     <message>
         <location filename="colorset.py" line="27"/>
         <source>Text widget foreground color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет фона символов элементов интерфейса</translation>
     </message>
     <message>
         <location filename="colorset.py" line="28"/>
         <source>Selected item background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет фона выбранного пункта меню</translation>
     </message>
     <message>
         <location filename="colorset.py" line="29"/>
         <source>Selected item text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет шрифта выбранного пункта меню</translation>
     </message>
     <message>
         <location filename="colorset.py" line="30"/>
         <source>Link text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет шрифта гиперссылки</translation>
     </message>
     <message>
         <location filename="colorset.py" line="31"/>
         <source>Tool tip background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет фона всплывающей подсказки</translation>
     </message>
     <message>
         <location filename="colorset.py" line="32"/>
         <source>Tool tip foreground color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет фона символов всплывающей подсказки</translation>
     </message>
     <message>
         <location filename="colorset.py" line="33"/>
         <source>Button background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет фона кнопки</translation>
     </message>
     <message>
         <location filename="colorset.py" line="34"/>
         <source>Button text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет шрифта кнопки</translation>
     </message>
     <message>
         <location filename="colorset.py" line="35"/>
         <source>Disabled text foreground color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет шрифта неактивного текста</translation>
     </message>
     <message>
         <location filename="colorset.py" line="36"/>
         <source>Disabled button text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет шрифта неактивной кнопки</translation>
     </message>
     <message>
         <location filename="colorset.py" line="85"/>
         <source>Color Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка Цветов</translation>
     </message>
     <message>
         <location filename="colorset.py" line="88"/>
@@ -231,17 +231,17 @@
     <message>
         <location filename="colorset.py" line="92"/>
         <source>Default system theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Тема системы по умолчанию</translation>
     </message>
     <message>
         <location filename="colorset.py" line="94"/>
         <source>Dark theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Темная тема</translation>
     </message>
     <message>
         <location filename="colorset.py" line="95"/>
         <source>Custom theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Тема пользователя</translation>
     </message>
     <message>
         <location filename="colorset.py" line="112"/>
@@ -256,17 +256,17 @@
     <message>
         <location filename="colorset.py" line="141"/>
         <source>Custom Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвета Пользователя</translation>
     </message>
     <message>
         <location filename="colorset.py" line="143"/>
         <source>Theme Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвета Темы</translation>
     </message>
     <message>
         <location filename="colorset.py" line="274"/>
         <source>Select {0} color</source>
-        <translation type="unfinished"></translation>
+        <translation>Вабрать {0} цвет</translation>
     </message>
 </context>
 <context>
@@ -274,7 +274,7 @@
     <message>
         <location filename="configdialog.py" line="0"/>
         <source>[None]</source>
-        <translation type="obsolete">[Нет]</translation>
+        <translation type="obsolete">[Ни один]</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="55"/>
@@ -384,7 +384,7 @@
     <message>
         <location filename="configdialog.py" line="348"/>
         <source>&amp;Derive from original</source>
-        <translation>Наследовать от &amp;Источника</translation>
+        <translation>Наследовать от &amp;источника</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="369"/>
@@ -404,8 +404,8 @@
     <message>
         <location filename="configdialog.py" line="430"/>
         <source>[None]</source>
-        <comment>no type set</comment>
-        <translation type="unfinished"></translation>
+        <comment>тип не задан</comment>
+        <translation>[Ни один]</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="443"/>
@@ -440,7 +440,7 @@
     <message>
         <location filename="configdialog.py" line="475"/>
         <source>Allow &amp;HTML rich text in format</source>
-        <translation>Разрешить обрабатывать теги &amp;HTML</translation>
+        <translation>Учитывать при форматировании &amp;HTML-разметку</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="478"/>
@@ -475,7 +475,7 @@
     <message>
         <location filename="configdialog.py" line="554"/>
         <source>None</source>
-        <translation>Не выбран</translation>
+        <translation>Ни один</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="643"/>
@@ -555,7 +555,7 @@
     <message>
         <location filename="configdialog.py" line="837"/>
         <source>Enter new field name:</source>
-        <translation>Введите Имя Нового Поля:</translation>
+        <translation>Введите имя нового поля:</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="837"/>
@@ -615,7 +615,7 @@
     <message>
         <location filename="configdialog.py" line="984"/>
         <source>Editor Height</source>
-        <translation>Высота Редактируемого Поля</translation>
+        <translation>Высота Поля Редактора</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="987"/>
@@ -680,7 +680,7 @@
     <message>
         <location filename="configdialog.py" line="1740"/>
         <source>&amp;Select All</source>
-        <translation>Выбрать &amp;Всё</translation>
+        <translation>Выбрать &amp;Все</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1741"/>
@@ -730,12 +730,12 @@
     <message>
         <location filename="configdialog.py" line="1915"/>
         <source>reverse</source>
-        <translation>повернуть в обратном направлении</translation>
+        <translation>сменить направление на обратное</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1915"/>
         <source>forward</source>
-        <translation>вперёд</translation>
+        <translation>вперед</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="1930"/>
@@ -795,12 +795,12 @@
     <message>
         <location filename="configdialog.py" line="2133"/>
         <source>Root Reference</source>
-        <translation>Ссылка на Поля Корневого Узла</translation>
+        <translation>Ссылка на Поле Корневого Узла</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2133"/>
         <source>Child Reference</source>
-        <translation>Ссылка на Поля Дочернего Узла</translation>
+        <translation>Ссылка на Поле Дочернего Узла</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2136"/>
@@ -925,7 +925,7 @@
     <message>
         <location filename="configdialog.py" line="2156"/>
         <source>round to num digits</source>
-        <translation>округлить на число разрядов</translation>
+        <translation>округлить до числа разрядов</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2157"/>
@@ -940,7 +940,7 @@
     <message>
         <location filename="configdialog.py" line="2159"/>
         <source>truncated integer</source>
-        <translation>усечённое целое число</translation>
+        <translation>усеченное целое число</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2160"/>
@@ -1060,7 +1060,7 @@
     <message>
         <location filename="configdialog.py" line="2187"/>
         <source>concatenate text</source>
-        <translation>соединить текстовые строки</translation>
+        <translation>сцепить текстовые строки</translation>
     </message>
     <message>
         <location filename="configdialog.py" line="2188"/>
@@ -1183,12 +1183,12 @@
     <message>
         <location filename="dataeditors.py" line="2215"/>
         <source>Scheme</source>
-        <translation>Протокол Ссылки</translation>
+        <translation>Структура</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2232"/>
         <source>&amp;Browse for File</source>
-        <translation>&amp;Найти Файл</translation>
+        <translation>&amp;Поиск Файла</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2238"/>
@@ -1213,7 +1213,7 @@
     <message>
         <location filename="dataeditors.py" line="2261"/>
         <source>Display Name</source>
-        <translation>Показываемое Имя</translation>
+        <translation>Показать Имя</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2416"/>
@@ -1253,7 +1253,7 @@
     <message>
         <location filename="dataeditors.py" line="2713"/>
         <source>link</source>
-        <translation>Гиперссылка</translation>
+        <translation>гиперссылка</translation>
     </message>
     <message>
         <location filename="dataeditors.py" line="2731"/>
@@ -1315,10 +1315,8 @@
     </message>
     <message>
         <location filename="miscdialogs.py" line="207"/>
-        <source>Language code or
-dictionary (optional)</source>
-        <translation>Код языка или 
-словарь (необязательно)</translation>
+        <source>Language code or dictionary (optional)</source>
+        <translation>Код языка или словарь (по желанию)</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="213"/>
@@ -1328,8 +1326,7 @@ dictionary (optional)</source>
     <message>
         <location filename="miscdialogs.py" line="216"/>
         <source>&amp;Treat blank fields as zeros</source>
-        <translation>&amp;Обрабатывать 
-пустые поля как 0</translation>
+        <translation>&amp;Обрабатывать пустые поля как нули</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="268"/>
@@ -1339,7 +1336,7 @@ dictionary (optional)</source>
     <message>
         <location filename="miscdialogs.py" line="273"/>
         <source>Type Password for "{0}":</source>
-        <translation>Пароль, заданный для {0}:</translation>
+        <translation>Введите Пароль для "{0}":</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="275"/>
@@ -1354,7 +1351,7 @@ dictionary (optional)</source>
     <message>
         <location filename="miscdialogs.py" line="283"/>
         <source>Remember password during this session</source>
-        <translation>Запомнить пароль для текущей сессии</translation>
+        <translation>Запомнить пароль текущей сессии</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="321"/>
@@ -1364,7 +1361,7 @@ dictionary (optional)</source>
     <message>
         <location filename="miscdialogs.py" line="324"/>
         <source>Re-typed password did not match</source>
-        <translation>Вновь набранный Пароль НЕ подходит</translation>
+        <translation>Вновь набранный пароль не подходит</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="397"/>
@@ -1374,22 +1371,14 @@ dictionary (optional)</source>
     <message>
         <location filename="miscdialogs.py" line="479"/>
         <source>TreeLine - Serious Error</source>
-        <translation>TreeLine — Серьёзная Ошибка</translation>
+        <translation>TreeLine — Серьезная Ошибка</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="483"/>
-        <source>A serious error has occurred.  TreeLine could be in an unstable state.
-Recommend saving any file changes under another filename and restart TreeLine.
-
-The debugging info shown below can be copied and emailed to doug101@bellz.org along with
-an explanation of the circumstances.
-</source>
-        <translation>Возникла серьёзная ошибка.TreeLine может находиться в нестабильном состоянии.
-Рекомендуется сохранить файл с внесёнными изменениями под другим именем и перезапустить TreeLine.
-
-Отладочную информацию, приведённую ниже, Вы можете скопировать и отправить электронной почтой
-на e-mail: doug101@bellz.org с описанием обстоятельств возникновения ошибки.
-</translation>
+        <source>A serious error has occurred.  TreeLine could be in an unstable state. Recommend saving any file changes under another filename and restart TreeLine. The debugging info shown below can be copied and emailed to doug101@bellz.org along with an explanation of the circumstances.
+		</source>
+        <translation>Возникла серьезная ошибка. TreeLine может находиться в нестабильном состоянии. Рекомендуется сохранить файл с внесенными изменениями под другим именем и перезапустить TreeLine. Отладочную информацию, приведенную ниже, Вы можете скопировать и отправить электронной почтой на e-mail: doug101@bellz.org с описанием обстоятельств возникновения ошибки.
+		</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="508"/>
@@ -1419,22 +1408,22 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="557"/>
         <source>How to Search</source>
-        <translation>Что Искать</translation>
+        <translation>Как Искать</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="561"/>
         <source>&amp;Key words</source>
-        <translation>&amp;Ключевые Слова</translation>
+        <translation>&amp;Ключевые слова</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="564"/>
         <source>Key full &amp;words</source>
-        <translation>Полные Ключевые &amp;Слова</translation>
+        <translation>Полные ключевые &amp;слова</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="567"/>
         <source>F&amp;ull phrase</source>
-        <translation>Полное &amp;Выражение</translation>
+        <translation>Полное &amp;выражение</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="570"/>
@@ -1484,12 +1473,12 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="744"/>
         <source>Any &amp;match</source>
-        <translation>Любое &amp;Совпадение</translation>
+        <translation>Любое &amp;совпадение</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="747"/>
         <source>Full &amp;words</source>
-        <translation>Целые &amp;Слова</translation>
+        <translation>Целые &amp;слова</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="750"/>
@@ -1524,7 +1513,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="782"/>
         <source>Replace &amp;All</source>
-        <translation>Заменить &amp;Всё</translation>
+        <translation>Заменить &amp;Все</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="823"/>
@@ -1574,12 +1563,12 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="975"/>
         <source>Selected &amp;branches</source>
-        <translation>Выбранная &amp;Ветвь</translation>
+        <translation>Выбранные &amp;ветви</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="978"/>
         <source>Selection's childre&amp;n</source>
-        <translation>&amp;Дочерние Узлы в Выбранном</translation>
+        <translation>&amp;Дочерние узлы в выбранном</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="981"/>
@@ -1594,7 +1583,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="992"/>
         <source>&amp;Predefined Key Fields</source>
-        <translation>&amp;Предопределённые Ключевые Поля</translation>
+        <translation>&amp;Предопределенные Ключевые Поля</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="995"/>
@@ -1609,7 +1598,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="1004"/>
         <source>&amp;Forward</source>
-        <translation>&amp;Вперёд</translation>
+        <translation>&amp;Вперед</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1007"/>
@@ -1634,7 +1623,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="1123"/>
         <source>&amp;Selection's children</source>
-        <translation>&amp;Дочерние Узлы в Выбранном</translation>
+        <translation>&amp;Дочерние узлы в выбранном</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1128"/>
@@ -1644,7 +1633,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="1131"/>
         <source>Include top-level nodes</source>
-        <translation>Включить Узлы Верхних Уровней</translation>
+        <translation>Включить узлы верхних уровней</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1135"/>
@@ -1659,7 +1648,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="1143"/>
         <source>&amp;Restart numbers for next siblings</source>
-        <translation>&amp;Начать номера с начала для следующих сестринских узлов</translation>
+        <translation>&amp;Перезапустить нумерацию с начала для следующих сестринских узлов</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1147"/>
@@ -1764,7 +1753,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="1246"/>
         <source>Help Menu</source>
-        <translation>Меню Справка</translation>
+        <translation>Меню Справки</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1261"/>
@@ -1774,7 +1763,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="1274"/>
         <source>No menu</source>
-        <translation>Меню Отсутствует</translation>
+        <translation>Меню отсутствует</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1289"/>
@@ -1829,7 +1818,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="1534"/>
         <source>A&amp;vailable Commands</source>
-        <translation>Во&amp;зможные Команды</translation>
+        <translation>До&amp;пустимые Команды</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1558"/>
@@ -1844,7 +1833,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="1576"/>
         <source>Move &amp;Down</source>
-        <translation>Переместить &amp;вниз</translation>
+        <translation>Переместить &amp;Вниз</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1857"/>
@@ -1874,7 +1863,7 @@ an explanation of the circumstances.
     <message>
         <location filename="miscdialogs.py" line="1880"/>
         <source>Output View Font</source>
-        <translation>Шрифт в форме Вывода</translation>
+        <translation>Шрифт в Форме Вывода</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="1884"/>
@@ -1892,7 +1881,7 @@ an explanation of the circumstances.
     <message>
         <location filename="options.py" line="577"/>
         <source>User's home directory (recommended)</source>
-        <translation>Домяшняя директория пользователя (рекомендуется)</translation>
+        <translation>Домашняя директория пользователя (рекомендуется)</translation>
     </message>
     <message>
         <location filename="options.py" line="578"/>
@@ -1925,7 +1914,7 @@ an explanation of the circumstances.
     <message>
         <location filename="printdialogs.py" line="69"/>
         <source>Fit Page</source>
-        <translation>Страница целиком</translation>
+        <translation>Страница Целиком</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="86"/>
@@ -1955,7 +1944,7 @@ an explanation of the circumstances.
     <message>
         <location filename="printdialogs.py" line="135"/>
         <source>Facing Pages</source>
-        <translation>Противоположные Страницы</translation>
+        <translation>Страницы в Развороте</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="145"/>
@@ -2015,7 +2004,7 @@ an explanation of the circumstances.
     <message>
         <location filename="printdialogs.py" line="379"/>
         <source>Error:  Page size or margins are invalid</source>
-        <translation>Ошибка: Размер или поля страницы неверные</translation>
+        <translation>Ошибка: Размер или поля страницы неверны</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="397"/>
@@ -2030,22 +2019,22 @@ an explanation of the circumstances.
     <message>
         <location filename="printdialogs.py" line="428"/>
         <source>&amp;Entire tree</source>
-        <translation>&amp;Всё Дерево</translation>
+        <translation>&amp;Все Дерево</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="431"/>
         <source>Selected &amp;branches</source>
-        <translation>Выбранная &amp;ветвь</translation>
+        <translation>Выбранные &amp;ветви</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="435"/>
         <source>Selected &amp;nodes</source>
-        <translation>Выбранный &amp;узел</translation>
+        <translation>Выбранные &amp;узлы</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="441"/>
         <source>Included Nodes</source>
-        <translation>Включённые Узлы</translation>
+        <translation>Включенные Узлы</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="444"/>
@@ -2070,7 +2059,7 @@ an explanation of the circumstances.
     <message>
         <location filename="printdialogs.py" line="468"/>
         <source>&amp;Draw lines to children</source>
-        <translation>&amp;Отображать Пути к Дочерним Узлам</translation>
+        <translation>&amp;Отображать пути к дочерним узлам</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="471"/>
@@ -2084,8 +2073,7 @@ an explanation of the circumstances.
     </message>
     <message>
         <location filename="printdialogs.py" line="478"/>
-        <source>Indent Offse&amp;t
-(line height units)</source>
+        <source>Indent Offse&amp;t (line height units)</source>
         <translation>О&amp;тступить при Печати (на количество строк)</translation>
     </message>
     <message>
@@ -2221,7 +2209,7 @@ an explanation of the circumstances.
     <message>
         <location filename="printdialogs.py" line="688"/>
         <source>Space between colu&amp;mns</source>
-        <translation>Расстояние между С&amp;толбцами</translation>
+        <translation>Расстояние между с&amp;толбцами</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="910"/>
@@ -2231,7 +2219,7 @@ an explanation of the circumstances.
     <message>
         <location filename="printdialogs.py" line="914"/>
         <source>&amp;Use TreeLine output view font</source>
-        <translation>&amp;Использовать шрифт в форме вывода TreeLine</translation>
+        <translation>&amp;Использовать шрифт формы вывода TreeLine</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="920"/>
@@ -2246,7 +2234,7 @@ an explanation of the circumstances.
     <message>
         <location filename="printdialogs.py" line="942"/>
         <source>Font st&amp;yle</source>
-        <translation>&amp;Начертание</translation>
+        <translation>&amp;Начертание Шрифта</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="955"/>
@@ -2577,7 +2565,7 @@ an explanation of the circumstances.
     <message>
         <location filename="fieldformat.py" line="870"/>
         <source>Weekday Abbreviation	%a</source>
-        <translation>Сокращённое Название Дня Недели	%a</translation>
+        <translation>Сокращенное Название Дня Недели	%a</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="871"/>
@@ -2597,7 +2585,7 @@ an explanation of the circumstances.
     <message>
         <location filename="fieldformat.py" line="874"/>
         <source>Month Abbreviation	%b</source>
-        <translation>Сокращённое Название Месяца	%b</translation>
+        <translation>Сокращенное Название Месяца	%b</translation>
     </message>
     <message>
         <location filename="fieldformat.py" line="875"/>
@@ -2762,7 +2750,7 @@ an explanation of the circumstances.
     <message>
         <location filename="fieldformat.py" line="2554"/>
         <source>DescendantCount</source>
-        <translation>Подсчёт Потомков</translation>
+        <translation>Подсчет Потомков</translation>
     </message>
 </context>
 <context>
@@ -2782,7 +2770,7 @@ Browse for location?</source>
     <message>
         <location filename="spellcheck.py" line="211"/>
         <source>Locate aspell.exe, ipsell.exe or hunspell.exe</source>
-        <translation>Указать месторасположение aspell.exe, ispell.exe или hunspell.exe</translation>
+        <translation>Укажите месторасположение aspell.exe, ispell.exe или hunspell.exe</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="215"/>
@@ -2846,7 +2834,7 @@ Continue from the top?</source>
     <message>
         <location filename="spellcheck.py" line="349"/>
         <source>&amp;Ignore All</source>
-        <translation>Игнорировать &amp;Всё</translation>
+        <translation>Игнорировать &amp;Все</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="353"/>
@@ -2866,7 +2854,7 @@ Continue from the top?</source>
     <message>
         <location filename="spellcheck.py" line="363"/>
         <source>Re&amp;place All</source>
-        <translation>Заменить &amp;Всё</translation>
+        <translation>Заменить &amp;Все</translation>
     </message>
     <message>
         <location filename="spellcheck.py" line="367"/>
@@ -2878,10 +2866,8 @@ Continue from the top?</source>
     <name>treelocalcontrol</name>
     <message>
         <location filename="treelocalcontrol.py" line="123"/>
-        <source>Warning - file corruption!
-Skipped bad child references in the following nodes:</source>
-        <translation>Внимание — файл повреждён!
-Пропущены неверные ссылки на дочерние узлы в следующих узлах:</translation>
+        <source>Warning - file corruption! Skipped bad child references in the following nodes:</source>
+        <translation>Внимание — файл поврежден! Пропущены неверные ссылки на дочерние узлы в следующих узлах:</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="385"/>
@@ -2906,7 +2892,7 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="470"/>
         <source>Save File</source>
-        <translation>Сохранить файл</translation>
+        <translation>Сохранить Файл</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="471"/>
@@ -2931,7 +2917,7 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="482"/>
         <source>Export the file in various other formats</source>
-        <translation>Экспортировать файл в различные другие форматы</translation>
+        <translation>Экспортировать файл в ряд других форматов</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="486"/>
@@ -3081,7 +3067,7 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="557"/>
         <source>Paste a child clone from the clipboard</source>
-        <translation>Вставить клонированный дочерний узел из буфера обмена</translation>
+        <translation>Вставить клон дочернего узла из буфера обмена</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="561"/>
@@ -3156,7 +3142,7 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="596"/>
         <source>&amp;Indent Node</source>
-        <translation>Сместить Узел &amp;ОТ Корня</translation>
+        <translation>&amp;Вдвинуть Узел</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="597"/>
@@ -3166,7 +3152,7 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="601"/>
         <source>&amp;Unindent Node</source>
-        <translation>Сместить Узел &amp;К Корню</translation>
+        <translation>В&amp;ыдвинуть Узел</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="602"/>
@@ -3236,7 +3222,7 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="639"/>
         <source>Copy the configuration from another TreeLine file</source>
-        <translation>Скопировать конфигурацию из друго файла Treeline</translation>
+        <translation>Скопировать конфигурацию из другого файла Treeline</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="643"/>
@@ -3251,12 +3237,12 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="648"/>
         <source>Clone All &amp;Matched Nodes</source>
-        <translation>Клонировать Все &amp;Совпавшие Узлы</translation>
+        <translation>Клонировать Все &amp;Подошедшие Узлы</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="649"/>
         <source>Convert all matching nodes into clones</source>
-        <translation>Конвертировать все совпадающие узлы в клоны</translation>
+        <translation>Конвертировать все подошедшие узлы в клоны</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="653"/>
@@ -3271,7 +3257,7 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="658"/>
         <source>Flatten &amp;by Category</source>
-        <translation>Свести в Один Уровень &amp;по Категории</translation>
+        <translation>Свести на Один Уровень &amp;по Категории</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="659"/>
@@ -3316,7 +3302,7 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="679"/>
         <source>Set the current or selected font to bold</source>
-        <translation>Сделать текущий или выбранный шрифт наклонным</translation>
+        <translation>Сделать текущий или выбранный шрифт жирным</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="684"/>
@@ -3331,22 +3317,22 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="690"/>
         <source>U&amp;nderline Font</source>
-        <translation>Под&amp;чёркнутый Шрифт</translation>
+        <translation>Под&amp;черкнутый Шрифт</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="691"/>
         <source>Set the current or selected font to underline</source>
-        <translation>Сделать текущий или выбранный текст подчёркнутым</translation>
+        <translation>Сделать текущий или выбранный текст подчеркнутым</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="696"/>
         <source>St&amp;rikethrough Font</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Зачеркнутый Шрифт</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="697"/>
         <source>Set the current or selected font to strikethough</source>
-        <translation type="unfinished"></translation>
+        <translation>Сделать текущий или выбранный текст зачеркнутым</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="702"/>
@@ -3421,12 +3407,12 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="734"/>
         <source>Insert &amp;Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить &amp;Дату</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="735"/>
         <source>Insert current date as text</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить текущую дату как текст</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="739"/>
@@ -3436,7 +3422,7 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="740"/>
         <source>Clear current or selected text formatting</source>
-        <translation>Очистить формат текущего или выбранного текста</translation>
+        <translation>Очистить настройки формата текущего или выбранного текста</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="744"/>
@@ -3456,7 +3442,7 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treelocalcontrol.py" line="831"/>
         <source>File saved</source>
-        <translation>Файл сохранён</translation>
+        <translation>Файл сохранен</translation>
     </message>
     <message>
         <location filename="treelocalcontrol.py" line="850"/>
@@ -3524,37 +3510,37 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treeformats.py" line="28"/>
         <source>TitleFormat</source>
-        <translation type="unfinished"></translation>
+        <translation>ФорматЗаголовка</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="29"/>
         <source>OutputFormat</source>
-        <translation type="unfinished"></translation>
+        <translation>ФорматВывода</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="30"/>
         <source>SpaceBetween</source>
-        <translation type="unfinished"></translation>
+        <translation>ПробелМежду</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="31"/>
         <source>FormatHtml</source>
-        <translation type="unfinished"></translation>
+        <translation>ФорматироватьHTML</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="32"/>
         <source>Bullets</source>
-        <translation type="unfinished"></translation>
+        <translation>Маркеры</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="33"/>
         <source>Table</source>
-        <translation type="unfinished"></translation>
+        <translation>Таблица</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="34"/>
         <source>ChildType</source>
-        <translation type="unfinished"></translation>
+        <translation>ДочернийТип</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="35"/>
@@ -3564,22 +3550,22 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treeformats.py" line="36"/>
         <source>GenericType</source>
-        <translation type="unfinished"></translation>
+        <translation>ОбщийТип</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="37"/>
         <source>ConditionalRule</source>
-        <translation type="unfinished"></translation>
+        <translation>УсловноеПравило</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="38"/>
         <source>ListSeparator</source>
-        <translation type="unfinished"></translation>
+        <translation>РазделительЭлементовСписка</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="39"/>
         <source>ChildTypeLimit</source>
-        <translation type="unfinished"></translation>
+        <translation>ОграничениеДочернегоТипа</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="40"/>
@@ -3599,37 +3585,37 @@ Skipped bad child references in the following nodes:</source>
     <message>
         <location filename="treeformats.py" line="43"/>
         <source>Prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Приставка</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="44"/>
         <source>Suffix</source>
-        <translation type="unfinished"></translation>
+        <translation>Окончание</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="45"/>
         <source>InitialValue</source>
-        <translation type="unfinished"></translation>
+        <translation>НачальноеЗначение</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="46"/>
         <source>NumLines</source>
-        <translation type="unfinished"></translation>
+        <translation>НумСтроки</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="47"/>
         <source>SortKeyNum</source>
-        <translation type="unfinished"></translation>
+        <translation>НомСортКл</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="48"/>
         <source>SortForward</source>
-        <translation type="unfinished"></translation>
+        <translation>СортВперед</translation>
     </message>
     <message>
         <location filename="treeformats.py" line="49"/>
         <source>EvalHtml</source>
-        <translation type="unfinished"></translation>
+        <translation>ОпредHTML</translation>
     </message>
 </context>
 <context>
@@ -3952,7 +3938,7 @@ A previous session may have crashed</source>
     <message>
         <location filename="treemaincontrol.py" line="632"/>
         <source>Show read-only visualization of type structure</source>
-        <translation>Показать доступную только для чтения структуру типов</translation>
+        <translation>Показать доступное только для чтения представление структуры типов</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="636"/>
@@ -4002,7 +3988,7 @@ A previous session may have crashed</source>
     <message>
         <location filename="treemaincontrol.py" line="661"/>
         <source>Replace text strings in node data</source>
-        <translation>Заменить текст в узлах</translation>
+        <translation>Заменить текстовые строки в узлах</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="666"/>
@@ -4067,12 +4053,12 @@ A previous session may have crashed</source>
     <message>
         <location filename="treemaincontrol.py" line="700"/>
         <source>Custo&amp;mize Colors...</source>
-        <translation type="unfinished"></translation>
+        <translation>Настроить &amp;Цвета...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="701"/>
         <source>Customize GUI colors and themes</source>
-        <translation type="unfinished"></translation>
+        <translation>Настроить цвета и темы GUI</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="705"/>
@@ -4097,7 +4083,7 @@ A previous session may have crashed</source>
     <message>
         <location filename="treemaincontrol.py" line="716"/>
         <source>&amp;Full Documentation...</source>
-        <translation>&amp;Полная документация...</translation>
+        <translation>&amp;Полная Документация...</translation>
     </message>
     <message>
         <location filename="treemaincontrol.py" line="717"/>
@@ -4195,7 +4181,7 @@ A previous session may have crashed</source>
     <message>
         <location filename="helpview.py" line="54"/>
         <source>&amp;Forward</source>
-        <translation>&amp;Вперёд</translation>
+        <translation>&amp;Вперед</translation>
     </message>
     <message>
         <location filename="helpview.py" line="62"/>
@@ -4220,7 +4206,7 @@ A previous session may have crashed</source>
     <message>
         <location filename="helpview.py" line="115"/>
         <source>Text string not found</source>
-        <translation>Текст не найден</translation>
+        <translation>Текстовая строка не найдена</translation>
     </message>
 </context>
 <context>
@@ -4318,7 +4304,7 @@ A previous session may have crashed</source>
     <message>
         <location filename="treewindow.py" line="411"/>
         <source>Toggle showing breadcrumb ancestor view</source>
-        <translation>Переключить показ навигационной цепочки к предку</translation>
+        <translation>Переключить на показ навигационной цепочки к предку</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="418"/>
@@ -4328,7 +4314,7 @@ A previous session may have crashed</source>
     <message>
         <location filename="treewindow.py" line="419"/>
         <source>Toggle showing right-hand child views</source>
-        <translation>Переключить показ дочерних узлов в форме справа</translation>
+        <translation>Переключить на показ дочерних узлов в форме справа</translation>
     </message>
     <message>
         <location filename="treewindow.py" line="425"/>
@@ -4425,16 +4411,14 @@ A previous session may have crashed</source>
     </message>
     <message>
         <location filename="exports.py" line="412"/>
-        <source>Error - export template files not found.
-Check your TreeLine installation.</source>
-        <translation>Ошибка — файлы шаблона экспорта не найдены.
-Проверьте вашу установку Treeline.</translation>
+        <source>Error - export template files not found. Check your TreeLine installation.</source>
+        <translation>Ошибка — файлы шаблона для экспорта не найдены. Проверьте вашу установку Treeline.</translation>
     </message>
     <message>
         <location filename="exports.py" line="419"/>
         <source>Error - cannot link to unsaved TreeLine file.
 Save the file and retry.</source>
-        <translation>Ошибка — невозможно установить ссылку на несохранённый файл Treeline.
+        <translation>Ошибка — невозможно установить ссылку на несохраненный файл Treeline.
 Сохраните файл и попробуйте снова.</translation>
     </message>
     <message>
@@ -4537,7 +4521,7 @@ Continue with absolute path?</source>
     <message>
         <location filename="exports.py" line="1682"/>
         <source>Multiple HTML &amp;data tables</source>
-        <translation>Многостраничный HTML с Таблицами &amp;Данных</translation>
+        <translation>Многостраничный HTML с таблицами &amp;данных</translation>
     </message>
     <message>
         <location filename="exports.py" line="1683"/>
@@ -4562,7 +4546,7 @@ Continue with absolute path?</source>
     <message>
         <location filename="exports.py" line="1689"/>
         <source>&amp;Comma delimited (CSV) table of descendants (level numbers)</source>
-        <translation>Таблица потомков, размеченная &amp;запятыми (CSV) (номера уровней)</translation>
+        <translation>Таблица потомков (номера уровней), размеченная &amp;запятыми (CSV)</translation>
     </message>
     <message>
         <location filename="exports.py" line="1691"/>
@@ -4622,17 +4606,17 @@ Continue with absolute path?</source>
     <message>
         <location filename="exports.py" line="1840"/>
         <source>&amp;Entire tree</source>
-        <translation>&amp;Всё Дерево</translation>
+        <translation>&amp;Все Дерево</translation>
     </message>
     <message>
         <location filename="exports.py" line="1843"/>
         <source>Selected &amp;branches</source>
-        <translation>Выбранная &amp;ветвь</translation>
+        <translation>Выбранные &amp;ветви</translation>
     </message>
     <message>
         <location filename="exports.py" line="1846"/>
         <source>Selected &amp;nodes</source>
-        <translation>Выбранный &amp;узел</translation>
+        <translation>Выбранные &amp;узлы</translation>
     </message>
     <message>
         <location filename="exports.py" line="1852"/>
@@ -4740,7 +4724,7 @@ Continue with absolute path?</source>
     <message>
         <location filename="optiondefaults.py" line="47"/>
         <source>Remove inaccessible recent file entries</source>
-        <translation>Удалять недоступные данные, введенные в последний файл</translation>
+        <translation>Удалять недоступные данные, вошедшие в последний файл</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="50"/>
@@ -4765,12 +4749,12 @@ Continue with absolute path?</source>
     <message>
         <location filename="optiondefaults.py" line="59"/>
         <source>Activate data editors on mouse hover</source>
-        <translation>Активировать Поля Редактора Данных при наведении мышью</translation>
+        <translation>Активировать поля редактора данных при наведении мышью</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="62"/>
         <source>Limit data editor height to window size</source>
-        <translation type="unfinished"></translation>
+        <translation>Ограничить высоту редактора данных размером окна</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="64"/>
@@ -4785,7 +4769,7 @@ Continue with absolute path?</source>
     <message>
         <location filename="optiondefaults.py" line="68"/>
         <source>Tree drag &amp;&amp; drop available</source>
-        <translation>Разрешать перетаскивание элементов дерева мышью</translation>
+        <translation>Разрешить перетаскивание элементов дерева мышью</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="71"/>
@@ -4857,10 +4841,8 @@ in the file menu</source>
     </message>
     <message>
         <location filename="optiondefaults.py" line="90"/>
-        <source>First day
-of week</source>
-        <translation>Первый день
-недели</translation>
+        <source>First day of week</source>
+        <translation>Первый день недели</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="91"/>
@@ -4869,10 +4851,8 @@ of week</source>
     </message>
     <message>
         <location filename="optiondefaults.py" line="92"/>
-        <source>Child indent offset
-(in font height units) </source>
-        <translation>Величина сдвига дочерних узлов
-(в единицах размера шрифта)</translation>
+        <source>Child indent offset (in font height units) </source>
+        <translation>Величина сдвига дочерних узлов (в единицах размера шрифта)</translation>
     </message>
 </context>
 <context>
@@ -4999,7 +4979,7 @@ of week</source>
     <message>
         <location filename="matheval.py" line="200"/>
         <source>Invalid field modifiers</source>
-        <translation type="unfinished"></translation>
+        <translation>Неверные модификаторы поля</translation>
     </message>
     <message>
         <location filename="matheval.py" line="211"/>
@@ -5026,24 +5006,18 @@ of week</source>
     <name>printdata</name>
     <message>
         <location filename="printdata.py" line="342"/>
-        <source>Warning: Page size and margin settings unsupported on current printer.
-Save page adjustments?</source>
-        <translation>Внимание: Выбранный размер и поля страницы не поддреживается данным принтером.
-Сохранить исправления параметров страницы?</translation>
+        <source>Warning: Page size and margin settings unsupported on current printer. Save page adjustments?</source>
+        <translation>Внимание: Выбранный размер и поля страницы не поддерживается данным принтером. Сохранить настройки страницы?</translation>
     </message>
     <message>
         <location filename="printdata.py" line="345"/>
-        <source>Warning: Page size setting unsupported on current printer.
-Save adjustment?</source>
-        <translation>Внимание: Выбранный размер страницы не поддреживается данным принтером.
-Сохранить исправления?</translation>
+        <source>Warning: Page size setting unsupported on current printer. Save adjustment?</source>
+        <translation>Внимание: Выбранный размер страницы не поддерживается данным принтером. Сохранить настройки?</translation>
     </message>
     <message>
         <location filename="printdata.py" line="348"/>
-        <source>Warning: Margin settings unsupported on current printer.
-Save adjustments?</source>
-        <translation>Внимание: Настройки полей не поддреживаются данным принтером.
-Сохранить исправления?</translation>
+        <source>Warning: Margin settings unsupported on current printer. Save adjustments?</source>
+        <translation>Внимание: Настройки полей не поддерживаются данным принтером. Сохранить настройки?</translation>
     </message>
     <message>
         <location filename="printdata.py" line="370"/>
