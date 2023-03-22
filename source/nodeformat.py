@@ -142,6 +142,7 @@ class NodeFormat:
             sourceFormat -- the format to copy
         """
         self.name = sourceFormat.name
+        self.childTypeLimit=set()
         self.readFormat(sourceFormat.storeFormat())
         self.siblingPrefix = sourceFormat.siblingPrefix
         self.siblingSuffix = sourceFormat.siblingSuffix
