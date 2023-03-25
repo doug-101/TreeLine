@@ -469,7 +469,7 @@ class NumberField(HtmlTextField):
             formatHtml -- if False, escapes HTML from prefix & suffix
         """
         try:
-            text = gennumber.GenNumber(storedText).numStr(self.format)
+            text = gennumber.GenNumber(storedText).numStr(self.format).rstrip(".,")
         except ValueError:
             text = _errorStr
         return super().formatOutput(text, oneLine, noHtml, formatHtml)
@@ -483,7 +483,7 @@ class NumberField(HtmlTextField):
         """
         if not storedText:
             return ''
-        return gennumber.GenNumber(storedText).numStr(self.format)
+        return gennumber.GenNumber(storedText).numStr(self.format).rstrip(".,")
 
     def storedText(self, editorText):
         """Return new text to be stored based on text from the data editor.
