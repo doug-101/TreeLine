@@ -4,7 +4,7 @@
 # nodeformat.py, provides a class to handle node format objects
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2023, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -96,6 +96,8 @@ class NodeFormat:
             self.conditional = conditional.Conditional(formatData['condition'])
         if 'childTypeLimit' in formatData:
             self.childTypeLimit = set(formatData['childTypeLimit'])
+        else:
+            self.childTypeLimit = set()
         self.iconName = formatData.get('icon', '')
         self.outputSeparator = formatData.get('outputsep',
                                               _defaultOutputSeparator)
