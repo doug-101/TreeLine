@@ -4,7 +4,7 @@
 # imports.py, provides classes for a file import dialog and import functions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2023, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -196,6 +196,9 @@ class ImportControl:
             try:
                 headings = [self.correctFieldName(name) for name in
                             next(reader)][1:]
+                if not headings:
+                    self.errorMessage = (_('No headings found'));
+                    return None   # abort
                 tableFormat.addFieldList(headings, True, True)
                 for entries in reader:
                     if entries:
@@ -245,6 +248,9 @@ class ImportControl:
             try:
                 headings = [self.correctFieldName(name) for name in
                             next(reader)]
+                if not headings:
+                    self.errorMessage = (_('No headings found'));
+                    return None   # abort
                 tableFormat.addFieldList(headings, True, True)
                 for entries in reader:
                     if entries:
