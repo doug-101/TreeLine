@@ -4,7 +4,7 @@
 # fieldformat.py, provides a class to handle field format types
 #
 # TreeLine, an information storage program
-# Copyright (C) 2020, Douglas W. Bell
+# Copyright (C) 2023, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -277,8 +277,12 @@ class TextField:
         Arguments:
             newType -- the new type name, excluding "Field"
         """
+        oldType = self.typeName
         self.__class__ = globals()[newType + 'Field']
-        self.setFormat(self.defaultFormat)
+        # Don't lose format between Choice & Combination types
+        if (oldType not in ('Choice', 'Combination') or
+            newType not in ('Choice', 'Combination') or not self.format):
+            self.setFormat(self.defaultFormat)
         if self.fixEvalHtmlSetting:
             self.evalHtml = self.evalHtmlDefault
 
