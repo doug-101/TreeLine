@@ -1,6 +1,6 @@
 //  live_tree_export.js, provides javascript code for a read-only tree view
 //  Works with TreeLine, an information storage program
-//  Copyright (C) 2018, Douglas W. Bell
+//  Copyright (C) 2023, Douglas W. Bell
 
 //  This is free software; you can redistribute it and/or modify it under the
 //  terms of the GNU General Public License, either Version 2 or any later
@@ -556,7 +556,7 @@ FieldFormat.prototype.outputText = function(spot, titleMode, formatHtml) {
             value = result.join(outputSep);
             break;
         case "DescendantCount":
-            newNodes = [childSpot.nodeRef];
+            newNodes = [spot.nodeRef];
             for (i = 0; i < this.descendantLevel; i++) {
                 prevNodes = newNodes;
                 newNodes = [];
