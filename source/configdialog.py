@@ -4,7 +4,7 @@
 # configdialog.py, provides classes for the type configuration dialog
 #
 # TreeLine, an information storage program
-# Copyright (C) 2020, Douglas W. Bell
+# Copyright (C) 2023, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -110,9 +110,10 @@ class ConfigDialog(QDialog):
                                    getConfigDialogFormats(forceCopy))
         self.selectionModel = localControl.currentSelectionModel()
         self.updateSelections(resetSelect)
-        self.setModified(modified=False)
         self.prevPage = None
         self.updatePage()
+        self.applyButton.setEnabled(ConfigDialog.formatsRef.configModified)
+        self.resetButton.setEnabled(ConfigDialog.formatsRef.configModified)
 
     def updateSelections(self, forceUpdate=False):
         """Sets current type & current field if invalid or forceUpdate is True.

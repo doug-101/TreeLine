@@ -4,7 +4,7 @@
 # treeformats.py, provides a class to store node format types and info
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2023, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -75,6 +75,8 @@ class TreeFormats(dict):
         self.mathLevelList = []
         # for saving all-type find/filter conditionals
         self.savedConditionText = {}
+        # used by copied configs in config dialog
+        self.configModified = False
         self.fileInfoFormat = nodeformat.FileInfoFormat(self)
         if formatList:
             for formatData in formatList:
