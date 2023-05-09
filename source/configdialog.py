@@ -219,6 +219,11 @@ class ConfigDialog(QDialog):
         """
         self.dialogShown.emit(False)
 
+    def reject(self):
+        """Handle use of escape key to close this dialog.
+        """
+        self.close()
+
 
 class ConfigPage(QWidget):
     """Abstract base class for config dialog tabbed pages.

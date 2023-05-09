@@ -4,7 +4,7 @@
 # miscdialogs.py, provides classes for various control dialogs
 #
 # TreeLine, an information storage program
-# Copyright (C) 2020, Douglas W. Bell
+# Copyright (C) 2023, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -702,6 +702,11 @@ class FindFilterDialog(QDialog):
         """
         self.dialogShown.emit(False)
 
+    def reject(self):
+        """Handle use of escape key to close this dialog.
+        """
+        self.close()
+
 
 FindReplaceType = enum.IntEnum('FindReplaceType', 'anyMatch fullWord regExp')
 
@@ -940,6 +945,11 @@ class FindReplaceDialog(QDialog):
         """
         self.dialogShown.emit(False)
 
+    def reject(self):
+        """Handle use of escape key to close this dialog.
+        """
+        self.close()
+
 
 SortWhat = enum.IntEnum('SortWhat',
                         'fullTree selectBranch selectChildren selectSiblings')
@@ -1087,6 +1097,11 @@ class SortDialog(QDialog):
         """
         self.dialogShown.emit(False)
 
+    def reject(self):
+        """Handle use of escape key to close this dialog.
+        """
+        self.close()
+
 
 NumberingScope = enum.IntEnum('NumberingScope',
                               'fullTree selectBranch selectChildren')
@@ -1233,6 +1248,11 @@ class NumberingDialog(QDialog):
             event -- the close event
         """
         self.dialogShown.emit(False)
+
+    def reject(self):
+        """Handle use of escape key to close this dialog.
+        """
+        self.close()
 
 
 menuNames = collections.OrderedDict([(N_('File Menu'), _('File')),

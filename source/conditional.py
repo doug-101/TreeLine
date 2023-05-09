@@ -4,7 +4,7 @@
 # conditional.py, provides a class to store field comparison functions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2023, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -591,6 +591,11 @@ class ConditionDialog(QDialog):
             event -- the close event
         """
         self.dialogShown.emit(False)
+
+    def reject(self):
+        """Handle use of escape key to close this dialog.
+        """
+        self.close()
 
 
 class ConditionRule(QGroupBox):
