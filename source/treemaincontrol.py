@@ -4,7 +4,7 @@
 # treemaincontrol.py, provides a class for global tree commands
 #
 # TreeLine, an information storage program
-# Copyright (C) 2020, Douglas W. Bell
+# Copyright (C) 2023, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -19,6 +19,7 @@ import ast
 import io
 import gzip
 import zlib
+import datetime
 import platform
 from PyQt5.QtCore import QIODevice, QObject, Qt, PYQT_VERSION_STR, qVersion
 from PyQt5.QtGui import QColor, QFont, QPalette
@@ -271,7 +272,9 @@ class TreeMainControl(QObject):
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
-            self.createLocalControl(pathObj, None, forceNewWindow)
+            fileModTime = datetime.datetime.fromtimestamp(pathObj.stat().
+                                                          st_mtime)
+            self.createLocalControl(pathObj, None, forceNewWindow, fileModTime)
             self.recentFiles.addItem(pathObj)
             if not (globalref.genOptions['SaveTreeStates'] and
                     self.recentFiles.retrieveTreeState(self.activeControl)):
@@ -296,7 +299,8 @@ class TreeMainControl(QObject):
             if compressed or encrypted:
                 try:
                     textFileObj = io.TextIOWrapper(fileObj, encoding='utf-8')
-                    self.createLocalControl(textFileObj, None, forceNewWindow)
+                    self.createLocalControl(textFileObj, None, forceNewWindow,
+                                            fileModTime)
                     fileObj.close()
                     textFileObj.close()
                     self.recentFiles.addItem(pathObj)
@@ -452,7 +456,7 @@ class TreeMainControl(QObject):
         return True
 
     def createLocalControl(self, pathObj=None, treeStruct=None,
-                           forceNewWindow=False):
+                           forceNewWindow=False, fileModTime=None):
         """Create a new local control object and add it to the list.
 
         Use an imported structure if given or open the file if path is given.
@@ -460,10 +464,12 @@ class TreeMainControl(QObject):
             pathObj -- the path object or file object for the control to open
             treeStruct -- the imported structure to use
             forceNewWindow -- if True, use a new window regardless of option
+            fileModTime -- file modified time for external modification checks
         """
         self.creatingLocalControlFlag = True
         localControl = treelocalcontrol.TreeLocalControl(self.allActions,
                                                          pathObj, treeStruct,
+                                                         fileModTime,
                                                          forceNewWindow)
         localControl.controlActivated.connect(self.updateLocalControlRef)
         localControl.controlClosed.connect(self.removeLocalControlRef)

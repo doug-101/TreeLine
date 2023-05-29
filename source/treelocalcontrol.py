@@ -4,7 +4,7 @@
 # treelocalcontrol.py, provides a class for the main tree commands
 #
 # TreeLine, an information storage program
-# Copyright (C) 2022, Douglas W. Bell
+# Copyright (C) 2023, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -17,6 +17,7 @@ import json
 import os
 import sys
 import gzip
+import datetime
 import operator
 from itertools import chain
 from PyQt5.QtCore import QObject, QTimer, Qt, pyqtSignal
@@ -46,7 +47,7 @@ class TreeLocalControl(QObject):
     controlActivated = pyqtSignal(QObject)
     controlClosed = pyqtSignal(QObject)
     def __init__(self, allActions, fileObj=None, treeStruct=None,
-                 forceNewWindow=False, parent=None):
+                 fileModTime=None, forceNewWindow=False, parent=None):
         """Initialize the local tree controls.
 
         Use an imported structure if given or open the file if path is given.
@@ -55,6 +56,7 @@ class TreeLocalControl(QObject):
             allActions -- a dict containing the upper level actions
             fileObj -- the path object or file object to open, if given
             treeStruct -- an imported tree structure file, if given
+            fileModTime -- file modified time for external modification checks
             forceNewWindow -- if True, use a new window regardless of option
             parent -- a parent object if given
         """
@@ -63,6 +65,7 @@ class TreeLocalControl(QObject):
         self.spellCheckLang = ''
         self.allActions = allActions.copy()
         self.setupActions()
+        self.fileModTime = fileModTime
         self.filePathObj = (pathlib.Path(fileObj.name) if
                             hasattr(fileObj, 'read') else fileObj)
         if treeStruct:
@@ -770,6 +773,17 @@ class TreeLocalControl(QObject):
         if not self.filePathObj or self.imported:
             self.fileSaveAs()
             return
+        if not backupFile and self.fileModTime:
+            fileSeconds = self.filePathObj.stat().st_mtime
+            storedSeconds = self.fileModTime.timestamp()
+            # check for an external file mod with a 10 second margin
+            if fileSeconds > storedSeconds + 10:
+                dialog = miscdialogs.ExtModDialog(datetime.datetime.
+                                                  fromtimestamp(fileSeconds),
+                                                  self.activeWindow)
+                if dialog.exec_() != QDialog.Accepted:
+                    # user cancelled the save
+                    return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         savePathObj = self.filePathObj
         if backupFile:
@@ -823,6 +837,7 @@ class TreeLocalControl(QObject):
                 return
         QApplication.restoreOverrideCursor()
         if not backupFile:
+            self.fileModTime = datetime.datetime.now()
             fileInfoFormat = self.structure.treeFormats.fileInfoFormat
             fileInfoFormat.updateFileInfo(self.filePathObj,
                                           self.structure.fileInfoNode)
@@ -851,6 +866,7 @@ class TreeLocalControl(QObject):
                                                  str(defaultPathObj),
                                                  filters, initFilter))
         if newPath:
+            self.fileModTime = None
             self.filePathObj = pathlib.Path(newPath)
             if not self.filePathObj.suffix:
                 self.filePathObj = self.filePathObj.with_suffix('.trln')

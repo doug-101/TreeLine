@@ -329,6 +329,38 @@ class PasswordDialog(QDialog):
         self.editors[0].setFocus()
 
 
+class ExtModDialog(QDialog):
+    """Dialog for how to hanlde a file that was externally modified.
+    """
+    def __init__(self, modTime, parent=None):
+        """Cretate the external mod dialog.
+
+        Arguments:
+        modTime -- the datetime of the external mod
+            parent -- the parent window
+        """
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
+                            Qt.WindowCloseButtonHint)
+        self.setWindowTitle(_('Externally Modified File'))
+        topLayout = QVBoxLayout(self)
+        self.setLayout(topLayout)
+        label = QLabel(_('File was externally modified at {}').
+                       format(modTime.isoformat(' ', 'seconds')))
+        topLayout.addWidget(label)
+        ctrlLayout = QHBoxLayout()
+        topLayout.addLayout(ctrlLayout)
+        ctrlLayout.addStretch(0)
+        overwriteButton = QPushButton(_('&Overwrite File'))
+        overwriteButton.setAutoDefault(False)
+        ctrlLayout.addWidget(overwriteButton)
+        overwriteButton.clicked.connect(self.accept)
+        cancelButton = QPushButton(_('&Cancel Save'))
+        cancelButton.setAutoDefault(False)
+        ctrlLayout.addWidget(cancelButton)
+        cancelButton.clicked.connect(self.reject)
+
+
 class TemplateFileItem:
     """Helper class to store template paths and info.
     """
