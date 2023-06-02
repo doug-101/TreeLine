@@ -146,7 +146,7 @@
         <translation>Удовлетворяющие условию совпадения не найдены</translation>
     </message>
     <message>
-        <location filename="conditional.py" line="609"/>
+        <location filename="conditional.py" line="614"/>
         <source>Rule {0}</source>
         <translation>Правило {0}</translation>
     </message>
@@ -332,72 +332,72 @@
         <translation>&amp;Отмена</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="168"/>
+        <location filename="configdialog.py" line="169"/>
         <source>&amp;Hide Advanced</source>
         <translation>&amp;Скрыть Дополнительные Настройки</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="195"/>
+        <location filename="configdialog.py" line="196"/>
         <source>Error - circular reference in math field equations</source>
         <translation>Ошибка — циклическая ссылка в выражениях математического поля</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="294"/>
+        <location filename="configdialog.py" line="300"/>
         <source>Add or Remove Data Types</source>
         <translation>Добавить или Удалить Типы Данных</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="304"/>
+        <location filename="configdialog.py" line="310"/>
         <source>&amp;New Type...</source>
         <translation>&amp;Новый Тип...</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="307"/>
+        <location filename="configdialog.py" line="313"/>
         <source>Co&amp;py Type...</source>
         <translation>С&amp;копировать Тип...</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="310"/>
+        <location filename="configdialog.py" line="316"/>
         <source>Rena&amp;me Type...</source>
         <translation>&amp;Переименовать Тип...</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="313"/>
+        <location filename="configdialog.py" line="319"/>
         <source>&amp;Delete Type</source>
         <translation>&amp;Удалить Тип</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="330"/>
+        <location filename="configdialog.py" line="336"/>
         <source>Add Type</source>
         <translation>Добавить Тип</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="330"/>
+        <location filename="configdialog.py" line="336"/>
         <source>Enter new type name:</source>
         <translation>Введите имя нового типа:</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="346"/>
+        <location filename="configdialog.py" line="352"/>
         <source>Copy Type</source>
         <translation>Копировать Тип</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="348"/>
+        <location filename="configdialog.py" line="354"/>
         <source>&amp;Derive from original</source>
         <translation>Наследовать от &amp;источника</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="369"/>
+        <location filename="configdialog.py" line="375"/>
         <source>Rename Type</source>
         <translation>Переименовать Тип</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="370"/>
+        <location filename="configdialog.py" line="376"/>
         <source>Rename from {} to:</source>
         <translation>Переименовать из {} в:</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="410"/>
+        <location filename="configdialog.py" line="416"/>
         <source>Cannot delete data type being used by nodes</source>
         <translation>Невозможно удалить тип, в узлах которого содержатся данные</translation>
     </message>
@@ -405,752 +405,758 @@
         <location filename="configdialog.py" line="430"/>
         <source>[None]</source>
         <comment>тип не задан</comment>
-        <translation>[Ни один]</translation>
+        <translation type="obsolete">[Ни один]</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="443"/>
+        <location filename="configdialog.py" line="449"/>
         <source>&amp;Data Type</source>
         <translation>Тип &amp;Данных</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="450"/>
+        <location filename="configdialog.py" line="456"/>
         <source>Default Child &amp;Type</source>
         <translation>Тип &amp;Дочернего Узла по Умолчанию</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="458"/>
+        <location filename="configdialog.py" line="464"/>
         <source>Icon</source>
         <translation>Значок</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="464"/>
+        <location filename="configdialog.py" line="470"/>
         <source>Change &amp;Icon</source>
         <translation>Сменить &amp;Значок</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="468"/>
+        <location filename="configdialog.py" line="474"/>
         <source>Output Options</source>
         <translation>Опции Вывода</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="471"/>
+        <location filename="configdialog.py" line="477"/>
         <source>Add &amp;blank lines between nodes</source>
         <translation>Добавить &amp;пустые строки между узлами</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="475"/>
+        <location filename="configdialog.py" line="481"/>
         <source>Allow &amp;HTML rich text in format</source>
         <translation>Учитывать при форматировании &amp;HTML-разметку</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="478"/>
+        <location filename="configdialog.py" line="484"/>
         <source>Add text bullet&amp;s</source>
         <translation>Добавить &amp;маркеры текста</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="481"/>
+        <location filename="configdialog.py" line="487"/>
         <source>Use a table for field &amp;data</source>
         <translation>Использовать таблицу для &amp;данных поля</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="486"/>
+        <location filename="configdialog.py" line="492"/>
         <source>Combination &amp;&amp; Child List Output &amp;Separator</source>
         <translation>&amp;Разделитель Значений Типа Комбинация &amp;&amp; Списков Дочерних Узлов</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="498"/>
+        <location filename="configdialog.py" line="504"/>
         <source>Derived from &amp;Generic Type</source>
         <translation>Сделать Производным от &amp;Общего Типа</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="508"/>
+        <location filename="configdialog.py" line="514"/>
         <source>Automatic Types</source>
         <translation>Автоматические Типы</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="516"/>
+        <location filename="configdialog.py" line="522"/>
         <source>Child Type Limits</source>
         <translation>Ограничения Типа Дочернего Узла</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="554"/>
+        <location filename="configdialog.py" line="560"/>
         <source>None</source>
         <translation>Ни один</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="643"/>
+        <location filename="configdialog.py" line="649"/>
         <source>Modify Co&amp;nditional Types</source>
         <translation>Изменить &amp;Условные Типы</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="647"/>
+        <location filename="configdialog.py" line="653"/>
         <source>Create Co&amp;nditional Types</source>
         <translation>Создать У&amp;словные Типы</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="655"/>
+        <location filename="configdialog.py" line="661"/>
         <source>Set Types Conditionally</source>
         <translation>Назначить Типы в зависимости от Условий</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="719"/>
+        <location filename="configdialog.py" line="725"/>
         <source>Modify &amp;Field List</source>
         <translation>Изменить Список &amp;Полей</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="726"/>
+        <location filename="configdialog.py" line="732"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="726"/>
+        <location filename="configdialog.py" line="732"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="727"/>
+        <location filename="configdialog.py" line="733"/>
         <source>Sort Key</source>
         <translation>Ключ Сортировки</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="732"/>
+        <location filename="configdialog.py" line="738"/>
         <source>Move U&amp;p</source>
         <translation>Переместить В&amp;верх</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="735"/>
+        <location filename="configdialog.py" line="741"/>
         <source>Move Do&amp;wn</source>
         <translation>Переместить В&amp;низ</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="738"/>
+        <location filename="configdialog.py" line="744"/>
         <source>&amp;New Field...</source>
         <translation>&amp;Новое Поле...</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="741"/>
+        <location filename="configdialog.py" line="747"/>
         <source>Rena&amp;me Field...</source>
         <translation>Пе&amp;реименовать Поле...</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="744"/>
+        <location filename="configdialog.py" line="750"/>
         <source>Dele&amp;te Field</source>
         <translation>&amp;Удалить Поле</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="747"/>
+        <location filename="configdialog.py" line="753"/>
         <source>Sort &amp;Keys...</source>
         <translation>Ключи &amp;Сортировки...</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="773"/>
+        <location filename="configdialog.py" line="779"/>
         <source>fwd</source>
         <translation>&gt;&gt;</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="773"/>
+        <location filename="configdialog.py" line="779"/>
         <source>rev</source>
         <translation>&lt;&lt;</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="837"/>
+        <location filename="configdialog.py" line="843"/>
         <source>Enter new field name:</source>
         <translation>Введите имя нового поля:</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="837"/>
+        <location filename="configdialog.py" line="843"/>
         <source>Add Field</source>
         <translation>Добавить Поле</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="852"/>
+        <location filename="configdialog.py" line="858"/>
         <source>Rename Field</source>
         <translation>Переименовать Поле</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="909"/>
+        <location filename="configdialog.py" line="915"/>
         <source>File Info Reference</source>
         <translation>Ссылка на Информацию о Файле</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="931"/>
+        <location filename="configdialog.py" line="937"/>
         <source>F&amp;ield</source>
         <translation>&amp;Поле</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="939"/>
+        <location filename="configdialog.py" line="945"/>
         <source>&amp;Field Type</source>
         <translation>Тип &amp;Поля</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="947"/>
+        <location filename="configdialog.py" line="953"/>
         <source>Outpu&amp;t Format</source>
         <translation>Формат &amp;Вывода</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="953"/>
+        <location filename="configdialog.py" line="959"/>
         <source>Format &amp;Help</source>
         <translation>Справка по &amp;Форматированию</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="957"/>
+        <location filename="configdialog.py" line="963"/>
         <source>Extra Text</source>
         <translation>Дополнительный Текст</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="961"/>
+        <location filename="configdialog.py" line="967"/>
         <source>&amp;Prefix</source>
         <translation>&amp;Приставка</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="968"/>
+        <location filename="configdialog.py" line="974"/>
         <source>Suffi&amp;x</source>
         <translation>&amp;Окончание</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="975"/>
+        <location filename="configdialog.py" line="981"/>
         <source>Default &amp;Value for New Nodes</source>
         <translation>Значение по &amp;Умолчанию для Новых Узлов</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="984"/>
+        <location filename="configdialog.py" line="990"/>
         <source>Editor Height</source>
         <translation>Высота Поля Редактора</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="987"/>
+        <location filename="configdialog.py" line="993"/>
         <source>Num&amp;ber of text lines</source>
         <translation>&amp;Число строк текста</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="996"/>
+        <location filename="configdialog.py" line="1002"/>
         <source>Math Equation</source>
         <translation>Математическое Выражение</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1002"/>
+        <location filename="configdialog.py" line="1008"/>
         <source>Define Equation</source>
         <translation>Задать Выражение</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1006"/>
+        <location filename="configdialog.py" line="1012"/>
         <source>Output HTML</source>
         <translation>Вывод в HTML</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1009"/>
+        <location filename="configdialog.py" line="1015"/>
         <source>Evaluate &amp;HTML tags</source>
         <translation>Определять теги &amp;HTML</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1238"/>
+        <location filename="configdialog.py" line="1244"/>
         <source>F&amp;ield List</source>
         <translation>Список &amp;Полей</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1262"/>
+        <location filename="configdialog.py" line="1268"/>
         <source>&amp;Title Format</source>
         <translation>Формат &amp;Заголовка</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1284"/>
+        <location filename="configdialog.py" line="1290"/>
         <source>Out&amp;put Format</source>
         <translation>Формат &amp;Вывода</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1296"/>
+        <location filename="configdialog.py" line="1302"/>
         <source>Other Field References</source>
         <translation>Ссылки на Другие Поля</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1303"/>
+        <location filename="configdialog.py" line="1309"/>
         <source>Reference Le&amp;vel</source>
         <translation>&amp;Уровень Ссылки</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1313"/>
+        <location filename="configdialog.py" line="1319"/>
         <source>Refere&amp;nce Type</source>
         <translation>Тип &amp;Ссылки</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1639"/>
+        <location filename="configdialog.py" line="1645"/>
         <source>[All Types Available]</source>
         <translation>[Все Типы Допустимы]</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1740"/>
+        <location filename="configdialog.py" line="1746"/>
         <source>&amp;Select All</source>
         <translation>Выбрать &amp;Все</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1741"/>
+        <location filename="configdialog.py" line="1747"/>
         <source>Select &amp;None</source>
         <translation>Не Выбрать &amp;Ничего</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1802"/>
+        <location filename="configdialog.py" line="1808"/>
         <source>The name cannot be empty</source>
         <translation>Имя не может быть пустым</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1804"/>
+        <location filename="configdialog.py" line="1810"/>
         <source>The name must start with a letter</source>
         <translation>Имя должно начинаться с буквы</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1806"/>
+        <location filename="configdialog.py" line="1812"/>
         <source>The name cannot start with "xml"</source>
         <translation>Имя не может начинаться с "xml"</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1808"/>
+        <location filename="configdialog.py" line="1814"/>
         <source>The name cannot contain spaces</source>
         <translation>Имя не может содержать пробелы</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1811"/>
+        <location filename="configdialog.py" line="1817"/>
         <source>The following characters are not allowed: {}</source>
         <translation>Следующие символы недопустимы: {}</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1814"/>
+        <location filename="configdialog.py" line="1820"/>
         <source>The name was already used</source>
         <translation>Имя уже использовано</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1841"/>
+        <location filename="configdialog.py" line="1847"/>
         <source>Set Data Type Icon</source>
         <translation>Назначить Значок Типа Данных</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1854"/>
+        <location filename="configdialog.py" line="1860"/>
         <source>Clear &amp;Select</source>
         <translation>Очистить &amp;Выбор</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1915"/>
+        <location filename="configdialog.py" line="1921"/>
         <source>reverse</source>
         <translation>сменить направление на обратное</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1915"/>
+        <location filename="configdialog.py" line="1921"/>
         <source>forward</source>
         <translation>вперед</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1930"/>
+        <location filename="configdialog.py" line="1936"/>
         <source>Sort Key Fields</source>
         <translation>Поля Ключа Сортировки</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1934"/>
+        <location filename="configdialog.py" line="1940"/>
         <source>Available &amp;Fields</source>
         <translation>Допустимые &amp;Поля</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1956"/>
+        <location filename="configdialog.py" line="1962"/>
         <source>&amp;Sort Criteria</source>
         <translation>Критерии &amp;Сортировки</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1963"/>
+        <location filename="configdialog.py" line="1969"/>
         <source>Field</source>
         <translation>Поле</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1963"/>
+        <location filename="configdialog.py" line="1969"/>
         <source>Direction</source>
         <translation>Направление</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1968"/>
+        <location filename="configdialog.py" line="1974"/>
         <source>Move &amp;Up</source>
         <translation>Переместить &amp;Вверх</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1971"/>
+        <location filename="configdialog.py" line="1977"/>
         <source>&amp;Move Down</source>
         <translation>Переместить В&amp;низ</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="1974"/>
+        <location filename="configdialog.py" line="1980"/>
         <source>Flip &amp;Direction</source>
         <translation>Сменить &amp;Направление</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2132"/>
+        <location filename="configdialog.py" line="2138"/>
         <source>Parent Reference</source>
         <translation>Ссылка на Поля Родительского Узла</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2132"/>
+        <location filename="configdialog.py" line="2138"/>
         <source>Self Reference</source>
         <translation>Ссылка на Поля Своего Узла</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2133"/>
+        <location filename="configdialog.py" line="2139"/>
         <source>Child Count</source>
         <translation>Число Подсчитанных Дочерних Узлов</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2133"/>
+        <location filename="configdialog.py" line="2139"/>
         <source>Root Reference</source>
         <translation>Ссылка на Поле Корневого Узла</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2133"/>
+        <location filename="configdialog.py" line="2139"/>
         <source>Child Reference</source>
         <translation>Ссылка на Поле Дочернего Узла</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2136"/>
+        <location filename="configdialog.py" line="2142"/>
         <source>Number Result</source>
         <translation>Итоговое Число</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2136"/>
+        <location filename="configdialog.py" line="2142"/>
         <source>Date Result</source>
         <translation>Итоговая Дата</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2136"/>
+        <location filename="configdialog.py" line="2142"/>
         <source>Time Result</source>
         <translation>Итоговое Время</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2137"/>
+        <location filename="configdialog.py" line="2143"/>
         <source>Boolean Result</source>
         <translation>Итоговое Значение Логического Типа</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2137"/>
+        <location filename="configdialog.py" line="2143"/>
         <source>Text Result</source>
         <translation>Итоговый Текст</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2138"/>
+        <location filename="configdialog.py" line="2144"/>
         <source>Comparison Operators</source>
         <translation>Операторы Сравнения</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2138"/>
+        <location filename="configdialog.py" line="2144"/>
         <source>Arithmetic Operators</source>
         <translation>Арифметические Операторы</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2139"/>
+        <location filename="configdialog.py" line="2145"/>
         <source>Text Operators</source>
         <translation>Текстовые Операторы</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2140"/>
+        <location filename="configdialog.py" line="2146"/>
         <source>add</source>
         <translation>сложить</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2141"/>
+        <location filename="configdialog.py" line="2147"/>
         <source>subtract</source>
         <translation>вычесть</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2142"/>
+        <location filename="configdialog.py" line="2148"/>
         <source>multiply</source>
         <translation>умножить</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2143"/>
+        <location filename="configdialog.py" line="2149"/>
         <source>divide</source>
         <translation>разделить</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2144"/>
+        <location filename="configdialog.py" line="2150"/>
         <source>floor divide</source>
         <translation>целочисленное деление</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2145"/>
+        <location filename="configdialog.py" line="2151"/>
         <source>modulus</source>
         <translation>модуль</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2146"/>
+        <location filename="configdialog.py" line="2152"/>
         <source>power</source>
         <translation>возвести в степень</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2147"/>
+        <location filename="configdialog.py" line="2153"/>
         <source>sum of items</source>
         <translation>сумма элементов</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2148"/>
+        <location filename="configdialog.py" line="2154"/>
         <source>maximum</source>
         <translation>максимум</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2149"/>
+        <location filename="configdialog.py" line="2155"/>
         <source>minimum</source>
         <translation>минимум</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2150"/>
+        <location filename="configdialog.py" line="2156"/>
         <source>average</source>
         <translation>среднее</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2151"/>
+        <location filename="configdialog.py" line="2157"/>
         <source>absolute value</source>
         <translation>абсолютное значение</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2152"/>
+        <location filename="configdialog.py" line="2158"/>
         <source>square root</source>
         <translation>квадратный корень</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2153"/>
+        <location filename="configdialog.py" line="2159"/>
         <source>natural logarithm</source>
         <translation>натуральный логарифм</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2154"/>
+        <location filename="configdialog.py" line="2160"/>
         <source>base-10 logarithm</source>
         <translation>десятичный логарифм</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2155"/>
+        <location filename="configdialog.py" line="2161"/>
         <source>factorial</source>
         <translation>факториал</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2156"/>
+        <location filename="configdialog.py" line="2162"/>
         <source>round to num digits</source>
         <translation>округлить до числа разрядов</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2157"/>
+        <location filename="configdialog.py" line="2163"/>
         <source>lower integer</source>
         <translation>меньшее целое число</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2158"/>
+        <location filename="configdialog.py" line="2164"/>
         <source>higher integer</source>
         <translation>большее целое число</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2159"/>
+        <location filename="configdialog.py" line="2165"/>
         <source>truncated integer</source>
         <translation>усеченное целое число</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2160"/>
+        <location filename="configdialog.py" line="2166"/>
         <source>floating point</source>
         <translation>плавающая точка</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2161"/>
+        <location filename="configdialog.py" line="2167"/>
         <source>sine of radians</source>
         <translation>синус в радианах</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2162"/>
+        <location filename="configdialog.py" line="2168"/>
         <source>cosine of radians</source>
         <translation>косинус в радианах</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2163"/>
+        <location filename="configdialog.py" line="2169"/>
         <source>tangent of radians</source>
         <translation>тангенс в радианах</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2164"/>
+        <location filename="configdialog.py" line="2170"/>
         <source>arc sine</source>
         <translation>арксинус</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2165"/>
+        <location filename="configdialog.py" line="2171"/>
         <source>arc cosine</source>
         <translation>арккосинус</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2166"/>
+        <location filename="configdialog.py" line="2172"/>
         <source>arc tangent</source>
         <translation>арктангенс</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2167"/>
+        <location filename="configdialog.py" line="2173"/>
         <source>radians to degrees</source>
         <translation>радианы в градусы</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2168"/>
+        <location filename="configdialog.py" line="2174"/>
         <source>degrees to radians</source>
         <translation>градусы в радианы</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2169"/>
+        <location filename="configdialog.py" line="2175"/>
         <source>pi constant</source>
         <translation>число пи</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2170"/>
+        <location filename="configdialog.py" line="2176"/>
         <source>natural log constant</source>
         <translation>основание натурального логарифма</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2171"/>
+        <location filename="configdialog.py" line="2177"/>
         <source>equal to</source>
         <translation>равно</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2172"/>
+        <location filename="configdialog.py" line="2178"/>
         <source>less than</source>
         <translation>меньше чем</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2173"/>
+        <location filename="configdialog.py" line="2179"/>
         <source>greater than</source>
         <translation>больше чем</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2174"/>
+        <location filename="configdialog.py" line="2180"/>
         <source>less than or equal to</source>
         <translation>меньше или равно</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2175"/>
+        <location filename="configdialog.py" line="2181"/>
         <source>greater than or equal to</source>
         <translation>больше или равно</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2176"/>
+        <location filename="configdialog.py" line="2182"/>
         <source>not equal to</source>
         <translation>не равно</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2178"/>
+        <location filename="configdialog.py" line="2184"/>
         <source>true value, condition, false value</source>
         <translation>истинное значение, условие, ложное значение</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2179"/>
+        <location filename="configdialog.py" line="2185"/>
         <source>logical and</source>
         <translation>логическое И</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2180"/>
+        <location filename="configdialog.py" line="2186"/>
         <source>logical or</source>
         <translation>логическое ИЛИ</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2182"/>
+        <location filename="configdialog.py" line="2188"/>
         <source>true if 1st text arg starts with 2nd arg</source>
         <translation>истина, если 1-й аргумент начинается со 2-го аргумента</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2184"/>
+        <location filename="configdialog.py" line="2190"/>
         <source>true if 1st text arg ends with 2nd arg</source>
         <translation>истина, если 1-й текстовый аргумент оканчивается 2-м аргументом</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2186"/>
+        <location filename="configdialog.py" line="2192"/>
         <source>true if 1st text arg contains 2nd arg</source>
         <translation>истина, если 1-й текстовый аргумент содержит 2-й аргумент</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2187"/>
+        <location filename="configdialog.py" line="2193"/>
         <source>concatenate text</source>
         <translation>сцепить текстовые строки</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2188"/>
+        <location filename="configdialog.py" line="2194"/>
         <source>join text using 1st arg as separator</source>
         <translation>присоединить текст, используя значение 1-го аргумента в качестве разделителя</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2189"/>
+        <location filename="configdialog.py" line="2195"/>
         <source>convert text to upper case</source>
         <translation>преобразовать текст в верхний регистр</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2190"/>
+        <location filename="configdialog.py" line="2196"/>
         <source>convert text to lower case</source>
         <translation>преобразовать текст в нижний регистр</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2191"/>
+        <location filename="configdialog.py" line="2197"/>
         <source>in 1st arg, replace 2nd arg with 3rd arg</source>
         <translation>заменить в 1-м аргументе 2-й аргумент 3-м аргументом</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2212"/>
+        <location filename="configdialog.py" line="2218"/>
         <source>Define Math Field Equation</source>
         <translation>Задать Выражение Математического Поля</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2215"/>
+        <location filename="configdialog.py" line="2221"/>
         <source>Field References</source>
         <translation>Ссылки на Поле</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2221"/>
+        <location filename="configdialog.py" line="2227"/>
         <source>Reference &amp;Level</source>
         <translation>&amp;Уровень Ссылки</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2231"/>
+        <location filename="configdialog.py" line="2237"/>
         <source>Reference &amp;Type</source>
         <translation>&amp;Тип Ссылки</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2241"/>
+        <location filename="configdialog.py" line="2247"/>
         <source>Available &amp;Field List</source>
         <translation>Список Допустимых &amp;Полей</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2250"/>
+        <location filename="configdialog.py" line="2256"/>
         <source>&amp;Result Type</source>
         <translation>&amp;Тип Результата</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2260"/>
+        <location filename="configdialog.py" line="2266"/>
         <source>Operations</source>
         <translation>Операции</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2266"/>
+        <location filename="configdialog.py" line="2272"/>
         <source>O&amp;perator Type</source>
         <translation>Тип &amp;Оператора</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2276"/>
+        <location filename="configdialog.py" line="2282"/>
         <source>Oper&amp;ator List</source>
         <translation>Список &amp;Операторов</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2283"/>
+        <location filename="configdialog.py" line="2289"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2309"/>
+        <location filename="configdialog.py" line="2315"/>
         <source>&amp;Equation</source>
         <translation>&amp;Выражение</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2343"/>
+        <location filename="configdialog.py" line="2349"/>
         <source>Count</source>
         <translation>Подсчитать</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2344"/>
+        <location filename="configdialog.py" line="2350"/>
         <source>Number of Children</source>
         <translation>Число Дочерних Узлов</translation>
     </message>
     <message>
-        <location filename="configdialog.py" line="2467"/>
+        <location filename="configdialog.py" line="2473"/>
         <source>Equation error: {}</source>
         <translation>Ошибка в выражении: {}</translation>
+    </message>
+    <message>
+        <location filename="configdialog.py" line="436"/>
+        <source>[None]</source>
+        <comment>no type set</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1316,7 +1322,7 @@
     <message>
         <location filename="miscdialogs.py" line="207"/>
         <source>Language code or dictionary (optional)</source>
-        <translation>Код языка или словарь (по желанию)</translation>
+        <translation type="obsolete">Код языка или словарь (по желанию)</translation>
     </message>
     <message>
         <location filename="miscdialogs.py" line="213"/>
@@ -1364,12 +1370,12 @@
         <translation>Вновь набранный пароль не подходит</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="397"/>
+        <location filename="miscdialogs.py" line="429"/>
         <source>Default - Single Line Text</source>
         <translation>По Умолчанию — Однострочный Текст</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="479"/>
+        <location filename="miscdialogs.py" line="511"/>
         <source>TreeLine - Serious Error</source>
         <translation>TreeLine — Серьезная Ошибка</translation>
     </message>
@@ -1377,498 +1383,534 @@
         <location filename="miscdialogs.py" line="483"/>
         <source>A serious error has occurred.  TreeLine could be in an unstable state. Recommend saving any file changes under another filename and restart TreeLine. The debugging info shown below can be copied and emailed to doug101@bellz.org along with an explanation of the circumstances.
 		</source>
-        <translation>Возникла серьезная ошибка. TreeLine может находиться в нестабильном состоянии. Рекомендуется сохранить файл с внесенными изменениями под другим именем и перезапустить TreeLine. Отладочную информацию, приведенную ниже, Вы можете скопировать и отправить электронной почтой на e-mail: doug101@bellz.org с описанием обстоятельств возникновения ошибки.
+        <translation type="obsolete">Возникла серьезная ошибка. TreeLine может находиться в нестабильном состоянии. Рекомендуется сохранить файл с внесенными изменениями под другим именем и перезапустить TreeLine. Отладочную информацию, приведенную ниже, Вы можете скопировать и отправить электронной почтой на e-mail: doug101@bellz.org с описанием обстоятельств возникновения ошибки.
 		</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="508"/>
+        <location filename="miscdialogs.py" line="540"/>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="535"/>
+        <location filename="miscdialogs.py" line="567"/>
         <source>&amp;Search Text</source>
         <translation>&amp;Искомый Текст</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="545"/>
+        <location filename="miscdialogs.py" line="577"/>
         <source>What to Search</source>
         <translation>В Чем Искать</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="549"/>
+        <location filename="miscdialogs.py" line="581"/>
         <source>Full &amp;data</source>
         <translation>Во всех &amp;данных</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="552"/>
+        <location filename="miscdialogs.py" line="584"/>
         <source>&amp;Titles only</source>
         <translation>Только в &amp;заголовках</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="557"/>
+        <location filename="miscdialogs.py" line="589"/>
         <source>How to Search</source>
         <translation>Как Искать</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="561"/>
+        <location filename="miscdialogs.py" line="593"/>
         <source>&amp;Key words</source>
         <translation>&amp;Ключевые слова</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="564"/>
+        <location filename="miscdialogs.py" line="596"/>
         <source>Key full &amp;words</source>
         <translation>Полные ключевые &amp;слова</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="567"/>
+        <location filename="miscdialogs.py" line="599"/>
         <source>F&amp;ull phrase</source>
         <translation>Полное &amp;выражение</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="570"/>
+        <location filename="miscdialogs.py" line="602"/>
         <source>&amp;Regular expression</source>
         <translation>&amp;Регулярное выражение</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="578"/>
+        <location filename="miscdialogs.py" line="610"/>
         <source>Find</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="582"/>
+        <location filename="miscdialogs.py" line="614"/>
         <source>Find &amp;Next</source>
         <translation>Найти &amp;Следующий</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="589"/>
+        <location filename="miscdialogs.py" line="621"/>
         <source>Filter</source>
         <translation>Фильтровать</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="590"/>
+        <location filename="miscdialogs.py" line="622"/>
         <source>&amp;Filter</source>
         <translation>&amp;Фильтровать</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="593"/>
+        <location filename="miscdialogs.py" line="625"/>
         <source>&amp;End Filter</source>
         <translation>&amp;Прекратить Фильтрацию</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="660"/>
+        <location filename="miscdialogs.py" line="692"/>
         <source>Search string "{0}" not found</source>
         <translation>Искомая строка "{0}" не найдена</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="721"/>
+        <location filename="miscdialogs.py" line="758"/>
         <source>Find and Replace</source>
         <translation>Поиск и Замена</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="734"/>
+        <location filename="miscdialogs.py" line="771"/>
         <source>Replacement &amp;Text</source>
         <translation>Заменяющий &amp;Текст</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="744"/>
+        <location filename="miscdialogs.py" line="781"/>
         <source>Any &amp;match</source>
         <translation>Любое &amp;совпадение</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="747"/>
+        <location filename="miscdialogs.py" line="784"/>
         <source>Full &amp;words</source>
         <translation>Целые &amp;слова</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="750"/>
+        <location filename="miscdialogs.py" line="787"/>
         <source>Re&amp;gular expression</source>
         <translation>Ре&amp;гулярное выражение</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="756"/>
+        <location filename="miscdialogs.py" line="793"/>
         <source>&amp;Node Type</source>
         <translation>Тип &amp;Узла</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="763"/>
+        <location filename="miscdialogs.py" line="800"/>
         <source>N&amp;ode Fields</source>
         <translation>Поля &amp;Узлов</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="772"/>
+        <location filename="miscdialogs.py" line="809"/>
         <source>Find &amp;Previous</source>
         <translation>Найти &amp;Предыдущий</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="775"/>
+        <location filename="miscdialogs.py" line="812"/>
         <source>&amp;Find Next</source>
         <translation>Найти &amp;Следующий</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="779"/>
+        <location filename="miscdialogs.py" line="816"/>
         <source>&amp;Replace</source>
         <translation>&amp;Заменить</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="782"/>
+        <location filename="miscdialogs.py" line="819"/>
         <source>Replace &amp;All</source>
         <translation>Заменить &amp;Все</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="823"/>
+        <location filename="miscdialogs.py" line="860"/>
         <source>[All Types]</source>
         <translation>[Все Типы]</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="845"/>
+        <location filename="miscdialogs.py" line="882"/>
         <source>[All Fields]</source>
         <translation>[Все Поля]</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="885"/>
+        <location filename="miscdialogs.py" line="922"/>
         <source>Error - invalid regular expression</source>
         <translation>Ошибка — неверное регулярное выражение</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="895"/>
+        <location filename="miscdialogs.py" line="932"/>
         <source>Search text "{0}" not found</source>
         <translation>Искомый текст "{0}" не найден</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="919"/>
+        <location filename="miscdialogs.py" line="956"/>
         <source>Error - replacement failed</source>
         <translation>Ошибка — замена невозможна</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="933"/>
+        <location filename="miscdialogs.py" line="970"/>
         <source>Replaced {0} matches</source>
         <translation>Заменено {0} совпадений</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="962"/>
+        <location filename="miscdialogs.py" line="1004"/>
         <source>Sort Nodes</source>
         <translation>СортироватьУзлы</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="968"/>
+        <location filename="miscdialogs.py" line="1010"/>
         <source>What to Sort</source>
         <translation>Что Сортировать</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="972"/>
+        <location filename="miscdialogs.py" line="1014"/>
         <source>&amp;Entire tree</source>
         <translation>Все &amp;дерево</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="975"/>
+        <location filename="miscdialogs.py" line="1017"/>
         <source>Selected &amp;branches</source>
         <translation>Выбранные &amp;ветви</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="978"/>
+        <location filename="miscdialogs.py" line="1020"/>
         <source>Selection's childre&amp;n</source>
         <translation>&amp;Дочерние узлы в выбранном</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="981"/>
+        <location filename="miscdialogs.py" line="1023"/>
         <source>Selection's &amp;siblings</source>
         <translation>&amp;Сестринские узлы в выбранном</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="988"/>
+        <location filename="miscdialogs.py" line="1030"/>
         <source>Sort Method</source>
         <translation>Способ Сортировки</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="992"/>
+        <location filename="miscdialogs.py" line="1034"/>
         <source>&amp;Predefined Key Fields</source>
         <translation>&amp;Предопределенные Ключевые Поля</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="995"/>
+        <location filename="miscdialogs.py" line="1037"/>
         <source>Node &amp;Titles</source>
         <translation>&amp;Заголовки Узлов</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1000"/>
+        <location filename="miscdialogs.py" line="1042"/>
         <source>Sort Direction</source>
         <translation>Направление Сортировки</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1004"/>
+        <location filename="miscdialogs.py" line="1046"/>
         <source>&amp;Forward</source>
         <translation>&amp;Вперед</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1007"/>
+        <location filename="miscdialogs.py" line="1049"/>
         <source>&amp;Reverse</source>
         <translation>&amp;Сменить направление</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1018"/>
+        <location filename="miscdialogs.py" line="1060"/>
         <source>&amp;Apply</source>
         <translation>&amp;Применить</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1109"/>
+        <location filename="miscdialogs.py" line="1156"/>
         <source>Update Node Numbering</source>
         <translation>Обновить Нумерацию Узлов</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1113"/>
+        <location filename="miscdialogs.py" line="1160"/>
         <source>What to Update</source>
         <translation>Что Обновлять</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1123"/>
+        <location filename="miscdialogs.py" line="1170"/>
         <source>&amp;Selection's children</source>
         <translation>&amp;Дочерние узлы в выбранном</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1128"/>
+        <location filename="miscdialogs.py" line="1175"/>
         <source>Root Node</source>
         <translation>Корневой Узел</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1131"/>
+        <location filename="miscdialogs.py" line="1178"/>
         <source>Include top-level nodes</source>
         <translation>Включить узлы верхних уровней</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1135"/>
+        <location filename="miscdialogs.py" line="1182"/>
         <source>Handling Nodes without Numbering Fields</source>
         <translation>Обработка Узлов без Полей Нумерации</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1140"/>
+        <location filename="miscdialogs.py" line="1187"/>
         <source>&amp;Ignore and skip</source>
         <translation>&amp;Игнорировать и пропустить</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1143"/>
+        <location filename="miscdialogs.py" line="1190"/>
         <source>&amp;Restart numbers for next siblings</source>
         <translation>&amp;Перезапустить нумерацию с начала для следующих сестринских узлов</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1147"/>
+        <location filename="miscdialogs.py" line="1194"/>
         <source>Reserve &amp;numbers</source>
         <translation>За&amp;резервировать номера</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1189"/>
+        <location filename="miscdialogs.py" line="1236"/>
         <source>TreeLine Numbering</source>
         <translation>Нумерация TreeLine</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1190"/>
+        <location filename="miscdialogs.py" line="1237"/>
         <source>No numbering fields were found in data types</source>
         <translation>Поля нумерации в типах данных не найдены</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1238"/>
+        <location filename="miscdialogs.py" line="1290"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1238"/>
+        <location filename="miscdialogs.py" line="1290"/>
         <source>File Menu</source>
         <translation>Меню Файл</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1239"/>
+        <location filename="miscdialogs.py" line="1291"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1239"/>
+        <location filename="miscdialogs.py" line="1291"/>
         <source>Edit Menu</source>
         <translation>Меню Правка</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1240"/>
+        <location filename="miscdialogs.py" line="1292"/>
         <source>Node</source>
         <translation>Узел</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1240"/>
+        <location filename="miscdialogs.py" line="1292"/>
         <source>Node Menu</source>
         <translation>Меню Узел</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1241"/>
+        <location filename="miscdialogs.py" line="1293"/>
         <source>Data</source>
         <translation>Данные</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1241"/>
+        <location filename="miscdialogs.py" line="1293"/>
         <source>Data Menu</source>
         <translation>Меню Данные</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1242"/>
+        <location filename="miscdialogs.py" line="1294"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1242"/>
+        <location filename="miscdialogs.py" line="1294"/>
         <source>Tools Menu</source>
         <translation>Меню Инструменты</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1243"/>
+        <location filename="miscdialogs.py" line="1295"/>
         <source>Format</source>
         <translation>Форматировать</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1243"/>
+        <location filename="miscdialogs.py" line="1295"/>
         <source>Format Menu</source>
         <translation>Меню Формат</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1244"/>
+        <location filename="miscdialogs.py" line="1296"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1244"/>
+        <location filename="miscdialogs.py" line="1296"/>
         <source>View Menu</source>
         <translation>Меню Вид</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1245"/>
+        <location filename="miscdialogs.py" line="1297"/>
         <source>Window</source>
         <translation>Окно</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1245"/>
+        <location filename="miscdialogs.py" line="1297"/>
         <source>Window Menu</source>
         <translation>Меню Окно</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1246"/>
+        <location filename="miscdialogs.py" line="1298"/>
         <source>Help</source>
         <translation>Справка</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1246"/>
+        <location filename="miscdialogs.py" line="1298"/>
         <source>Help Menu</source>
         <translation>Меню Справки</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1261"/>
+        <location filename="miscdialogs.py" line="1313"/>
         <source>Keyboard Shortcuts</source>
         <translation>Горячие Клавиши</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1274"/>
+        <location filename="miscdialogs.py" line="1326"/>
         <source>No menu</source>
         <translation>Меню отсутствует</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1289"/>
+        <location filename="miscdialogs.py" line="1341"/>
         <source>&amp;Restore Defaults</source>
         <translation>Восстановить Значения по &amp;Умолчанию</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1430"/>
+        <location filename="miscdialogs.py" line="1482"/>
         <source>Key {0} is already used</source>
         <translation>Ключ {0} уже используется</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1441"/>
+        <location filename="miscdialogs.py" line="1493"/>
         <source>Clear &amp;Key</source>
         <translation>Очистить &amp;Ключ</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1489"/>
+        <location filename="miscdialogs.py" line="1541"/>
         <source>--Separator--</source>
         <translation>--Разделитель--</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1501"/>
+        <location filename="miscdialogs.py" line="1553"/>
         <source>Customize Toolbars</source>
         <translation>Настроить Панели Инструментов</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1515"/>
+        <location filename="miscdialogs.py" line="1567"/>
         <source>Toolbar &amp;Size</source>
         <translation>&amp;Размер Панели Инструментов</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1520"/>
+        <location filename="miscdialogs.py" line="1572"/>
         <source>Large Icons</source>
         <translation>Большие Значки</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1520"/>
+        <location filename="miscdialogs.py" line="1572"/>
         <source>Small Icons</source>
         <translation>Маленькие Значки</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1523"/>
+        <location filename="miscdialogs.py" line="1575"/>
         <source>Toolbar Quantity</source>
         <translation>Количество Панелей Инструментов</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1529"/>
+        <location filename="miscdialogs.py" line="1581"/>
         <source>&amp;Toolbars</source>
         <translation>&amp;Панели Инструментов</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1534"/>
+        <location filename="miscdialogs.py" line="1586"/>
         <source>A&amp;vailable Commands</source>
         <translation>До&amp;пустимые Команды</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1558"/>
+        <location filename="miscdialogs.py" line="1610"/>
         <source>Tool&amp;bar Commands</source>
         <translation>Команды &amp;Панели Инструментов</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1573"/>
+        <location filename="miscdialogs.py" line="1625"/>
         <source>Move &amp;Up</source>
         <translation>Переместить &amp;Вверх</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1576"/>
+        <location filename="miscdialogs.py" line="1628"/>
         <source>Move &amp;Down</source>
         <translation>Переместить &amp;Вниз</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1857"/>
+        <location filename="miscdialogs.py" line="1909"/>
         <source>Customize Fonts</source>
         <translation>Настроить Шрифты</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1867"/>
+        <location filename="miscdialogs.py" line="1919"/>
         <source>&amp;Use system default font</source>
         <translation>Использовать &amp;системный шрифт по умолчанию</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1871"/>
+        <location filename="miscdialogs.py" line="1923"/>
         <source>App Default Font</source>
         <translation>Шрифт Приложения по Умолчанию</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1872"/>
+        <location filename="miscdialogs.py" line="1924"/>
         <source>&amp;Use app default font</source>
         <translation>&amp;Использовать шрифт приложения по умолчанию</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1876"/>
+        <location filename="miscdialogs.py" line="1928"/>
         <source>Tree View Font</source>
         <translation>Шифт для Просмотра Дерева</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1880"/>
+        <location filename="miscdialogs.py" line="1932"/>
         <source>Output View Font</source>
         <translation>Шрифт в Форме Вывода</translation>
     </message>
     <message>
-        <location filename="miscdialogs.py" line="1884"/>
+        <location filename="miscdialogs.py" line="1936"/>
         <source>Editor View Font</source>
         <translation>Шрифт Редактора</translation>
+    </message>
+    <message>
+        <location filename="miscdialogs.py" line="207"/>
+        <source>Language code or
+dictionary (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="miscdialogs.py" line="345"/>
+        <source>Externally Modified File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="miscdialogs.py" line="354"/>
+        <source>&amp;Overwrite File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="miscdialogs.py" line="358"/>
+        <source>&amp;Cancel Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="miscdialogs.py" line="515"/>
+        <source>A serious error has occurred.  TreeLine could be in an unstable state.
+Recommend saving any file changes under another filename and restart TreeLine.
+
+The debugging info shown below can be copied and emailed to doug101@bellz.org along with
+an explanation of the circumstances.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="miscdialogs.py" line="348"/>
+        <source>File was externally modified at {}</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2074,7 +2116,7 @@
     <message>
         <location filename="printdialogs.py" line="478"/>
         <source>Indent Offse&amp;t (line height units)</source>
-        <translation>О&amp;тступить при Печати (на количество строк)</translation>
+        <translation type="obsolete">О&amp;тступить при Печати (на количество строк)</translation>
     </message>
     <message>
         <location filename="printdialogs.py" line="537"/>
@@ -2326,6 +2368,12 @@
         <source>&amp;Suffix</source>
         <translation>&amp;Окончание</translation>
     </message>
+    <message>
+        <location filename="printdialogs.py" line="478"/>
+        <source>Indent Offse&amp;t
+(line height units)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>treenode</name>
@@ -2438,317 +2486,317 @@
         <translation>Сегодня и Сейчас</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="436"/>
+        <location filename="fieldformat.py" line="440"/>
         <source>Optional Digit	#</source>
         <translation>Необязательная Цифра	#</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="437"/>
+        <location filename="fieldformat.py" line="441"/>
         <source>Required Digit	0</source>
         <translation>Обязательная Цифра	0</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="438"/>
+        <location filename="fieldformat.py" line="442"/>
         <source>Digit or Space (external)	&lt;space&gt;</source>
         <translation>Цифра или Пробел (внешний) 	&lt;space&gt;</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="440"/>
+        <location filename="fieldformat.py" line="444"/>
         <source>Decimal Point	.</source>
         <translation>Десятичная Точка	.</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="441"/>
+        <location filename="fieldformat.py" line="445"/>
         <source>Decimal Comma	,</source>
         <translation>Десятичная Запятая	,</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="443"/>
+        <location filename="fieldformat.py" line="447"/>
         <source>Comma Separator	\,</source>
         <translation>Разделитель Запятая	\,</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="444"/>
+        <location filename="fieldformat.py" line="448"/>
         <source>Dot Separator	\.</source>
         <translation>Разделитель в виде Точки	\.</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="445"/>
+        <location filename="fieldformat.py" line="449"/>
         <source>Space Separator (internal)	&lt;space&gt;</source>
         <translation>Пробельный Разделитель (внутренний)	&lt;space&gt;</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="447"/>
+        <location filename="fieldformat.py" line="451"/>
         <source>Optional Sign	-</source>
         <translation>Необязательный Знак	-</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="448"/>
+        <location filename="fieldformat.py" line="452"/>
         <source>Required Sign	+</source>
         <translation>Необходимый Знак	+</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="450"/>
+        <location filename="fieldformat.py" line="454"/>
         <source>Exponent (capital)	E</source>
         <translation>Основание степени (большое)	E</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="451"/>
+        <location filename="fieldformat.py" line="455"/>
         <source>Exponent (small)	e</source>
         <translation>Основание степени (малое)	e</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="767"/>
+        <location filename="fieldformat.py" line="771"/>
         <source>Number	1</source>
         <translation>Номер	1</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="768"/>
+        <location filename="fieldformat.py" line="772"/>
         <source>Capital Letter	A</source>
         <translation>Заглавная Буква	A</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="769"/>
+        <location filename="fieldformat.py" line="773"/>
         <source>Small Letter	a</source>
         <translation>Строчная буква	a</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="770"/>
+        <location filename="fieldformat.py" line="774"/>
         <source>Capital Roman Numeral	I</source>
         <translation>Заглавная Римская Цифра	I</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="771"/>
+        <location filename="fieldformat.py" line="775"/>
         <source>Small Roman Numeral	i</source>
         <translation>Строчная Римская Цифра	i</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="773"/>
+        <location filename="fieldformat.py" line="777"/>
         <source>Level Separator	/</source>
         <translation>Разделитель Уровней	/</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="774"/>
+        <location filename="fieldformat.py" line="778"/>
         <source>Section Separator	.</source>
         <translation>Разделитель Разделов	.</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="776"/>
+        <location filename="fieldformat.py" line="780"/>
         <source>"/" Character	//</source>
         <translation>"/" Символ	//</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="777"/>
+        <location filename="fieldformat.py" line="781"/>
         <source>"." Character	..</source>
         <translation>"." Символ	..</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="779"/>
+        <location filename="fieldformat.py" line="783"/>
         <source>Outline Example	I../A../1../a)/i)</source>
         <translation>Образец Макета	I../A../1../a)/i)</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="781"/>
+        <location filename="fieldformat.py" line="785"/>
         <source>Section Example	1.1.1.1</source>
         <translation>Образец Раздела	1.1.1.1</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="868"/>
+        <location filename="fieldformat.py" line="872"/>
         <source>Day (1 or 2 digits)	%-d</source>
         <translation>День (1 или 2 цифры)	%-d</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="869"/>
+        <location filename="fieldformat.py" line="873"/>
         <source>Day (2 digits)	%d</source>
         <translation>День (2 цифры)	%d</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="870"/>
+        <location filename="fieldformat.py" line="874"/>
         <source>Weekday Abbreviation	%a</source>
         <translation>Сокращенное Название Дня Недели	%a</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="871"/>
+        <location filename="fieldformat.py" line="875"/>
         <source>Weekday Name	%A</source>
         <translation>День Недели	%A</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="872"/>
+        <location filename="fieldformat.py" line="876"/>
         <source>Month (1 or 2 digits)	%-m</source>
         <translation>Месяц (1 или 2 цифры)	%-m</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="873"/>
+        <location filename="fieldformat.py" line="877"/>
         <source>Month (2 digits)	%m</source>
         <translation>Месяц (2 цифры)	%m</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="874"/>
+        <location filename="fieldformat.py" line="878"/>
         <source>Month Abbreviation	%b</source>
         <translation>Сокращенное Название Месяца	%b</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="875"/>
+        <location filename="fieldformat.py" line="879"/>
         <source>Month Name	%B</source>
         <translation>Название Месяца	%B</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="876"/>
+        <location filename="fieldformat.py" line="880"/>
         <source>Year (2 digits)	%y</source>
         <translation>Год (2 цифры)	%y</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="877"/>
+        <location filename="fieldformat.py" line="881"/>
         <source>Year (4 digits)	%Y</source>
         <translation>Год (4 цифры)	%Y</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="878"/>
+        <location filename="fieldformat.py" line="882"/>
         <source>Week Number (0 to 53)	%-U</source>
         <translation>Номер Недели (от 0 до 53)	%-U</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="879"/>
+        <location filename="fieldformat.py" line="883"/>
         <source>Day of year (1 to 366)	%-j</source>
         <translation>День Года (от 1 до 366)	%-j</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1038"/>
+        <location filename="fieldformat.py" line="1042"/>
         <source>Hour (0-23, 1 or 2 digits)	%-H</source>
         <translation>Час (0-23, 1 или 2 цифры)	%H</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1039"/>
+        <location filename="fieldformat.py" line="1043"/>
         <source>Hour (00-23, 2 digits)	%H</source>
         <translation>Час (00-23, 2 цифры)	%H</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1040"/>
+        <location filename="fieldformat.py" line="1044"/>
         <source>Hour (1-12, 1 or 2 digits)	%-I</source>
         <translation>Час (1-12, 1 или 2 цифры)	%-I</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1041"/>
+        <location filename="fieldformat.py" line="1045"/>
         <source>Hour (01-12, 2 digits)	%I</source>
         <translation>Час (01-12, 2 цифры)	%I</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1042"/>
+        <location filename="fieldformat.py" line="1046"/>
         <source>Minute (1 or 2 digits)	%-M</source>
         <translation>Минута (1 или 2 цифры)	%-M</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1043"/>
+        <location filename="fieldformat.py" line="1047"/>
         <source>Minute (2 digits)	%M</source>
         <translation>Минута (2 цифры)	%M</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1044"/>
+        <location filename="fieldformat.py" line="1048"/>
         <source>Second (1 or 2 digits)	%-S</source>
         <translation>Секунда (1 или 2 цифры)	%-S</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1045"/>
+        <location filename="fieldformat.py" line="1049"/>
         <source>Second (2 digits)	%S</source>
         <translation>Секундa (2 цифры)	%S</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1046"/>
+        <location filename="fieldformat.py" line="1050"/>
         <source>Microseconds (6 digits)	%f</source>
         <translation>Микросекунда (6 цифр)	%f</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1047"/>
+        <location filename="fieldformat.py" line="1051"/>
         <source>AM/PM	%p</source>
         <translation>AM/PM</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1434"/>
+        <location filename="fieldformat.py" line="1438"/>
         <source>Separator	/</source>
         <translation>Разделитель	/</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1436"/>
+        <location filename="fieldformat.py" line="1440"/>
         <source>Example	1/2/3/4</source>
         <translation>Образец	1/2/3/4</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1854"/>
+        <location filename="fieldformat.py" line="1858"/>
         <source>yes/no</source>
         <translation>да/нет</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1858"/>
+        <location filename="fieldformat.py" line="1862"/>
         <source>true/false</source>
         <translation>истина/ложь</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1859"/>
+        <location filename="fieldformat.py" line="1863"/>
         <source>T/F</source>
         <translation>И/Л</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="1861"/>
+        <location filename="fieldformat.py" line="1865"/>
         <source>Y/N</source>
         <translation>Д/Н</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2255"/>
+        <location filename="fieldformat.py" line="2259"/>
         <source>Any Character	.</source>
         <translation>Любой Символ 	.</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2256"/>
+        <location filename="fieldformat.py" line="2260"/>
         <source>End of Text	$</source>
         <translation>Конец Строки	$</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2258"/>
+        <location filename="fieldformat.py" line="2262"/>
         <source>0 Or More Repetitions	*</source>
         <translation>0 Или Более Повторов	*</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2259"/>
+        <location filename="fieldformat.py" line="2263"/>
         <source>1 Or More Repetitions	+</source>
         <translation>1 Или Более Повторов	+</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2260"/>
+        <location filename="fieldformat.py" line="2264"/>
         <source>0 Or 1 Repetitions	?</source>
         <translation>0 Или 1 Повтор	?</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2262"/>
+        <location filename="fieldformat.py" line="2266"/>
         <source>Set of Numbers	[0-9]</source>
         <translation>Набор Цифр	[0-9]</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2263"/>
+        <location filename="fieldformat.py" line="2267"/>
         <source>Lower Case Letters	[a-z]</source>
         <translation>Буквы в Нижнем Регистре	[а-я]</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2264"/>
+        <location filename="fieldformat.py" line="2268"/>
         <source>Upper Case Letters	[A-Z]</source>
         <translation>Буквы в Верхнем Регистре	[А-Я]</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2265"/>
+        <location filename="fieldformat.py" line="2269"/>
         <source>Not a Number	[^0-9]</source>
         <translation>Не Цифра	[^0-9]</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2267"/>
+        <location filename="fieldformat.py" line="2271"/>
         <source>Or	|</source>
         <translation>ИЛИ	|</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2268"/>
+        <location filename="fieldformat.py" line="2272"/>
         <source>Escape a Special Character	\</source>
         <translation>Экранирование Специального Символа	\</translation>
     </message>
     <message>
-        <location filename="fieldformat.py" line="2554"/>
+        <location filename="fieldformat.py" line="2558"/>
         <source>DescendantCount</source>
         <translation>Подсчет Потомков</translation>
     </message>
@@ -2867,627 +2915,633 @@ Continue from the top?</source>
     <message>
         <location filename="treelocalcontrol.py" line="123"/>
         <source>Warning - file corruption! Skipped bad child references in the following nodes:</source>
-        <translation>Внимание — файл поврежден! Пропущены неверные ссылки на дочерние узлы в следующих узлах:</translation>
+        <translation type="obsolete">Внимание — файл поврежден! Пропущены неверные ссылки на дочерние узлы в следующих узлах:</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="385"/>
+        <location filename="treelocalcontrol.py" line="388"/>
         <source>Save changes to {}?</source>
         <translation>Сохранить изменения в {0}?</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="386"/>
+        <location filename="treelocalcontrol.py" line="389"/>
         <source>Save changes?</source>
         <translation>Сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="434"/>
+        <location filename="treelocalcontrol.py" line="437"/>
         <source>Error - could not delete backup file {}</source>
         <translation>Ошибка — невозможно удалить резервную копию файла {0}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="470"/>
+        <location filename="treelocalcontrol.py" line="473"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="470"/>
+        <location filename="treelocalcontrol.py" line="473"/>
         <source>Save File</source>
         <translation>Сохранить Файл</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="471"/>
+        <location filename="treelocalcontrol.py" line="474"/>
         <source>Save the current file</source>
         <translation>Сохранить текущий файл</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="476"/>
+        <location filename="treelocalcontrol.py" line="479"/>
         <source>Save &amp;As...</source>
         <translation>Сохранить &amp;Как...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="477"/>
+        <location filename="treelocalcontrol.py" line="480"/>
         <source>Save the file with a new name</source>
         <translation>Сохранить файл под новым именем</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="481"/>
+        <location filename="treelocalcontrol.py" line="484"/>
         <source>&amp;Export...</source>
         <translation>&amp;Экспортировать...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="482"/>
+        <location filename="treelocalcontrol.py" line="485"/>
         <source>Export the file in various other formats</source>
         <translation>Экспортировать файл в ряд других форматов</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="486"/>
+        <location filename="treelocalcontrol.py" line="489"/>
         <source>Prop&amp;erties...</source>
         <translation>&amp;Свойства...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="487"/>
+        <location filename="treelocalcontrol.py" line="490"/>
         <source>Set file parameters like compression and encryption</source>
         <translation>Назначить такие параметры, как компрессия и шифрование</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="491"/>
+        <location filename="treelocalcontrol.py" line="494"/>
         <source>P&amp;rint Setup...</source>
         <translation>Настройка &amp;Печати...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="492"/>
+        <location filename="treelocalcontrol.py" line="495"/>
         <source>Set margins, page size and other printing options</source>
         <translation>Настроить поля, размер страницы и установить другие настройки печати</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="496"/>
+        <location filename="treelocalcontrol.py" line="499"/>
         <source>Print Pre&amp;view...</source>
         <translation>Предварительный Про&amp;смотр Печати...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="497"/>
+        <location filename="treelocalcontrol.py" line="500"/>
         <source>Show a preview of printing results</source>
         <translation>Показать предварительный просмотр результатов печати</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="501"/>
+        <location filename="treelocalcontrol.py" line="504"/>
         <source>&amp;Print...</source>
         <translation>&amp;Печать...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="502"/>
+        <location filename="treelocalcontrol.py" line="505"/>
         <source>Print tree output based on current options</source>
         <translation>Распечатать вид дерева на выходе в соответствии с текущими настройками</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="506"/>
+        <location filename="treelocalcontrol.py" line="509"/>
         <source>Print &amp;to PDF...</source>
         <translation>Печать в &amp;PDF...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="507"/>
+        <location filename="treelocalcontrol.py" line="510"/>
         <source>Export to PDF with current printing options</source>
         <translation>Экспорт в PDF с текущими настройками печати</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="511"/>
+        <location filename="treelocalcontrol.py" line="514"/>
         <source>&amp;Undo</source>
         <translation>&amp;Отмена</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="512"/>
+        <location filename="treelocalcontrol.py" line="515"/>
         <source>Undo the previous action</source>
         <translation>Отменить предыдущее действие</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="516"/>
+        <location filename="treelocalcontrol.py" line="519"/>
         <source>&amp;Redo</source>
         <translation>&amp;Повтор</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="517"/>
+        <location filename="treelocalcontrol.py" line="520"/>
         <source>Redo the previous undo</source>
         <translation>Повторить предшествующую отмену</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="521"/>
+        <location filename="treelocalcontrol.py" line="524"/>
         <source>Cu&amp;t</source>
         <translation>Вы&amp;резать</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="522"/>
+        <location filename="treelocalcontrol.py" line="525"/>
         <source>Cut the branch or text to the clipboard</source>
         <translation>Вырезать ветвь или текст и поместить в буфер обмена</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="526"/>
+        <location filename="treelocalcontrol.py" line="529"/>
         <source>&amp;Copy</source>
         <translation>&amp;Копировать</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="527"/>
+        <location filename="treelocalcontrol.py" line="530"/>
         <source>Copy the branch or text to the clipboard</source>
         <translation>Копировать ветвь или текст в буфер обмена</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="531"/>
+        <location filename="treelocalcontrol.py" line="534"/>
         <source>&amp;Paste</source>
         <translation>&amp;Вставить</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="532"/>
+        <location filename="treelocalcontrol.py" line="535"/>
         <source>Paste nodes or text from the clipboard</source>
         <translation>Вставить узлы или текст из буфера обмена</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="536"/>
+        <location filename="treelocalcontrol.py" line="539"/>
         <source>Pa&amp;ste Plain Text</source>
         <translation>&amp;Вставить Простой Текст</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="537"/>
+        <location filename="treelocalcontrol.py" line="540"/>
         <source>Paste non-formatted text from the clipboard</source>
         <translation>Вставить неформатированный текст из буфера обмена</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="541"/>
+        <location filename="treelocalcontrol.py" line="544"/>
         <source>Paste C&amp;hild</source>
         <translation>Вставить &amp;Дочерний Узел</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="542"/>
+        <location filename="treelocalcontrol.py" line="545"/>
         <source>Paste a child node from the clipboard</source>
         <translation>Вставить дочерний узел из буфера обмена</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="546"/>
+        <location filename="treelocalcontrol.py" line="549"/>
         <source>Paste Sibling &amp;Before</source>
         <translation>Вставить Сестринский Узел &amp;Перед</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="547"/>
+        <location filename="treelocalcontrol.py" line="550"/>
         <source>Paste a sibling before selection</source>
         <translation>Вставить сестринский узел перед выбранным</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="551"/>
+        <location filename="treelocalcontrol.py" line="554"/>
         <source>Paste Sibling &amp;After</source>
         <translation>Вставить Сестринский Узел &amp;После</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="552"/>
+        <location filename="treelocalcontrol.py" line="555"/>
         <source>Paste a sibling after selection</source>
         <translation>Вставить сестринский узел после выбранного</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="556"/>
+        <location filename="treelocalcontrol.py" line="559"/>
         <source>Paste Cl&amp;oned Child</source>
         <translation>Вставить К&amp;лонированный Дочерний Узел</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="557"/>
+        <location filename="treelocalcontrol.py" line="560"/>
         <source>Paste a child clone from the clipboard</source>
         <translation>Вставить клон дочернего узла из буфера обмена</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="561"/>
+        <location filename="treelocalcontrol.py" line="564"/>
         <source>Paste Clo&amp;ned Sibling Before</source>
         <translation>Вставить К&amp;лонированный Сестринский Узел Перед</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="562"/>
+        <location filename="treelocalcontrol.py" line="565"/>
         <source>Paste a sibling clone before selection</source>
         <translation>Вставить клон сестринского узла перед выбранным</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="566"/>
+        <location filename="treelocalcontrol.py" line="569"/>
         <source>Paste Clone&amp;d Sibling After</source>
         <translation>Вставить К&amp;лонированный Сестринский Узел После</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="567"/>
+        <location filename="treelocalcontrol.py" line="570"/>
         <source>Paste a sibling clone after selection</source>
         <translation>Вставить клон сестринского узла после выбранного</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="571"/>
+        <location filename="treelocalcontrol.py" line="574"/>
         <source>&amp;Rename</source>
         <translation>&amp;Переименовать</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="572"/>
+        <location filename="treelocalcontrol.py" line="575"/>
         <source>Rename the current tree entry title</source>
         <translation>Переименовать заголовок текущего элемента дерева</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="576"/>
+        <location filename="treelocalcontrol.py" line="579"/>
         <source>Add &amp;Child</source>
         <translation>Добавить &amp;Дочерний Узел</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="577"/>
+        <location filename="treelocalcontrol.py" line="580"/>
         <source>Add new child to selected parent</source>
         <translation>Добавить новый дочерний узел к выбранному родителю</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="581"/>
+        <location filename="treelocalcontrol.py" line="584"/>
         <source>Insert Sibling &amp;Before</source>
         <translation>Создать Сестринский Узел П&amp;еред</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="582"/>
+        <location filename="treelocalcontrol.py" line="585"/>
         <source>Insert new sibling before selection</source>
         <translation>Создать новый сестринский узел перед выбранным</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="586"/>
+        <location filename="treelocalcontrol.py" line="589"/>
         <source>Insert Sibling &amp;After</source>
         <translation>Создать Сестринский Узел &amp;После</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="587"/>
+        <location filename="treelocalcontrol.py" line="590"/>
         <source>Insert new sibling after selection</source>
         <translation>Создать новый сестринский узел после выбранного</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="591"/>
+        <location filename="treelocalcontrol.py" line="594"/>
         <source>&amp;Delete Node</source>
         <translation>&amp;Удалить Узел</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="592"/>
+        <location filename="treelocalcontrol.py" line="595"/>
         <source>Delete the selected nodes</source>
         <translation>Удалить выбранные узлы</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="596"/>
+        <location filename="treelocalcontrol.py" line="599"/>
         <source>&amp;Indent Node</source>
         <translation>&amp;Вдвинуть Узел</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="597"/>
+        <location filename="treelocalcontrol.py" line="600"/>
         <source>Indent the selected nodes</source>
         <translation>Вдвинуть выбранные узлы</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="601"/>
+        <location filename="treelocalcontrol.py" line="604"/>
         <source>&amp;Unindent Node</source>
         <translation>В&amp;ыдвинуть Узел</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="602"/>
+        <location filename="treelocalcontrol.py" line="605"/>
         <source>Unindent the selected nodes</source>
         <translation>Выдвинуть выбранные узлы</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="606"/>
+        <location filename="treelocalcontrol.py" line="609"/>
         <source>&amp;Move Up</source>
         <translation>&amp;Переместить Вверх</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="607"/>
+        <location filename="treelocalcontrol.py" line="610"/>
         <source>Move the selected nodes up</source>
         <translation>Переместить выбранные узлы вверх</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="611"/>
+        <location filename="treelocalcontrol.py" line="614"/>
         <source>M&amp;ove Down</source>
         <translation>Пе&amp;реместить Вниз</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="612"/>
+        <location filename="treelocalcontrol.py" line="615"/>
         <source>Move the selected nodes down</source>
         <translation>Переместить выбранные узлы вниз</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="616"/>
+        <location filename="treelocalcontrol.py" line="619"/>
         <source>Move &amp;First</source>
         <translation>Переместить в &amp;Начало [внутри родителя]</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="617"/>
+        <location filename="treelocalcontrol.py" line="620"/>
         <source>Move the selected nodes to be the first children</source>
         <translation>Переместить выбранные узлы на место первых дочерних</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="621"/>
+        <location filename="treelocalcontrol.py" line="624"/>
         <source>Move &amp;Last</source>
         <translation>Переместить в &amp;Конец [внутри родителя]</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="622"/>
+        <location filename="treelocalcontrol.py" line="625"/>
         <source>Move the selected nodes to be the last children</source>
         <translation>Переместить выбранные узлы на место последних дочерних</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="626"/>
+        <location filename="treelocalcontrol.py" line="629"/>
         <source>&amp;Set Node Type</source>
         <translation>&amp;Назначить Тип Узла</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="631"/>
+        <location filename="treelocalcontrol.py" line="634"/>
         <source>Set the node type for selected nodes</source>
         <translation>Назначить тип узла для выбранных узлов</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="634"/>
+        <location filename="treelocalcontrol.py" line="637"/>
         <source>Set Node Type</source>
         <translation>Назначить Тип Узла</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="638"/>
+        <location filename="treelocalcontrol.py" line="641"/>
         <source>Copy Types from &amp;File...</source>
         <translation>Копировать Типы из &amp;Файла...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="639"/>
+        <location filename="treelocalcontrol.py" line="642"/>
         <source>Copy the configuration from another TreeLine file</source>
         <translation>Скопировать конфигурацию из другого файла Treeline</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="643"/>
+        <location filename="treelocalcontrol.py" line="646"/>
         <source>&amp;Regenerate References</source>
         <translation>&amp;Обновить Ссылки</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="644"/>
+        <location filename="treelocalcontrol.py" line="647"/>
         <source>Force update of all conditional types &amp; math fields</source>
         <translation>Принудительное обновление всех условных типов &amp; полей математических полей</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="648"/>
+        <location filename="treelocalcontrol.py" line="651"/>
         <source>Clone All &amp;Matched Nodes</source>
         <translation>Клонировать Все &amp;Подошедшие Узлы</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="649"/>
+        <location filename="treelocalcontrol.py" line="652"/>
         <source>Convert all matching nodes into clones</source>
         <translation>Конвертировать все подошедшие узлы в клоны</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="653"/>
+        <location filename="treelocalcontrol.py" line="656"/>
         <source>&amp;Detach Clones</source>
         <translation>&amp;Отделить Клоны</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="654"/>
+        <location filename="treelocalcontrol.py" line="657"/>
         <source>Detach all cloned nodes in current branches</source>
         <translation>Отделить все клонированные узлы в текущих ветвях</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="658"/>
+        <location filename="treelocalcontrol.py" line="661"/>
         <source>Flatten &amp;by Category</source>
         <translation>Свести на Один Уровень &amp;по Категории</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="659"/>
+        <location filename="treelocalcontrol.py" line="662"/>
         <source>Collapse descendants by merging fields</source>
         <translation>Объединить потомков слиянием полей</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="663"/>
+        <location filename="treelocalcontrol.py" line="666"/>
         <source>Add Category &amp;Level...</source>
         <translation>Добавить &amp;Уровень Категории...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="664"/>
+        <location filename="treelocalcontrol.py" line="667"/>
         <source>Insert category nodes above children</source>
         <translation>Создать узлы категорий над дочерними узлами</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="668"/>
+        <location filename="treelocalcontrol.py" line="671"/>
         <source>S&amp;wap Category Levels</source>
         <translation>П&amp;оменять Местами Уровни Категории</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="669"/>
+        <location filename="treelocalcontrol.py" line="672"/>
         <source>Swap child and grandchild category nodes</source>
         <translation>Поменять узлы дочерней и внучатой категорий</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="673"/>
+        <location filename="treelocalcontrol.py" line="676"/>
         <source>&amp;Spell Check...</source>
         <translation>&amp;Проверка Правописания...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="674"/>
+        <location filename="treelocalcontrol.py" line="677"/>
         <source>Spell check the tree's text data</source>
         <translation>Проверить правописание текста в дереве</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="678"/>
+        <location filename="treelocalcontrol.py" line="681"/>
         <source>&amp;Bold Font</source>
         <translation>&amp;Жирный Шрифт</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="679"/>
+        <location filename="treelocalcontrol.py" line="682"/>
         <source>Set the current or selected font to bold</source>
         <translation>Сделать текущий или выбранный шрифт жирным</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="684"/>
+        <location filename="treelocalcontrol.py" line="687"/>
         <source>&amp;Italic Font</source>
         <translation>&amp;Наклонный Шрифт</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="685"/>
+        <location filename="treelocalcontrol.py" line="688"/>
         <source>Set the current or selected font to italic</source>
         <translation>Сделать текущий или выбранный шрифт наклонным</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="690"/>
+        <location filename="treelocalcontrol.py" line="693"/>
         <source>U&amp;nderline Font</source>
         <translation>Под&amp;черкнутый Шрифт</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="691"/>
+        <location filename="treelocalcontrol.py" line="694"/>
         <source>Set the current or selected font to underline</source>
         <translation>Сделать текущий или выбранный текст подчеркнутым</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="696"/>
+        <location filename="treelocalcontrol.py" line="699"/>
         <source>St&amp;rikethrough Font</source>
         <translation>&amp;Зачеркнутый Шрифт</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="697"/>
+        <location filename="treelocalcontrol.py" line="700"/>
         <source>Set the current or selected font to strikethough</source>
         <translation>Сделать текущий или выбранный текст зачеркнутым</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="702"/>
+        <location filename="treelocalcontrol.py" line="705"/>
         <source>&amp;Font Size</source>
         <translation>&amp;Размер Шрифта</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="707"/>
+        <location filename="treelocalcontrol.py" line="710"/>
         <source>Set size of the current or selected text</source>
         <translation>Назначить размер текущего или выбранного текста</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="709"/>
+        <location filename="treelocalcontrol.py" line="712"/>
         <source>Large</source>
         <translation>Большой</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="709"/>
+        <location filename="treelocalcontrol.py" line="712"/>
         <source>Small</source>
         <translation>Маленький</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="709"/>
+        <location filename="treelocalcontrol.py" line="712"/>
         <source>Larger</source>
         <translation>Больший</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="709"/>
+        <location filename="treelocalcontrol.py" line="712"/>
         <source>Default</source>
         <translation>По Умолчанию</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="710"/>
+        <location filename="treelocalcontrol.py" line="713"/>
         <source>Largest</source>
         <translation>Наибольший</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="715"/>
+        <location filename="treelocalcontrol.py" line="718"/>
         <source>Set Font Size</source>
         <translation>Установить Размер Шрифта</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="719"/>
+        <location filename="treelocalcontrol.py" line="722"/>
         <source>Font C&amp;olor...</source>
         <translation>Ц&amp;вет Шрифта...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="720"/>
+        <location filename="treelocalcontrol.py" line="723"/>
         <source>Set the color of the current or selected text</source>
         <translation>Назначить цвет текущего или выбранного текста</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="724"/>
+        <location filename="treelocalcontrol.py" line="727"/>
         <source>&amp;External Link...</source>
         <translation>&amp;Внешняя Гиперссылка...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="725"/>
+        <location filename="treelocalcontrol.py" line="728"/>
         <source>Add or modify an extrnal web link</source>
         <translation>Добавить или изменить внешннюю гиперссылку на web-страницу</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="729"/>
+        <location filename="treelocalcontrol.py" line="732"/>
         <source>Internal &amp;Link...</source>
         <translation>&amp;Внутреняя Гиперссылка...</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="730"/>
+        <location filename="treelocalcontrol.py" line="733"/>
         <source>Add or modify an internal node link</source>
         <translation>Добавить или изменить внутреннюю гиперссылку на узел</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="734"/>
+        <location filename="treelocalcontrol.py" line="737"/>
         <source>Insert &amp;Date</source>
         <translation>Вставить &amp;Дату</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="735"/>
+        <location filename="treelocalcontrol.py" line="738"/>
         <source>Insert current date as text</source>
         <translation>Вставить текущую дату как текст</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="739"/>
+        <location filename="treelocalcontrol.py" line="742"/>
         <source>Clear For&amp;matting</source>
         <translation>Очистить Фо&amp;рматирование</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="740"/>
+        <location filename="treelocalcontrol.py" line="743"/>
         <source>Clear current or selected text formatting</source>
         <translation>Очистить настройки формата текущего или выбранного текста</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="744"/>
+        <location filename="treelocalcontrol.py" line="747"/>
         <source>&amp;New Window</source>
         <translation>&amp;Новое Окно</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="745"/>
+        <location filename="treelocalcontrol.py" line="748"/>
         <source>Open a new window for the same file</source>
         <translation>Открыть этот же файл в новом окне</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="792"/>
+        <location filename="treelocalcontrol.py" line="806"/>
         <source>Error - could not write to {}</source>
         <translation>Ошибка — не могу записать в {}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="831"/>
+        <location filename="treelocalcontrol.py" line="846"/>
         <source>File saved</source>
         <translation>Файл сохранен</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="850"/>
+        <location filename="treelocalcontrol.py" line="865"/>
         <source>TreeLine - Save As</source>
         <translation>TreeLine — Сохранить Как</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="883"/>
+        <location filename="treelocalcontrol.py" line="899"/>
         <source>Error - could not write to file</source>
         <translation>Ошибка — невозможно записать файл</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1252"/>
+        <location filename="treelocalcontrol.py" line="1268"/>
         <source>TreeLine - Open Configuration File</source>
         <translation>TreeLine — Открыть Файл Конфигурации</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1286"/>
+        <location filename="treelocalcontrol.py" line="1302"/>
         <source>Error - could not read file {0}</source>
         <translation>Ошибка — не могу прочитать файл {0}</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1336"/>
+        <location filename="treelocalcontrol.py" line="1352"/>
         <source>Converted {0} branches into clones</source>
         <translation>Конвертировано {0} ветвей в клоны</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1342"/>
+        <location filename="treelocalcontrol.py" line="1358"/>
         <source>No identical nodes found</source>
         <translation>Идентичные узлы не найдены</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1404"/>
+        <location filename="treelocalcontrol.py" line="1420"/>
         <source>Cannot expand without common fields</source>
         <translation>Невозможно расширить без общих полей</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1406"/>
+        <location filename="treelocalcontrol.py" line="1422"/>
         <source>Category Fields</source>
         <translation>Поля Категории</translation>
     </message>
     <message>
-        <location filename="treelocalcontrol.py" line="1407"/>
+        <location filename="treelocalcontrol.py" line="1423"/>
         <source>Select fields for new level</source>
         <translation>Выберите поля для нового уровня</translation>
+    </message>
+    <message>
+        <location filename="treelocalcontrol.py" line="126"/>
+        <source>Warning - file corruption!
+Skipped bad child references in the following nodes:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3755,29 +3809,34 @@ Use an import filter?</source>
         <translation>ТАБЛИЦА</translation>
     </message>
     <message>
-        <location filename="imports.py" line="207"/>
+        <location filename="imports.py" line="210"/>
         <source>Invalid level number on line {0}</source>
         <translation>Неверный номер уровня в строке {0}</translation>
     </message>
     <message>
-        <location filename="imports.py" line="223"/>
+        <location filename="imports.py" line="226"/>
         <source>Bad CSV format on Line {0}</source>
         <translation>Неверный формат CSV в строке {0}</translation>
     </message>
     <message>
-        <location filename="imports.py" line="230"/>
+        <location filename="imports.py" line="233"/>
         <source>Invalid level structure</source>
         <translation>Неверная структура уровня</translation>
     </message>
     <message>
-        <location filename="imports.py" line="298"/>
+        <location filename="imports.py" line="304"/>
         <source>Too many entries on Line {0}</source>
         <translation>Слишком много элементов в Строке {0}</translation>
     </message>
     <message>
-        <location filename="imports.py" line="906"/>
+        <location filename="imports.py" line="912"/>
         <source>Bookmarks</source>
         <translation>Закладки</translation>
+    </message>
+    <message>
+        <location filename="imports.py" line="200"/>
+        <source>No headings found</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3799,369 +3858,369 @@ Use an import filter?</source>
 <context>
     <name>treemaincontrol</name>
     <message>
-        <location filename="treemaincontrol.py" line="106"/>
+        <location filename="treemaincontrol.py" line="107"/>
         <source>Warning:  Could not create local socket</source>
         <translation>Внимание: Невозможно создать локальный сокет</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="128"/>
+        <location filename="treemaincontrol.py" line="129"/>
         <source>missing directory</source>
         <translation>отсутствующая директория</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="130"/>
+        <location filename="treemaincontrol.py" line="131"/>
         <source>Error - could not write config file to {}</source>
         <translation>Ошибка — не могу записать файл конфигурации в {}</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="284"/>
+        <location filename="treemaincontrol.py" line="287"/>
         <source>Error - could not read file {0}</source>
         <translation>Ошибка — невозможно прочитать файл {0}</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="336"/>
+        <location filename="treemaincontrol.py" line="340"/>
         <source>Error - invalid TreeLine file {0}</source>
         <translation>Ошибка — неверный файл файл Treeline {0}</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="413"/>
+        <location filename="treemaincontrol.py" line="417"/>
         <source>Backup file "{}" exists.
 A previous session may have crashed</source>
         <translation>Имеется резервная копия файла {}.
 Возможно предыдущая сессия была аварийно завершена</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="417"/>
+        <location filename="treemaincontrol.py" line="421"/>
         <source>&amp;Restore Backup</source>
         <translation>&amp;Восстановить из резервной копии файла</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="419"/>
+        <location filename="treemaincontrol.py" line="423"/>
         <source>&amp;Delete Backup</source>
         <translation>Удалить файл &amp;Резервной Копии</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="421"/>
+        <location filename="treemaincontrol.py" line="425"/>
         <source>&amp;Cancel File Open</source>
         <translation>&amp;Отмена Открытия Файла</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="434"/>
+        <location filename="treemaincontrol.py" line="438"/>
         <source>Error - could not rename "{0}" to "{1}"</source>
         <translation>Ошибка — невозможно переименовать {0} в {1}</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="448"/>
+        <location filename="treemaincontrol.py" line="452"/>
         <source>Error - could not remove backup file {}</source>
         <translation>Ошибка — невозможно удалить резервную копию файла</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="598"/>
+        <location filename="treemaincontrol.py" line="604"/>
         <source>&amp;New...</source>
         <translation>&amp;Новый...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="598"/>
+        <location filename="treemaincontrol.py" line="604"/>
         <source>New File</source>
         <translation>Новый Файл</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="599"/>
+        <location filename="treemaincontrol.py" line="605"/>
         <source>Start a new file</source>
         <translation>Создать новый файл</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="603"/>
+        <location filename="treemaincontrol.py" line="609"/>
         <source>&amp;Open...</source>
         <translation>&amp;Открыть...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="603"/>
+        <location filename="treemaincontrol.py" line="609"/>
         <source>Open File</source>
         <translation>Открыть Файл</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="604"/>
+        <location filename="treemaincontrol.py" line="610"/>
         <source>Open a file from disk</source>
         <translation>Открыть файл с диска</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="608"/>
+        <location filename="treemaincontrol.py" line="614"/>
         <source>Open Sa&amp;mple...</source>
         <translation>Открыть П&amp;ример...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="609"/>
+        <location filename="treemaincontrol.py" line="615"/>
         <source>Open Sample</source>
         <translation>Открыть Пример</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="610"/>
+        <location filename="treemaincontrol.py" line="616"/>
         <source>Open a sample file</source>
         <translation>Открыть файл примера</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="614"/>
+        <location filename="treemaincontrol.py" line="620"/>
         <source>&amp;Import...</source>
         <translation>&amp;Импортировать...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="615"/>
+        <location filename="treemaincontrol.py" line="621"/>
         <source>Open a non-TreeLine file</source>
         <translation>Открыть не-Treeline файл</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="619"/>
+        <location filename="treemaincontrol.py" line="625"/>
         <source>&amp;Quit</source>
         <translation>&amp;Выход</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="620"/>
+        <location filename="treemaincontrol.py" line="626"/>
         <source>Exit the application</source>
         <translation>Выйти из приложения</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="624"/>
+        <location filename="treemaincontrol.py" line="630"/>
         <source>&amp;Configure Data Types...</source>
         <translation>&amp;Настроить Типы Данных...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="625"/>
+        <location filename="treemaincontrol.py" line="631"/>
         <source>Modify data types, fields &amp; output lines</source>
         <translation>Изменить типы данных, поля &amp; строки вывода</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="630"/>
+        <location filename="treemaincontrol.py" line="636"/>
         <source>Show C&amp;onfiguration Structure...</source>
         <translation>Показать С&amp;конфигурированную Структуру...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="632"/>
+        <location filename="treemaincontrol.py" line="638"/>
         <source>Show read-only visualization of type structure</source>
         <translation>Показать доступное только для чтения представление структуры типов</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="636"/>
+        <location filename="treemaincontrol.py" line="642"/>
         <source>Sor&amp;t Nodes...</source>
         <translation>&amp;Сортировать Узлы...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="637"/>
+        <location filename="treemaincontrol.py" line="643"/>
         <source>Define node sort operations</source>
         <translation>Задать параметры сортировки узлов</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="642"/>
+        <location filename="treemaincontrol.py" line="648"/>
         <source>Update &amp;Numbering...</source>
         <translation>Обновить &amp;Нумерацию...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="643"/>
+        <location filename="treemaincontrol.py" line="649"/>
         <source>Update node numbering fields</source>
         <translation>Обновить поля нумерации</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="648"/>
+        <location filename="treemaincontrol.py" line="654"/>
         <source>&amp;Find Text...</source>
         <translation>&amp;Поиск Текста...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="649"/>
+        <location filename="treemaincontrol.py" line="655"/>
         <source>Find text in node titles &amp; data</source>
         <translation>Найти текст в заголовках узлов &amp; данных</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="654"/>
+        <location filename="treemaincontrol.py" line="660"/>
         <source>&amp;Conditional Find...</source>
         <translation>&amp;Условный Поиск...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="655"/>
+        <location filename="treemaincontrol.py" line="661"/>
         <source>Use field conditions to find nodes</source>
         <translation>Использовать условия выбора полей для фильтрации узлов</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="660"/>
+        <location filename="treemaincontrol.py" line="666"/>
         <source>Find and &amp;Replace...</source>
         <translation>Поиск и &amp;Замена...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="661"/>
+        <location filename="treemaincontrol.py" line="667"/>
         <source>Replace text strings in node data</source>
         <translation>Заменить текстовые строки в узлах</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="666"/>
+        <location filename="treemaincontrol.py" line="672"/>
         <source>&amp;Text Filter...</source>
         <translation>&amp;Текстовый Фильтр...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="667"/>
+        <location filename="treemaincontrol.py" line="673"/>
         <source>Filter nodes to only show text matches</source>
         <translation>Фильтровать узлы, показав только совпадения текста</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="672"/>
+        <location filename="treemaincontrol.py" line="678"/>
         <source>C&amp;onditional Filter...</source>
         <translation>&amp;Условный Фильтр...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="674"/>
+        <location filename="treemaincontrol.py" line="680"/>
         <source>Use field conditions to filter nodes</source>
         <translation>Использовать условия выбора полей для фильтрации узлов</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="680"/>
+        <location filename="treemaincontrol.py" line="686"/>
         <source>&amp;General Options...</source>
         <translation>&amp;Общие Параметры...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="681"/>
+        <location filename="treemaincontrol.py" line="687"/>
         <source>Set user preferences for all files</source>
         <translation>Назначить установки пользователя для всех файлов</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="685"/>
+        <location filename="treemaincontrol.py" line="691"/>
         <source>Set &amp;Keyboard Shortcuts...</source>
         <translation>&amp;Назначить Горячие Клавиши...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="686"/>
+        <location filename="treemaincontrol.py" line="692"/>
         <source>Customize keyboard commands</source>
         <translation>Настроить команды клавиатуры</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="690"/>
+        <location filename="treemaincontrol.py" line="696"/>
         <source>C&amp;ustomize Toolbars...</source>
         <translation>&amp;Настроить Панели инструментов...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="691"/>
+        <location filename="treemaincontrol.py" line="697"/>
         <source>Customize toolbar buttons</source>
         <translation>Настроить кнопки на панели инструментов</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="695"/>
+        <location filename="treemaincontrol.py" line="701"/>
         <source>Customize Fo&amp;nts...</source>
         <translation>Настроить Ш&amp;рифты...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="696"/>
+        <location filename="treemaincontrol.py" line="702"/>
         <source>Customize fonts in various views</source>
         <translation>Настроить шрифты для разных форм просмотра</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="700"/>
+        <location filename="treemaincontrol.py" line="706"/>
         <source>Custo&amp;mize Colors...</source>
         <translation>Настроить &amp;Цвета...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="701"/>
+        <location filename="treemaincontrol.py" line="707"/>
         <source>Customize GUI colors and themes</source>
         <translation>Настроить цвета и темы GUI</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="705"/>
+        <location filename="treemaincontrol.py" line="711"/>
         <source>&amp;Select All</source>
         <translation>&amp;Выбрать все</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="706"/>
+        <location filename="treemaincontrol.py" line="712"/>
         <source>Select all text in an editor</source>
         <translation>Выбрать весь текст в редакторе</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="711"/>
+        <location filename="treemaincontrol.py" line="717"/>
         <source>&amp;Basic Usage...</source>
         <translation>&amp;Основы...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="712"/>
+        <location filename="treemaincontrol.py" line="718"/>
         <source>Display basic usage instructions</source>
         <translation>Показать основные используемые инструкции</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="716"/>
+        <location filename="treemaincontrol.py" line="722"/>
         <source>&amp;Full Documentation...</source>
         <translation>&amp;Полная Документация...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="717"/>
+        <location filename="treemaincontrol.py" line="723"/>
         <source>Open a TreeLine file with full documentation</source>
         <translation>Открыть файл Treeline, содержащий полную документацию</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="721"/>
+        <location filename="treemaincontrol.py" line="727"/>
         <source>&amp;About TreeLine...</source>
         <translation>&amp;О TreeLine...</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="722"/>
+        <location filename="treemaincontrol.py" line="728"/>
         <source>Display version info about this program</source>
         <translation>Показать сведения о версии программы</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="742"/>
+        <location filename="treemaincontrol.py" line="748"/>
         <source>&amp;Select Template</source>
         <translation>&amp;Выбрать Шаблон</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="762"/>
+        <location filename="treemaincontrol.py" line="768"/>
         <source>TreeLine - Open File</source>
         <translation>TreeLine — Открыть Файл</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="774"/>
+        <location filename="treemaincontrol.py" line="780"/>
         <source>Open Sample File</source>
         <translation>Открыть Файл Примера</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="775"/>
+        <location filename="treemaincontrol.py" line="781"/>
         <source>&amp;Select Sample</source>
         <translation>&amp;Выбрать Пример</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="894"/>
+        <location filename="treemaincontrol.py" line="900"/>
         <source>Conditional Find</source>
         <translation>Условный Поиск</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="950"/>
+        <location filename="treemaincontrol.py" line="956"/>
         <source>Conditional Filter</source>
         <translation>Условный Фильтр</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="967"/>
+        <location filename="treemaincontrol.py" line="973"/>
         <source>General Options</source>
         <translation>Общие Параметры</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1057"/>
+        <location filename="treemaincontrol.py" line="1063"/>
         <source>Error - basic help file not found</source>
         <translation>Ошибка — файл справки по основам использования не найден</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1060"/>
+        <location filename="treemaincontrol.py" line="1066"/>
         <source>TreeLine Basic Usage</source>
         <translation>Основы использования TreeLine</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1070"/>
+        <location filename="treemaincontrol.py" line="1076"/>
         <source>Error - documentation file not found</source>
         <translation>Ошибка — файл документации не найден</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1084"/>
+        <location filename="treemaincontrol.py" line="1090"/>
         <source>TreeLine version {0}</source>
         <translation>Версия TreeLine {0}</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1085"/>
+        <location filename="treemaincontrol.py" line="1091"/>
         <source>written by {0}</source>
         <translation>автор {0}</translation>
     </message>
     <message>
-        <location filename="treemaincontrol.py" line="1086"/>
+        <location filename="treemaincontrol.py" line="1092"/>
         <source>Library versions:</source>
         <translation>Версии библиотек:</translation>
     </message>
@@ -4412,7 +4471,7 @@ A previous session may have crashed</source>
     <message>
         <location filename="exports.py" line="412"/>
         <source>Error - export template files not found. Check your TreeLine installation.</source>
-        <translation>Ошибка — файлы шаблона для экспорта не найдены. Проверьте вашу установку Treeline.</translation>
+        <translation type="obsolete">Ошибка — файлы шаблона для экспорта не найдены. Проверьте вашу установку Treeline.</translation>
     </message>
     <message>
         <location filename="exports.py" line="419"/>
@@ -4653,6 +4712,12 @@ Continue with absolute path?</source>
         <source>Must select nodes prior to export</source>
         <translation>Перед экспортом должны быть выбраны узлы</translation>
     </message>
+    <message>
+        <location filename="exports.py" line="412"/>
+        <source>Error - export template files not found.
+Check your TreeLine installation.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>optiondefaults</name>
@@ -4842,7 +4907,7 @@ in the file menu</source>
     <message>
         <location filename="optiondefaults.py" line="90"/>
         <source>First day of week</source>
-        <translation>Первый день недели</translation>
+        <translation type="obsolete">Первый день недели</translation>
     </message>
     <message>
         <location filename="optiondefaults.py" line="91"/>
@@ -4852,7 +4917,19 @@ in the file menu</source>
     <message>
         <location filename="optiondefaults.py" line="92"/>
         <source>Child indent offset (in font height units) </source>
-        <translation>Величина сдвига дочерних узлов (в единицах размера шрифта)</translation>
+        <translation type="obsolete">Величина сдвига дочерних узлов (в единицах размера шрифта)</translation>
+    </message>
+    <message>
+        <location filename="optiondefaults.py" line="90"/>
+        <source>First day
+of week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="optiondefaults.py" line="92"/>
+        <source>Child indent offset
+(in font height units) </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5007,17 +5084,17 @@ in the file menu</source>
     <message>
         <location filename="printdata.py" line="342"/>
         <source>Warning: Page size and margin settings unsupported on current printer. Save page adjustments?</source>
-        <translation>Внимание: Выбранный размер и поля страницы не поддерживается данным принтером. Сохранить настройки страницы?</translation>
+        <translation type="obsolete">Внимание: Выбранный размер и поля страницы не поддерживается данным принтером. Сохранить настройки страницы?</translation>
     </message>
     <message>
         <location filename="printdata.py" line="345"/>
         <source>Warning: Page size setting unsupported on current printer. Save adjustment?</source>
-        <translation>Внимание: Выбранный размер страницы не поддерживается данным принтером. Сохранить настройки?</translation>
+        <translation type="obsolete">Внимание: Выбранный размер страницы не поддерживается данным принтером. Сохранить настройки?</translation>
     </message>
     <message>
         <location filename="printdata.py" line="348"/>
         <source>Warning: Margin settings unsupported on current printer. Save adjustments?</source>
-        <translation>Внимание: Настройки полей не поддерживаются данным принтером. Сохранить настройки?</translation>
+        <translation type="obsolete">Внимание: Настройки полей не поддерживаются данным принтером. Сохранить настройки?</translation>
     </message>
     <message>
         <location filename="printdata.py" line="370"/>
@@ -5028,6 +5105,24 @@ in the file menu</source>
         <location filename="printdata.py" line="591"/>
         <source>TreeLine - Export PDF</source>
         <translation>TreeLine — Экспорт в PDF</translation>
+    </message>
+    <message>
+        <location filename="printdata.py" line="342"/>
+        <source>Warning: Page size and margin settings unsupported on current printer.
+Save page adjustments?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="printdata.py" line="345"/>
+        <source>Warning: Page size setting unsupported on current printer.
+Save adjustment?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="printdata.py" line="348"/>
+        <source>Warning: Margin settings unsupported on current printer.
+Save adjustments?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
