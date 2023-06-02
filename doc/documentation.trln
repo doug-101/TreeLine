@@ -2065,7 +2065,7 @@
          "children": [],
          "data": {
             "Name": "Version",
-            "Text": "This document covers TreeLine, Version 3.1.5, a stable release, dated September 10, 2022 by Doug Bell."
+            "Text": "This document covers TreeLine, Version 3.1.6, a stable release, dated June 3, 2023 by Doug Bell."
          },
          "format": "PARAGRAPH",
          "uid": "f16f82aea25a11e7b7c67054d2175f18"
@@ -6184,7 +6184,7 @@
       }
    ],
    "properties": {
-      "tlversion": "3.1.5",
+      "tlversion": "3.1.6",
       "topnodes": [
          "f16f7d90a25a11e7b7c67054d2175f18"
       ]
