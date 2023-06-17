@@ -2194,7 +2194,8 @@ _textOperators = [('+', _('concatenate text')),
                   ("join(' ', )", _('join text using 1st arg as separator')),
                   ('upper()', _('convert text to upper case')),
                   ('lower()', _('convert text to lower case')),
-                  ('replace()', _('in 1st arg, replace 2nd arg with 3rd arg'))]
+                  ('replace()', _('in 1st arg, replace 2nd arg with 3rd arg')),
+                  ('count()', _('number of words in arg'))]
 # _operatorLists correspond to _operatorTypes
 _operatorLists = [_arithmeticOperators, _comparisonOperators, _textOperators]
 
