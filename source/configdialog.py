@@ -2173,7 +2173,8 @@ _arithmeticOperators = [('+', _('add')),
                         ('degrees()', _('radians to degrees')),
                         ('radians()', _('degrees to radians')),
                         ('pi', _('pi constant')),
-                        ('e', _('natural log constant'))]
+                        ('e', _('natural log constant')),
+                        ('count()', _('number of words in arg'))]
 _comparisonOperators = [('==', _('equal to')),
                         ('<', _('less than')),
                         ('>', _('greater than')),
@@ -2194,8 +2195,7 @@ _textOperators = [('+', _('concatenate text')),
                   ("join(' ', )", _('join text using 1st arg as separator')),
                   ('upper()', _('convert text to upper case')),
                   ('lower()', _('convert text to lower case')),
-                  ('replace()', _('in 1st arg, replace 2nd arg with 3rd arg')),
-                  ('count()', _('number of words in arg'))]
+                  ('replace()', _('in 1st arg, replace 2nd arg with 3rd arg'))]
 # _operatorLists correspond to _operatorTypes
 _operatorLists = [_arithmeticOperators, _comparisonOperators, _textOperators]
 
