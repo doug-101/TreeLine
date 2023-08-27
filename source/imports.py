@@ -734,7 +734,10 @@ class ImportControl:
         if element.text and element.text.strip():
             if genericXmlTextFieldName not in elemFormat.fieldDict:
                 elemFormat.addFieldList([genericXmlTextFieldName], True, True)
-            node.setTitle(element.text.strip())
+            text = element.text.strip()
+            text = xml.sax.saxutils.escape(text)
+            text = text.replace('\n', '<br />')
+            node.data[genericXmlTextFieldName] = text
         for key, value in element.items():
             elemFormat.addFieldIfNew(key)
             node.data[key] = value
