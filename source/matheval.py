@@ -159,6 +159,14 @@ def replace(text, oldText, newText):
     """
     return str(text).replace(str(oldText), str(newText))
 
+def count(text):
+    """Added text function to count words.
+
+    Arguments:
+        text -- the string to analyze
+    """
+    return len(re.findall(r'\w+', str(text)))
+
 
 _fieldSplitRe = re.compile(r'{\*(\*|\$|&|#|\b)([\w_\-.]+)\*}')
 
@@ -562,7 +570,8 @@ allowedFunctions = set(['abs', 'float', 'int', 'len', 'max', 'min', 'pow',
                         'acos', 'asin', 'atan', 'cos', 'sin', 'tan', 'hypot',
                         'degrees', 'radians', 'pi', 'e',
                         'startswith', 'endswith', 'contains',
-                        'join', 'upper', 'lower', 'replace'])
+                        'join', 'upper', 'lower', 'replace',
+                        'count'])
 
 allowedNodeTypes = set(['Module', 'Expr', 'Name', 'NameConstant', 'Constant',
                         'Load', 'IfExp', 'Compare', 'Num', 'Str', 'Tuple',
