@@ -520,8 +520,9 @@ class TreeFilterViewItem(QListWidgetItem):
         node = self.spot.nodeRef
         self.setText(node.title())
         if globalref.genOptions['ShowTreeIcons']:
-            self.setIcon(globalref.treeIcons.getIcon(node.formatRef.iconName,
-                                                     True))
+            icon = globalref.treeIcons.getIcon(node.formatRef.iconName, True)
+            if icon:
+                self.setIcon(icon)
 
 
 class TreeFilterView(QListWidget):
