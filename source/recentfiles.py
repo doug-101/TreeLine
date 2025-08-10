@@ -4,7 +4,7 @@
 # recentfiles.py, classes to save recent file lists, states and actions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2020, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -15,7 +15,7 @@
 import pathlib
 import os.path
 import time
-from PyQt5.QtWidgets import QAction
+from PyQt6.QtGui import QAction
 import globalref
 
 _maxActionPathLength = 30

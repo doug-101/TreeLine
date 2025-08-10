@@ -4,7 +4,7 @@
 # treeview.py, provides a class for the indented tree view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,10 +14,10 @@
 
 import re
 import unicodedata
-from PyQt5.QtCore import QEvent, QPoint, QPointF, Qt, pyqtSignal
-from PyQt5.QtGui import (QContextMenuEvent, QKeySequence, QMouseEvent,
+from PyQt6.QtCore import QEvent, QPoint, QPointF, Qt, pyqtSignal
+from PyQt6.QtGui import (QContextMenuEvent, QKeySequence, QMouseEvent,
                          QTextDocument)
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QHeaderView,
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QHeaderView,
                              QLabel, QListWidget, QListWidgetItem, QMenu,
                              QStyledItemDelegate, QTreeView)
 import treeselection
@@ -49,16 +49,18 @@ class TreeView(QTreeView):
         self.noMouseSelectMode = False
         self.mouseFocusNoEditMode = False
         self.prevSelSpot = None   # temp, to check for edit at mouse release
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.
+                              ExtendedSelection)
+        self.header().setSectionResizeMode(0, QHeaderView.ResizeMode.
+                                           ResizeToContents)
         self.header().setStretchLastSection(False)
         self.setHeaderHidden(True)
         self.setItemDelegate(TreeEditDelegate(self))
         # use mouse event for editing to avoid with multiple select
-        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.updateTreeGenOptions()
-        self.setDragDropMode(QAbstractItemView.DragDrop)
-        self.setDefaultDropAction(Qt.MoveAction)
+        self.setDragDropMode(QAbstractItemView.DragDropMode.DragDrop)
+        self.setDefaultDropAction(Qt.DropAction.MoveAction)
         self.setDropIndicatorShown(True)
         self.setUniformRowHeights(True)
 
@@ -167,9 +169,9 @@ class TreeView(QTreeView):
             spot -- the spot to move to the top
         """
         self.scrollTo(spot.index(self.model()),
-                      QAbstractItemView.PositionAtTop)
+                      QAbstractItemView.ScrollHint.PositionAtTop)
 
-    def scrollTo(self, index, hint=QAbstractItemView.EnsureVisible):
+    def scrollTo(self, index, hint=QAbstractItemView.ScrollHint.EnsureVisible):
         """Scroll the view to make node at index visible.
 
         Overriden to stop autoScroll from horizontally jumping when selecting
@@ -280,7 +282,7 @@ class TreeView(QTreeView):
         Arguments:
             event -- the context menu event
         """
-        if event.reason() == QContextMenuEvent.Mouse:
+        if event.reason() == QContextMenuEvent.Reason.Mouse:
             clickedSpot = self.indexAt(event.pos()).internalPointer()
             if not clickedSpot:
                 event.ignore()
@@ -348,9 +350,9 @@ class TreeView(QTreeView):
 
         Needed to avoid crash when deleting nodes with hovered child nodes.
         """
-        event = QMouseEvent(QEvent.MouseMove,
+        event = QMouseEvent(QEvent.Type.MouseMove,
                             QPointF(0.0, self.viewport().width()),
-                            Qt.NoButton, Qt.NoButton, Qt.NoModifier)
+                            Qt.MouseButton.NoButton, Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier)
         QApplication.postEvent(self.viewport(), event)
         QApplication.processEvents()
 
@@ -368,11 +370,11 @@ class TreeView(QTreeView):
         clickedSpot = clickedIndex.internalPointer()
         selectModel = self.selectionModel()
         if self.noMouseSelectMode:
-            if clickedSpot and event.button() == Qt.LeftButton:
+            if clickedSpot and event.button() == Qt.MouseButton.LeftButton:
                 self.skippedMouseSelect.emit(clickedSpot.nodeRef)
             event.ignore()
             return
-        if (event.button() == Qt.LeftButton and
+        if (event.button() == Qt.MouseButton.LeftButton and
             not self.mouseFocusNoEditMode and
             selectModel.selectedCount() == 1 and
             selectModel.currentSpot() == selectModel.selectedSpots()[0] and
@@ -391,7 +393,7 @@ class TreeView(QTreeView):
         """
         clickedIndex = self.indexAt(event.pos())
         clickedSpot = clickedIndex.internalPointer()
-        if (event.button() == Qt.LeftButton and
+        if (event.button() == Qt.MouseButton.LeftButton and
             self.prevSelSpot and clickedSpot == self.prevSelSpot):
             self.edit(clickedIndex)
             event.ignore()
@@ -406,9 +408,9 @@ class TreeView(QTreeView):
             event -- the key event
         """
         if self.incremSearchMode:
-            if event.key() in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Escape):
+            if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter, Qt.Key.Key_Escape):
                 self.incremSearchStop()
-            elif event.key() == Qt.Key_Backspace and self.incremSearchString:
+            elif event.key() == Qt.Key.Key_Backspace and self.incremSearchString:
                 self.incremSearchString = self.incremSearchString[:-1]
                 self.incremSearchRun()
             elif event.text() and unicodedata.category(event.text()) != 'Cc':
@@ -416,7 +418,7 @@ class TreeView(QTreeView):
                 self.incremSearchString += event.text()
                 self.incremSearchRun()
             event.accept()
-        elif (event.key() in (Qt.Key_Return, Qt.Key_Enter) and
+        elif (event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and
               not self.itemDelegate().editor):
             # enter key selects current item if not selected
             selectModel = self.selectionModel()
@@ -434,7 +436,7 @@ class TreeView(QTreeView):
         Arguments:
             event -- the focus in event
         """
-        if event.reason() == Qt.MouseFocusReason:
+        if event.reason() == Qt.FocusReason.MouseFocusReason:
             self.mouseFocusNoEditMode = True
         super().focusInEvent(event)
 
@@ -489,9 +491,9 @@ class TreeEditDelegate(QStyledItemDelegate):
             editor -- the editor that Qt installed a filter on
             event -- the key press event
         """
-        if (event.type() == QEvent.KeyPress and
-            event.modifiers() == Qt.ControlModifier and
-            Qt.Key_A <= event.key() <= Qt.Key_Z):
+        if (event.type() == QEvent.Type.KeyPress and
+            event.modifiers() == Qt.KeyboardModifier.ControlModifier and
+            Qt.Key.Key_A <= event.key() <= Qt.Key.Key_Z):
             key = QKeySequence(event.modifiers() | event.key())
             self.parent().shortcutEntered.emit(key)
             return True
@@ -510,8 +512,9 @@ class TreeFilterViewItem(QListWidgetItem):
         """
         super().__init__(viewParent)
         self.spot = spot
-        self.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEditable |
-                      Qt.ItemIsEnabled)
+        self.setFlags(Qt.ItemFlag.ItemIsSelectable |
+                      Qt.ItemFlag.ItemIsEditable |
+                      Qt.ItemFlag.ItemIsEnabled)
         self.update()
 
     def update(self):
@@ -553,10 +556,11 @@ class TreeFilterView(QListWidget):
         self.filterWhat = miscdialogs.FindScope.fullData
         self.filterHow = miscdialogs.FindType.keyWords
         self.filterStr = ''
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.
+                              ExtendedSelection)
         self.setItemDelegate(TreeEditDelegate(self))
         # use mouse event for editing to avoid with multiple select
-        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.itemSelectionChanged.connect(self.updateSelectionModel)
         self.itemChanged.connect(self.changeTitle)
         treeFont = QTextDocument().defaultFont()
@@ -584,7 +588,7 @@ class TreeFilterView(QListWidget):
         if self.conditionalFilter:
             self.conditionalUpdate()
             return
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if self.filterHow == miscdialogs.FindType.regExp:
             criteria = [re.compile(self.filterStr)]
             useRegExpFilter = True
@@ -630,7 +634,7 @@ class TreeFilterView(QListWidget):
     def conditionalUpdate(self):
         """Update filtered contents from structure and conditional criteria.
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         self.blockSignals(True)
         self.clear()
         for rootSpot in self.structure.rootSpots():
@@ -738,7 +742,7 @@ class TreeFilterView(QListWidget):
         Arguments:
             event -- the context menu event
         """
-        if event.reason() == QContextMenuEvent.Mouse:
+        if event.reason() == QContextMenuEvent.Reason.Mouse:
             clickedItem = self.itemAt(event.pos())
             if not clickedItem:
                 event.ignore()
@@ -790,11 +794,11 @@ class TreeFilterView(QListWidget):
             event.ignore()
             return
         if self.noMouseSelectMode:
-            if event.button() == Qt.LeftButton:
+            if event.button() == Qt.MouseButton.LeftButton:
                 self.skippedMouseSelect.emit(clickedItem.spot.nodeRef)
             event.ignore()
             return
-        if (event.button() == Qt.LeftButton and
+        if (event.button() == Qt.MouseButton.LeftButton and
             not self.mouseFocusNoEditMode and
             self.selectionModel.selectedCount() == 1 and
             globalref.genOptions['ClickRename']):
@@ -809,7 +813,7 @@ class TreeFilterView(QListWidget):
             event -- the mouse click event
         """
         clickedItem = self.itemAt(event.pos())
-        if (event.button() == Qt.LeftButton and clickedItem and
+        if (event.button() == Qt.MouseButton.LeftButton and clickedItem and
             self.prevSelSpot and clickedItem.spot == self.prevSelSpot):
             self.editItem(clickedItem)
             event.ignore()
@@ -823,6 +827,6 @@ class TreeFilterView(QListWidget):
         Arguments:
             event -- the focus in event
         """
-        if event.reason() == Qt.MouseFocusReason:
+        if event.reason() == Qt.FocusReason.MouseFocusReason:
             self.mouseFocusNoEditMode = True
         super().focusInEvent(event)

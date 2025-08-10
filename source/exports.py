@@ -4,7 +4,7 @@
 # exports.py, provides classes for a file export dialog and export functions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -22,9 +22,9 @@ import zipfile
 import csv
 import shutil
 from xml.etree import ElementTree
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFontInfo
-from PyQt5.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QDialog,
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFontInfo
+from PyQt6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QDialog,
                              QFileDialog, QGroupBox, QHBoxLayout, QLabel,
                              QMessageBox, QRadioButton, QSpinBox, QVBoxLayout,
                              QWizard, QWizardPage)
@@ -104,7 +104,7 @@ class ExportControl:
                          'bookmarksXbel': self.exportBookmarksXbel}
         exportDialog = ExportDialog(len(self.selectedNodes),
                                     QApplication.activeWindow())
-        if exportDialog.exec_() == QDialog.Accepted:
+        if exportDialog.exec() == QDialog.DialogCode.Accepted:
             result = exportMethods[ExportDialog.currentSubtype]()
             QApplication.restoreOverrideCursor()
             return result
@@ -148,7 +148,7 @@ class ExportControl:
             pathObj = self.getFileName(_('TreeLine - Export HTML'), 'html')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedSpots = self.structure.rootSpots()
         outputGroup = treeoutput.OutputGroup(self.selectedSpots,
@@ -204,7 +204,7 @@ class ExportControl:
             pathObj = self.getFileName(_('TreeLine - Export HTML'), 'html')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedSpots = self.structure.rootSpots()
         outputGroup = treeoutput.OutputGroup(self.selectedSpots,
@@ -292,7 +292,7 @@ class ExportControl:
             if not path:
                 return False
             pathObj = pathlib.Path(path)
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         oldDir = os.getcwd()
         os.chdir(str(pathObj))
         indent = globalref.genOptions['IndentOffset']
@@ -350,7 +350,7 @@ class ExportControl:
             if not path:
                 return False
             pathObj = pathlib.Path(path)
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         oldDir = os.getcwd()
         os.chdir(str(pathObj))
         if ExportDialog.exportWhat != ExportDialog.entireTree:
@@ -397,7 +397,7 @@ class ExportControl:
             if not path:
                 return False
             pathObj = pathlib.Path(path)
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         control = globalref.mainControl
         prefPath = templatePath + '/exports' if templatePath else ''
         htmlPath = control.findResourceFile('live_tree_export.html',
@@ -427,11 +427,12 @@ class ExportControl:
                     'Continue with absolute path?').format(pathObj.as_posix(),
                                                           refPath.as_posix())
             ans = QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
-                                      msg, QMessageBox.Yes | QMessageBox.No,
-                                      QMessageBox.Yes)
-            if ans == QMessageBox.No:
+                                      msg, QMessageBox.StandardButton.Yes |
+                                      QMessageBox.StandardButton.No,
+                                      QMessageBox.StandardButton.Yes)
+            if ans == QMessageBox.StandardButton.No:
                 return False
-            QApplication.setOverrideCursor(Qt.WaitCursor)
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         fileStem = refPath.stem
         outPath = pathObj / (fileStem + '.html')
         with htmlPath.open(encoding='utf-8') as fileIn:
@@ -463,7 +464,7 @@ class ExportControl:
             pathObj = self.getFileName(_('TreeLine - Export HTML'), 'html')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         control = globalref.mainControl
         prefPath = templatePath + '/exports' if templatePath else ''
         htmlPath = control.findResourceFile('live_tree_export.html',
@@ -532,7 +533,7 @@ class ExportControl:
                                        'txt')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedSpots = self.structure.rootSpots()
         if ExportDialog.exportWhat == ExportDialog.selectNode:
@@ -567,7 +568,7 @@ class ExportControl:
                                        'txt')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedSpots = self.structure.rootSpots()
         lines = []
@@ -607,7 +608,7 @@ class ExportControl:
                                        'csv')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedSpots = self.structure.rootSpots()
         treeView = (globalref.mainControl.activeControl.activeWindow.treeView)
@@ -655,7 +656,7 @@ class ExportControl:
                                        'csv')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.selectNode:
             nodeList = self.selectedNodes
         else:
@@ -698,7 +699,7 @@ class ExportControl:
                                        'txt')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.selectNode:
             nodeList = self.selectedNodes
         else:
@@ -739,7 +740,7 @@ class ExportControl:
                                        'trl')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat != ExportDialog.entireTree:
             self.structure = treestructure.TreeStructure(topNodes=self.
                                                          selectedNodes,
@@ -791,7 +792,7 @@ class ExportControl:
                                        'trlnsave')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         self.structure = treestructure.TreeStructure(topNodes=self.
                                                      selectedNodes,
                                                      addSpots=False)
@@ -822,7 +823,7 @@ class ExportControl:
                                        'xml')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedNodes = self.structure.childList
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
@@ -848,7 +849,7 @@ class ExportControl:
             pathObj = self.getFileName(_('TreeLine - Export ODF Text'), 'odt')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedSpots = self.structure.rootSpots()
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
@@ -989,7 +990,7 @@ class ExportControl:
                                        'html')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedNodes = self.structure.childList
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
@@ -1020,7 +1021,7 @@ class ExportControl:
                                        'xml')
             if not pathObj:
                 return False
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if ExportDialog.exportWhat == ExportDialog.entireTree:
             self.selectedNodes = self.structure.childList
         addBranches = ExportDialog.exportWhat != ExportDialog.selectNode
@@ -1716,11 +1717,11 @@ class ExportDialog(QWizard):
             selectionAvail -- false if no nodes or branches are selected
             parent -- the parent window
         """
-        super().__init__(parent, Qt.Dialog)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        super().__init__(parent, Qt.WindowType.Dialog)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('File Export'))
-        self.setWizardStyle(QWizard.ClassicStyle)
+        self.setWizardStyle(QWizard.WizardStyle.ClassicStyle)
         self.setPage(ExportDialog.typePage, ExportDialogTypePage())
         self.setPage(ExportDialog.subtypePage, ExportDialogSubtypePage())
         self.setPage(ExportDialog.optionPage,
@@ -1750,7 +1751,7 @@ class ExportDialogTypePage(QWizardPage):
             topLayout.addWidget(button)
             if exportType == ExportDialog.currentType:
                 button.setChecked(True)
-        typeButtons.buttonClicked[int].connect(self.setCurrentType)
+        typeButtons.idClicked.connect(self.setCurrentType)
 
     def setCurrentType(self, buttonID):
         """Set the saved current type value based on a button click.
@@ -1786,7 +1787,7 @@ class ExportDialogSubtypePage(QWizardPage):
         self.setLayout(topLayout)
         self.setTitle(_('Choose export format subtype'))
         self.subtypeButtons = QButtonGroup(self)
-        self.subtypeButtons.buttonClicked[int].connect(self.setCurrentSubtype)
+        self.subtypeButtons.idClicked.connect(self.setCurrentSubtype)
 
     def initializePage(self):
         """Add buttons to this page based on current settings.
@@ -1847,7 +1848,7 @@ class ExportDialogOptionPage(QWizardPage):
         self.whatButtons.addButton(nodeButton, ExportDialog.selectNode)
         whatLayout.addWidget(nodeButton)
         self.whatButtons.button(ExportDialog.exportWhat).setChecked(True)
-        self.whatButtons.buttonClicked[int].connect(self.setExportWhat)
+        self.whatButtons.idClicked.connect(self.setExportWhat)
 
         optionBox = QGroupBox(_('Other Options'))
         topLayout.addWidget(optionBox)

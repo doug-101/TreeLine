@@ -4,7 +4,7 @@
 # treewindow.py, provides a class for the main window and controls
 #
 # TreeLine, an information storage program
-# Copyright (C) 2022, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,10 +14,10 @@
 
 import pathlib
 import base64
-from PyQt5.QtCore import QEvent, QRect, QSize, Qt, pyqtSignal
-from PyQt5.QtGui import QGuiApplication, QTextDocument
-from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QMainWindow,
-                             QSplitter, QStackedWidget, QStatusBar, QTabWidget)
+from PyQt6.QtCore import QEvent, QRect, QSize, Qt, pyqtSignal
+from PyQt6.QtGui import QAction, QActionGroup, QGuiApplication, QTextDocument
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QSplitter,
+                             QStackedWidget, QStatusBar, QTabWidget)
 import treeview
 import breadcrumbview
 import outputview
@@ -52,7 +52,7 @@ class TreeWindow(QMainWindow):
         self.winActions = {}
         self.toolbars = []
         self.rightTabActList = []
-        self.setAttribute(Qt.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.setAcceptDrops(True)
         self.setStatusBar(QStatusBar())
         self.setCaption()
@@ -62,7 +62,7 @@ class TreeWindow(QMainWindow):
         self.restoreToolbarPosition()
 
         self.treeView = treeview.TreeView(model, self.allActions)
-        self.breadcrumbSplitter = QSplitter(Qt.Vertical)
+        self.breadcrumbSplitter = QSplitter(Qt.Orientation.Vertical)
         self.setCentralWidget(self.breadcrumbSplitter)
         self.breadcrumbView = breadcrumbview.BreadcrumbView(self.treeView)
         self.breadcrumbSplitter.addWidget(self.breadcrumbView)
@@ -81,19 +81,19 @@ class TreeWindow(QMainWindow):
 
         self.rightTabs = QTabWidget()
         self.treeSplitter.addWidget(self.rightTabs)
-        self.rightTabs.setTabPosition(QTabWidget.South)
-        self.rightTabs.tabBar().setFocusPolicy(Qt.NoFocus)
+        self.rightTabs.setTabPosition(QTabWidget.TabPosition.South)
+        self.rightTabs.tabBar().setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
-        self.outputSplitter = QSplitter(Qt.Vertical)
+        self.outputSplitter = QSplitter(Qt.Orientation.Vertical)
         self.rightTabs.addTab(self.outputSplitter, _('Data Output'))
         parentOutputView = outputview.OutputView(self.treeView, False)
-        parentOutputView.highlighted[str].connect(self.statusBar().showMessage)
+        parentOutputView.highlighted.connect(self.setStatusFromUrl)
         self.outputSplitter.addWidget(parentOutputView)
         childOutputView = outputview.OutputView(self.treeView, True)
-        childOutputView.highlighted[str].connect(self.statusBar().showMessage)
+        childOutputView.highlighted.connect(self.setStatusFromUrl)
         self.outputSplitter.addWidget(childOutputView)
 
-        self.editorSplitter = QSplitter(Qt.Vertical)
+        self.editorSplitter = QSplitter(Qt.Orientation.Vertical)
         self.rightTabs.addTab(self.editorSplitter, _('Data Edit'))
         parentEditView = dataeditview.DataEditView(self.treeView,
                                                    self.allActions, False)
@@ -120,7 +120,7 @@ class TreeWindow(QMainWindow):
                                                updateInLinkSelectMode)
         self.editorSplitter.addWidget(childEditView)
 
-        self.titleSplitter = QSplitter(Qt.Vertical)
+        self.titleSplitter = QSplitter(Qt.Orientation.Vertical)
         self.rightTabs.addTab(self.titleSplitter, _('Title List'))
         parentTitleView = titlelistview.TitleListView(self.treeView, False)
         parentTitleView.shortcutEntered.connect(self.execShortcut)
@@ -280,6 +280,14 @@ class TreeWindow(QMainWindow):
             caption = '- TreeLine'
         self.setWindowTitle(caption)
 
+    def setStatusFromUrl(self, url):
+        """Set the status bar message to the text from a hovered-over URL.
+
+        Arguments:
+            url - the QUrl to show
+        """
+        self.statusBar().showMessage(url.toString())
+
     def filterView(self):
         """Create, show and return a filter view.
         """
@@ -335,8 +343,8 @@ class TreeWindow(QMainWindow):
         Arguments:
             forward -- forward in tab series if True
         """
-        reason = (Qt.TabFocusReason if forward
-                  else Qt.BacktabFocusReason)
+        reason = (Qt.FocusReason.TabFocusReason if forward
+                  else Qt.FocusReason.BacktabFocusReason)
         rightParent = self.rightParentView()
         rightChild = self.rightChildView()
         if (self.sender().isChildView == forward or
@@ -634,7 +642,7 @@ class TreeWindow(QMainWindow):
     def viewExpandBranch(self):
         """Expand all children of the selected spots.
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         selectedSpots = self.treeView.selectionModel().selectedSpots()
         if not selectedSpots:
             selectedSpots = self.treeView.model().treeStructure.rootSpots()
@@ -645,7 +653,7 @@ class TreeWindow(QMainWindow):
     def viewCollapseBranch(self):
         """Collapse all children of the selected spots.
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         selectedSpots = self.treeView.selectionModel().selectedSpots()
         if not selectedSpots:
             selectedSpots = self.treeView.model().treeStructure.rootSpots()
@@ -890,10 +898,10 @@ class TreeWindow(QMainWindow):
             event -- the change event object
         """
         super().changeEvent(event)
-        if (event.type() == QEvent.ActivationChange and
+        if (event.type() == QEvent.Type.ActivationChange and
             QApplication.activeWindow() == self):
             self.winActivated.emit(self)
-        elif (event.type() == QEvent.WindowStateChange and
+        elif (event.type() == QEvent.Type.WindowStateChange and
               globalref.genOptions['MinToSysTray'] and self.isMinimized()):
             self.winMinimized.emit()
 

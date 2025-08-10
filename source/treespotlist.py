@@ -4,7 +4,7 @@
 # treespotlist.py, provides a class to do operations on groups of spots
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,7 +14,7 @@
 
 import collections
 import operator
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 import treestructure
 import undo
 

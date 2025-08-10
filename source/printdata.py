@@ -4,7 +4,7 @@
 # printdata.py, provides a class for printing
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,12 +14,12 @@
 
 import os.path
 import enum
-from PyQt5.QtCore import QMarginsF, QSizeF, Qt
-from PyQt5.QtGui import (QAbstractTextDocumentLayout, QFontMetrics,
+from PyQt6.QtCore import QMarginsF, QSizeF, Qt
+from PyQt6.QtGui import (QAbstractTextDocumentLayout, QFontMetrics,
                          QPageLayout, QPageSize, QPainter, QPalette,
                          QTextDocument)
-from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QMessageBox
-from PyQt5.QtPrintSupport import QPrintDialog, QPrinter
+from PyQt6.QtWidgets import QApplication, QDialog, QFileDialog, QMessageBox
+from PyQt6.QtPrintSupport import QPrintDialog, QPrinter
 import treeoutput
 import printdialogs
 import globalref
@@ -46,7 +46,7 @@ class PrintData:
         self.printWhat = PrintScope.entireTree
         self.includeRoot = True
         self.openOnly = False
-        self.printer = QPrinter(QPrinter.HighResolution)
+        self.printer = QPrinter(QPrinter.PrinterMode.HighResolution)
         self.pageLayout = self.printer.pageLayout()
         self.setDefaults()
         self.adjustSpacing()
@@ -57,9 +57,9 @@ class PrintData:
         self.drawLines = True
         self.widowControl = True
         self.indentFactor = 2.0
-        self.pageLayout.setUnits(QPageLayout.Inch)
-        self.pageLayout.setPageSize(QPageSize(QPageSize.Letter))
-        self.pageLayout.setOrientation(QPageLayout.Portrait)
+        self.pageLayout.setUnits(QPageLayout.Unit.Inch)
+        self.pageLayout.setPageSize(QPageSize(QPageSize.PageSizeId.Letter))
+        self.pageLayout.setOrientation(QPageLayout.Orientation.Portrait)
         self.pageLayout.setMargins(QMarginsF(*(_defaultMargin,) * 4))
         self.headerMargin = _defaultHeaderPos
         self.footerMargin = _defaultHeaderPos
@@ -98,13 +98,13 @@ class PrintData:
         if self.indentFactor != 2.0:
             data['printindentfactor'] = self.indentFactor
         pageSizeId = self.pageLayout.pageSize().id()
-        if pageSizeId == QPageSize.Custom:
+        if pageSizeId == QPageSize.PageSizeId.Custom:
             paperWidth, paperHeight = self.roundedPaperSize()
             data['printpaperwidth'] = paperWidth
             data['printpaperheight'] = paperHeight
-        elif pageSizeId != QPageSize.Letter:
+        elif pageSizeId != QPageSize.PageSizeId.Letter:
             data['printpapersize'] = self.paperSizeName(pageSizeId)
-        if self.pageLayout.orientation() != QPageLayout.Portrait:
+        if self.pageLayout.orientation() != QPageLayout.Orientation.Portrait:
             data['printportrait'] = False
         if self.roundedMargins() != (_defaultMargin,) * 4:
             data['printmargins'] = list(self.roundedMargins())
@@ -142,10 +142,10 @@ class PrintData:
             width =  data['printpaperwidth']
             height = data['printpaperheight']
             self.pageLayout.setPageSize(QPageSize(QSizeF(width, height),
-                                        QPageSize.Inch))
+                                        QPageSize.Unit.Inch))
             self.pageLayout.setMargins(QMarginsF(*(_defaultMargin,) * 4))
         if not data.get('printportrait', True):
-            self.pageLayout.setOrientation(QPageLayout.Landscape)
+            self.pageLayout.setOrientation(QPageLayout.Orientation.Landscape)
         if 'printmargins' in data:
             margins = data['printmargins']
             self.pageLayout.setMargins(QMarginsF(*margins))
@@ -165,7 +165,7 @@ class PrintData:
 
         Rounds to nearest .01" to avoid Qt unit conversion artifacts.
         """
-        margins = self.pageLayout.margins(QPageLayout.Inch)
+        margins = self.pageLayout.margins(QPageLayout.Unit.Inch)
         return tuple(round(margin, 2) for margin in
                      (margins.left(), margins.top(), margins.right(),
                       margins.bottom()))
@@ -175,7 +175,7 @@ class PrintData:
 
         Rounds to nearest .01" to avoid Qt unit conversion artifacts.
         """
-        size = self.pageLayout.fullRect(QPageLayout.Inch)
+        size = self.pageLayout.fullRect(QPageLayout.Unit.Inch)
         return (round(size.width(), 2), round(size.height(), 2))
 
     def paperSizeName(self, sizeId=None):
@@ -312,7 +312,7 @@ class PrintData:
         if not self.printer.setPageLayout(self.pageLayout):
             tempPrinter = QPrinter()
             tempPageLayout = tempPrinter.pageLayout()
-            tempPageLayout.setUnits(QPageLayout.Inch)
+            tempPageLayout.setUnits(QPageLayout.Unit.Inch)
             pageSizeIssue = False
             defaultPageSize = tempPageLayout.pageSize()
             tempPageLayout.setPageSize(self.pageLayout.pageSize())
@@ -348,9 +348,10 @@ class PrintData:
                 msg = _('Warning: Margin settings unsupported '
                         'on current printer.\nSave adjustments?')
             ans = QMessageBox.warning(QApplication.activeWindow(), 'TreeLine',
-                                      msg, QMessageBox.Yes | QMessageBox.No,
-                                      QMessageBox.Yes)
-            if ans == QMessageBox.Yes:
+                                      msg, QMessageBox.StandardButton.Yes |
+                                      QMessageBox.StandardButton.No,
+                                      QMessageBox.StandardButton.Yes)
+            if ans == QMessageBox.StandardButton.Yes:
                 self.pageLayout = tempPageLayout
 
     def paintData(self, printer):
@@ -361,14 +362,14 @@ class PrintData:
             maxPageNum = self.outputGroup[-1].pageNum
         except IndexError:   # printing empty branch
             maxPageNum = 1
-        if self.printer.printRange() != QPrinter.AllPages:
+        if self.printer.printRange() != QPrinter.PrintRange.AllPages:
             pageNum = self.printer.fromPage()
             maxPageNum = self.printer.toPage()
         painter = QPainter()
         if not painter.begin(self.printer):
             QMessageBox.warning(QApplication.activeWindow(),
                                 'TreeLine', _('Error initializing printer'))
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         while True:
             self.paintPage(pageNum, painter)
             if pageNum == maxPageNum:
@@ -387,7 +388,7 @@ class PrintData:
         paintContext = QAbstractTextDocumentLayout.PaintContext()
         # set context text color to black to wrok with dark app themes
         paintContext.palette = QPalette()
-        paintContext.palette.setColor(QPalette.Text, Qt.black)
+        paintContext.palette.setColor(QPalette.ColorRole.Text, Qt.GlobalColor.black)
         try:
             totalNumPages = self.outputGroup[-1].pageNum
         except IndexError:   # printing empty branch
@@ -399,7 +400,7 @@ class PrintData:
             headerDoc.setTextWidth(self.pageLayout.paintRect().width() *
                                    self.printer.logicalDpiX())
             painter.save()
-            topMargin = self.pageLayout.margins(QPageLayout.Inch).top()
+            topMargin = self.pageLayout.margins(QPageLayout.Unit.Inch).top()
             headerDelta = ((self.headerMargin - topMargin) *
                            self.printer.logicalDpiX())
             painter.translate(0, int(headerDelta))
@@ -423,7 +424,8 @@ class PrintData:
             footerDoc.setTextWidth(self.pageLayout.paintRect().width() *
                                    self.printer.logicalDpiX())
             painter.save()
-            bottomMargin = self.pageLayout.margins(QPageLayout.Inch).bottom()
+            bottomMargin = self.pageLayout.margins(QPageLayout.
+                                                   Unit.Inch).bottom()
             footerDelta = ((bottomMargin - self.footerMargin) *
                            self.printer.logicalDpiX())
             painter.translate(0, self.pageLayout.paintRect().height() *
@@ -555,7 +557,7 @@ class PrintData:
         """
         setupDialog = printdialogs.PrintSetupDialog(self, True, QApplication.
                                                     activeWindow())
-        setupDialog.exec_()
+        setupDialog.exec()
 
     def printPreview(self):
         """Show a preview of printing results.
@@ -566,15 +568,15 @@ class PrintData:
         previewDialog.previewWidget.paintRequested.connect(self.paintData)
         if globalref.genOptions['SaveWindowGeom']:
             previewDialog.restoreDialogGeom()
-        previewDialog.exec_()
+        previewDialog.exec()
 
     def filePrint(self):
         """Show dialog and print tree output based on current options.
         """
-        self.printer.setOutputFormat(QPrinter.NativeFormat)
+        self.printer.setOutputFormat(QPrinter.OutputFormat.NativeFormat)
         self.setupData()
         printDialog = QPrintDialog(self.printer, QApplication.activeWindow())
-        if printDialog.exec_() == QDialog.Accepted:
+        if printDialog.exec() == QDialog.DialogCode.Accepted:
             self.paintData(self.printer)
 
     def filePrintPdf(self):
@@ -595,7 +597,7 @@ class PrintData:
         if not os.path.splitext(filePath)[1]:
             filePath = '{0}.{1}'.format(filePath, 'pdf')
         origFormat = self.printer.outputFormat()
-        self.printer.setOutputFormat(QPrinter.PdfFormat)
+        self.printer.setOutputFormat(QPrinter.OutputFormat.PdfFormat)
         self.printer.setOutputFileName(filePath)
         self.adjustSpacing()
         self.setupData()

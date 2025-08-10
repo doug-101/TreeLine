@@ -4,7 +4,7 @@
 # treemaincontrol.py, provides a class for global tree commands
 #
 # TreeLine, an information storage program
-# Copyright (C) 2023, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -21,11 +21,11 @@ import gzip
 import zlib
 import datetime
 import platform
-from PyQt5.QtCore import QIODevice, QObject, Qt, PYQT_VERSION_STR, qVersion
-from PyQt5.QtGui import QColor, QFont, QPalette
-from PyQt5.QtNetwork import QLocalServer, QLocalSocket
-from PyQt5.QtWidgets import (QAction, QApplication, QDialog, QFileDialog,
-                             QMessageBox, QStyleFactory, QSystemTrayIcon, qApp)
+from PyQt6.QtCore import QIODevice, QObject, Qt, PYQT_VERSION_STR, qVersion
+from PyQt6.QtGui import QAction, QColor, QFont, QPalette
+from PyQt6.QtNetwork import QLocalServer, QLocalSocket
+from PyQt6.QtWidgets import (QApplication, QDialog, QFileDialog, QMessageBox,
+                             QStyleFactory, QSystemTrayIcon)
 import globalref
 import treelocalcontrol
 import options
@@ -89,7 +89,7 @@ class TreeMainControl(QObject):
             # check for existing TreeLine session
             socket = QLocalSocket()
             socket.connectToServer('treeline3-session',
-                                   QIODevice.WriteOnly)
+                                   QIODevice.OpenModeFlag.WriteOnly)
             # if found, send files to open and exit TreeLine
             if socket.waitForConnected(1000):
                 socket.write(bytes(repr([str(path) for path in pathObjects]),
@@ -141,7 +141,7 @@ class TreeMainControl(QObject):
             QApplication.setWindowIcon(windowIcon)
         globalref.treeIcons = icondict.IconDict(iconPathList, ['', 'tree'])
         icon = globalref.treeIcons.getIcon('default')
-        qApp.setStyle(QStyleFactory.create('Fusion'))
+        QApplication.setStyle(QStyleFactory.create('Fusion'))
         self.colorSet = colorset.ColorSet()
         if globalref.miscOptions['ColorTheme'] != 'system':
             self.colorSet.setAppColors()
@@ -155,7 +155,7 @@ class TreeMainControl(QObject):
         self.updateAppFont()
         if globalref.genOptions['MinToSysTray']:
             self.createTrayIcon()
-        qApp.focusChanged.connect(self.updateActionsAvail)
+        QApplication.instance().focusChanged.connect(self.updateActionsAvail)
         if pathObjects:
             for pathObj in pathObjects:
                 self.openFile(pathObj, True)
@@ -270,7 +270,7 @@ class TreeMainControl(QObject):
             if not self.localControls:
                 self.createLocalControl()
             return
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
             fileModTime = datetime.datetime.fromtimestamp(pathObj.stat().
                                                           st_mtime)
@@ -365,9 +365,9 @@ class TreeMainControl(QObject):
                 dialog = miscdialogs.PasswordDialog(False, pathObj.name,
                                                     QApplication.
                                                     activeWindow())
-                if dialog.exec_() != QDialog.Accepted:
+                if dialog.exec() != QDialog.DialogCode.Accepted:
                     return (None, True)
-                QApplication.setOverrideCursor(Qt.WaitCursor)
+                QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
                 password = dialog.password
                 if miscdialogs.PasswordDialog.remember:
                     self.passwords[pathObj] = password
@@ -413,18 +413,19 @@ class TreeMainControl(QObject):
         pathObj = pathlib.Path(str(pathObj) + '~')
         if not pathObj.is_file():
             return True
-        msgBox = QMessageBox(QMessageBox.Information, 'TreeLine',
+        msgBox = QMessageBox(QMessageBox.Icon.Information, 'TreeLine',
                              _('Backup file "{}" exists.\nA previous '
                                'session may have crashed').
-                             format(pathObj), QMessageBox.NoButton,
+                             format(pathObj),
+                             QMessageBox.StandardButton.NoButton,
                              QApplication.activeWindow())
         restoreButton = msgBox.addButton(_('&Restore Backup'),
-                                         QMessageBox.ApplyRole)
+                                         QMessageBox.ButtonRole.ApplyRole)
         deleteButton = msgBox.addButton(_('&Delete Backup'),
-                                        QMessageBox.DestructiveRole)
+                                        QMessageBox.ButtonRole.DestructiveRole)
         cancelButton = msgBox.addButton(_('&Cancel File Open'),
-                                        QMessageBox.RejectRole)
-        msgBox.exec_()
+                                        QMessageBox.ButtonRole.RejectRole)
+        msgBox.exec()
         if msgBox.clickedButton() == restoreButton:
             self.openFile(pathObj)
             if self.activeControl.filePathObj != pathObj:
@@ -531,16 +532,17 @@ class TreeMainControl(QObject):
     def createTrayIcon(self):
         """Create a new system tray icon if not already created.
         """
-        if QSystemTrayIcon.isSystemTrayAvailable:
+        if QSystemTrayIcon.isSystemTrayAvailable():
             if not self.trayIcon:
-                self.trayIcon = QSystemTrayIcon(qApp.windowIcon(), qApp)
+                self.trayIcon = QSystemTrayIcon(QApplication.windowIcon(),
+                                                QApplication)
                 self.trayIcon.activated.connect(self.toggleTrayShow)
             self.trayIcon.show()
 
     def trayMinimize(self):
         """Minimize to tray based on window minimize signal.
         """
-        if self.trayIcon and QSystemTrayIcon.isSystemTrayAvailable:
+        if self.trayIcon and QSystemTrayIcon.isSystemTrayAvailable():
             # skip minimize to tray if not all windows minimized
             for control in self.localControls:
                 for window in control.windowList:
@@ -747,7 +749,7 @@ class TreeMainControl(QObject):
                 dialog = miscdialogs.TemplateFileDialog(_('New File'),
                                                         _('&Select Template'),
                                                         searchPaths)
-                if dialog.exec_() == QDialog.Accepted:
+                if dialog.exec() == QDialog.DialogCode.Accepted:
                     self.createLocalControl(dialog.selectedPath())
                     self.activeControl.filePathObj = None
                     self.activeControl.updateWindowCaptions()
@@ -780,7 +782,7 @@ class TreeMainControl(QObject):
             dialog = miscdialogs.TemplateFileDialog(_('Open Sample File'),
                                                     _('&Select Sample'),
                                                     searchPaths, False)
-            if dialog.exec_() == QDialog.Accepted:
+            if dialog.exec() == QDialog.DialogCode.Accepted:
                 self.createLocalControl(dialog.selectedPath())
                 name = dialog.selectedName() + '.trln'
                 self.activeControl.filePathObj = pathlib.Path(name)
@@ -971,7 +973,7 @@ class TreeMainControl(QObject):
         dialog = options.OptionDialog(globalref.genOptions,
                                       QApplication.activeWindow())
         dialog.setWindowTitle(_('General Options'))
-        if (dialog.exec_() == QDialog.Accepted and
+        if (dialog.exec() == QDialog.DialogCode.Accepted and
             globalref.genOptions.modified):
             globalref.genOptions.writeFile()
             self.recentFiles.updateOptions()
@@ -994,7 +996,7 @@ class TreeMainControl(QObject):
         actions = self.activeControl.activeWindow.allActions
         dialog = miscdialogs.CustomShortcutsDialog(actions, QApplication.
                                                    activeWindow())
-        dialog.exec_()
+        dialog.exec()
 
     def toolsCustomToolbars(self):
         """Show dialog to customize toolbar buttons.
@@ -1003,7 +1005,7 @@ class TreeMainControl(QObject):
         dialog = miscdialogs.CustomToolbarDialog(actions, self.updateToolbars,
                                                  QApplication.
                                                  activeWindow())
-        dialog.exec_()
+        dialog.exec()
 
     def updateToolbars(self):
         """Update toolbars after changes in custom toolbar dialog.
@@ -1018,7 +1020,7 @@ class TreeMainControl(QObject):
         dialog = miscdialogs.CustomFontDialog(QApplication.
                                               activeWindow())
         dialog.updateRequired.connect(self.updateCustomFonts)
-        dialog.exec_()
+        dialog.exec()
 
     def toolsCustomColors(self):
         """Show dialog to customize GUI colors ans themes.
@@ -1097,7 +1099,7 @@ class TreeMainControl(QObject):
         dialog = miscdialogs.AboutDialog('TreeLine', textLines,
                                          QApplication.windowIcon(),
                                          QApplication.activeWindow())
-        dialog.exec_()
+        dialog.exec()
 
 
 def setThemeColors():
@@ -1109,19 +1111,24 @@ def setThemeColors():
         myVeryDarkGray = QColor(25, 25, 25)
         myBlue = QColor(42, 130, 218)
         palette = QPalette()
-        palette.setColor(QPalette.Window, myDarkGray)
-        palette.setColor(QPalette.WindowText, Qt.white)
-        palette.setColor(QPalette.Base, myVeryDarkGray)
-        palette.setColor(QPalette.AlternateBase, myDarkGray)
-        palette.setColor(QPalette.ToolTipBase, Qt.darkBlue)
-        palette.setColor(QPalette.ToolTipText, Qt.lightGray)
-        palette.setColor(QPalette.Text, Qt.white)
-        palette.setColor(QPalette.Button, myDarkGray)
-        palette.setColor(QPalette.ButtonText, Qt.white)
-        palette.setColor(QPalette.BrightText, Qt.red)
-        palette.setColor(QPalette.Link, myBlue)
-        palette.setColor(QPalette.Highlight, myBlue)
-        palette.setColor(QPalette.HighlightedText, Qt.black)
-        palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
-        palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
-        qApp.setPalette(palette)
+        palette.setColor(QPalette.ColorRole.Window, myDarkGray)
+        palette.setColor(QPalette.ColorRole.WindowText, Qt.GlobalColor.white)
+        palette.setColor(QPalette.ColorRole.Base, myVeryDarkGray)
+        palette.setColor(QPalette.ColorRole.AlternateBase, myDarkGray)
+        palette.setColor(QPalette.ColorRole.ToolTipBase,
+                         Qt.GlobalColor.darkBlue)
+        palette.setColor(QPalette.ColorRole.ToolTipText,
+                         Qt.GlobalColor.lightGray)
+        palette.setColor(QPalette.ColorRole.Text, Qt.GlobalColor.white)
+        palette.setColor(QPalette.ColorRole.Button, myDarkGray)
+        palette.setColor(QPalette.ColorRole.ButtonText, Qt.GlobalColor.white)
+        palette.setColor(QPalette.ColorRole.BrightText, Qt.GlobalColor.red)
+        palette.setColor(QPalette.ColorRole.Link, myBlue)
+        palette.setColor(QPalette.ColorRole.Highlight, myBlue)
+        palette.setColor(QPalette.ColorRole.HighlightedText,
+                         Qt.GlobalColor.black)
+        palette.setColor(QPalette.ColorGroup.Disabled,
+                         QPalette.ColorRole.Text, Qt.GlobalColor.darkGray)
+        palette.setColor(QPalette.ColorGroup.Disabled,
+                         QPalette.ColorRole.ButtonText, Qt.GlobalColor.darkGray)
+        QApplication.setPalette(palette)

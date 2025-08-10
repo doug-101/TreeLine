@@ -4,7 +4,7 @@
 # conditional.py, provides a class to store field comparison functions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2023, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,8 +14,8 @@
 
 import re
 import enum
-from PyQt5.QtCore import QSize, Qt, pyqtSignal
-from PyQt5.QtWidgets import (QComboBox, QDialog, QGroupBox, QHBoxLayout,
+from PyQt6.QtCore import QSize, Qt, pyqtSignal
+from PyQt6.QtWidgets import (QComboBox, QDialog, QGroupBox, QHBoxLayout,
                              QLabel, QLineEdit, QListWidget, QPushButton,
                              QSizePolicy, QVBoxLayout)
 import treeformats
@@ -229,12 +229,12 @@ class ConditionDialog(QDialog):
         topLayout = QVBoxLayout(self)
 
         if dialogType == FindDialogType.typeDialog:
-            self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                                Qt.WindowCloseButtonHint)
+            self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                                Qt.WindowType.WindowCloseButtonHint)
         else:
-            self.setAttribute(Qt.WA_QuitOnClose, False)
-            self.setWindowFlags(Qt.Window |
-                                Qt.WindowStaysOnTopHint)
+            self.setAttribute(Qt.WidgetAttribute.WA_QuitOnClose, False)
+            self.setWindowFlags(Qt.WindowType.Window |
+                                Qt.WindowType.WindowStaysOnTopHint)
             typeBox = QGroupBox(_('Node Type'))
             topLayout.addWidget(typeBox)
             typeLayout = QVBoxLayout(typeBox)
@@ -337,7 +337,7 @@ class ConditionDialog(QDialog):
             if combineBool != 'and':
                 boolBox.setCurrentIndex(1)
             self.mainLayout.insertWidget(len(self.ruleList) * 2 - 1, boolBox,
-                                        0, Qt.AlignHCenter)
+                                        0, Qt.AlignmentFlag.AlignHCenter)
         rule = ConditionRule(len(self.ruleList) + 1, self.fieldNames)
         self.ruleList.append(rule)
         self.mainLayout.insertWidget(len(self.ruleList) * 2 - 2, rule)
@@ -524,7 +524,7 @@ class ConditionDialog(QDialog):
                                                conditionStr())
         self.loadSavedNames(True)
         self.saveListBox.setCurrentItem(self.saveListBox.
-                                        findItems(name, Qt.MatchExactly)[0])
+                                        findItems(name, Qt.MatchFlag.MatchExactly)[0])
         globalref.mainControl.activeControl.setModified()
 
     def deleteRule(self):

@@ -4,7 +4,7 @@
 # dataeditors.py, provides classes for data editors in the data edit view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2022, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -20,18 +20,19 @@ import math
 import enum
 import datetime
 import subprocess
-from PyQt5.QtCore import (QDate, QDateTime, QPoint, QPointF, QRect, QSize,
+from PyQt6.QtCore import (QDate, QDateTime, QPoint, QPointF, QRect, QSize,
                           QTime, Qt, pyqtSignal)
-from PyQt5.QtGui import (QBrush, QFont, QFontMetrics, QPainter, QPainterPath,
-                         QPixmap, QPen, QTextCursor, QTextDocument, QValidator)
-from PyQt5.QtWidgets import (QAbstractItemView, QAbstractSpinBox,
-                             QAction, QApplication, QButtonGroup,
-                             QCalendarWidget, QCheckBox, QColorDialog,
-                             QComboBox, QDialog, QFileDialog, QHBoxLayout,
-                             QHeaderView, QLabel, QLineEdit, QMenu,
-                             QPushButton, QRadioButton, QScrollArea,
-                             QSizePolicy, QSpinBox, QTextEdit, QTreeWidget,
-                             QTreeWidgetItem, QVBoxLayout, QWidget)
+from PyQt6.QtGui import (QAction, QBrush, QFont, QFontMetrics, QPainter,
+                         QPainterPath, QPixmap, QPen, QTextCursor,
+                         QTextDocument, QValidator)
+from PyQt6.QtWidgets import (QAbstractItemView, QAbstractSpinBox,
+                             QApplication, QButtonGroup, QCalendarWidget,
+                             QCheckBox, QColorDialog, QComboBox, QDialog,
+                             QFileDialog, QHBoxLayout, QHeaderView, QLabel,
+                             QLineEdit, QMenu, QPushButton, QRadioButton,
+                             QScrollArea, QSizePolicy, QSpinBox, QTextEdit,
+                             QTreeWidget, QTreeWidgetItem, QVBoxLayout,
+                             QWidget)
 import dataeditview
 import fieldformat
 import urltools
@@ -100,7 +101,7 @@ class PlainTextEditor(QTextEdit):
         """
         cursor = self.textCursor()
         cursor.setPosition(anchor)
-        cursor.setPosition(position, QTextCursor.KeepAnchor)
+        cursor.setPosition(position, QTextCursor.MoveMode.KeepAnchor)
         self.setTextCursor(cursor)
         # self.ensureCursorVisible()
 
@@ -115,7 +116,7 @@ class PlainTextEditor(QTextEdit):
     def resetCursor(self):
         """Set the cursor to end for tab-focus use.
         """
-        self.moveCursor(QTextCursor.End)
+        self.moveCursor(QTextCursor.MoveOperation.End)
 
     def scrollPosition(self):
         """Return the current scrollbar position.
@@ -184,7 +185,7 @@ class PlainTextEditor(QTextEdit):
         menu.addAction(self.allActions['EditPaste'])
         menu.addSeparator()
         menu.addAction(self.allActions['FormatInsertDate'])
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
 
     def focusInEvent(self, event):
         """Set availability and update format actions.
@@ -202,7 +203,7 @@ class PlainTextEditor(QTextEdit):
             event -- the focus event
         """
         super().focusOutEvent(event)
-        if event.reason() != Qt.PopupFocusReason:
+        if event.reason() != Qt.FocusReason.PopupFocusReason:
             self.disableActions()
             self.editEnding.emit(self)
 
@@ -223,10 +224,10 @@ class PlainTextEditor(QTextEdit):
         Arguments:
             event -- the key press event
         """
-        if (event.key() in (Qt.Key_PageUp, Qt.Key_PageDown) and
+        if (event.key() in (Qt.Key.Key_PageUp, Qt.Key.Key_PageDown) and
             not globalref.genOptions['EditorLimitHeight']):
             pos = self.cursorRect().center()
-            if event.key() == Qt.Key_PageUp:
+            if event.key() == Qt.Key.Key_PageUp:
                 pos.setY(pos.y() - self.parent().height())
                 if pos.y() < 0:
                     pos.setY(0)
@@ -235,10 +236,10 @@ class PlainTextEditor(QTextEdit):
                 if pos.y() > self.height():
                     pos.setY(self.height())
             newCursor = self.cursorForPosition(pos)
-            if event.modifiers() == Qt.ShiftModifier:
+            if event.modifiers() == Qt.KeyboardModifier.ShiftModifier:
                 cursor = self.textCursor()
                 cursor.setPosition(newCursor.position(),
-                                   QTextCursor.KeepAnchor)
+                                   QTextCursor.MoveMode.KeepAnchor)
                 self.setTextCursor(cursor)
             else:
                 self.setTextCursor(newCursor)
@@ -292,7 +293,7 @@ class HtmlTextEditor(PlainTextEditor):
         text = '{0}{1}{2}'.format(prefix, cursor.selectedText(), suffix)
         self.insertPlainText(text)
         cursor.setPosition(start + len(prefix))
-        cursor.setPosition(end + len(prefix), QTextCursor.KeepAnchor)
+        cursor.setPosition(end + len(prefix), QTextCursor.MoveMode.KeepAnchor)
         self.setTextCursor(cursor)
 
     def setBoldFont(self, checked):
@@ -385,7 +386,7 @@ class HtmlTextEditor(PlainTextEditor):
                 if address.startswith('#'):
                     address = name = ''
                 dialog.setFromComponents(address, name)
-                if dialog.exec_() == QDialog.Accepted:
+                if dialog.exec() == QDialog.DialogCode.Accepted:
                     self.insertPlainText(dialog.htmlText())
         except RuntimeError:
             pass    # avoid calling a deleted C++ editor object
@@ -416,7 +417,7 @@ class HtmlTextEditor(PlainTextEditor):
         Arguments:
             resultCode -- the result from the dialog (OK or cancel)
         """
-        if resultCode == QDialog.Accepted:
+        if resultCode == QDialog.DialogCode.Accepted:
             self.insertPlainText(self.intLinkDialog.htmlText())
         self.intLinkDialog = None
         self.inLinkSelectMode.emit(False)
@@ -446,7 +447,7 @@ class HtmlTextEditor(PlainTextEditor):
             if start < anchor < end or start < position < end:
                 address, name = match.groups()
                 cursor.setPosition(start)
-                cursor.setPosition(end, QTextCursor.KeepAnchor)
+                cursor.setPosition(end, QTextCursor.MoveMode.KeepAnchor)
                 self.setTextCursor(cursor)
                 return (address, name)
         return ('', cursor.selectedText())
@@ -534,7 +535,7 @@ class HtmlTextEditor(PlainTextEditor):
         menu.addAction(self.allActions['EditCut'])
         menu.addAction(self.allActions['EditCopy'])
         menu.addAction(self.allActions['EditPaste'])
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
 
     def hideEvent(self, event):
         """Close the internal link dialog when the editor is hidden.
@@ -603,7 +604,7 @@ class RichTextEditor(HtmlTextEditor):
                 text = xml.sax.saxutils.escape(fragIter.fragment().text())
                 text = text.replace('\u2028', '<br />')
                 charFormat = fragIter.fragment().charFormat()
-                if charFormat.fontWeight() >= QFont.Bold:
+                if charFormat.fontWeight() >= QFont.Weight.Bold:
                     text = '<b>{0}</b>'.format(text)
                 if charFormat.fontItalic():
                     text = '<i>{0}</i>'.format(text)
@@ -644,9 +645,9 @@ class RichTextEditor(HtmlTextEditor):
         try:
             if self.hasFocus():
                 if checked:
-                    self.setFontWeight(QFont.Bold)
+                    self.setFontWeight(QFont.Weight.Bold)
                 else:
-                    self.setFontWeight(QFont.Normal)
+                    self.setFontWeight(QFont.Weight.Normal)
         except RuntimeError:
             pass    # avoid calling a deleted C++ editor object
 
@@ -745,7 +746,7 @@ class RichTextEditor(HtmlTextEditor):
                 if address.startswith('#'):
                     address = name = ''
                 dialog.setFromComponents(address, name)
-                if dialog.exec_() == QDialog.Accepted:
+                if dialog.exec() == QDialog.DialogCode.Accepted:
                     if self.textCursor().hasSelection():
                         self.insertHtml(dialog.htmlText())
                     else:
@@ -759,7 +760,7 @@ class RichTextEditor(HtmlTextEditor):
         Arguments:
             resultCode -- the result from the dialog (OK or cancel)
         """
-        if resultCode == QDialog.Accepted:
+        if resultCode == QDialog.DialogCode.Accepted:
             if self.textCursor().hasSelection():
                 self.insertHtml(self.intLinkDialog.htmlText())
             else:
@@ -806,7 +807,7 @@ class RichTextEditor(HtmlTextEditor):
         if not name:
             name = selectText.split('\n')[0]
         cursor.setPosition(anchorCursor.position())
-        cursor.setPosition(position, QTextCursor.KeepAnchor)
+        cursor.setPosition(position, QTextCursor.MoveMode.KeepAnchor)
         self.setTextCursor(cursor)
         return (address, name)
 
@@ -844,7 +845,7 @@ class RichTextEditor(HtmlTextEditor):
         """
         super().updateActions()
         self.allActions['FormatBoldFont'].setChecked(self.fontWeight() ==
-                                                   QFont.Bold)
+                                                   QFont.Weight.Bold)
         self.allActions['FormatItalicFont'].setChecked(self.fontItalic())
         self.allActions['FormatUnderlineFont'].setChecked(self.fontUnderline())
         self.allActions['FormatStrikethroughFont'].setChecked(self.
@@ -888,7 +889,7 @@ class RichTextEditor(HtmlTextEditor):
         menu.addAction(self.allActions['EditCopy'])
         menu.addAction(self.allActions['EditPaste'])
         menu.addAction(self.allActions['EditPastePlain'])
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
 
     def mousePressEvent(self, event):
         """Handle ctrl + click to follow links.
@@ -896,8 +897,8 @@ class RichTextEditor(HtmlTextEditor):
         Arguments:
             event -- the mouse event
         """
-        if (event.button() == Qt.LeftButton and
-            event.modifiers() == Qt.ControlModifier):
+        if (event.button() == Qt.MouseButton.LeftButton and
+            event.modifiers() == Qt.KeyboardModifier.ControlModifier):
             cursor = self.cursorForPosition(event.pos())
             address = cursor.charFormat().anchorHref()
             if address:
@@ -940,7 +941,7 @@ class OneLineTextEditor(RichTextEditor):
             self.blockSignals(True)
             self.setHtml(text)
             self.blockSignals(False)
-            self.moveCursor(QTextCursor.End)
+            self.moveCursor(QTextCursor.MoveOperation.End)
 
     def keyPressEvent(self, event):
         """Customize handling of return and control keys.
@@ -948,7 +949,7 @@ class OneLineTextEditor(RichTextEditor):
         Arguments:
             event -- the key press event
         """
-        if event.key() not in (Qt.Key_Enter, Qt.Key_Return):
+        if event.key() not in (Qt.Key.Key_Enter, Qt.Key.Key_Return):
             super().keyPressEvent(event)
 
 
@@ -1115,7 +1116,7 @@ class LineEditor(QLineEdit):
         menu.addAction(self.allActions['EditCut'])
         menu.addAction(self.allActions['EditCopy'])
         menu.addAction(self.allActions['EditPaste'])
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
 
     def focusInEvent(self, event):
         """Restore a saved cursor position for new editors.
@@ -1124,7 +1125,7 @@ class LineEditor(QLineEdit):
             event -- the focus event
         """
         super().focusInEvent(event)
-        if (event.reason() == Qt.OtherFocusReason and
+        if (event.reason() == Qt.FocusReason.OtherFocusReason and
             self.savedCursorPos != None):
             self.setCursorPosition(self.savedCursorPos)
             self.savedCursorPos = None
@@ -1137,7 +1138,7 @@ class LineEditor(QLineEdit):
             event -- the focus event
         """
         super().focusOutEvent(event)
-        if event.reason() != Qt.PopupFocusReason:
+        if event.reason() != Qt.FocusReason.PopupFocusReason:
             self.disableActions()
             self.editEnding.emit(self)
 
@@ -1192,8 +1193,9 @@ class ComboEditor(QComboBox):
         self.listView.setColumnCount(2)
         self.listView.header().hide()
         self.listView.setRootIsDecorated(False)
-        self.listView.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.listView.header().setSectionResizeMode(QHeaderView.
+        self.listView.setSelectionBehavior(QAbstractItemView.
+                                           SelectionBehavior.SelectRows)
+        self.listView.header().setSectionResizeMode(QHeaderView.ResizeMode.
                                                     ResizeToContents)
         self.setModel(self.listView.model())
         self.setView(self.listView)
@@ -1397,11 +1399,11 @@ class CombinationDialog(QDialog):
             parent -- the parent, if given
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Popup)
+        self.setWindowFlags(Qt.WindowType.Popup)
         topLayout = QVBoxLayout(self)
         topLayout.setContentsMargins(0, 0, 0, 0)
         scrollArea = QScrollArea()
-        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         topLayout.addWidget(scrollArea)
         innerWidget = QWidget()
         innerLayout = QVBoxLayout(innerWidget)
@@ -1456,18 +1458,19 @@ class DateEditor(ComboEditor):
             dateStr = self.fieldRef.storedText(self.currentText())
         except ValueError:
             return QDate()
-        return QDate.fromString(dateStr, Qt.ISODate)
+        return QDate.fromString(dateStr, Qt.DateFormat.ISODate)
 
     def showPopup(self):
         """Override to show a calendar widget in place of a list view.
         """
         if not self.calendar:
             self.calendar = QCalendarWidget(self)
-            self.calendar.setWindowFlags(Qt.Popup)
+            self.calendar.setWindowFlags(Qt.WindowType.Popup)
             weekStart = optiondefaults.daysOfWeek.index(globalref.
                                                        genOptions['WeekStart'])
             self.calendar.setFirstDayOfWeek(weekStart + 1)
             self.calendar.setVerticalHeaderFormat(QCalendarWidget.
+                                                  VerticalHeaderFormat.
                                                   NoVerticalHeader)
             self.calendar.clicked.connect(self.setDate)
         date = self.editorDate()
@@ -1495,14 +1498,14 @@ class DateEditor(ComboEditor):
         Arguments:
             date -- the QDate to be set
         """
-        dateStr = date.toString(Qt.ISODate)
+        dateStr = date.toString(Qt.DateFormat.ISODate)
         self.setEditText(self.fieldRef.formatEditorText(dateStr))
         self.calendar.hide()
 
     def setNow(self):
         """Set to today's date.
         """
-        dateStr = QDate.currentDate().toString(Qt.ISODate)
+        dateStr = QDate.currentDate().toString(Qt.DateFormat.ISODate)
         self.setEditText(self.fieldRef.formatEditorText(dateStr))
 
 
@@ -1578,7 +1581,7 @@ class TimeDialog(QDialog):
         """
         super().__init__(parent)
         self.focusElem = None
-        self.setWindowFlags(Qt.Popup)
+        self.setWindowFlags(Qt.WindowType.Popup)
         horizLayout = QHBoxLayout(self)
         if addCalendar:
             self.calendar = QCalendarWidget()
@@ -1587,6 +1590,7 @@ class TimeDialog(QDialog):
                                                        genOptions['WeekStart'])
             self.calendar.setFirstDayOfWeek(weekStart + 1)
             self.calendar.setVerticalHeaderFormat(QCalendarWidget.
+                                                  VerticalHeaderFormat.
                                                   NoVerticalHeader)
             self.calendar.clicked.connect(self.contentsChanged)
         vertLayout = QVBoxLayout()
@@ -1618,7 +1622,7 @@ class TimeDialog(QDialog):
         lowerLayout = QHBoxLayout()
         vertLayout.addLayout(lowerLayout)
         self.clock = ClockWidget()
-        lowerLayout.addWidget(self.clock, Qt.AlignCenter)
+        lowerLayout.addWidget(self.clock, Qt.AlignmentFlag.AlignCenter)
         self.clock.numClicked.connect(self.setFromClock)
         if addCalendar:
             self.calendar.setFocus()
@@ -1651,7 +1655,7 @@ class TimeDialog(QDialog):
         Arguments:
             text -- the date in ISO format
         """
-        date = QDate.fromString(text, Qt.ISODate)
+        date = QDate.fromString(text, Qt.DateFormat.ISODate)
         if date.isValid():
             self.calendar.setSelectedDate(date)
 
@@ -1728,7 +1732,7 @@ class TimeSpinBox(QSpinBox):
         self.setMinimum(minValue)
         self.setMaximum(maxValue)
         self.setWrapping(True)
-        self.setAlignment(Qt.AlignRight)
+        self.setAlignment(Qt.AlignmentFlag.AlignRight)
 
     def textFromValue(self, value):
         """Override to optionally add leading zero.
@@ -1785,8 +1789,8 @@ class AmPmSpinBox(QAbstractSpinBox):
     def stepEnabled(self):
         """Return enabled to show that stepping is always enabled.
         """
-        return (QAbstractSpinBox.StepUpEnabled |
-                QAbstractSpinBox.StepDownEnabled)
+        return (QAbstractSpinBox.StepEnabledFlag.StepUpEnabled |
+                QAbstractSpinBox.StepEnabledFlag.StepDownEnabled)
 
     def setValue(self, value):
         """Set to text value if valid.
@@ -1817,12 +1821,12 @@ class AmPmSpinBox(QAbstractSpinBox):
         if inputStr in ('AM', 'A'):
             self.value = 'AM'
             self.setDisplay()
-            return (QValidator.Acceptable, 'AM', 2)
+            return (QValidator.State.Acceptable, 'AM', 2)
         if inputStr in ('PM', 'P'):
             self.value = 'PM'
             self.setDisplay()
-            return (QValidator.Acceptable, 'PM', 2)
-        return (QValidator.Invalid, 'xx', 2)
+            return (QValidator.State.Acceptable, 'PM', 2)
+        return (QValidator.State.Invalid, 'xx', 2)
 
     def sizeHint(self):
         """Set prefered size.
@@ -1870,7 +1874,7 @@ class ClockWidget(QWidget):
         self.time = datetime.time()
         self.hands = []
         self.highlightAngle = None
-        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.setMouseTracking(True)
 
     def setDisplay(self, time, hands):
@@ -1894,14 +1898,14 @@ class ClockWidget(QWidget):
         painter = QPainter(self)
         painter.save()
         painter.setBrush(QApplication.palette().base())
-        painter.setPen(Qt.NoPen)
+        painter.setPen(Qt.PenStyle.NoPen)
         painter.drawEllipse(self.rect())
         painter.translate(ClockWidget.radius + ClockWidget.margin,
                           ClockWidget.radius + ClockWidget.margin)
         for timeElem in self.hands:
             painter.save()
             painter.setBrush(QApplication.palette().windowText())
-            painter.setPen(Qt.NoPen)
+            painter.setPen(Qt.PenStyle.NoPen)
             seconds = (self.time.hour * 3600 + self.time.minute * 60 +
                        self.time.second)
             angle = seconds / ClockWidget.divisor[timeElem] % 360
@@ -1929,7 +1933,7 @@ class ClockWidget(QWidget):
             if len(self.hands) == 1 and (ang == angle or
                                          ang == self.highlightAngle):
                 painter.setPen(QPen(QApplication.palette().highlight(), 1))
-            painter.drawText(rect, Qt.AlignCenter, labels.pop(0))
+            painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, labels.pop(0))
         painter.restore()
         super().paintEvent(event)
 
@@ -1976,7 +1980,7 @@ class ClockWidget(QWidget):
         Arguments:
             event -- the mouse press event
         """
-        if len(self.hands) == 1 and event.button() == Qt.LeftButton:
+        if len(self.hands) == 1 and event.button() == Qt.MouseButton.LeftButton:
             pos = self.pointToPosition(event.pos())
             if pos:
                 if self.hands[0] != TimeElem.hour:
@@ -2053,7 +2057,7 @@ class DateTimeEditor(ComboEditor):
         """Set the date and time based on a signal from the dialog calendar.
         """
         if self.dialog:
-            dateStr = self.dialog.calendar.selectedDate().toString(Qt.ISODate)
+            dateStr = self.dialog.calendar.selectedDate().toString(Qt.DateFormat.ISODate)
             timeStr = self.dialog.timeObject().isoformat() + '.000'
             self.setEditText(self.fieldRef.formatEditorText(dateStr + ' ' +
                                                             timeStr))
@@ -2207,8 +2211,8 @@ class ExtLinkDialog(QDialog):
             parent -- the dialog's parent widget
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('External Link'))
         vertLayout = QVBoxLayout(self)
         vertLayout.setSpacing(1)
@@ -2264,7 +2268,7 @@ class ExtLinkDialog(QDialog):
         self.nameEdit.textEdited.connect(self.contentsChanged)
         vertLayout.addWidget(self.nameEdit)
         if popupDialog:
-            self.setWindowFlags(Qt.Popup)
+            self.setWindowFlags(Qt.WindowType.Popup)
         else:
             vertLayout.addSpacing(8)
             ctrlLayout = QHBoxLayout()
@@ -2600,11 +2604,11 @@ class PartialLineEditor(LineEditor):
         Arguments:
             event -- the mouse release event
         """
-        if (event.key() == Qt.Key_Backspace and
+        if (event.key() == Qt.Key.Key_Backspace and
             (self.cursorPosition() <= self.staticLength and
              not self.hasSelectedText())):
             return
-        if event.key() in (Qt.Key_Left, Qt.Key_Home):
+        if event.key() in (Qt.Key.Key_Left, Qt.Key.Key_Home):
             super().keyPressEvent(event)
             self.fixSelection()
             return
@@ -2623,7 +2627,7 @@ class IntLinkDialog(QDialog):
             parent -- the dialog's parent widget
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.FramelessWindowHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.FramelessWindowHint)
         layout = QVBoxLayout(self)
         label = QLabel(_('(Click link target in tree)'))
         layout.addWidget(label)
@@ -2644,8 +2648,8 @@ class EmbedIntLinkDialog(QDialog):
         super().__init__(parent)
         self.structRef = structRef
         self.address = ''
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Internal Link'))
         vertLayout = QVBoxLayout(self)
         vertLayout.setSpacing(1)
@@ -2792,8 +2796,8 @@ class PictureLinkDialog(QDialog):
             parent -- the dialog's parent widget
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Picture Link'))
         self.setMinimumWidth(self.thumbnailSize.width())
         vertLayout = QVBoxLayout(self)
@@ -2802,7 +2806,7 @@ class PictureLinkDialog(QDialog):
         pixmap = QPixmap(self.thumbnailSize)
         pixmap.fill()
         self.thumbnail.setPixmap(pixmap)
-        vertLayout.addWidget(self.thumbnail, 0, Qt.AlignHCenter)
+        vertLayout.addWidget(self.thumbnail, 0, Qt.AlignmentFlag.AlignHCenter)
         vertLayout.addSpacing(8)
 
         self.browseButton = QPushButton(_('&Browse for File'))
@@ -2835,7 +2839,7 @@ class PictureLinkDialog(QDialog):
         vertLayout.addSpacing(8)
 
         if popupDialog:
-            self.setWindowFlags(Qt.Popup)
+            self.setWindowFlags(Qt.WindowType.Popup)
         else:
             vertLayout.addSpacing(8)
             ctrlLayout = QHBoxLayout()
@@ -2925,7 +2929,7 @@ class PictureLinkDialog(QDialog):
             pixmap.fill()
         else:
             pixmap = pixmap.scaled(self.thumbnailSize,
-                                   Qt.KeepAspectRatio)
+                                   Qt.AspectRatioMode.KeepAspectRatio)
         self.thumbnail.setPixmap(pixmap)
 
     def fileBrowse(self):

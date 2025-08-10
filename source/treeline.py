@@ -4,7 +4,7 @@
 # treeline.py, the main program file
 #
 # TreeLine, an information storage program
-# Copyright (C) 2023, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -29,8 +29,8 @@ import os.path
 import argparse
 import locale
 import builtins
-from PyQt5.QtCore import QCoreApplication, QTranslator
-from PyQt5.QtWidgets import QApplication, qApp
+from PyQt6.QtCore import QCoreApplication, QTranslator
+from PyQt6.QtWidgets import QApplication
 
 
 def loadTranslator(fileName, app):
@@ -123,6 +123,7 @@ def setupTranslator(app, lang=''):
 
 
 exceptDialog = None
+eventLoopRunning = False
 
 def handleException(excType, value, tb):
     """Handle uncaught exceptions, show debug info to the user.
@@ -137,8 +138,10 @@ def handleException(excType, value, tb):
     global exceptDialog
     exceptDialog = miscdialogs.ExceptionDialog(excType, value, tb)
     exceptDialog.show()
-    if not QApplication.activeWindow():
-        qApp.exec_()  # start event loop in case it's not running yet
+    global eventLoopRunning
+    if not eventLoopRunning:
+        eventLoopRunning = True
+        QApplication.instance().exec()  # start event loop if not running yet
 
 
 if __name__ == '__main__':
@@ -165,4 +168,5 @@ if __name__ == '__main__':
 
     import treemaincontrol
     treeMainControl = treemaincontrol.TreeMainControl(pathObjects)
-    app.exec_()
+    eventLoopRunning = True
+    app.exec()

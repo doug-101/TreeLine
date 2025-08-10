@@ -4,7 +4,7 @@
 # treelocalcontrol.py, provides a class for the main tree commands
 #
 # TreeLine, an information storage program
-# Copyright (C) 2023, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -20,9 +20,10 @@ import gzip
 import datetime
 import operator
 from itertools import chain
-from PyQt5.QtCore import QObject, QTimer, Qt, pyqtSignal
-from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
-                             QFileDialog, QMenu, QMessageBox)
+from PyQt6.QtCore import QObject, QTimer, Qt, pyqtSignal
+from PyQt6.QtGui import QAction, QActionGroup
+from PyQt6.QtWidgets import (QApplication, QDialog, QFileDialog, QMenu,
+                             QMessageBox)
 import treemaincontrol
 import treestructure
 import treemodel
@@ -179,7 +180,7 @@ class TreeLocalControl(QObject):
         Arguments:
             setModified -- if True, set the modified flag for this file
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         typeChanges = 0
         if self.structure.treeFormats.conditionalTypes:
             for node in self.structure.childList:
@@ -216,7 +217,7 @@ class TreeLocalControl(QObject):
         Arguments:
             setModified -- if True, set the modified flag for this file
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         if self.structure.treeFormats.conditionalTypes:
             for node in self.structure.childList:
                 node.setDescendantConditionalTypes(self.structure)
@@ -367,9 +368,9 @@ class TreeLocalControl(QObject):
         """
         if len(self.windowList) > 1:
             self.windowList.remove(window)
+            # set active to one not closing to avoid errors while changing
+            self.activeWindow = self.windowList[0]
             window.allowCloseFlag = True
-            # # keep ref until Qt window can fully close
-            # self.oldWindow = window
         elif self.checkSaveChanges():
             window.allowCloseFlag = True
             self.controlClosed.emit(self)
@@ -389,11 +390,13 @@ class TreeLocalControl(QObject):
                       if self.filePathObj else _('Save changes?'))
         ans = QMessageBox.information(self.activeWindow, 'TreeLine',
                                       promptText,
-                                      QMessageBox.Save | QMessageBox.Discard |
-                                      QMessageBox.Cancel, QMessageBox.Save)
-        if ans == QMessageBox.Save:
+                                      QMessageBox.StandardButton.Save |
+                                      QMessageBox.StandardButton.Discard |
+                                      QMessageBox.StandardButton.Cancel,
+                                      QMessageBox.StandardButton.Save)
+        if ans == QMessageBox.StandardButton.Save:
             self.fileSave()
-        elif ans == QMessageBox.Cancel:
+        elif ans == QMessageBox.StandardButton.Cancel:
             return False
         else:
             self.deleteAutoSaveFile()
@@ -781,10 +784,10 @@ class TreeLocalControl(QObject):
                 dialog = miscdialogs.ExtModDialog(datetime.datetime.
                                                   fromtimestamp(fileSeconds),
                                                   self.activeWindow)
-                if dialog.exec_() != QDialog.Accepted:
+                if dialog.exec() != QDialog.DialogCode.Accepted:
                     # user cancelled the save
                     return
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         savePathObj = self.filePathObj
         if backupFile:
             savePathObj = pathlib.Path(str(savePathObj) + '~')
@@ -817,9 +820,9 @@ class TreeLocalControl(QObject):
                     QApplication.restoreOverrideCursor()
                     dialog = miscdialogs.PasswordDialog(True, '',
                                                         self.activeWindow)
-                    if dialog.exec_() != QDialog.Accepted:
+                    if dialog.exec() != QDialog.DialogCode.Accepted:
                         return
-                    QApplication.setOverrideCursor(Qt.WaitCursor)
+                    QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
                     password = dialog.password
                     if miscdialogs.PasswordDialog.remember:
                         globalref.mainControl.passwords[self.
@@ -903,7 +906,7 @@ class TreeLocalControl(QObject):
         """
         origZeroBlanks = self.structure.mathZeroBlanks
         dialog = miscdialogs.FilePropertiesDialog(self, self.activeWindow)
-        if dialog.exec_() == QDialog.Accepted:
+        if dialog.exec() == QDialog.DialogCode.Accepted:
             self.setModified()
             if self.structure.mathZeroBlanks != origZeroBlanks:
                 self.updateAll(False)
@@ -1270,7 +1273,7 @@ class TreeLocalControl(QObject):
                                            defaultPathObj(True)), filters)
         if not fileName:
             return
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         newStructure = None
         try:
             with open(fileName, 'r', encoding='utf-8') as f:
@@ -1318,7 +1321,7 @@ class TreeLocalControl(QObject):
     def dataCloneMatches(self):
         """Convert all matching nodes into clones.
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         selSpots = self.currentSelectionModel().selectedSpots()
         titleDict = {}
         for node in self.structure.nodeDict.values():
@@ -1363,7 +1366,7 @@ class TreeLocalControl(QObject):
     def dataDetachClones(self):
         """Detach all cloned nodes in current branches.
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         selSpots = self.currentSelectionModel().selectedBranchSpots()
         undoObj = undo.ChildListUndo(self.structure.undoList,
                                      [spot.parentSpot.nodeRef for spot in
@@ -1396,7 +1399,7 @@ class TreeLocalControl(QObject):
 
         Overwrites data in any fields with the same name.
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         selectList = self.currentSelectionModel().selectedBranches()
         undo.ChildDataUndo(self.structure.undoList, selectList, True,
                             self.structure.treeFormats)
@@ -1422,9 +1425,9 @@ class TreeLocalControl(QObject):
         dialog = miscdialogs.FieldSelectDialog(_('Category Fields'),
                                               _('Select fields for new level'),
                                               fieldList, self.activeWindow)
-        if dialog.exec_() != QDialog.Accepted:
+        if dialog.exec() != QDialog.DialogCode.Accepted:
             return
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         undo.ChildDataUndo(self.structure.undoList, selectList, True,
                            self.structure.treeFormats)
         for node in selectList:
@@ -1436,7 +1439,7 @@ class TreeLocalControl(QObject):
     def dataSwapCategory(self):
         """Swap child and grandchild category nodes.
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         selectList = self.currentSelectionModel().selectedBranches()
         undo.ChildListUndo(self.structure.undoList, selectList, addBranch=True)
         doneNodes = set()
@@ -1687,7 +1690,7 @@ class TreeLocalControl(QObject):
             fieldName -- if given, only find matches under this type name
             replaceText -- if not None, replace a match with this string
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         dataUndo = undo.DataUndo(self.structure.undoList,
                                  self.structure.childList, addBranch=True)
         totalMatches = 0

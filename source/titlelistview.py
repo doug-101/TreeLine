@@ -4,7 +4,7 @@
 # titlelistview.py, provides a class for the title list view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2019, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -12,9 +12,9 @@
 # but WITHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QKeySequence, QPalette, QTextCursor
-from PyQt5.QtWidgets import QAction, QTextEdit
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QAction, QKeySequence, QPalette, QTextCursor
+from PyQt6.QtWidgets import QTextEdit
 import treenode
 import undo
 import globalref
@@ -41,7 +41,7 @@ class TitleListView(QTextEdit):
         self.isChildView = isChildView
         self.hideChildView = not globalref.genOptions['InitShowChildPane']
         self.setAcceptRichText(False)
-        self.setLineWrapMode(QTextEdit.NoWrap)
+        self.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
         self.setTabChangesFocus(True)
         self.setUndoRedoEnabled(False)
         self.treeSelectAction = QAction(_('Select in Tree'), self)
@@ -157,10 +157,10 @@ class TitleListView(QTextEdit):
             wordList -- list of words to highlight
             regExpList -- a list of regular expression objects to highlight
         """
-        backColor = self.palette().brush(QPalette.Active,
-                                         QPalette.Highlight)
-        foreColor = self.palette().brush(QPalette.Active,
-                                         QPalette.HighlightedText)
+        backColor = self.palette().brush(QPalette.ColorGroup.Active,
+                                         QPalette.ColorRole.Highlight)
+        foreColor = self.palette().brush(QPalette.ColorGroup.Active,
+                                         QPalette.ColorRole.HighlightedText)
         if wordList is None:
             wordList = []
         if regExpList is None:
@@ -188,9 +188,9 @@ class TitleListView(QTextEdit):
         Arguments:
             event -- the focus in event
         """
-        if event.reason() in (Qt.TabFocusReason,
-                              Qt.BacktabFocusReason):
-            self.moveCursor(QTextCursor.End)
+        if event.reason() in (Qt.FocusReason.TabFocusReason,
+                              Qt.FocusReason.BacktabFocusReason):
+            self.moveCursor(QTextCursor.MoveOperation.End)
         super().focusInEvent(event)
 
     def contextMenuEvent(self, event):
@@ -206,7 +206,7 @@ class TitleListView(QTextEdit):
         menu.insertAction(menu.actions()[0], self.treeSelectAction)
         self.treeSelectAction.setEnabled(self.isChildView and
                                          len(self.toPlainText().strip()) > 0)
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
 
     def keyPressEvent(self, event):
         """Customize handling of return and control keys.
@@ -216,13 +216,13 @@ class TitleListView(QTextEdit):
         Arguments:
             event -- the key press event
         """
-        if (event.modifiers() == Qt.ControlModifier and
-            Qt.Key_A <= event.key() <= Qt.Key_Z):
+        if (event.modifiers() == Qt.KeyboardModifier.ControlModifier and
+            Qt.Key.Key_A <= event.key() <= Qt.Key.Key_Z):
             key = QKeySequence(event.modifiers() | event.key())
             self.shortcutEntered.emit(key)
             return
-        if self.isChildView or event.key() not in (Qt.Key_Enter,
-                                                    Qt.Key_Return):
+        if self.isChildView or event.key() not in (Qt.Key.Key_Enter,
+                                                    Qt.Key.Key_Return):
             super().keyPressEvent(event)
 
     def resizeEvent(self, event):

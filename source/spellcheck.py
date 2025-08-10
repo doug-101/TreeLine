@@ -5,7 +5,7 @@
 # including interfaces to aspell, ispell, hunspell.
 #
 # TreeLine, an information storage program
-# Copyright (C) 2020, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -17,9 +17,9 @@ import re
 import sys
 import subprocess
 import collections
-from PyQt5.QtCore import QSize, Qt, pyqtSignal
-from PyQt5.QtGui import QFontMetrics, QTextCursor
-from PyQt5.QtWidgets import (QApplication, QDialog, QFileDialog, QGroupBox,
+from PyQt6.QtCore import QSize, Qt, pyqtSignal
+from PyQt6.QtGui import QFontMetrics, QTextCursor
+from PyQt6.QtWidgets import (QApplication, QDialog, QFileDialog, QGroupBox,
                              QHBoxLayout, QLabel, QLineEdit, QListWidget,
                              QMessageBox, QPushButton, QTextEdit, QVBoxLayout)
 import undo
@@ -203,10 +203,10 @@ class SpellCheckOperation:
                         ans = QMessageBox.warning(parentWidget,
                                                       _('Spell Check Error'),
                                                       prompt,
-                                                      QMessageBox.Yes |
-                                                      QMessageBox.Cancel,
-                                                      QMessageBox.Yes)
-                        if ans == QMessageBox.Cancel:
+                                                      QMessageBox.StandardButton.Yes |
+                                                      QMessageBox.StandardButton.Cancel,
+                                                      QMessageBox.StandardButton.Yes)
+                        if ans == QMessageBox.StandardButton.Cancel:
                             raise
                         title = _('Locate aspell.exe, ipsell.exe or '
                                   'hunspell.exe')
@@ -244,8 +244,9 @@ class SpellCheckOperation:
             prompt = _('Finished checking the branch\nContinue from the top?')
             ans = QMessageBox.information(parentWidget,
                                           _('TreeLine Spell Check'), prompt,
-                                          QMessageBox.Yes | QMessageBox.No)
-            if ans == QMessageBox.Yes:
+                                          QMessageBox.StandardButton.Yes |
+                                          QMessageBox.StandardButton.No)
+            if ans == QMessageBox.StandardButton.Yes:
                 generator = self.textLineGenerator(self.controlRef.structure.
                                                    rootSpots())
                 result = spellCheckDialog.startSpellCheck(generator)
@@ -305,8 +306,8 @@ class SpellCheckDialog(QDialog):
             parent -- the parent dialog
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Spell Check'))
         self.spellCheckInterface = spellCheckInterface
         self.textLineIter = None
@@ -386,7 +387,7 @@ class SpellCheckDialog(QDialog):
         except StopIteration:
             return True
         if self.spellCheck():
-            if self.exec_() == QDialog.Rejected:
+            if self.exec() == QDialog.DialogCode.Rejected:
                 return False
         return True
 
@@ -557,6 +558,6 @@ class SpellContextEdit(QTextEdit):
         """
         cursor = self.textCursor()
         cursor.setPosition(fromPos)
-        cursor.setPosition(toPos, QTextCursor.KeepAnchor)
+        cursor.setPosition(toPos, QTextCursor.MoveMode.KeepAnchor)
         self.setTextCursor(cursor)
         self.ensureCursorVisible()

@@ -3,7 +3,7 @@
 #****************************************************************************
 # helpview.py, provides a window for viewing an html help file
 #
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -11,9 +11,9 @@
 # but WITHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #*****************************************************************************
 
-from PyQt5.QtCore import QUrl, Qt
-from PyQt5.QtGui import QTextDocument
-from PyQt5.QtWidgets import (QAction, QLabel, QLineEdit, QMainWindow, QMenu,
+from PyQt6.QtCore import QUrl, Qt
+from PyQt6.QtGui import (QAction, QTextDocument)
+from PyQt6.QtWidgets import (QLabel, QLineEdit, QMainWindow, QMenu,
                              QStatusBar, QTextBrowser)
 import dataeditors
 
@@ -30,8 +30,8 @@ class HelpView(QMainWindow):
             icons -- dict of view icons
         """
         QMainWindow.__init__(self, parent)
-        self.setAttribute(Qt.WA_QuitOnClose, False)
-        self.setWindowFlags(Qt.Window)
+        self.setAttribute(Qt.WidgetAttribute.WA_QuitOnClose, False)
+        self.setWindowFlags(Qt.WindowType.Window)
         self.setStatusBar(QStatusBar())
         self.textView = HelpViewer(self)
         self.setCentralWidget(self.textView)
@@ -41,7 +41,7 @@ class HelpView(QMainWindow):
         self.setWindowTitle(caption)
         tools = self.addToolBar(_('Tools'))
         self.menu = QMenu(self.textView)
-        self.textView.highlighted[str].connect(self.showLink)
+        self.textView.highlighted.connect(self.showLink)
 
         backAct = QAction(_('&Back'), self)
         backAct.setIcon(icons['helpback'])
@@ -88,13 +88,13 @@ class HelpView(QMainWindow):
         self.findNextAct.triggered.connect(self.findNext)
         self.findNextAct.setEnabled(False)
 
-    def showLink(self, text):
+    def showLink(self, url):
         """Send link text to the statusbar.
 
         Arguments:
-            text -- link text to show
+            url -- the QUrl link to show
         """
-        self.statusBar().showMessage(text)
+        self.statusBar().showMessage(url.toString())
 
     def findTextChanged(self, text):
         """Update find controls based on text in text edit.
@@ -109,7 +109,7 @@ class HelpView(QMainWindow):
         """Command to find the previous string.
         """
         if self.textView.find(self.findEdit.text(),
-                              QTextDocument.FindBackward):
+                              QTextDocument.FindFlag.FindBackward):
             self.statusBar().clearMessage()
         else:
             self.statusBar().showMessage(_('Text string not found'))
@@ -134,7 +134,7 @@ class HelpViewer(QTextBrowser):
         """
         QTextBrowser.__init__(self, parent)
 
-    def setSource(self, url):
+    def doSetSource(self, url, resType):
         """Called when user clicks on a URL.
 
         Arguments:
@@ -144,7 +144,7 @@ class HelpViewer(QTextBrowser):
         if name.startswith('http'):
             dataeditors.openExtUrl(name)
         else:
-            QTextBrowser.setSource(self, QUrl(name))
+            super().doSetSource(url, resType)
 
     def contextMenuEvent(self, event):
         """Init popup menu on right click"".
@@ -152,4 +152,4 @@ class HelpViewer(QTextBrowser):
         Arguments:
             event -- the menu event
         """
-        self.parentWidget().menu.exec_(event.globalPos())
+        self.parentWidget().menu.exec(event.globalPos())

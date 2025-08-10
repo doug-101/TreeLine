@@ -3,7 +3,7 @@
 #******************************************************************************
 # icondict.py, provides a class to load and store icons
 #
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -11,7 +11,7 @@
 # but WITHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt6.QtGui import QIcon, QPixmap
 
 _iconExtension = ('.png', '.bmp', '.ico', '.gif')
 defaultName = 'default'

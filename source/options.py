@@ -3,7 +3,7 @@
 #******************************************************************************
 # options.py, provides a class to manage config options
 #
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -17,9 +17,9 @@ import re
 import pathlib
 import os.path
 import json
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import (QButtonGroup, QCheckBox, QComboBox, QDialog,
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QKeySequence
+from PyQt6.QtWidgets import (QButtonGroup, QCheckBox, QComboBox, QDialog,
                              QDoubleSpinBox, QGridLayout, QGroupBox,
                              QHBoxLayout, QLabel, QLineEdit, QPushButton,
                              QRadioButton, QSpinBox, QVBoxLayout)
@@ -576,7 +576,7 @@ class Options(OrderedDict):
                               _('Choose configuration file location'),
                               [(_('User\'s home directory (recommended)'), 0),
                                (_('Program directory (for portable use)'), 1)])
-                    if dialog.exec_() != QDialog.Accepted:
+                    if dialog.exec() != QDialog.DialogCode.Accepted:
                         sys.exit(0)
                     if dialog.selectedButton() == 1:
                         Options.basePath = modConfigPath
@@ -691,8 +691,8 @@ class OptionDialog(QDialog):
     def __init__(self, options, parent=None):
         super().__init__(parent)
         self.options = options
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         topLayout = QVBoxLayout(self)
         self.setLayout(topLayout)
         columnLayout = QHBoxLayout()

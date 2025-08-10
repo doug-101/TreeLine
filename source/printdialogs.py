@@ -4,7 +4,7 @@
 # printdialogs.py, provides print preview and print settings dialogs
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,17 +14,17 @@
 
 import re
 import collections
-from PyQt5.QtCore import (QMarginsF, QPoint, QRect, QSize, QSizeF, Qt,
+from PyQt6.QtCore import (QMarginsF, QPoint, QRect, QSize, QSizeF, Qt,
                           pyqtSignal)
-from PyQt5.QtGui import (QFontDatabase, QFontInfo, QFontMetrics, QIntValidator,
-                         QPageLayout, QPageSize)
-from PyQt5.QtWidgets import (QAbstractItemView, QAction, QButtonGroup,
-                             QCheckBox, QComboBox, QDialog, QDoubleSpinBox,
+from PyQt6.QtGui import (QAction, QFontDatabase, QFontInfo, QFontMetrics,
+                         QIntValidator, QPageLayout, QPageSize)
+from PyQt6.QtWidgets import (QAbstractItemView, QButtonGroup, QCheckBox,
+                             QComboBox, QDialog, QDoubleSpinBox,
                              QGridLayout, QGroupBox, QHBoxLayout, QLabel,
                              QLineEdit, QListWidget, QMenu, QMessageBox,
                              QPushButton, QRadioButton, QSpinBox, QTabWidget,
                              QToolBar, QVBoxLayout, QWidget)
-from PyQt5.QtPrintSupport import (QPrintPreviewWidget, QPrinter, QPrinterInfo)
+from PyQt6.QtPrintSupport import (QPrintPreviewWidget, QPrinter, QPrinterInfo)
 import printdata
 import configdialog
 import treeformats
@@ -45,8 +45,8 @@ class PrintPreviewDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Print Preview'))
         self.printData = printData
         topLayout = QVBoxLayout(self)
@@ -76,10 +76,10 @@ class PrintPreviewDialog(QDialog):
 
         self.zoomCombo = QComboBox(self)
         self.zoomCombo.setEditable(True)
-        self.zoomCombo.setInsertPolicy(QComboBox.NoInsert)
+        self.zoomCombo.setInsertPolicy(QComboBox.InsertPolicy.NoInsert)
         self.zoomCombo.addItems(['  12%', '  25%', '  50%', '  75%', ' 100%',
                                  ' 125%', ' 150%', ' 200%', ' 400%', ' 800%'])
-        self.zoomCombo.currentIndexChanged[str].connect(self.zoomToValue)
+        self.zoomCombo.currentTextChanged.connect(self.zoomToValue)
         self.zoomCombo.lineEdit().returnPressed.connect(self.zoomToValue)
         toolBar.addWidget(self.zoomCombo)
 
@@ -106,9 +106,11 @@ class PrintPreviewDialog(QDialog):
         toolBar.addAction(self.previousAct)
 
         self.pageNumEdit = QLineEdit(self)
-        self.pageNumEdit.setAlignment(Qt.AlignRight |
-                                      Qt.AlignVCenter)
-        width = QFontMetrics(self.pageNumEdit.font()).width('0000')
+        self.pageNumEdit.setAlignment(Qt.AlignmentFlag.AlignRight |
+                                      Qt.AlignmentFlag.AlignVCenter)
+        width = QFontMetrics(self.pageNumEdit.font()).size(Qt.TextFlag.
+                                                           TextSingleLine,
+                                                           '0000').width()
         self.pageNumEdit.setMaximumWidth(width)
         self.pageNumEdit.returnPressed.connect(self.setPageNum)
         toolBar.addWidget(self.pageNumEdit)
@@ -160,9 +162,9 @@ class PrintPreviewDialog(QDialog):
         """Update control availability and status based on a change signal.
         """
         self.zoomWidthAct.setChecked(self.previewWidget.zoomMode() ==
-                                     QPrintPreviewWidget.FitToWidth)
+                                     QPrintPreviewWidget.ZoomMode.FitToWidth)
         self.zoomAllAct.setChecked(self.previewWidget.zoomMode() ==
-                                   QPrintPreviewWidget.FitInView)
+                                   QPrintPreviewWidget.ZoomMode.FitInView)
         zoom = self.previewWidget.zoomFactor() * 100
         self.zoomCombo.setEditText('{0:4.0f}%'.format(zoom))
         self.previousAct.setEnabled(self.previewWidget.currentPage() > 1)
@@ -172,9 +174,10 @@ class PrintPreviewDialog(QDialog):
         self.maxPageLabel.setText(' / {0} '.format(self.previewWidget.
                                                    pageCount()))
         self.onePageAct.setChecked(self.previewWidget.viewMode() ==
-                                   QPrintPreviewWidget.SinglePageView)
+                                   QPrintPreviewWidget.ViewMode.SinglePageView)
         self.twoPageAct.setChecked(self.previewWidget.viewMode() ==
-                                   QPrintPreviewWidget.FacingPagesView)
+                                   QPrintPreviewWidget.ViewMode.
+                                   FacingPagesView)
 
     def zoomWidth(self, checked=True):
         """Set the fit to width zoom mode if checked.
@@ -183,10 +186,10 @@ class PrintPreviewDialog(QDialog):
             checked -- set this mode if True
         """
         if checked:
-            self.previewWidget.setZoomMode(QPrintPreviewWidget.
+            self.previewWidget.setZoomMode(QPrintPreviewWidget.ZoomMode.
                                            FitToWidth)
         else:
-            self.previewWidget.setZoomMode(QPrintPreviewWidget.
+            self.previewWidget.setZoomMode(QPrintPreviewWidget.ZoomMode.
                                            CustomZoom)
         self.updateControls()
 
@@ -197,9 +200,9 @@ class PrintPreviewDialog(QDialog):
             checked -- set this mode if True
         """
         if checked:
-            self.previewWidget.setZoomMode(QPrintPreviewWidget.FitInView)
+            self.previewWidget.setZoomMode(QPrintPreviewWidget.ZoomMode.FitInView)
         else:
-            self.previewWidget.setZoomMode(QPrintPreviewWidget.
+            self.previewWidget.setZoomMode(QPrintPreviewWidget.ZoomMode.
                                            CustomZoom)
         self.updateControls()
 
@@ -255,7 +258,7 @@ class PrintPreviewDialog(QDialog):
         """Show a dialog to set margins, page size and other printing options.
         """
         setupDialog = PrintSetupDialog(self.printData, False, self)
-        if setupDialog.exec_() == QDialog.Accepted:
+        if setupDialog.exec() == QDialog.DialogCode.Accepted:
             self.printData.setupData()
             self.previewWidget.updatePreview()
 
@@ -263,7 +266,8 @@ class PrintPreviewDialog(QDialog):
         """Show dialog and print tree output based on current options.
         """
         self.close()
-        if self.printData.printer.outputFormat() == QPrinter.NativeFormat:
+        if (self.printData.printer.outputFormat() ==
+            QPrinter.OutputFormat.NativeFormat):
             self.printData.filePrint()
         else:
             self.printData.filePrintPdf()
@@ -317,8 +321,8 @@ class PrintSetupDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Printing Setup'))
         self.printData = printData
 
@@ -360,7 +364,8 @@ class PrintSetupDialog(QDialog):
         """Accept this dialog and go to print dialog.
         """
         self.accept()
-        if self.printData.printer.outputFormat() == QPrinter.NativeFormat:
+        if (self.printData.printer.outputFormat() ==
+            QPrinter.OutputFormat.NativeFormat):
             self.printData.filePrint()
         else:
             self.printData.filePrintPdf()
@@ -619,7 +624,7 @@ class PageSetupPage(QWidget):
         landscapeButton = QRadioButton(_('Lan&dscape'))
         orientLayout.addWidget(landscapeButton)
         self.portraitOrient = (self.printData.pageLayout.orientation() ==
-                               QPageLayout.Portrait)
+                               QPageLayout.Orientation.Portrait)
         if self.portraitOrient:
             portraitButton.setChecked(True)
         else:
@@ -729,8 +734,8 @@ class PageSetupPage(QWidget):
             pageLayout.setPageSize(QPageSize(getattr(QPageSize,
                                                      self.currentPaperSize)))
             if not self.portraitOrient:
-                pageLayout.setOrientation(QPageLayout.Landscape)
-            paperSize = pageLayout.fullRect(QPageLayout.Inch)
+                pageLayout.setOrientation(QPageLayout.Orientation.Landscape)
+            paperSize = pageLayout.fullRect(QPageLayout.Unit.Inch)
             self.paperWidthSpin.setInchValue(round(paperSize.width(), 2))
             self.paperHeightSpin.setInchValue(round(paperSize.height(), 2))
         self.paperWidthSpin.setEnabled(self.currentPaperSize == 'Custom')
@@ -783,10 +788,10 @@ class PageSetupPage(QWidget):
                     self.paperHeightSpin.inchValue)
             if size != self.printData.roundedPaperSize():
                 pageLayout.setPageSize(QPageSize(QSizeF(*size),
-                                                 QPageSize.Inch))
+                                                 QPageSize.Unit.Inch))
                 changed = True
-        orient = (QPageLayout.Portrait if self.portraitOrient else
-                  QPageLayout.Landscape)
+        orient = (QPageLayout.Orientation.Portrait if self.portraitOrient else
+                  QPageLayout.Orientation.Landscape)
         if orient != pageLayout.orientation():
             pageLayout.setOrientation(orient)
             changed = True
@@ -934,7 +939,7 @@ class FontPage(QWidget):
         label.setBuddy(self.familyList)
         self.familyEdit.setFocusProxy(self.familyList)
         fontLayout.setColumnMinimumWidth(1, spacing)
-        families = [family for family in QFontDatabase().families()]
+        families = [family for family in QFontDatabase.families()]
         families.sort(key=str.lower)
         self.familyList.addItems(families)
         self.familyList.currentItemChanged.connect(self.updateFamily)
@@ -957,7 +962,7 @@ class FontPage(QWidget):
         label.setIndent(2)
         self.sizeEdit = QLineEdit()
         fontLayout.addWidget(self.sizeEdit, 1, 4)
-        self.sizeEdit.setFocusPolicy(Qt.ClickFocus)
+        self.sizeEdit.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
         validator = QIntValidator(1, 512, self)
         self.sizeEdit.setValidator(validator)
         self.sizeList = SmallListWidget()
@@ -974,7 +979,7 @@ class FontPage(QWidget):
         sampleLayout = QVBoxLayout(sampleBox)
         self.sampleEdit = QLineEdit()
         sampleLayout.addWidget(self.sampleEdit)
-        self.sampleEdit.setAlignment(Qt.AlignCenter)
+        self.sampleEdit.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.sampleEdit.setText(_('AaBbCcDdEeFfGg...TtUuVvWvXxYyZz'))
         self.sampleEdit.setFixedHeight(self.sampleEdit.sizeHint().height() * 2)
 
@@ -1003,13 +1008,14 @@ class FontPage(QWidget):
         """
         fontInfo = QFontInfo(font)
         family = fontInfo.family()
-        matches = self.familyList.findItems(family, Qt.MatchExactly)
+        matches = self.familyList.findItems(family, Qt.MatchFlag.MatchExactly)
         if matches:
             self.familyList.setCurrentItem(matches[0])
             self.familyList.scrollToItem(matches[0],
-                                         QAbstractItemView.PositionAtTop)
-        style = QFontDatabase().styleString(fontInfo)
-        matches = self.styleList.findItems(style, Qt.MatchExactly)
+                                         QAbstractItemView.ScrollHint.
+                                         PositionAtTop)
+        style = QFontDatabase.styleString(fontInfo)
+        matches = self.styleList.findItems(style, Qt.MatchFlag.MatchExactly)
         if matches:
             self.styleList.setCurrentItem(matches[0])
             self.styleList.scrollToItem(matches[0])
@@ -1017,7 +1023,7 @@ class FontPage(QWidget):
             self.styleList.setCurrentRow(0)
             self.styleList.scrollToItem(self.styleList.currentItem())
         size = repr(fontInfo.pointSize())
-        matches = self.sizeList.findItems(size, Qt.MatchExactly)
+        matches = self.sizeList.findItems(size, Qt.MatchFlag.MatchExactly)
         if matches:
             self.sizeList.setCurrentItem(matches[0])
             self.sizeList.scrollToItem(matches[0])
@@ -1035,8 +1041,7 @@ class FontPage(QWidget):
             self.familyEdit.selectAll()
         prevStyle = self.styleEdit.text()
         prevSize = self.sizeEdit.text()
-        fontDb = QFontDatabase()
-        styles = [style for style in fontDb.styles(family)]
+        styles = [style for style in QFontDatabase.styles(family)]
         self.styleList.clear()
         self.styleList.addItems(styles)
         if prevStyle:
@@ -1046,7 +1051,7 @@ class FontPage(QWidget):
                 num = 0
             self.styleList.setCurrentRow(num)
             self.styleList.scrollToItem(self.styleList.currentItem())
-        sizes = [repr(size) for size in fontDb.pointSizes(family)]
+        sizes = [repr(size) for size in QFontDatabase.pointSizes(family)]
         self.sizeList.clear()
         self.sizeList.addItems(sizes)
         if prevSize:
@@ -1100,7 +1105,7 @@ class FontPage(QWidget):
         style = self.styleEdit.text()
         size = self.sizeEdit.text()
         if family and style and size:
-            return QFontDatabase().font(family, style, int(size))
+            return QFontDatabase.font(family, style, int(size))
         return None
 
     def saveChanges(self):
@@ -1283,7 +1288,7 @@ class HeaderPage(QWidget):
         field = fileInfoFormat.fieldDict[fieldName]
         dialog = HeaderFieldFormatDialog(field, self.printData.localControl,
                                          self)
-        dialog.exec_()
+        dialog.exec()
 
     def saveChanges(self):
         """Update print data with current dialog settings.
@@ -1341,8 +1346,8 @@ class HeaderFieldFormatDialog(QDialog):
         self.field = field
         self.localControl = localControl
 
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Field Format for "{0}"').format(field.name))
         topLayout = QVBoxLayout(self)
         self.setLayout(topLayout)

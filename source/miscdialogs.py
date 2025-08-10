@@ -4,7 +4,7 @@
 # miscdialogs.py, provides classes for various control dialogs
 #
 # TreeLine, an information storage program
-# Copyright (C) 2023, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -20,9 +20,9 @@ import collections
 import datetime
 import platform
 import traceback
-from PyQt5.QtCore import Qt, pyqtSignal, PYQT_VERSION_STR, qVersion
-from PyQt5.QtGui import QFont, QKeySequence, QTextDocument, QTextOption
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
+from PyQt6.QtCore import Qt, pyqtSignal, PYQT_VERSION_STR, qVersion
+from PyQt6.QtGui import QFont, QKeySequence, QTextDocument, QTextOption
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
                              QCheckBox, QComboBox, QDialog, QGridLayout,
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit,
                              QListWidget, QListWidgetItem, QMenu, QMessageBox,
@@ -55,8 +55,8 @@ class RadioChoiceDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(title)
         topLayout = QVBoxLayout(self)
         self.setLayout(topLayout)
@@ -119,8 +119,8 @@ class FieldSelectDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(title)
         self.selectedFields = []
         topLayout = QVBoxLayout(self)
@@ -134,7 +134,8 @@ class FieldSelectDialog(QDialog):
         self.listView.setHeaderLabels(['#', _('Fields')])
         self.listView.setRootIsDecorated(False)
         self.listView.setSortingEnabled(False)
-        self.listView.setSelectionMode(QAbstractItemView.MultiSelection)
+        self.listView.setSelectionMode(QAbstractItemView.SelectionMode.
+                                       MultiSelection)
         for field in fieldList:
             QTreeWidgetItem(self.listView, ['', field])
         self.listView.resizeColumnToContents(0)
@@ -185,8 +186,8 @@ class FilePropertiesDialog(QDialog):
         """
         super().__init__(parent)
         self.localControl = localControl
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('File Properties'))
         topLayout = QVBoxLayout(self)
         self.setLayout(topLayout)
@@ -263,8 +264,8 @@ class PasswordDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Encrypted File Password'))
         self.password = ''
         topLayout = QVBoxLayout(self)
@@ -307,7 +308,7 @@ class PasswordDialog(QDialog):
         label = QLabel(labelText)
         layout.addWidget(label)
         editor = QLineEdit()
-        editor.setEchoMode(QLineEdit.Password)
+        editor.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(editor)
         return editor
 
@@ -340,8 +341,8 @@ class ExtModDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Externally Modified File'))
         topLayout = QVBoxLayout(self)
         self.setLayout(topLayout)
@@ -419,8 +420,8 @@ class TemplateFileDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(title)
         self.templateItems = []
         if addDefault:
@@ -507,7 +508,8 @@ class ExceptionDialog(QDialog):
             tb -- the traceback object
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
+        self.setWindowFlags(Qt.WindowType.Window |
+                            Qt.WindowType.WindowStaysOnTopHint)
         self.setWindowTitle(_('TreeLine - Serious Error'))
 
         topLayout = QVBoxLayout(self)
@@ -558,8 +560,9 @@ class FindFilterDialog(QDialog):
         """
         super().__init__(parent)
         self.isFilterDialog = isFilterDialog
-        self.setAttribute(Qt.WA_QuitOnClose, False)
-        self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_QuitOnClose, False)
+        self.setWindowFlags(Qt.WindowType.Window |
+                            Qt.WindowType.WindowStaysOnTopHint)
 
         topLayout = QVBoxLayout(self)
         self.setLayout(topLayout)
@@ -753,8 +756,9 @@ class FindReplaceDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setAttribute(Qt.WA_QuitOnClose, False)
-        self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_QuitOnClose, False)
+        self.setWindowFlags(Qt.WindowType.Window |
+                            Qt.WindowType.WindowStaysOnTopHint)
         self.setWindowTitle(_('Find and Replace'))
 
         self.matchedSpot = None
@@ -999,8 +1003,9 @@ class SortDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setAttribute(Qt.WA_QuitOnClose, False)
-        self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_QuitOnClose, False)
+        self.setWindowFlags(Qt.WindowType.Window |
+                            Qt.WindowType.WindowStaysOnTopHint)
         self.setWindowTitle(_('Sort Nodes'))
 
         topLayout = QVBoxLayout(self)
@@ -1085,7 +1090,7 @@ class SortDialog(QDialog):
     def sortNodes(self):
         """Perform the sorting operation.
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         control = globalref.mainControl.activeControl
         selSpots = control.currentSelectionModel().selectedSpots()
         if self.whatButtons.checkedId() == SortWhat.fullTree:
@@ -1151,8 +1156,9 @@ class NumberingDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setAttribute(Qt.WA_QuitOnClose, False)
-        self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_QuitOnClose, False)
+        self.setWindowFlags(Qt.WindowType.Window |
+                            Qt.WindowType.WindowStaysOnTopHint)
         self.setWindowTitle(_('Update Node Numbering'))
 
         topLayout = QVBoxLayout(self)
@@ -1240,7 +1246,7 @@ class NumberingDialog(QDialog):
     def updateNumbering(self):
         """Perform the numbering update operation.
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         fieldDict = self.checkForNumberingFields()
         if fieldDict:
             control = globalref.mainControl.activeControl
@@ -1308,8 +1314,8 @@ class CustomShortcutsDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Keyboard Shortcuts'))
         topLayout = QVBoxLayout(self)
         self.setLayout(topLayout)
@@ -1318,7 +1324,7 @@ class CustomShortcutsDialog(QDialog):
         viewport = QWidget()
         viewLayout = QGridLayout(viewport)
         scrollArea.setWidget(viewport)
-        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         scrollArea.setWidgetResizable(True)
 
         self.editors = []
@@ -1420,7 +1426,7 @@ class KeyLineEdit(QLineEdit):
         Arguments:
             key - the QKeySequence to add
         """
-        keyText = key.toString(QKeySequence.NativeText)
+        keyText = key.toString(QKeySequence.SequenceFormat.NativeText)
         self.setText(keyText)
         self.key = key
         KeyLineEdit.usedKeySet.add(keyText)
@@ -1433,6 +1439,7 @@ class KeyLineEdit(QLineEdit):
             self.selectAll()
         if self.key:
             KeyLineEdit.usedKeySet.remove(self.key.toString(QKeySequence.
+                                                            SequenceFormat.
                                                             NativeText))
             self.key = None
             self.modified = True
@@ -1453,27 +1460,25 @@ class KeyLineEdit(QLineEdit):
         Arguments:
             event -- the key press event
         """
-        if event.key() in (Qt.Key_Shift, Qt.Key_Control,
-                           Qt.Key_Meta, Qt.Key_Alt,
-                           Qt.Key_AltGr, Qt.Key_CapsLock,
-                           Qt.Key_NumLock, Qt.Key_ScrollLock,
-                           Qt.Key_Pause, Qt.Key_Print,
-                           Qt.Key_Cancel):
+        if event.key() in (Qt.Key.Key_Shift, Qt.Key.Key_Control,
+                           Qt.Key.Key_Meta, Qt.Key.Key_Alt,
+                           Qt.Key.Key_AltGr, Qt.Key.Key_CapsLock,
+                           Qt.Key.Key_NumLock, Qt.Key.Key_ScrollLock,
+                           Qt.Key.Key_Pause, Qt.Key.Key_Print,
+                           Qt.Key.Key_Cancel):
             event.ignore()
-        elif event.key() in (Qt.Key_Backspace, Qt.Key_Escape):
+        elif event.key() in (Qt.Key.Key_Backspace, Qt.Key.Key_Escape):
             self.clearKey()
             event.accept()
         else:
-            modifier = event.modifiers()
-            if modifier & Qt.KeypadModifier:
-                modifier = modifier ^ Qt.KeypadModifier
-            key = QKeySequence(event.key() + int(modifier))
+            key = QKeySequence(event.keyCombination())
             if key != self.key:
-                keyText = key.toString(QKeySequence.NativeText)
+                keyText = key.toString(QKeySequence.SequenceFormat.NativeText)
                 if keyText not in KeyLineEdit.usedKeySet:
                     if self.key:
                         KeyLineEdit.usedKeySet.remove(self.key.
                                                    toString(QKeySequence.
+                                                            SequenceFormat.
                                                             NativeText))
                     self.setKey(key)
                     self.selectAll()
@@ -1491,7 +1496,7 @@ class KeyLineEdit(QLineEdit):
         """
         menu = QMenu(self)
         menu.addAction(_('Clear &Key'), self.clearKey)
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
 
     def mousePressEvent(self, event):
         """Capture mouse clicks to avoid selection loss.
@@ -1548,8 +1553,8 @@ class CustomToolbarDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Customize Toolbars'))
         self.allActions = allActions
         self.updateFunction = updateFunction
@@ -1904,8 +1909,8 @@ class CustomFontDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Customize Fonts'))
 
         topLayout = QVBoxLayout(self)
@@ -1998,8 +2003,8 @@ class AboutDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(title)
 
         topLayout = QVBoxLayout(self)
@@ -2011,9 +2016,9 @@ class AboutDialog(QDialog):
         mainLayout.addWidget(iconLabel)
         textBox = QPlainTextEdit()
         textBox.setReadOnly(True)
-        textBox.setWordWrapMode(QTextOption.NoWrap)
-        textBox.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        textBox.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        textBox.setWordWrapMode(QTextOption.WrapMode.NoWrap)
+        textBox.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        textBox.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         text = '\n'.join(textLines)
         textBox.setPlainText(text)
         size = textBox.fontMetrics().size(0, text)

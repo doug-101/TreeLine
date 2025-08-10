@@ -4,7 +4,7 @@
 # outputview.py, provides a class for the data output view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -12,9 +12,9 @@
 # but WITHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPalette, QTextCursor
-from PyQt5.QtWidgets import QTextBrowser, QTextEdit
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPalette, QTextCursor
+from PyQt6.QtWidgets import QTextBrowser, QTextEdit
 import treeoutput
 import urltools
 import dataeditors
@@ -39,7 +39,7 @@ class OutputView(QTextBrowser):
         self.isChildView = isChildView
         self.hideChildView = not globalref.genOptions['InitShowChildPane']
         self.showDescendants = globalref.genOptions['InitShowDescendants']
-        self.setFocusPolicy(Qt.NoFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
     def updateContents(self):
         """Reload the view's content if the view is shown.
@@ -80,7 +80,7 @@ class OutputView(QTextBrowser):
         self.setHtml('\n'.join(outputGroup.getLines()))
         self.setSearchPaths([str(globalref.mainControl.defaultPathObj(True))])
 
-    def setSource(self, url):
+    def doSetSource(self, url, resType):
         """Called when a user clicks on a URL link.
 
         Selects an internal link or opens an external browser.
@@ -90,7 +90,7 @@ class OutputView(QTextBrowser):
         name = url.toString()
         if name.startswith('#'):
             if not self.treeView.selectionModel().selectNodeById(name[1:]):
-                super().setSource(url)
+                super().doSetSource(url, resType)
         else:
             if urltools.isRelative(name):    # check for relative path
                 defaultPath = globalref.mainControl.defaultPathObj(True)
@@ -109,10 +109,10 @@ class OutputView(QTextBrowser):
             wordList -- list of words to highlight
             regExpList -- a list of regular expression objects to highlight
         """
-        backColor = self.palette().brush(QPalette.Active,
-                                         QPalette.Highlight)
-        foreColor = self.palette().brush(QPalette.Active,
-                                         QPalette.HighlightedText)
+        backColor = self.palette().brush(QPalette.ColorGroup.Active,
+                                         QPalette.ColorRole.Highlight)
+        foreColor = self.palette().brush(QPalette.ColorGroup.Active,
+                                         QPalette.ColorRole.HighlightedText)
         if wordList is None:
             wordList = []
         if regExpList is None:
@@ -142,7 +142,7 @@ class OutputView(QTextBrowser):
         """
         menu = self.createStandardContextMenu()
         menu.removeAction(menu.actions()[1]) #remove copy link location
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
 
     def resizeEvent(self, event):
         """Update view if was collaped by splitter.

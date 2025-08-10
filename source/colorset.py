@@ -4,7 +4,7 @@
 # colorset.py, provides storage/retrieval and dialogs for GUI colors
 #
 # TreeLine, an information storage program
-# Copyright (C) 2020, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,11 +14,11 @@
 
 import enum
 from collections import OrderedDict
-from PyQt5.QtCore import pyqtSignal, Qt, QEvent, QObject
-from PyQt5.QtGui import QColor, QFontMetrics, QPalette, QPixmap
-from PyQt5.QtWidgets import (QApplication, QColorDialog, QComboBox, QDialog,
+from PyQt6.QtCore import pyqtSignal, Qt, QEvent, QObject
+from PyQt6.QtGui import QColor, QFontMetrics, QPalette, QPixmap
+from PyQt6.QtWidgets import (QApplication, QColorDialog, QComboBox, QDialog,
                              QFrame, QGroupBox, QHBoxLayout, QLabel,
-                             QGridLayout, QPushButton, QVBoxLayout, qApp)
+                             QGridLayout, QPushButton, QVBoxLayout)
 import globalref
 
 roles = OrderedDict([('Window', _('Dialog background color')),
@@ -69,7 +69,7 @@ class ColorSet:
         newPalette = QApplication.palette()
         for color in self.colors:
             color.updatePalette(newPalette)
-        qApp.setPalette(newPalette)
+        QApplication.setPalette(newPalette)
 
 
     def showDialog(self, parent):
@@ -80,8 +80,8 @@ class ColorSet:
             parent -- the parent widget for the dialog
         """
         dialog = QDialog(parent)
-        dialog.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                              Qt.WindowSystemMenuHint)
+        dialog.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                              Qt.WindowType.WindowSystemMenuHint)
         dialog.setWindowTitle(_('Color Settings'))
         topLayout = QVBoxLayout(dialog)
         dialog.setLayout(topLayout)
@@ -115,11 +115,11 @@ class ColorSet:
         cancelButton = QPushButton(_('&Cancel'), dialog)
         ctrlLayout.addWidget(cancelButton)
         cancelButton.clicked.connect(dialog.reject)
-        if dialog.exec_() == QDialog.Accepted:
+        if dialog.exec() == QDialog.DialogCode.Accepted:
             self.theme = ThemeSetting(self.themeControl.currentData())
             globalref.miscOptions.changeValue('ColorTheme', self.theme.name)
             if self.theme == ThemeSetting.system:
-                qApp.setPalette(self.sysPalette)
+                QApplication.setPalette(self.sysPalette)
             else:   # dark theme or custom
                 if self.theme == ThemeSetting.custom:
                     for color in self.colors:
@@ -185,11 +185,11 @@ class Color(QObject):
         self.roleKey = roleKey
         if '-' in roleKey:
             roleStr, groupStr = roleKey.split('-')
-            self.group = eval('QPalette.' + groupStr)
+            self.group = eval('QPalette.ColorGroup.' + groupStr)
         else:
             roleStr = roleKey
             self.group = None
-        self.role = eval('QPalette.' + roleStr)
+        self.role = eval('QPalette.ColorRole.' + roleStr)
         self.currentColor = None
         self.swatch = None
 
@@ -248,7 +248,7 @@ class Color(QObject):
         """
         self.swatch = QLabel()
         self.changeSwatchColor()
-        self.swatch.setFrameStyle(QFrame.Panel | QFrame.Raised)
+        self.swatch.setFrameStyle(QFrame.Shape.Panel | QFrame.Shadow.Raised)
         self.swatch.setLineWidth(3)
         self.swatch.installEventFilter(self)
         return self.swatch
@@ -268,7 +268,8 @@ class Color(QObject):
             obj -- the object to handle events for
             event -- the specific event
         """
-        if obj == self.swatch and event.type() == QEvent.MouseButtonRelease:
+        if (obj == self.swatch and
+            event.type() == QEvent.Type.MouseButtonRelease):
             color = QColorDialog.getColor(self.currentColor,
                                           QApplication.activeWindow(),
                                           _('Select {0} color').

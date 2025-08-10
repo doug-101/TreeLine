@@ -4,7 +4,7 @@
 # treeoutput.py, provides classes for output to views, html and printing
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,7 +14,7 @@
 
 import re
 import itertools
-from PyQt5.QtGui import QTextDocument
+from PyQt6.QtGui import QTextDocument
 import globalref
 
 _linkRe = re.compile(r'<a [^>]*href="#(.*?)"[^>]*>.*?</a>', re.I | re.S)

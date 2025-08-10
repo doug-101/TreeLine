@@ -4,7 +4,7 @@
 # breadcrumbview.py, provides a class for the breadcrumb view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2017, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -13,9 +13,9 @@
 #******************************************************************************
 
 import operator
-from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QPainter, QPalette
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication,
+from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtGui import QPainter, QPalette
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication,
                              QStyledItemDelegate, QTableWidget,
                              QTableWidgetItem)
 import globalref
@@ -33,8 +33,9 @@ class CrumbItem(QTableWidgetItem):
         super().__init__(spotRef.nodeRef.title(spotRef))
         self.spot = spotRef
         self.selectedSpot = False
-        self.setTextAlignment(Qt.AlignCenter)
-        self.setForeground(QApplication.palette().brush(QPalette.Link))
+        self.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.setForeground(QApplication.palette().brush(QPalette.
+                                                        ColorRole.Link))
 
 
 class BorderDelegate(QStyledItemDelegate):
@@ -79,13 +80,14 @@ class BreadcrumbView(QTableWidget):
         super().__init__(parent)
         self.treeView = treeView
         self.borderItems = []
-        self.setFocusPolicy(Qt.NoFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.horizontalHeader().hide()
         self.verticalHeader().hide()
-        self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.setSelectionMode(QAbstractItemView.NoSelection)
-        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+        self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.
+                                     ScrollPerPixel)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.setItemDelegate(BorderDelegate(self))
         self.setShowGrid(False)
         self.setMouseTracking(True)
@@ -125,7 +127,7 @@ class BreadcrumbView(QTableWidget):
                         rowSpan += 1
                     if col < len(chainList[row]) - 1:
                         arrowItem = QTableWidgetItem('\u25ba')
-                        arrowItem.setTextAlignment(Qt.AlignCenter)
+                        arrowItem.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
                         self.setItem(row, col * 2 + 1, arrowItem)
                         if rowSpan > 1:
                             self.setSpan(row, col * 2 + 1, rowSpan, 1)
@@ -135,7 +137,8 @@ class BreadcrumbView(QTableWidget):
                     if item.spot is selSpot:
                         item.selectedSpot = True
                         item.setForeground(QApplication.palette().
-                                           brush(QPalette.WindowText))
+                                           brush(QPalette.ColorRole.
+                                                 WindowText))
         self.resizeColumnsToContents()
 
     def changeSelection(self, item):
@@ -147,7 +150,7 @@ class BreadcrumbView(QTableWidget):
         selModel = self.treeView.selectionModel()
         if hasattr(item, 'spot') and not item.selectedSpot:
             selModel.selectSpots([item.spot])
-            self.setCursor(Qt.ArrowCursor)
+            self.setCursor(Qt.CursorShape.ArrowCursor)
 
     def minimumSizeHint(self):
         """Set a short minimum size fint to allow the display of one row.
@@ -161,11 +164,11 @@ class BreadcrumbView(QTableWidget):
         Arguments:
             event -- the mouse move event
         """
-        item = self.itemAt(event.localPos().toPoint())
+        item = self.itemAt(event.position().toPoint())
         if item and hasattr(item, 'spot') and not item.selectedSpot:
-            self.setCursor(Qt.PointingHandCursor)
+            self.setCursor(Qt.CursorShape.PointingHandCursor)
         else:
-            self.setCursor(Qt.ArrowCursor)
+            self.setCursor(Qt.CursorShape.ArrowCursor)
         super().mouseMoveEvent(event)
 
     def resizeEvent(self, event):

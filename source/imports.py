@@ -4,7 +4,7 @@
 # imports.py, provides classes for a file import dialog and import functions
 #
 # TreeLine, an information storage program
-# Copyright (C) 2023, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -20,8 +20,8 @@ import csv
 import html.parser
 import xml.sax.saxutils
 from xml.etree import ElementTree
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QDialog, QFileDialog, QMessageBox
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QDialog, QFileDialog, QMessageBox
 import miscdialogs
 import treenode
 import treestructure
@@ -115,7 +115,7 @@ class ImportControl:
             dialog.addLabelBox(_('Invalid File'),
                                _('"{0}" is not a valid TreeLine file.\n\n'
                                  'Use an import filter?').format(fileName))
-        if dialog.exec_() != QDialog.Accepted:
+        if dialog.exec() != QDialog.DialogCode.Accepted:
             return None
         method = dialog.selectedButton()
         if not self.pathObj:
@@ -131,7 +131,7 @@ class ImportControl:
             self.pathObj = pathlib.Path(filePath)
         self.errorMessage = ''
         try:
-            QApplication.setOverrideCursor(Qt.WaitCursor)
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             structure = getattr(self, method)()
             QApplication.restoreOverrideCursor()
         except IOError:

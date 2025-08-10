@@ -4,7 +4,7 @@
 # dataeditview.py, provides a class for the data edit right-hand view
 #
 # TreeLine, an information storage program
-# Copyright (C) 2020, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -12,11 +12,11 @@
 # but WITHOUT ANY WARRANTY.  See the included LICENSE file for details.
 #******************************************************************************
 
-from PyQt5.QtCore import QEvent, QPointF, QRectF, QSize, Qt, pyqtSignal
-from PyQt5.QtGui import (QKeySequence, QPainterPath, QPalette, QPen,
+from PyQt6.QtCore import QEvent, QPointF, QRectF, QSize, Qt, pyqtSignal
+from PyQt6.QtGui import (QKeySequence, QPainterPath, QPalette, QPen,
                          QSyntaxHighlighter, QTextCharFormat, QTextCursor,
                          QTextDocument)
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication,
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication,
                              QStyledItemDelegate, QTableWidget,
                              QTableWidgetItem)
 import treenode
@@ -324,8 +324,8 @@ class DataEditDelegate(QStyledItemDelegate):
             styleOption -- the data for styles and geometry  (not used)
             modelIndex -- the index of the cell (not used)
         """
-        if event.type() == QEvent.MouseButtonPress:
-            self.editorClickPos = event.globalPos()
+        if event.type() == QEvent.Type.MouseButtonPress:
+            self.editorClickPos = event.globalPosition()
             # save scroll position for clicks on unlimited height editors
             self.tallEditScrollPos = self.parent().verticalScrollBar().value()
         return super().editorEvent(event, model, styleOption, modelIndex)
@@ -340,26 +340,27 @@ class DataEditDelegate(QStyledItemDelegate):
             editor -- the editor that Qt installed a filter on
             event -- the key press event
         """
-        if event.type() == QEvent.KeyPress:
+        if event.type() == QEvent.Type.KeyPress:
             view = self.parent()
-            if (event.key() == Qt.Key_Tab and
+            if (event.key() == Qt.Key.Key_Tab and
                 view.currentRow() == view.rowCount() - 1):
                 view.focusOtherView.emit(True)
                 return True
-            if (event.key() == Qt.Key_Backtab and view.currentRow() == 1):
+            if (event.key() == Qt.Key.Key_Backtab and view.currentRow() == 1):
                 view.focusOtherView.emit(False)
                 return True
-            if (event.modifiers() == Qt.ControlModifier and
-                Qt.Key_A <= event.key() <= Qt.Key_Z):
+            if (event.modifiers() == Qt.KeyboardModifier.ControlModifier and
+                Qt.Key.Key_A <= event.key() <= Qt.Key.Key_Z):
                 key = QKeySequence(event.modifiers() | event.key())
                 view.shortcutEntered.emit(key)
                 return True
-        if event.type() == QEvent.MouseButtonPress:
+        if event.type() == QEvent.Type.MouseButtonPress:
             self.prevNumLines = -1  # reset undo avail for mouse cursor changes
-        if event.type() == QEvent.FocusOut:
+        if event.type() == QEvent.Type.FocusOut:
             self.prevNumLines = -1  # reset undo avail for any focus loss
-            if (event.reason() in (Qt.MouseFocusReason, Qt.TabFocusReason,
-                                   Qt.BacktabFocusReason)
+            if (event.reason() in (Qt.FocusReason.MouseFocusReason,
+                                   Qt.FocusReason.TabFocusReason,
+                                   Qt.FocusReason.BacktabFocusReason)
                 and (not hasattr(editor, 'calendar') or
                 not editor.calendar or not editor.calendar.isVisible()) and
                 (not hasattr(editor, 'intLinkDialog') or
@@ -402,18 +403,19 @@ class DataEditView(QTableWidget):
         self.setMouseTracking(globalref.genOptions['EditorOnHover'])
         self.horizontalHeader().hide()
         self.verticalHeader().hide()
-        self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+        self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.
+                                     ScrollPerPixel)
         self.verticalScrollBar().setSingleStep(self.fontMetrics().
                                                lineSpacing())
-        self.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self.setItemDelegate(DataEditDelegate(self))
-        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.setShowGrid(False)
         pal = self.palette()
-        pal.setBrush(QPalette.Base,
+        pal.setBrush(QPalette.ColorRole.Base,
                      QApplication.palette().window())
-        pal.setBrush(QPalette.Text,
+        pal.setBrush(QPalette.ColorRole.Text,
                      QApplication.palette().windowText())
         self.setPalette(pal)
         self.currentItemChanged.connect(self.moveEditor)
@@ -479,8 +481,8 @@ class DataEditView(QTableWidget):
         row = 0  # initialize for cases with only Numbering or Math fields
         for row, field in enumerate(fields, startRow + 1):
             self.setItem(row, 0, self.createInactiveCell(field.name,
-                                                         Qt.AlignRight |
-                                                         Qt.AlignVCenter))
+                                                         Qt.AlignmentFlag.AlignRight |
+                                                         Qt.AlignmentFlag.AlignVCenter))
             self.setItem(row, 1, DataEditCell(spot, field, titleCell,
                                               typeCell))
         self.setItem(row + 1, 0, self.createInactiveCell(''))
@@ -537,7 +539,7 @@ class DataEditView(QTableWidget):
             alignment -- the text alignment QT constant (None for default)
         """
         cell = QTableWidgetItem(text)
-        cell.setFlags(Qt.NoItemFlags)
+        cell.setFlags(Qt.ItemFlag.NoItemFlags)
         if alignment:
             cell.setTextAlignment(alignment)
         return cell
@@ -599,10 +601,10 @@ class DataEditView(QTableWidget):
             wordList -- list of words to highlight
             regExpList -- a list of regular expression objects to highlight
         """
-        backColor = self.palette().brush(QPalette.Active,
-                                         QPalette.Highlight)
-        foreColor = self.palette().brush(QPalette.Active,
-                                         QPalette.HighlightedText)
+        backColor = self.palette().brush(QPalette.ColorGroup.Active,
+                                         QPalette.ColorRole.Highlight)
+        foreColor = self.palette().brush(QPalette.ColorGroup.Active,
+                                         QPalette.ColorRole.HighlightedText)
         charFormat = QTextCharFormat()
         charFormat.setBackground(backColor)
         charFormat.setForeground(foreColor)
@@ -620,8 +622,8 @@ class DataEditView(QTableWidget):
         cells = []
         completedCells = []
         for word in wordList:
-            cells.extend(self.findItems(word, Qt.MatchFixedString |
-                                        Qt.MatchContains))
+            cells.extend(self.findItems(word, Qt.MatchFlag.MatchFixedString |
+                                        Qt.MatchFlag.MatchContains))
         for cell in cells:
             if hasattr(cell, 'doc') and cell not in completedCells:
                 highlighter = SearchHighlighter(wordList, charFormat, cell.doc)
@@ -637,10 +639,10 @@ class DataEditView(QTableWidget):
             cellNum -- the vertical position (field number) of the cell
             skipMatches -- number of previous matches to skip in this field
         """
-        backColor = self.palette().brush(QPalette.Active,
-                                         QPalette.Highlight)
-        foreColor = self.palette().brush(QPalette.Active,
-                                         QPalette.HighlightedText)
+        backColor = self.palette().brush(QPalette.ColorGroup.Active,
+                                         QPalette.ColorRole.Highlight)
+        foreColor = self.palette().brush(QPalette.ColorGroup.Active,
+                                         QPalette.ColorRole.HighlightedText)
         charFormat = QTextCharFormat()
         charFormat.setBackground(backColor)
         charFormat.setForeground(foreColor)
@@ -666,13 +668,13 @@ class DataEditView(QTableWidget):
         Arguments:
             event -- the focus in event
         """
-        if event.reason() == Qt.TabFocusReason:
+        if event.reason() == Qt.FocusReason.TabFocusReason:
             for row in range(self.rowCount()):
                 cell = self.item(row, 1)
                 if hasattr(cell, 'doc'):
                     self.setCurrentItem(cell)
                     break
-        elif event.reason() == Qt.BacktabFocusReason:
+        elif event.reason() == Qt.FocusReason.BacktabFocusReason:
             for row in range(self.rowCount() - 1, -1, -1):
                 cell = self.item(row, 1)
                 if hasattr(cell, 'doc'):
@@ -731,8 +733,8 @@ class DataEditView(QTableWidget):
         Arguments:
             event -- the mouse event
         """
-        if (event.button() == Qt.LeftButton and
-            event.modifiers() == Qt.ControlModifier):
+        if (event.button() == Qt.MouseButton.LeftButton and
+            event.modifiers() == Qt.KeyboardModifier.ControlModifier):
             cell = self.itemAt(event.pos())
             if cell and isinstance(cell, DataEditCell):
                 xOffest = (event.pos().x() -
@@ -740,7 +742,7 @@ class DataEditView(QTableWidget):
                 yOffset = (event.pos().y() -
                            self.rowViewportPosition(cell.row()))
                 pt = QPointF(xOffest, yOffset)
-                pos = cell.doc.documentLayout().hitTest(pt, Qt.ExactHit)
+                pos = cell.doc.documentLayout().hitTest(pt, Qt.HitTestAccuracy.ExactHit)
                 if pos >= 0:
                     cursor = QTextCursor(cell.doc)
                     cursor.setPosition(pos)

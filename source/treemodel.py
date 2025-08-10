@@ -4,7 +4,7 @@
 # treemodel.py, provides a class for the tree's data
 #
 # TreeLine, an information storage program
-# Copyright (C) 2022, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -13,7 +13,7 @@
 #******************************************************************************
 
 import json
-from PyQt5.QtCore import (QAbstractItemModel, QMimeData, QModelIndex, Qt,
+from PyQt6.QtCore import (QAbstractItemModel, QMimeData, QModelIndex, Qt,
                           pyqtSignal)
 import undo
 import treestructure
@@ -89,7 +89,7 @@ class TreeModel(QAbstractItemModel):
         """
         return 1
 
-    def data(self, index, role=Qt.DisplayRole):
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         """Return the output data for the node in the given role.
 
         Arguments:
@@ -100,14 +100,14 @@ class TreeModel(QAbstractItemModel):
         if not spot:
             return None
         node = spot.nodeRef
-        if role in (Qt.DisplayRole, Qt.EditRole):
+        if role in (Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole):
             return node.title()
-        if (role == Qt.DecorationRole and
+        if (role == Qt.ItemDataRole.DecorationRole and
             globalref.genOptions['ShowTreeIcons']):
             return globalref.treeIcons.getIcon(node.formatRef.iconName, True)
         return None
 
-    def setData(self, index, value, role=Qt.EditRole):
+    def setData(self, index, value, role=Qt.ItemDataRole.EditRole):
         """Set node title after edit operation.
 
         Return True on success.
@@ -116,7 +116,7 @@ class TreeModel(QAbstractItemModel):
             value -- the string result of the editing
             role -- the edit role of the data
         """
-        if role != Qt.EditRole:
+        if role != Qt.ItemDataRole.EditRole:
             return super().setData(index, value, role)
         node = index.internalPointer().nodeRef
         dataUndo = undo.DataUndo(self.treeStructure.undoList, node)
@@ -133,9 +133,9 @@ class TreeModel(QAbstractItemModel):
         Arguments:
             index -- the node's model index
         """
-        return (Qt.ItemIsEnabled | Qt.ItemIsSelectable |
-                Qt.ItemIsEditable | Qt.ItemIsDragEnabled |
-                Qt.ItemIsDropEnabled)
+        return (Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable |
+                Qt.ItemFlag.ItemIsEditable | Qt.ItemFlag.ItemIsDragEnabled |
+                Qt.ItemFlag.ItemIsDropEnabled)
 
     def mimeData(self, indexList):
         """Return a mime data object for the given node index branches.
@@ -172,7 +172,7 @@ class TreeModel(QAbstractItemModel):
     def supportedDropActions(self):
         """Return drop action enum values that are supported by this model.
         """
-        return Qt.CopyAction | Qt.MoveAction
+        return Qt.DropAction.CopyAction | Qt.DropAction.MoveAction
 
     def dropMimeData(self, mimeData, dropAction, row, column, index):
         """Decode mime data and add as a child node to the given index.
@@ -188,7 +188,7 @@ class TreeModel(QAbstractItemModel):
         """
         parent = (index.internalPointer().nodeRef if index.internalPointer()
                   else self.treeStructure)
-        isMove = (dropAction == Qt.MoveAction and
+        isMove = (dropAction == Qt.DropAction.MoveAction and
                   TreeModel.storedDragModel == self)
         undoParents = [parent]
         if isMove:

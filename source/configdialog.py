@@ -4,7 +4,7 @@
 # configdialog.py, provides classes for the type configuration dialog
 #
 # TreeLine, an information storage program
-# Copyright (C) 2023, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -15,9 +15,9 @@
 import re
 import copy
 import operator
-from PyQt5.QtCore import QPoint, QSize, Qt, pyqtSignal
-from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
+from PyQt6.QtCore import QPoint, QSize, Qt, pyqtSignal
+from PyQt6.QtGui import QTextCursor
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup,
                              QCheckBox, QComboBox, QDialog, QGridLayout,
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit,
                              QListView, QListWidget, QListWidgetItem, QMenu,
@@ -50,8 +50,8 @@ class ConfigDialog(QDialog):
             parent -- the parent window
         """
         super().__init__(parent)
-        self.setAttribute(Qt.WA_QuitOnClose, False)
-        self.setWindowFlags(Qt.Window)
+        self.setAttribute(Qt.WidgetAttribute.WA_QuitOnClose, False)
+        self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle(_('Configure Data Types'))
         self.prevPage = None
         self.localControl = None
@@ -301,7 +301,8 @@ class TypeListPage(ConfigPage):
         topLayout.addWidget(box)
         horizLayout = QHBoxLayout(box)
         self.listBox = QListWidget()
-        self.listBox.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.listBox.setSelectionMode(QAbstractItemView.SelectionMode.
+                                      SingleSelection)
         horizLayout.addWidget(self.listBox)
         self.listBox.currentTextChanged.connect(self.changeCurrentType)
 
@@ -335,7 +336,7 @@ class TypeListPage(ConfigPage):
         """
         dlg = NameEntryDialog(_('Add Type'), _('Enter new type name:'), '', '',
                               ConfigDialog.formatsRef.typeNames(), self)
-        if dlg.exec_() == QDialog.Accepted:
+        if dlg.exec() == QDialog.DialogCode.Accepted:
             newFormat = nodeformat.NodeFormat(dlg.text,
                                               ConfigDialog.formatsRef, None,
                                               True)
@@ -355,7 +356,7 @@ class TypeListPage(ConfigPage):
                               ConfigDialog.formatsRef.typeNames(), self)
         if currentFormat.genericType:
             dlg.extraCheckBox.setEnabled(False)
-        if dlg.exec_() == QDialog.Accepted:
+        if dlg.exec() == QDialog.DialogCode.Accepted:
             newFormat = copy.deepcopy(currentFormat)
             newFormat.name = dlg.text
             # avoid using copied reference for parentFormats
@@ -375,7 +376,7 @@ class TypeListPage(ConfigPage):
         dlg = NameEntryDialog(_('Rename Type'),
                               _('Rename from {} to:').format(oldName), oldName,
                               '', ConfigDialog.formatsRef.typeNames(), self)
-        if dlg.exec_() == QDialog.Accepted:
+        if dlg.exec() == QDialog.DialogCode.Accepted:
             currentType = ConfigDialog.formatsRef[oldName]
             currentType.name = dlg.text
             del ConfigDialog.formatsRef[oldName]
@@ -451,7 +452,7 @@ class TypeConfigPage(ConfigPage):
         typeLayout = QVBoxLayout(typeBox)
         self.typeCombo = QComboBox()
         typeLayout.addWidget(self.typeCombo)
-        self.typeCombo.currentIndexChanged[str].connect(self.changeCurrentType)
+        self.typeCombo.currentTextChanged.connect(self.changeCurrentType)
 
         childBox = QGroupBox(_('Default Child &Type'))
         topLayout.addWidget(childBox, 0, 1)
@@ -466,7 +467,7 @@ class TypeConfigPage(ConfigPage):
         iconLayout = QHBoxLayout(iconBox)
         self.iconImage = QLabel()
         iconLayout.addWidget(self.iconImage)
-        self.iconImage.setAlignment(Qt.AlignCenter)
+        self.iconImage.setAlignment(Qt.AlignmentFlag.AlignCenter)
         iconButton = QPushButton(_('Change &Icon'))
         iconLayout.addWidget(iconButton)
         iconButton.clicked.connect(self.changeIcon)
@@ -497,7 +498,7 @@ class TypeConfigPage(ConfigPage):
         self.outputSepEdit = QLineEdit()
         outputSepLayout.addWidget(self.outputSepEdit)
         sizePolicy = self.outputSepEdit.sizePolicy()
-        sizePolicy.setHorizontalPolicy(QSizePolicy.Preferred)
+        sizePolicy.setHorizontalPolicy(QSizePolicy.Policy.Preferred)
         self.outputSepEdit.setSizePolicy(sizePolicy)
         self.outputSepEdit.textEdited.connect(self.mainDialogRef.setModified)
 
@@ -603,7 +604,7 @@ class TypeConfigPage(ConfigPage):
         """
         currentFormat = ConfigDialog.formatsRef[ConfigDialog.currentTypeName]
         dlg = IconSelectDialog(currentFormat, self)
-        if (dlg.exec_() == QDialog.Accepted and
+        if (dlg.exec() == QDialog.DialogCode.Accepted and
             dlg.currentIconName != currentFormat.iconName):
             currentFormat.iconName = dlg.currentIconName
             self.mainDialogRef.setModified()
@@ -662,7 +663,7 @@ class TypeConfigPage(ConfigPage):
                                              currentFormat)
         if currentFormat.conditional:
             dialog.setCondition(currentFormat.conditional)
-        if dialog.exec_() == QDialog.Accepted:
+        if dialog.exec() == QDialog.DialogCode.Accepted:
             currentFormat.conditional = dialog.conditional()
             if not currentFormat.conditional:
                 currentFormat.conditional = None
@@ -720,7 +721,7 @@ class FieldListPage(ConfigPage):
         typeLayout = QVBoxLayout(typeBox)
         self.typeCombo = QComboBox()
         typeLayout.addWidget(self.typeCombo)
-        self.typeCombo.currentIndexChanged[str].connect(self.changeCurrentType)
+        self.typeCombo.currentTextChanged.connect(self.changeCurrentType)
 
         fieldBox = QGroupBox(_('Modify &Field List'))
         topLayout.addWidget(fieldBox)
@@ -842,7 +843,7 @@ class FieldListPage(ConfigPage):
         currentFormat = ConfigDialog.formatsRef[ConfigDialog.currentTypeName]
         dlg = NameEntryDialog(_('Add Field'), _('Enter new field name:'), '',
                               '', currentFormat.fieldNames(), self)
-        if dlg.exec_() == QDialog.Accepted:
+        if dlg.exec() == QDialog.DialogCode.Accepted:
             currentFormat.addField(dlg.text)
             ConfigDialog.currentFieldName = dlg.text
             currentFormat.updateDerivedTypes()
@@ -858,7 +859,7 @@ class FieldListPage(ConfigPage):
         dlg = NameEntryDialog(_('Rename Field'),
                               _('Rename from {} to:').format(oldName), oldName,
                               '', fieldList, self)
-        if dlg.exec_() == QDialog.Accepted:
+        if dlg.exec() == QDialog.DialogCode.Accepted:
             num = fieldList.index(oldName)
             fieldList[num] = dlg.text
             for nodeFormat in [currentFormat] + currentFormat.derivedTypes:
@@ -907,7 +908,7 @@ class FieldListPage(ConfigPage):
         """
         currentFormat = ConfigDialog.formatsRef[ConfigDialog.currentTypeName]
         dlg = SortKeyDialog(currentFormat.fieldDict, self)
-        if dlg.exec_() == QDialog.Accepted:
+        if dlg.exec() == QDialog.DialogCode.Accepted:
             self.updateContent()
             self.mainDialogRef.setModified()
 
@@ -932,14 +933,14 @@ class FieldConfigPage(ConfigPage):
         typeLayout = QVBoxLayout(typeBox)
         self.typeCombo = QComboBox()
         typeLayout.addWidget(self.typeCombo)
-        self.typeCombo.currentIndexChanged[str].connect(self.changeCurrentType)
+        self.typeCombo.currentTextChanged.connect(self.changeCurrentType)
 
         fieldBox = QGroupBox(_('F&ield'))
         topLayout.addWidget(fieldBox, 0, 1)
         fieldLayout = QVBoxLayout(fieldBox)
         self.fieldCombo = QComboBox()
         fieldLayout.addWidget(self.fieldCombo)
-        self.fieldCombo.currentIndexChanged[str].connect(self.
+        self.fieldCombo.currentTextChanged.connect(self.
                                                          changeCurrentField)
 
         fieldTypeBox = QGroupBox(_('&Field Type'))
@@ -1154,7 +1155,7 @@ class FieldConfigPage(ConfigPage):
         prevEqnText = currentField.equationText()
         prevResultType = currentField.resultType
         dlg = MathEquationDialog(currentFormat, currentField, self)
-        if (dlg.exec_() == QDialog.Accepted and
+        if (dlg.exec() == QDialog.DialogCode.Accepted and
             (currentField.equationText() != prevEqnText or
              currentField.resultType != prevResultType)):
             self.mainDialogRef.setModified()
@@ -1239,7 +1240,7 @@ class  OutputPage(ConfigPage):
         typeLayout = QVBoxLayout(typeBox)
         self.typeCombo = QComboBox()
         typeLayout.addWidget(self.typeCombo)
-        self.typeCombo.currentIndexChanged[str].connect(self.changeCurrentType)
+        self.typeCombo.currentTextChanged.connect(self.changeCurrentType)
 
         fieldBox = QGroupBox(_('F&ield List'))
         topLayout.addWidget(fieldBox, 1, 0, 2, 1)
@@ -1247,7 +1248,8 @@ class  OutputPage(ConfigPage):
         self.fieldListBox = QTreeWidget()
         boxLayout.addWidget(self.fieldListBox)
         self.fieldListBox.setRootIsDecorated(False)
-        self.fieldListBox.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.fieldListBox.setSelectionMode(QAbstractItemView.SelectionMode.
+                                           ExtendedSelection)
         self.fieldListBox.setColumnCount(2)
         self.fieldListBox.setHeaderLabels([_('Name'), _('Type')])
         self.fieldListBox.itemSelectionChanged.connect(self.changeField)
@@ -1291,7 +1293,7 @@ class  OutputPage(ConfigPage):
         topLayout.addWidget(outputBox, 2, 2)
         outputLayout = QVBoxLayout(outputBox)
         self.outputEdit = QTextEdit()
-        self.outputEdit.setLineWrapMode(QTextEdit.NoWrap)
+        self.outputEdit.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
         outputLayout.addWidget(self.outputEdit)
         self.outputEdit.setTabChangesFocus(True)
         self.outputEdit.cursorPositionChanged.connect(self.
@@ -1346,7 +1348,7 @@ class  OutputPage(ConfigPage):
         self.outputEdit.blockSignals(True)
         self.outputEdit.setPlainText('\n'.join(currentFormat.getOutputLines()))
         cursor = self.outputEdit.textCursor()
-        cursor.movePosition(QTextCursor.End)
+        cursor.movePosition(QTextCursor.MoveOperation.End)
         self.outputEdit.setTextCursor(cursor)
         self.outputEdit.blockSignals(False)
 
@@ -1387,8 +1389,8 @@ class  OutputPage(ConfigPage):
                 typeName = fieldformat.translatedTypeName(field.typeName)
                 QTreeWidgetItem(self.fieldListBox, [field.name, typeName])
         selectList = self.fieldListBox.findItems(ConfigDialog.currentFieldName,
-                                                 Qt.MatchFixedString |
-                                                 Qt.MatchCaseSensitive)
+                                                 Qt.MatchFlag.MatchFixedString |
+                                                 Qt.MatchFlag.MatchCaseSensitive)
         selectItem = (selectList[0] if selectList else
                       self.fieldListBox.topLevelItem(0))
         self.fieldListBox.setCurrentItem(selectItem)
@@ -1507,7 +1509,7 @@ class  OutputPage(ConfigPage):
         if selectField:
             outputCursor.setPosition(start + blockStart)
             outputCursor.setPosition(end + blockStart,
-                                     QTextCursor.KeepAnchor)
+                                     QTextCursor.MoveMode.KeepAnchor)
             self.outputEdit.setTextCursor(outputCursor)
         return True
 
@@ -1659,7 +1661,7 @@ class TypeLimitCombo(QComboBox):
         self.checkBoxDialog.show()
         pos = self.mapToGlobal(self.rect().bottomRight())
         pos.setX(pos.x() - self.checkBoxDialog.width() + 1)
-        screenBottom =  (QApplication.desktop().screenGeometry(self).
+        screenBottom =  (QApplication.primaryScreen().availableGeometry().
                          bottom())
         if pos.y() + self.checkBoxDialog.height() > screenBottom:
             pos.setY(pos.y() - self.rect().height() -
@@ -1693,11 +1695,11 @@ class TypeLimitCheckBox(QDialog):
             parent -- the parent, if given
         """
         super().__init__(parent)
-        self.setWindowFlags(Qt.Popup)
+        self.setWindowFlags(Qt.WindowType.Popup)
         topLayout = QVBoxLayout(self)
         topLayout.setContentsMargins(0, 0, 0, 0)
         scrollArea = QScrollArea()
-        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         topLayout.addWidget(scrollArea)
         innerWidget = QWidget()
         innerLayout = QVBoxLayout(innerWidget)
@@ -1745,7 +1747,7 @@ class TypeLimitCheckBox(QDialog):
         menu = QMenu(self)
         menu.addAction(_('&Select All'), self.selectAll)
         menu.addAction(_('Select &None'), self.selectNone)
-        menu.exec_(event.globalPos())
+        menu.exec(event.globalPos())
 
 
 _illegalRe = re.compile(r'[^\w_\-.]')
@@ -1772,8 +1774,8 @@ class NameEntryDialog(QDialog):
         if badText:
             self.badText = badText
         self.text = ''
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(caption)
         topLayout = QVBoxLayout(self)
         label = QLabel(labelText)
@@ -1842,13 +1844,13 @@ class IconSelectDialog(QDialog):
         if (not self.currentIconName or
             self.currentIconName not in globalref.treeIcons):
             self.currentIconName = icondict.defaultName
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Set Data Type Icon'))
         topLayout = QVBoxLayout(self)
         self.iconView = QListWidget()
-        self.iconView.setViewMode(QListView.ListMode)
-        self.iconView.setMovement(QListView.Static)
+        self.iconView.setViewMode(QListView.ViewMode.ListMode)
+        self.iconView.setMovement(QListView.Movement.Static)
         self.iconView.setWrapping(True)
         self.iconView.setGridSize(QSize(112, 32))
         topLayout.addWidget(self.iconView)
@@ -1887,7 +1889,8 @@ class IconSelectDialog(QDialog):
         selectedItem = self.iconView.currentItem()
         if selectedItem:
             self.iconView.scrollToItem(selectedItem,
-                                      QAbstractItemView.PositionAtCenter)
+                                       QAbstractItemView.ScrollHint.
+                                       PositionAtCenter)
 
     def saveSize(self):
         """Record dialog size at close.
@@ -1931,8 +1934,8 @@ class SortKeyDialog(QDialog):
         super().__init__(parent)
         self.fieldDict = fieldDict
         self.numChanges = 0
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Sort Key Fields'))
         topLayout = QVBoxLayout(self)
         horizLayout = QHBoxLayout()
@@ -2213,8 +2216,8 @@ class MathEquationDialog(QDialog):
         self.typeFormats = self.nodeFormat.parentFormats
         self.field = field
         self.refLevelFlag = ''
-        self.setWindowFlags(Qt.Dialog | Qt.WindowTitleHint |
-                            Qt.WindowCloseButtonHint)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.WindowTitleHint |
+                            Qt.WindowType.WindowCloseButtonHint)
         self.setWindowTitle(_('Define Math Field Equation'))
 
         topLayout = QGridLayout(self)

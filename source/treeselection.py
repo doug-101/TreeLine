@@ -4,7 +4,7 @@
 # treeselection.py, provides a class for the tree view's selection model
 #
 # TreeLine, an information storage program
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -14,9 +14,9 @@
 
 import collections
 import json
-from PyQt5.QtCore import QItemSelectionModel, QMimeData
-from PyQt5.QtGui import QClipboard
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtCore import QItemSelectionModel, QMimeData
+from PyQt6.QtGui import QClipboard
+from PyQt6.QtWidgets import QApplication
 import treestructure
 import treespotlist
 import globalref
@@ -130,9 +130,9 @@ class TreeSelection(QItemSelectionModel):
         if spotList:
             for spot in spotList:
                 self.select(spot.index(self.modelRef),
-                            QItemSelectionModel.Select)
+                            QItemSelectionModel.SelectionFlag.Select)
             self.setCurrentIndex(spotList[0].index(self.modelRef),
-                                 QItemSelectionModel.Current)
+                                 QItemSelectionModel.SelectionFlag.Current)
         self.blockSignals(False)
 
     def selectNodeById(self, nodeId):
@@ -157,7 +157,7 @@ class TreeSelection(QItemSelectionModel):
         """
         self.blockSignals(True)
         self.setCurrentIndex(spot.index(self.modelRef),
-                             QItemSelectionModel.Current)
+                             QItemSelectionModel.SelectionFlag.Current)
         self.blockSignals(False)
 
     def copySelectedNodes(self):
@@ -171,7 +171,7 @@ class TreeSelection(QItemSelectionModel):
             titleList = []
             for node in nodes:
                 titleList.extend(node.exportTitleText())
-            clip.setText('\n'.join(titleList), QClipboard.Selection)
+            clip.setText('\n'.join(titleList), QClipboard.Mode.Selection)
         struct = treestructure.TreeStructure(topNodes=nodes, addSpots=False)
         generics = {formatRef.genericType for formatRef in
                     struct.treeFormats.values() if formatRef.genericType}
