@@ -2176,7 +2176,8 @@ _arithmeticOperators = [('+', _('add')),
                         ('degrees()', _('radians to degrees')),
                         ('radians()', _('degrees to radians')),
                         ('pi', _('pi constant')),
-                        ('e', _('natural log constant'))]
+                        ('e', _('natural log constant')),
+                        ('count()', _('number of words in arg'))]
 _comparisonOperators = [('==', _('equal to')),
                         ('<', _('less than')),
                         ('>', _('greater than')),
