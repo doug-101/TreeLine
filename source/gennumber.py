@@ -3,7 +3,7 @@
 #******************************************************************************
 # gennumber.py, provides a class for number formating
 #
-# Copyright (C) 2018, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -44,7 +44,7 @@ class GenNumber:
         except ValueError:
             self.num = float(str(num))
 
-    def setFromStr(self, numStr, strFormat='#\,###'):
+    def setFromStr(self, numStr, strFormat=r'#\,###'):
         """Set number value based on given format string.
 
         Removes the extra characters from format and uses format's radix char.
@@ -75,8 +75,8 @@ class GenNumber:
             + = required sign
             space (external) = digit or space
             space (internal) = thousands sep
-            \, = thousands separator
-            \. = thousands separator
+            \\, = thousands separator
+            \\. = thousands separator
         Arguments:
             strFormat -- format for number export
         """
@@ -106,8 +106,8 @@ class GenNumber:
             + = required sign
             space (external) = digit or space
             space (internal) = thousands sep
-            \, = thousands separator
-            \. = thousands separator
+            \\, = thousands separator
+            \\. = thousands separator
         Arguments:
             strFormat -- format for number export
         """
@@ -325,7 +325,7 @@ def _getRadix(strFormat):
     Arguments:
         strFormat -- the string format to evaluate
     """
-    if not '\,' in strFormat and ('\.' in strFormat or (',' in strFormat
+    if not r'\,' in strFormat and (r'\.' in strFormat or (',' in strFormat
                                                     and not '.' in strFormat)):
         return ','
     return '.'
@@ -338,5 +338,5 @@ def _unescapeFormat(radix, strFormat):
         strFormat - the string format to modify
     """
     if radix == '.':
-        return strFormat.replace('\,', ',')
-    return strFormat.replace('\.', '.')
+        return strFormat.replace(r'\,', ',')
+    return strFormat.replace(r'\.', '.')
