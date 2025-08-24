@@ -13,7 +13,7 @@
 #******************************************************************************
 
 __progname__ = 'TreeLine'
-__version__ = '3.1.6'
+__version__ = '3.2.0'
 __author__ = 'Doug Bell'
 
 docPath = None         # modified by install script if required

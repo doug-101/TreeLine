@@ -494,7 +494,7 @@ class TreeEditDelegate(QStyledItemDelegate):
         if (event.type() == QEvent.Type.KeyPress and
             event.modifiers() == Qt.KeyboardModifier.ControlModifier and
             Qt.Key.Key_A <= event.key() <= Qt.Key.Key_Z):
-            key = QKeySequence(event.modifiers() | event.key())
+            key = QKeySequence(event.keyCombination())
             self.parent().shortcutEntered.emit(key)
             return True
         return super().eventFilter(editor, event)

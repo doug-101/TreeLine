@@ -351,7 +351,7 @@ class DataEditDelegate(QStyledItemDelegate):
                 return True
             if (event.modifiers() == Qt.KeyboardModifier.ControlModifier and
                 Qt.Key.Key_A <= event.key() <= Qt.Key.Key_Z):
-                key = QKeySequence(event.modifiers() | event.key())
+                key = QKeySequence(event.keyCombination())
                 view.shortcutEntered.emit(key)
                 return True
         if event.type() == QEvent.Type.MouseButtonPress:

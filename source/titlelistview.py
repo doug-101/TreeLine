@@ -218,7 +218,7 @@ class TitleListView(QTextEdit):
         """
         if (event.modifiers() == Qt.KeyboardModifier.ControlModifier and
             Qt.Key.Key_A <= event.key() <= Qt.Key.Key_Z):
-            key = QKeySequence(event.modifiers() | event.key())
+            key = QKeySequence(event.keyCombination())
             self.shortcutEntered.emit(key)
             return
         if self.isChildView or event.key() not in (Qt.Key.Key_Enter,
