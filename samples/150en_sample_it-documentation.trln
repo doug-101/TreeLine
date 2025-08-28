@@ -1,0 +1,778 @@
+{
+"formats": [
+{
+"fields": [
+{
+"fieldname": "Name",
+"fieldtype": "Text"
+},
+{
+"fieldname": "Description",
+"fieldtype": "Text"
+},
+{
+"fieldname": "Location",
+"fieldtype": "InternalLink"
+}
+],
+"formathtml": true,
+"formatname": "Standard",
+"outputlines": [
+"<div style=\"margin: 8px; border: 1px solid #aeaeae; border-radius: 4px; padding: 0; overflow: hidden; max-width: 80ch\"><div style=\"background-color: #eeeeee; width: 100%; padding-left: 8px\">",
+"<span style=\"font-size: 18px; line-height: 1.4; font-family: sans-serif\"><b>{*Name*}</b></span>",
+"<span style=\"font-size: 14px; line-height: 2.0\"><b>Location:</b> {*Location*}</span>",
+"</div>",
+"<div style=\"padding: 8px; max-width: 74ch\">{*Description*}</div>",
+"</div>"
+],
+"titleline": "{*Name*}"
+}
+],
+"nodes": [
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#269d7b685a4d11f08b435254000e42c5\">R001 Entrance hall</a>",
+"Name": "N101 Firewall"
+},
+"format": "Standard",
+"uid": "05cd63165a4e11f08b435254000e42c5"
+},
+{
+"children": [
+"0ec0e40c5a4e11f08b435254000e42c5",
+"10f6e3de5a4e11f08b435254000e42c5"
+],
+"data": {
+"Name": "Storage Area"
+},
+"format": "Standard",
+"uid": "0b551b305a4e11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#30a0ca025a4d11f08b435254000e42c5\">R101 Storage area</a>",
+"Name": "N201 Firewall"
+},
+"format": "Standard",
+"uid": "0ec0e40c5a4e11f08b435254000e42c5"
+},
+{
+"children": [
+"11b993765a4d11f08b435254000e42c5",
+"15ca9ca85a4d11f08b435254000e42c5",
+"18028fc65a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "IT Systems"
+},
+"format": "Standard",
+"uid": "0f6a67ee5a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#30a0ca025a4d11f08b435254000e42c5\">R101 Storage area</a>",
+"Name": "N202 WiFi Access Point"
+},
+"format": "Standard",
+"uid": "10f6e3de5a4e11f08b435254000e42c5"
+},
+{
+"children": [
+"580397785a4d11f08b435254000e42c5",
+"642c77f45a4d11f08b435254000e42c5",
+"67e69a145a4d11f08b435254000e42c5",
+"9c5509705a4d11f08b435254000e42c5",
+"b0125c6a5a4d11f08b435254000e42c5",
+"755efe925a4e11f08b435254000e42c5",
+"e52925545a4e11f08b435254000e42c5",
+"d263044a5a4d11f08b435254000e42c5",
+"d54e142e5a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "Headquarters"
+},
+"format": "Standard",
+"uid": "11b993765a4d11f08b435254000e42c5"
+},
+{
+"children": [
+"18b29fc85a4e11f08b435254000e42c5",
+"18b2a0fe5a4e11f08b435254000e42c5"
+],
+"data": {
+"Name": "Branch office"
+},
+"format": "Standard",
+"uid": "15834f0a5a4e11f08b435254000e42c5"
+},
+{
+"children": [
+"c7f388045a4d11f08b435254000e42c5",
+"ddcd98045a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "Storage Area"
+},
+"format": "Standard",
+"uid": "15ca9ca85a4d11f08b435254000e42c5"
+},
+{
+"children": [
+"db0eeba45a4d11f08b435254000e42c5",
+"dfa1ef9a5a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "Branch office"
+},
+"format": "Standard",
+"uid": "18028fc65a4d11f08b435254000e42c5"
+},
+{
+"children": [
+"1c5147825a4f11f08b435254000e42c5",
+"3716c7405a4f11f08b435254000e42c5",
+"519f75445a4f11f08b435254000e42c5"
+],
+"data": {
+"Name": "Communication links"
+},
+"format": "Standard",
+"uid": "184242c25a4f11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#398121805a4d11f08b435254000e42c5\">R202 Back office</a>",
+"Name": "N301 Firewall"
+},
+"format": "Standard",
+"uid": "18b29fc85a4e11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#398121805a4d11f08b435254000e42c5\">R202 Back office</a>",
+"Name": "N302 WiFi Access Point"
+},
+"format": "Standard",
+"uid": "18b2a0fe5a4e11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "R001 Entrance hall"
+},
+"format": "Standard",
+"uid": "1b73c6705a4d11f08b435254000e42c5"
+},
+{
+"children": [
+"2487d56a5a4f11f08b435254000e42c5",
+"2d829ef25a4f11f08b435254000e42c5"
+],
+"data": {
+"Name": "Headquarters"
+},
+"format": "Standard",
+"uid": "1c5147825a4f11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "R002 Back Office"
+},
+"format": "Standard",
+"uid": "20994dd25a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "L101 Internet connection"
+},
+"format": "Standard",
+"uid": "2487d56a5a4f11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "R003 Server room"
+},
+"format": "Standard",
+"uid": "269d7b685a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "R101 Entrance area"
+},
+"format": "Standard",
+"uid": "2899f6585a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "L102 WiFi SSID \"COMPINT\""
+},
+"format": "Standard",
+"uid": "2d829ef25a4f11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "R101 Storage area"
+},
+"format": "Standard",
+"uid": "30a0ca025a4d11f08b435254000e42c5"
+},
+{
+"children": [
+"3a732c8a5a4f11f08b435254000e42c5",
+"45192a905a4f11f08b435254000e42c5",
+"5b9add725a4f11f08b435254000e42c5"
+],
+"data": {
+"Name": "Storage Area"
+},
+"format": "Standard",
+"uid": "3716c7405a4f11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "R201 Entrance hall"
+},
+"format": "Standard",
+"uid": "374014945a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "R202 Back office"
+},
+"format": "Standard",
+"uid": "398121805a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "L201 Internet connection"
+},
+"format": "Standard",
+"uid": "3a732c8a5a4f11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "L202 IPSEC-VPN HQ"
+},
+"format": "Standard",
+"uid": "45192a905a4f11f08b435254000e42c5"
+},
+{
+"children": [
+"5345da145a4f11f08b435254000e42c5",
+"55aad3f45a4f11f08b435254000e42c5",
+"643e23d05a4f11f08b435254000e42c5"
+],
+"data": {
+"Name": "Branch office"
+},
+"format": "Standard",
+"uid": "519f75445a4f11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "L301 Internet connection"
+},
+"format": "Standard",
+"uid": "5345da145a4f11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "L302 IPSEC-VPN HQ"
+},
+"format": "Standard",
+"uid": "55aad3f45a4f11f08b435254000e42c5"
+},
+{
+"children": [
+"640b044c5a4e11f08b435254000e42c5",
+"9db71d2a5a4e11f08b435254000e42c5",
+"d985ad8a5a4e11f08b435254000e42c5"
+],
+"data": {
+"Name": "Applications"
+},
+"format": "Standard",
+"uid": "5743ef585a4e11f08b435254000e42c5"
+},
+{
+"children": [
+"6c921fde5a4d11f08b435254000e42c5",
+"73618ed05a4d11f08b435254000e42c5",
+"7a09bece5a4d11f08b435254000e42c5",
+"7e96c5865a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "S101 Proxmox host srvpve01"
+},
+"format": "Standard",
+"uid": "580397785a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "L203 WiFi SSID \"COMPSTO\""
+},
+"format": "Standard",
+"uid": "5b9add725a4f11f08b435254000e42c5"
+},
+{
+"children": [
+"67a428685a4e11f08b435254000e42c5",
+"82560cc65a4e11f08b435254000e42c5",
+"8d58ea4e5a4e11f08b435254000e42c5"
+],
+"data": {
+"Description": "Our central cloud used to store all our data.",
+"Name": "A001 nextcloud"
+},
+"format": "Standard",
+"uid": "640b044c5a4e11f08b435254000e42c5"
+},
+{
+"children": [
+"86921f385a4d11f08b435254000e42c5",
+"869220505a4d11f08b435254000e42c5",
+"869221a45a4d11f08b435254000e42c5",
+"869222bc5a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "S102 Proxmox host srvpve02"
+},
+"format": "Standard",
+"uid": "642c77f45a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "L303 WiFi SSID \"COMPBRA\""
+},
+"format": "Standard",
+"uid": "643e23d05a4f11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Description": "The domain used to access the cloud, hosted at somebigdnshoster.com.",
+"Location": "<a href=\"#755efe925a4e11f08b435254000e42c5\">S106 reverse proxy</a>",
+"Name": "A001-1 Domain cloud.company.de"
+},
+"format": "Standard",
+"uid": "67a428685a4e11f08b435254000e42c5"
+},
+{
+"children": [
+"88f0d3be5a4d11f08b435254000e42c5",
+"88f0d4b85a4d11f08b435254000e42c5",
+"88f0d5a85a4d11f08b435254000e42c5",
+"88f0d6a25a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "S103 Proxmox host srvpve03"
+},
+"format": "Standard",
+"uid": "67e69a145a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S101-1 VM (non-HA)"
+},
+"format": "Standard",
+"uid": "6c921fde5a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S101-2 LXC (non-HA)"
+},
+"format": "Standard",
+"uid": "73618ed05a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#a23429665a4d11f08b435254000e42c5\">S104-1 VM (HA)</a>",
+"Name": "S106 reverse proxy"
+},
+"format": "Standard",
+"uid": "755efe925a4e11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S101-3 Ceph Mon"
+},
+"format": "Standard",
+"uid": "7a09bece5a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S101-4 Ceph OSD"
+},
+"format": "Standard",
+"uid": "7e96c5865a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Description": "The nextcloud instance.",
+"Location": "<a href=\"#a23429665a4d11f08b435254000e42c5\">S104-1 VM (HA)</a>",
+"Name": "A001-2 nextcloud"
+},
+"format": "Standard",
+"uid": "82560cc65a4e11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S102-1 VM (non-HA)"
+},
+"format": "Standard",
+"uid": "86921f385a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S102-2 LXC (non-HA)"
+},
+"format": "Standard",
+"uid": "869220505a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S102-3 Ceph Mon"
+},
+"format": "Standard",
+"uid": "869221a45a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S102-4 Ceph OSD"
+},
+"format": "Standard",
+"uid": "869222bc5a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S103-1 VM (non-HA)"
+},
+"format": "Standard",
+"uid": "88f0d3be5a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S103-2 LXC (non-HA)"
+},
+"format": "Standard",
+"uid": "88f0d4b85a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S103-3 Ceph Mon"
+},
+"format": "Standard",
+"uid": "88f0d5a85a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S103-4 Ceph OSD"
+},
+"format": "Standard",
+"uid": "88f0d6a25a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Description": "A postgres database for our nextcloud.",
+"Location": "<a href=\"#a23429665a4d11f08b435254000e42c5\">S104-1 VM (HA)</a>",
+"Name": "A001-3 nextcloud-db"
+},
+"format": "Standard",
+"uid": "8d58ea4e5a4e11f08b435254000e42c5"
+},
+{
+"children": [
+"968f96aa5a4c11f08b435254000e42c5",
+"0f6a67ee5a4d11f08b435254000e42c5",
+"e6d08eb65a4d11f08b435254000e42c5",
+"5743ef585a4e11f08b435254000e42c5",
+"184242c25a4f11f08b435254000e42c5"
+],
+"data": {
+"Name": "IT Documentation (CMDB)"
+},
+"format": "Standard",
+"uid": "8fc59e785a4c11f08b435254000e42c5"
+},
+{
+"children": [
+"9f4d15745a4c11f08b435254000e42c5",
+"a76e236a5a4c11f08b435254000e42c5",
+"b8f489585a4c11f08b435254000e42c5"
+],
+"data": {
+"Name": "Buildings"
+},
+"format": "Standard",
+"uid": "968f96aa5a4c11f08b435254000e42c5"
+},
+{
+"children": [
+"a23429665a4d11f08b435254000e42c5",
+"a48f03025a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "S104 Proxmox cluster pve"
+},
+"format": "Standard",
+"uid": "9c5509705a4d11f08b435254000e42c5"
+},
+{
+"children": [
+"a0aaee805a4e11f08b435254000e42c5"
+],
+"data": {
+"Name": "A002 File server"
+},
+"format": "Standard",
+"uid": "9db71d2a5a4e11f08b435254000e42c5"
+},
+{
+"children": [
+"1b73c6705a4d11f08b435254000e42c5",
+"20994dd25a4d11f08b435254000e42c5",
+"269d7b685a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "B001 Headquarters"
+},
+"format": "Standard",
+"uid": "9f4d15745a4c11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#b26cda585a4d11f08b435254000e42c5\">S105-1 File shares (S105 NAS)</a>",
+"Name": "A002-1 company_file_share"
+},
+"format": "Standard",
+"uid": "a0aaee805a4e11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S104-1 VM (HA)"
+},
+"format": "Standard",
+"uid": "a23429665a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S104-2 LXC (HA)"
+},
+"format": "Standard",
+"uid": "a48f03025a4d11f08b435254000e42c5"
+},
+{
+"children": [
+"2899f6585a4d11f08b435254000e42c5",
+"30a0ca025a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "B002 Storage area"
+},
+"format": "Standard",
+"uid": "a76e236a5a4c11f08b435254000e42c5"
+},
+{
+"children": [
+"b26cda585a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "S105 NAS"
+},
+"format": "Standard",
+"uid": "b0125c6a5a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S105-1 File shares"
+},
+"format": "Standard",
+"uid": "b26cda585a4d11f08b435254000e42c5"
+},
+{
+"children": [
+"374014945a4d11f08b435254000e42c5",
+"398121805a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "B003 Branch office"
+},
+"format": "Standard",
+"uid": "b8f489585a4c11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "C201 Windows client"
+},
+"format": "Standard",
+"uid": "c7f388045a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#20994dd25a4d11f08b435254000e42c5\">R002 Back Office</a>",
+"Name": "C101 Windows client"
+},
+"format": "Standard",
+"uid": "d263044a5a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#20994dd25a4d11f08b435254000e42c5\">R002 Back Office</a>",
+"Name": "C102 Mac client"
+},
+"format": "Standard",
+"uid": "d54e142e5a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#e52925545a4e11f08b435254000e42c5\">S107 Domain Controller</a>",
+"Name": "A003 Domain COMPDMN"
+},
+"format": "Standard",
+"uid": "d985ad8a5a4e11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "C301 Windows client"
+},
+"format": "Standard",
+"uid": "db0eeba45a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S201 NAS"
+},
+"format": "Standard",
+"uid": "ddcd98045a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Name": "S301 NAS"
+},
+"format": "Standard",
+"uid": "dfa1ef9a5a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#a23429665a4d11f08b435254000e42c5\">S104-1 VM (HA)</a>",
+"Name": "S107 Domain Controller"
+},
+"format": "Standard",
+"uid": "e52925545a4e11f08b435254000e42c5"
+},
+{
+"children": [
+"e95098ac5a4d11f08b435254000e42c5",
+"0b551b305a4e11f08b435254000e42c5",
+"15834f0a5a4e11f08b435254000e42c5"
+],
+"data": {
+"Name": "Network devices"
+},
+"format": "Standard",
+"uid": "e6d08eb65a4d11f08b435254000e42c5"
+},
+{
+"children": [
+"05cd63165a4e11f08b435254000e42c5",
+"ee9da0b65a4d11f08b435254000e42c5",
+"f0ffcf825a4d11f08b435254000e42c5",
+"f5e7f2545a4d11f08b435254000e42c5",
+"f8d4c0965a4d11f08b435254000e42c5"
+],
+"data": {
+"Name": "Headquarters"
+},
+"format": "Standard",
+"uid": "e95098ac5a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#269d7b685a4d11f08b435254000e42c5\">R003 Server room</a>",
+"Name": "N102 Core switch"
+},
+"format": "Standard",
+"uid": "ee9da0b65a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#269d7b685a4d11f08b435254000e42c5\">R003 Server room</a>",
+"Name": "N103 Distribution switch"
+},
+"format": "Standard",
+"uid": "f0ffcf825a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#20994dd25a4d11f08b435254000e42c5\">R002 Back Office</a>",
+"Name": "N104 Access switch"
+},
+"format": "Standard",
+"uid": "f5e7f2545a4d11f08b435254000e42c5"
+},
+{
+"children": [],
+"data": {
+"Location": "<a href=\"#1b73c6705a4d11f08b435254000e42c5\">R001 Entrance hall</a>",
+"Name": "N105 WiFi Access Point"
+},
+"format": "Standard",
+"uid": "f8d4c0965a4d11f08b435254000e42c5"
+}
+],
+"properties": {
+"tlversion": "3.1.6",
+"topnodes": [
+"8fc59e785a4c11f08b435254000e42c5"
+]
+}
+}
