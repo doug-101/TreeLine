@@ -11,7 +11,7 @@
 # that contains the files needed to run the application
 #
 # TreeLine, an information storage program
-# Copyright (C) 2020, Douglas W. Bell
+# Copyright (C) 2025, Douglas W. Bell
 #
 # This is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License, either Version 2 or any later
@@ -56,17 +56,17 @@ exe = EXE(pyz,
           upx=True,
           console=False,
           icon='..\\win\\treeline.ico')
-a.binaries = a.binaries - TOC([('d3dcompiler_47.dll', None, None),
-                               ('libcrypto-1_1.dll', None, None),
-                               ('libeay32.dll', None, None),
-                               ('libglesv2.dll', None, None),
-                               ('libssl-1_1.dll', None, None),
-                               ('opengl32sw.dll', None, None),
-                               ('qt5dbus.dll', None, None),
-                               ('qt5qml.dll', None, None),
-                               ('qt5qmlmodels.dll', None, None),
-                               ('qt5quick.dll', None, None),
-                               ('qt5websockets.dll', None, None)])
+# a.binaries = a.binaries - TOC([('d3dcompiler_47.dll', None, None),
+                               # ('libcrypto-1_1.dll', None, None),
+                               # ('libeay32.dll', None, None),
+                               # ('libglesv2.dll', None, None),
+                               # ('libssl-1_1.dll', None, None),
+                               # ('opengl32sw.dll', None, None),
+                               # ('qt5dbus.dll', None, None),
+                               # ('qt5qml.dll', None, None),
+                               # ('qt5qmlmodels.dll', None, None),
+                               # ('qt5quick.dll', None, None),
+                               # ('qt5websockets.dll', None, None)])
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,

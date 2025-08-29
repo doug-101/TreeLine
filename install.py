@@ -4,7 +4,7 @@
 ****************************************************************************
  install.py, Linux install script for TreeLine
 
- Copyright (C) 2018, Douglas W. Bell
+ Copyright (C) 2025, Douglas W. Bell
 
  This is free software; you can redistribute it and/or modify it under the
  terms of the GNU General Public License, either Version 2 or any later
@@ -223,30 +223,30 @@ def main():
         print('Checking dependencies...')
         pyVersion = sys.version_info[:3]
         pyVersion = '.'.join([str(num) for num in pyVersion])
-        if cmpVersions(pyVersion, (3, 5)):
+        if cmpVersions(pyVersion, (3, 9)):
             print('  Python Version {0} -> OK'.format(pyVersion))
         else:
-            print('  Python Version {0} -> Sorry, 3.5 or higher is required'
+            print('  Python Version {0} -> Sorry, 3.9 or higher is required'
                   .format(pyVersion))
             sys.exit(3)
         try:
             from PyQt5 import QtCore, QtWidgets
         except:
-            print('  PyQt not found -> Sorry, PyQt 5.8 or higher is required'
+            print('  PyQt not found -> Sorry, PyQt 6.4 or higher is required'
                   ' and must be built for Python 3')
             sys.exit(3)
         qtVersion = QtCore.qVersion()
-        if cmpVersions(qtVersion, (5, 8)):
+        if cmpVersions(qtVersion, (6, 4)):
             print('  Qt Version {0} -> OK'.format(qtVersion))
         else:
-            print('  Qt Version {0} -> Sorry, 5.8 or higher is required'
+            print('  Qt Version {0} -> Sorry, 6.4 or higher is required'
                   .format(qtVersion))
             sys.exit(3)
         pyqtVersion = QtCore.PYQT_VERSION_STR
-        if cmpVersions(pyqtVersion, (5, 8)):
+        if cmpVersions(pyqtVersion, (6, 4)):
             print('  PyQt Version {0} -> OK'.format(pyqtVersion))
         else:
-            print('  PyQt Version {0} -> Sorry, 5.8 or higher is required'
+            print('  PyQt Version {0} -> Sorry, 6.4 or higher is required'
                   .format(pyqtVersion))
             sys.exit(3)
         global testSpell

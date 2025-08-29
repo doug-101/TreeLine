@@ -5,7 +5,7 @@ Extract the source files from the treeline tar file, then change to the
 execute the following command as root:  'python install.py'
 
 If your distribution defaults to Python 2.x, you may need to substitute
-"python3", "python3.2" or "python3.3" for "python" in these commands.
+"python3", "python3.9" or "python3.10" for "python" in these commands.
 
 To see all install options, use: 'python install.py -h'.  To install
 TreeLine with a different prefix (the default is '/usr/local'), use:
