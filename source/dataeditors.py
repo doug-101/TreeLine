@@ -1364,7 +1364,7 @@ class CombinationEditor(ComboEditor):
         self.checkBoxDialog.show()
         pos = self.mapToGlobal(self.rect().bottomRight())
         pos.setX(pos.x() - self.checkBoxDialog.width() + 1)
-        screenBottom =  (QApplication.desktop().screenGeometry(self).
+        screenBottom =  (QApplication.primaryScreen().availableGeometry().
                          bottom())
         if pos.y() + self.checkBoxDialog.height() > screenBottom:
             pos.setY(pos.y() - self.rect().height() -
@@ -1468,7 +1468,7 @@ class DateEditor(ComboEditor):
             self.calendar.setWindowFlags(Qt.WindowType.Popup)
             weekStart = optiondefaults.daysOfWeek.index(globalref.
                                                        genOptions['WeekStart'])
-            self.calendar.setFirstDayOfWeek(weekStart + 1)
+            self.calendar.setFirstDayOfWeek(Qt.DayOfWeek(weekStart + 1))
             self.calendar.setVerticalHeaderFormat(QCalendarWidget.
                                                   VerticalHeaderFormat.
                                                   NoVerticalHeader)
@@ -1479,7 +1479,7 @@ class DateEditor(ComboEditor):
         self.calendar.show()
         pos = self.mapToGlobal(self.rect().bottomRight())
         pos.setX(pos.x() - self.calendar.width())
-        screenBottom =  (QApplication.desktop().screenGeometry(self).
+        screenBottom =  (QApplication.primaryScreen().availableGeometry().
                          bottom())
         if pos.y() + self.calendar.height() > screenBottom:
             pos.setY(pos.y() - self.rect().height() - self.calendar.height())
@@ -1535,7 +1535,7 @@ class TimeEditor(ComboEditor):
         self.dialog.show()
         pos = self.mapToGlobal(self.rect().bottomRight())
         pos.setX(pos.x() - self.dialog.width() + 1)
-        screenBottom = QApplication.desktop().screenGeometry(self).bottom()
+        screenBottom = QApplication.primaryScreen().availableGeometry().bottom()
         if pos.y() + self.dialog.height() > screenBottom:
             pos.setY(pos.y() - self.rect().height() - self.dialog.height())
         self.dialog.move(pos)
@@ -1588,7 +1588,7 @@ class TimeDialog(QDialog):
             horizLayout.addWidget(self.calendar)
             weekStart = optiondefaults.daysOfWeek.index(globalref.
                                                        genOptions['WeekStart'])
-            self.calendar.setFirstDayOfWeek(weekStart + 1)
+            self.calendar.setFirstDayOfWeek(Qt.DayOfWeek(weekStart + 1))
             self.calendar.setVerticalHeaderFormat(QCalendarWidget.
                                                   VerticalHeaderFormat.
                                                   NoVerticalHeader)
@@ -1831,8 +1831,8 @@ class AmPmSpinBox(QAbstractSpinBox):
     def sizeHint(self):
         """Set prefered size.
         """
-        return super().sizeHint() + QSize(QFontMetrics(self.font()).
-                                          width('AM'), 0)
+        return super().sizeHint() + (QFontMetrics(self.font()).
+                                     size(Qt.TextFlag.TextSingleLine, 'AM'))
 
     def focusInEvent(self, event):
         """Set select all when focused.
@@ -2033,7 +2033,7 @@ class DateTimeEditor(ComboEditor):
         self.dialog.show()
         pos = self.mapToGlobal(self.rect().bottomRight())
         pos.setX(pos.x() - self.dialog.width() + 1)
-        screenBottom = QApplication.desktop().screenGeometry(self).bottom()
+        screenBottom = QApplication.primaryScreen().availableGeometry().bottom()
         if pos.y() + self.dialog.height() > screenBottom:
             pos.setY(pos.y() - self.rect().height() - self.dialog.height())
         self.dialog.move(pos)
@@ -2101,7 +2101,7 @@ class ExtLinkEditor(ComboEditor):
         self.dialog.show()
         pos = self.mapToGlobal(self.rect().bottomRight())
         pos.setX(pos.x() - self.dialog.width() + 1)
-        screenBottom = QApplication.desktop().screenGeometry(self).bottom()
+        screenBottom = QApplication.primaryScreen().availableGeometry().bottom()
         if pos.y() + self.dialog.height() > screenBottom:
             pos.setY(pos.y() - self.rect().height() - self.dialog.height())
         self.dialog.move(pos)
@@ -2416,7 +2416,9 @@ class ExtLinkDialog(QDialog):
             oldAddress = urltools.extractAddress(oldAddress)
             if os.access(oldAddress, os.F_OK):
                 defaultPath = oldAddress
-        address, selFltr = QFileDialog.getOpenFileName(self,
+        print('HERE')
+        address, selFltr = QFileDialog.getOpenFileName(QApplication.
+                                                       activeWindow(),
                                             _('TreeLine - External Link File'),
                                             defaultPath,
                                             globalref.fileFilters['all'])
@@ -2501,7 +2503,7 @@ class IntLinkEditor(ComboEditor):
         self.intLinkDialog.show()
         pos = self.mapToGlobal(self.rect().bottomRight())
         pos.setX(pos.x() - self.intLinkDialog.width() + 1)
-        screenBottom =  (QApplication.desktop().screenGeometry(self).
+        screenBottom =  (QApplication.primaryScreen().availableGeometry().
                          bottom())
         if pos.y() + self.intLinkDialog.height() > screenBottom:
             pos.setY(pos.y() - self.rect().height() -
@@ -2745,7 +2747,7 @@ class PictureLinkEditor(ComboEditor):
         self.dialog.show()
         pos = self.mapToGlobal(self.rect().bottomRight())
         pos.setX(pos.x() - self.dialog.width() + 1)
-        screenBottom =  (QApplication.desktop().screenGeometry(self).
+        screenBottom =  (QApplication.primaryScreen().availableGeometry().
                          bottom())
         if pos.y() + self.dialog.height() > screenBottom:
             pos.setY(pos.y() - self.rect().height() - self.dialog.height())
@@ -2946,7 +2948,8 @@ class PictureLinkDialog(QDialog):
             oldAddress = urltools.extractAddress(oldAddress)
             if os.access(oldAddress, os.F_OK):
                 defaultPath = oldAddress
-        address, selFltr = QFileDialog.getOpenFileName(self,
+        address, selFltr = QFileDialog.getOpenFileName(QApplication.
+                                                       activeWindow(),
                                                   _('TreeLine - Picture File'),
                                                   defaultPath,
                                                   globalref.fileFilters['all'])

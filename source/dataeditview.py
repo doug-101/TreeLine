@@ -325,7 +325,7 @@ class DataEditDelegate(QStyledItemDelegate):
             modelIndex -- the index of the cell (not used)
         """
         if event.type() == QEvent.Type.MouseButtonPress:
-            self.editorClickPos = event.globalPosition()
+            self.editorClickPos = event.globalPosition().toPoint()
             # save scroll position for clicks on unlimited height editors
             self.tallEditScrollPos = self.parent().verticalScrollBar().value()
         return super().editorEvent(event, model, styleOption, modelIndex)

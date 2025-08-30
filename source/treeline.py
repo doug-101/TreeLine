@@ -79,6 +79,8 @@ def setupTranslator(app, lang=''):
             lang = os.environ.get('LANG', '')
             if not lang:
                 try:
+                    # This is deprecated, but getlocale() gives unusable
+                    # results (too verbose, not a language code???)
                     lang = locale.getdefaultlocale()[0]
                 except ValueError:
                     pass
