@@ -7,14 +7,14 @@
 AppName=TreeLine
 AppVersion=3.2.0
 ChangesAssociations=yes
-DefaultDirName={pf}\TreeLine-3
+DefaultDirName={commonpf}\TreeLine-3
 DefaultGroupName=TreeLine
 DisableProgramGroupPage=yes
 OutputDir=.
 OutputBaseFilename=treeline-3.2.0-install-all
 PrivilegesRequired=poweruser
 SetupIconFile=treeline.ico
-Uninstallable=IsTaskSelected('adduninstall')
+Uninstallable=WizardIsTaskSelected('adduninstall')
 UninstallDisplayIcon={app}\treeline.exe,0
 
 [Tasks]
@@ -45,7 +45,7 @@ Source: "treeline.exe"; DestDir: "{app}"
 Source: "base_library.zip"; DestDir: "{app}"
 Source: "*.dll"; DestDir: "{app}"
 Source: "*.pyd"; DestDir: "{app}"
-Source: "PyQt5\*"; DestDir: "{app}\PyQt5"; Flags: recursesubdirs
+Source: "PyQt6\*"; DestDir: "{app}\PyQt6"; Flags: recursesubdirs
 Source: "doc\LICENSE"; DestDir: "{app}\doc"
 Source: "doc\basichelp.html"; DestDir: "{app}\doc"
 Source: "doc\documentation.trln"; DestDir: "{app}\doc"; Attribs: readonly; \

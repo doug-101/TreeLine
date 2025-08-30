@@ -55,6 +55,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=False,
+          contents_directory='.',
           icon='..\\win\\treeline.ico')
 # a.binaries = a.binaries - TOC([('d3dcompiler_47.dll', None, None),
                                # ('libcrypto-1_1.dll', None, None),
