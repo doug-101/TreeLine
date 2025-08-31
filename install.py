@@ -230,7 +230,7 @@ def main():
                   .format(pyVersion))
             sys.exit(3)
         try:
-            from PyQt5 import QtCore, QtWidgets
+            from PyQt6 import QtCore, QtWidgets
         except:
             print('  PyQt not found -> Sorry, PyQt 6.4 or higher is required'
                   ' and must be built for Python 3')
