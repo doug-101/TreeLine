@@ -731,7 +731,7 @@ class PageSetupPage(QWidget):
         if self.currentPaperSize != 'Custom':
             tempPrinter = QPrinter()
             pageLayout = tempPrinter.pageLayout()
-            pageLayout.setPageSize(QPageSize(getattr(QPageSize,
+            pageLayout.setPageSize(QPageSize(getattr(QPageSize.PageSizeId,
                                                      self.currentPaperSize)))
             if not self.portraitOrient:
                 pageLayout.setOrientation(QPageLayout.Orientation.Landscape)
@@ -779,7 +779,7 @@ class PageSetupPage(QWidget):
         changed = False
         pageLayout = self.printData.pageLayout
         if self.currentPaperSize != 'Custom':
-            size = getattr(QPageSize, self.currentPaperSize)
+            size = getattr(QPageSize.PageSizeId, self.currentPaperSize)
             if size != pageLayout.pageSize().id():
                 pageLayout.setPageSize(QPageSize(size))
                 changed = True

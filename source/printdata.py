@@ -135,7 +135,7 @@ class PrintData:
         self.widowControl = data.get('printwidowcontrol', True)
         self.indentFactor = data.get('printindentfactor', 2.0)
         if 'printpapersize' in data:
-            self.pageLayout.setPageSize(QPageSize(getattr(QPageSize,
+            self.pageLayout.setPageSize(QPageSize(getattr(QPageSize.PageSizeId,
                                                   data['printpapersize'])))
             self.pageLayout.setMargins(QMarginsF(*(_defaultMargin,) * 4))
         if 'printpaperwidth' in data and 'printpaperheight' in data:
@@ -187,7 +187,7 @@ class PrintData:
         if sizeId == None:
             sizeId = self.pageLayout.pageSize().id()
         matches = []
-        for name, num in vars(QPageSize).items():
+        for name, num in vars(QPageSize.PageSizeId).items():
             if num == sizeId:
                 matches.append(name)
         if not matches:
