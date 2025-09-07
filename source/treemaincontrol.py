@@ -534,8 +534,7 @@ class TreeMainControl(QObject):
         """
         if QSystemTrayIcon.isSystemTrayAvailable():
             if not self.trayIcon:
-                self.trayIcon = QSystemTrayIcon(QApplication.windowIcon(),
-                                                QApplication)
+                self.trayIcon = QSystemTrayIcon(QApplication.windowIcon())
                 self.trayIcon.activated.connect(self.toggleTrayShow)
             self.trayIcon.show()
 
