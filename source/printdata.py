@@ -400,6 +400,10 @@ class PrintData:
             headerDoc.setTextWidth(self.pageLayout.paintRect().width() *
                                    self.printer.logicalDpiX())
             painter.save()
+            # set a pen as a workaround to initialize color with a dark theme.
+            pen = painter.pen()
+            pen.setWidth(6)
+            painter.setPen(pen)
             topMargin = self.pageLayout.margins(QPageLayout.Unit.Inch).top()
             headerDelta = ((self.headerMargin - topMargin) *
                            self.printer.logicalDpiX())
@@ -447,6 +451,10 @@ class PrintData:
         for item in columnItems:
             layout = item.doc.documentLayout()
             painter.save()
+            # set a pen as a workaround to initialize color with a dark theme.
+            pen = painter.pen()
+            pen.setWidth(6)
+            painter.setPen(pen)
             painter.translate(item.level * self.indentSize, item.pagePos)
             layout.draw(painter, paintContext)
             painter.restore()
