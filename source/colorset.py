@@ -35,7 +35,15 @@ roles = OrderedDict([('Window', _('Dialog background color')),
                      ('Text-Disabled', _('Disabled text foreground color')),
                      ('ButtonText-Disabled', _('Disabled button text color'))])
 
-ThemeSetting = enum.IntEnum('ThemeSetting', 'system dark custom')
+ThemeSetting = enum.IntEnum('ThemeSetting', 'system light dark custom')
+
+lightColors = {'Window': '#efefef', 'WindowText': '#000000',
+              'Base': '#ffffff', 'Text': '#000000',
+              'Highlight': '#308cc6', 'HighlightedText': '#ffffff',
+              'Link': '#0000ff', 'ToolTipBase': '#ffffdc',
+              'ToolTipText': '#000000', 'Button': '#efefef',
+              'ButtonText': '#000000', 'Text-Disabled': '#bebebe',
+              'ButtonText-Disabled': '#bebebe'}
 
 darkColors = {'Window': '#353535', 'WindowText': '#ffffff',
               'Base': '#191919', 'Text': '#ffffff',
@@ -58,7 +66,9 @@ class ColorSet:
         for color in self.colors:
             color.colorChanged.connect(self.setCustomTheme)
             color.setFromPalette(self.sysPalette)
-            if self.theme == ThemeSetting.dark:
+            if self.theme == ThemeSetting.light:
+                color.setFromTheme(lightColors)
+            elif self.theme == ThemeSetting.dark:
                 color.setFromTheme(darkColors)
             elif self.theme == ThemeSetting.custom:
                 color.setFromOption()
@@ -91,6 +101,7 @@ class ColorSet:
         self.themeControl = QComboBox(dialog)
         self.themeControl.addItem(_('Default system theme'),
                                   ThemeSetting.system)
+        self.themeControl.addItem(_('Light theme'), ThemeSetting.light)
         self.themeControl.addItem(_('Dark theme'), ThemeSetting.dark)
         self.themeControl.addItem(_('Custom theme'), ThemeSetting.custom)
         self.themeControl.setCurrentIndex(self.themeControl.
@@ -120,7 +131,7 @@ class ColorSet:
             globalref.miscOptions.changeValue('ColorTheme', self.theme.name)
             if self.theme == ThemeSetting.system:
                 QApplication.setPalette(self.sysPalette)
-            else:   # dark theme or custom
+            else:   # named theme or custom
                 if self.theme == ThemeSetting.custom:
                     for color in self.colors:
                         color.updateOption()
@@ -129,7 +140,9 @@ class ColorSet:
         else:
             for color in self.colors:
                 color.setFromPalette(self.sysPalette)
-                if self.theme == ThemeSetting.dark:
+                if self.theme == ThemeSetting.light:
+                    color.setFromTheme(lightColors)
+                elif self.theme == ThemeSetting.dark:
                     color.setFromTheme(darkColors)
                 elif self.theme == ThemeSetting.custom:
                     color.setFromOption()
@@ -149,6 +162,10 @@ class ColorSet:
         if self.themeControl.currentData() == ThemeSetting.system:
             for color in self.colors:
                 color.setFromPalette(self.sysPalette)
+                color.changeSwatchColor()
+        elif self.themeControl.currentData() == ThemeSetting.light:
+            for color in self.colors:
+                color.setFromTheme(lightColors)
                 color.changeSwatchColor()
         elif self.themeControl.currentData() == ThemeSetting.dark:
             for color in self.colors:
