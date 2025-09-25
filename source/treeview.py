@@ -320,7 +320,7 @@ class TreeView(QTreeView):
         Arguments:
             event -- the drop event
         """
-        clickedSpot = self.indexAt(event.pos()).internalPointer()
+        clickedSpot = self.indexAt(event.position().toPoint()).internalPointer()
         # clear selection to avoid invalid multiple selection bug
         self.selectionModel().selectSpots([], False)
         if clickedSpot:
@@ -352,7 +352,8 @@ class TreeView(QTreeView):
         """
         event = QMouseEvent(QEvent.Type.MouseMove,
                             QPointF(0.0, self.viewport().width()),
-                            Qt.MouseButton.NoButton, Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier)
+                            Qt.MouseButton.NoButton, Qt.MouseButton.NoButton,
+                            Qt.KeyboardModifier.NoModifier)
         QApplication.postEvent(self.viewport(), event)
         QApplication.processEvents()
 
@@ -366,7 +367,7 @@ class TreeView(QTreeView):
         if self.incremSearchMode:
             self.incremSearchStop()
         self.prevSelSpot = None
-        clickedIndex = self.indexAt(event.pos())
+        clickedIndex = self.indexAt(event.position().toPoint())
         clickedSpot = clickedIndex.internalPointer()
         selectModel = self.selectionModel()
         if self.noMouseSelectMode:
@@ -378,7 +379,7 @@ class TreeView(QTreeView):
             not self.mouseFocusNoEditMode and
             selectModel.selectedCount() == 1 and
             selectModel.currentSpot() == selectModel.selectedSpots()[0] and
-            event.pos().x() > self.visualRect(clickedIndex).left() and
+            event.position().x() > self.visualRect(clickedIndex).left() and
             globalref.genOptions['ClickRename']):
             # set for edit if single select and not an expand/collapse click
             self.prevSelSpot = selectModel.selectedSpots()[0]
@@ -391,7 +392,7 @@ class TreeView(QTreeView):
         Arguments:
             event -- the mouse click event
         """
-        clickedIndex = self.indexAt(event.pos())
+        clickedIndex = self.indexAt(event.position().toPoint())
         clickedSpot = clickedIndex.internalPointer()
         if (event.button() == Qt.MouseButton.LeftButton and
             self.prevSelSpot and clickedSpot == self.prevSelSpot):
@@ -789,7 +790,7 @@ class TreeFilterView(QListWidget):
             event -- the mouse click event
         """
         self.prevSelSpot = None
-        clickedItem = self.itemAt(event.pos())
+        clickedItem = self.itemAt(event.position().toPoint())
         if not clickedItem:
             event.ignore()
             return
@@ -812,7 +813,7 @@ class TreeFilterView(QListWidget):
         Arguments:
             event -- the mouse click event
         """
-        clickedItem = self.itemAt(event.pos())
+        clickedItem = self.itemAt(event.position().toPoint())
         if (event.button() == Qt.MouseButton.LeftButton and clickedItem and
             self.prevSelSpot and clickedItem.spot == self.prevSelSpot):
             self.editItem(clickedItem)

@@ -899,7 +899,7 @@ class RichTextEditor(HtmlTextEditor):
         """
         if (event.button() == Qt.MouseButton.LeftButton and
             event.modifiers() == Qt.KeyboardModifier.ControlModifier):
-            cursor = self.cursorForPosition(event.pos())
+            cursor = self.cursorForPosition(event.position().toPoint())
             address = cursor.charFormat().anchorHref()
             if address:
                 if address.startswith('#'):
@@ -1981,7 +1981,7 @@ class ClockWidget(QWidget):
             event -- the mouse press event
         """
         if len(self.hands) == 1 and event.button() == Qt.MouseButton.LeftButton:
-            pos = self.pointToPosition(event.pos())
+            pos = self.pointToPosition(event.position().toPoint())
             if pos:
                 if self.hands[0] != TimeElem.hour:
                     if pos == 12:
@@ -1997,7 +1997,7 @@ class ClockWidget(QWidget):
             event -- the mouse move event
         """
         if len(self.hands) == 1:
-            pos = self.pointToPosition(event.pos())
+            pos = self.pointToPosition(event.position().toPoint())
             if pos:
                 self.highlightAngle = pos * 30
                 self.update()
@@ -2416,7 +2416,6 @@ class ExtLinkDialog(QDialog):
             oldAddress = urltools.extractAddress(oldAddress)
             if os.access(oldAddress, os.F_OK):
                 defaultPath = oldAddress
-        print('HERE')
         address, selFltr = QFileDialog.getOpenFileName(QApplication.
                                                        activeWindow(),
                                             _('TreeLine - External Link File'),

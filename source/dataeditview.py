@@ -706,7 +706,7 @@ class DataEditView(QTableWidget):
         Arguments:
             event -- the drag event object
         """
-        cell = self.itemAt(event.pos())
+        cell = self.itemAt(event.position().toPoint())
         if (isinstance(cell, DataEditCell) and
             getattr(dataeditors, cell.field.editorClassName).dragLinkEnabled):
             event.accept()
@@ -719,7 +719,7 @@ class DataEditView(QTableWidget):
          Arguments:
              event -- the drop event object
         """
-        cell = self.itemAt(event.pos())
+        cell = self.itemAt(event.position().toPoint())
         fileList = event.mimeData().urls()
         if fileList and isinstance(cell, DataEditCell):
             self.setCurrentItem(cell)
@@ -735,11 +735,11 @@ class DataEditView(QTableWidget):
         """
         if (event.button() == Qt.MouseButton.LeftButton and
             event.modifiers() == Qt.KeyboardModifier.ControlModifier):
-            cell = self.itemAt(event.pos())
+            cell = self.itemAt(event.position().toPoint())
             if cell and isinstance(cell, DataEditCell):
-                xOffest = (event.pos().x() -
+                xOffest = (event.position().toPoint().x() -
                            self.columnViewportPosition(cell.column()))
-                yOffset = (event.pos().y() -
+                yOffset = (event.position().toPoint().y() -
                            self.rowViewportPosition(cell.row()))
                 pt = QPointF(xOffest, yOffset)
                 pos = cell.doc.documentLayout().hitTest(pt, Qt.HitTestAccuracy.ExactHit)
@@ -768,7 +768,7 @@ class DataEditView(QTableWidget):
         Arguments:
             event -- the mouse event
         """
-        cell = self.itemAt(event.pos())
+        cell = self.itemAt(event.position().toPoint())
         if cell and hasattr(cell, 'doc'):
             oldCell = self.currentItem()
             if (cell != oldCell and cell != self.prevHoverCell and
