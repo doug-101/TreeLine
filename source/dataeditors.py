@@ -1929,7 +1929,7 @@ class ClockWidget(QWidget):
             labels.append('00')
         for ang in range(30, 361, 30):
             rect.moveCenter(self.pointOnRadius(ang))
-            painter.setPen(QPen())
+            painter.setPen(QPen(QApplication.palette().text(), 1))
             if len(self.hands) == 1 and (ang == angle or
                                          ang == self.highlightAngle):
                 painter.setPen(QPen(QApplication.palette().highlight(), 1))
